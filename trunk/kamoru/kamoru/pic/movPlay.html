@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>movie player</title>
+<style type="text/css">
+video {
+	width:400px;
+	margin:10px;
+}
+</style>
+<script src="../js/jquery-1.5.js"></script>
+<script type=text/javascript>
+var movList = new Array();
+var movRealPath = "E:/EKP/workspace/kamoru/kamoru/pic/mov";
+     
+$(document).ready(function(){
+	
+	$.ajax({
+		url: "imgViewAction.jsp?cmd=list&a1=" + movRealPath,
+		success : function(data){
+			movList = eval(data);
+			loadImage();
+		}
+	});
+	
+});	
+
+function loadImage()
+{
+	for(var i=0; i<movList.length; i++)
+	{
+		$("body").append(
+			"<video src='./mov/" + movList[i] + "' controls>" +
+			"<div class='no-html5-video'>" + 
+			"<p><a href='./mov/" + movList[i] + "'>" + movList[i] + "</a></p>" +
+			"</div></video>"
+		);	
+	}
+}
+</script>
+</head>
+<body>
+
+</body>
+</html>

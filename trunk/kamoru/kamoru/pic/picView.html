@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!--
+	개발자 - 이범재
+	이메일 - beomjae@gmail.com
+	블로그 - http://blog.naver.com/scloudy
+-->
+
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Image viewer</title>
+<style type="text/css">
+	#main {
+		position: fixed; 
+		left:410px; 
+		top:80px; 
+		width:850px; 
+		height:600px;
+		z-index: 99; 
+		overflow:auto;
+	}
+    .divButton {
+		height:500px;
+        width:40px;
+        float:left;
+	}
+	.button {
+		height:500px;
+		width:40px;
+	}
+	.divMainImage {
+		width:680px;
+		float:left;
+		background-color:#eee;
+	}
+    .divImgList {
+    }
+	#imgTable {
+		clear:both;
+		width:400px;
+		height:500px;
+		overflow:auto;
+	}
+
+	#mainImage {
+		height:500px;
+	}
+	.smallImage{
+		width:70px;
+		height:70px;
+		border:3px solid white;
+	}
+
+	.highlightImg{
+		border:3px solid red;
+	}
+	.selectedImg{
+		border:3px solid blue;
+	}
+</style>
+<script src="../js/jquery-1.5.js"></script> 
+<script type=text/javascript>
+var imageList = new Array();
+var imgPath = "/image/cs2t_workshop/";
+var imgRealPath = "E:/EKP/workspace/kamoru/kamoru/pic/img";
+     
+$(document).ready(function(){
+	
+	$.ajax({
+		url: "imgViewAction.jsp?cmd=list&a1=" + imgRealPath,
+		success : function(data){
+			imageList = eval(data);
+			loadImage();
+		}
+	});
+	
+});	
+
+var selectImg = 0;		// 선택된 이미지 번호
+var preSelectImg = 0;	// 선택되기 바로 이전의 이미지 번호
+
+function loadImage()
+{
+	var count = 0;
+	
+	// imageList 프로퍼티 배열에 지정된 이미지 화면에 추가하기.
+	$(imageList).each(function(n) {
+		$("#imgTable").append("<img id='" + n + "' src='img/thumbnail/" + this + "' class='smallImage'/>");
+		count++;
+		
+		// 5번째 이미지일 경우, 줄바꿈 함.
+		if(count % 5 == 0) {
+			$("#imgTable").append("<br/>");
+
+			// 줄바꿈이 되면, count는 다시 0으로 변환함.
+			count = 0;
+		}
+	});
+	
+	// 이미지가 화면에 추가된 후, 0.5초 뒤에 이벤트 정의 함.
+	setTimeout(settingEvent, 500);
+	
+	// 이미지와 이벤트 모두 정의되면, 메인 이미지 화면에 첫 번재 썸네일의 이미지를 보여 줌.
+	showImg(0);
+}
+
+// 이벤트 정의 함수
+function settingEvent() 
+{
+	// 썸네일 이미지 클릭시 발생하는 이벤트 정의
+	$("img[class=smallImage]").bind("click", function(event) {
+		// 메인 화면에 썸네일 이미지 보이게 하는 함수 호출.
+		selectImg = event.target.id;
+		showImg(event.target.id);
+	});
+	
+	// 키 조작을 통한 이벤트 정의
+	$(document).bind("keydown", function(event) {
+		if(event.which == 37) selectImg--;		// 왼쪽 키
+		if(event.which == 39) selectImg++;		// 오른쪽 키
+		if(event.which == 38) selectImg -= 5;	// 아래쪽 키
+		if(event.which == 40) selectImg += 5;	// 위쪽 키
+		
+		// 현재 이미지 번호가 0보다 작을 경우, 썸네일 마지막 이미지가 화면에 보이게 함.
+		if(selectImg < 0) selectImg = imageList.length - 1;
+		// 현재 이미지 번호가 썸네일 갯수보다 클 경우, 썸네일 첫 번째 이미지가 화면에 보이게 함.
+		if(selectImg > imageList.length - 1) selectImg = 0;
+	
+		// 메인 화면에 썸네일 이미지 보이게 하는 함수 호출.
+		showImg(selectImg);
+	});
+	
+	// 메인 화면 좌측에 있는 버튼을 통한 이벤트 정의
+	$("#btnLeft").bind("click", function(event) {
+		selectImg--;
+
+		if(selectImg < 0) selectImg = imageList.length - 1;
+		
+		// 메인 화면에 썸네일 이미지 보이게 하는 함수 호출.
+		showImg(selectImg);
+	});
+	
+	// 메인 화면 우측에 있는 버튼을 통한 이벤트 정의
+	$("#btnRight").bind("click", function(event) {
+		selectImg++;
+
+		if(selectImg > imageList.length - 1) selectImg = 0;
+		
+		// 메인 화면에 썸네일 이미지 보이게 하는 함수 호출.
+		showImg(selectImg);
+	});
+}
+
+// 이미지 보기 함수
+function showImg(id) {
+	// 메인 화면에 선택된 썸네일 이미지를 보이게 함.
+	$("#mainImage").attr("src", "img/" + imageList[id]);
+	
+	// 선택된 썸네일 이미지의 투명도를 50%로 설정 함.
+	$("#" + id).css("opacity", .5).addClass("selectedImg");
+	// 이전에 선택된 썸네일 이미지의 투명도를 99%로 설정 함.
+	$("#" + preSelectImg).css("opacity", .99).removeClass("selectedImg");
+	
+	// 현재 썸네일 번호를 변수에 임시로 저장 함.
+	preSelectImg = id;
+}
+</script>
+</head>
+<body>
+
+<h1>CS사업부.CS2팀 워크샾 2011.03.18~19</h1>
+
+<div class="divImgList">
+	<div id="imgTable"></div>
+</div>
+<div id="main">
+	<table border="0" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td class="divButton">
+				<input type="button" id="btnLeft" class="button" value="&lt;"  />
+			</td>
+			<td class="divMainImage" align="center">
+				<img alt="mainImage" id="mainImage" class="mainImage" />
+			</td>
+			<td class="divButton">
+				<input type="button" id="btnRight" class="button" value="&gt;"  />
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html> 

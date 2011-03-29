@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Image View</title>
+<style type="text/css">
+canvas {
+	border: 1px solid #888;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;	
+	background-color: #eee;
+}
+
+body {
+	width: 880px;
+	margin: 0px auto;
+}
+BUTTON {height:100%}
+nav ul {
+	list-style: none;
+	padding: 0px;
+	display: block;
+	clear: right;
+	background-color: #666;
+	padding-left: 4px;
+	height: 24px;
+}
+nav ul li {
+	display: inline;
+	padding: 0px 10px 5px 10px;
+	height: 24px;
+	border-right: 1px solid #ccc;
+}
+nav ul li a {
+	color: #EFD3D3;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: bold;
+}
+nav ul li a:hover {
+	color: #fff;
+}
+
+nav ul li a.selected {
+	color: #993333;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: bold;
+}
+footer p {
+	text-align: center;
+	font-size: 12px;
+	color: #888;
+	margin-top: 24px;
+}
+#goPage {
+	margin-bottom: 3px;
+	font-size: 12px;
+	width:15pt;
+}
+</style>
+<script src="../js/jquery-1.5.js"></script> 
+<script>
+var canvas, context;
+var images = new Array();
+var currIdx = 0;
+var imgPath = "/image/cs2t_workshop/";
+var imgRealPath = "E:/EKP/workspace/image/WebContent/cs2t_workshop";
+
+$(document).ready(function(){
+	
+	$.ajax({
+		url: "imgViewAction.jsp?cmd=list&a1=" + imgRealPath,
+		success : function(data){
+			images = eval(data);
+
+			//initNav();
+			
+			loadImage();
+		}
+	});
+	
+	canvas = document.getElementById("cv");
+	context = canvas.getContext("2d");
+
+	
+});	
+
+function loadImage(){
+	var canW = canvas.width;
+	var canH = canvas.height;
+	var image = new Image();
+	image.src = imgPath + images[currIdx];
+	image.onload = function(){
+		var imgW = image.width;
+		var imgH = image.height;
+		if(canW < imgW){
+			imgH = imgH*(canW/imgW);
+			imgW = canW;
+		}
+		if(canH < imgH){
+			imgW = imgW*(canH/imgH);
+			imgH = canH;
+		}
+		var xPos = (canW-imgW)/2;
+		var yPos = (canH-imgH)/2;
+		resetCanvas();
+		context.drawImage(image, xPos, yPos, imgW, imgH);
+		$("#imgName").html(images[currIdx]);
+		initNav();
+		$("nav ul li a[id^=anker]").removeClass();
+		$("#anker"+currIdx).addClass("selected");
+		$("#goPage").val(currIdx+1);
+
+	}
+}
+function resetCanvas(){
+	canvas.width = canvas.width;        
+}
+function convertHeight(cW, cH, iW, iH){
+	return iH*(cW/iW);
+}
+
+function viewPrevImage(){
+	currIdx = currIdx - 1 < 0 ? 0 : currIdx - 1;
+	loadImage();
+}
+function viewNextImage(){
+	currIdx = currIdx + 1 >= images.length ? images.length - 1 : currIdx + 1;
+	loadImage();
+}
+
+function initNav(){
+	var ul = $("#navUL");
+	ul.empty();
+	var startIdx = 0;
+	var endIdx = 10;
+	
+	if(currIdx > 5){
+		startIdx = currIdx - 5;
+		endIdx = startIdx + 10;
+	}
+	ul.append("<input size=3 placeholder='GoPage' id='goPage'><li><a onclick='goPage()'>이동</a></li>")
+	
+	for(var i=startIdx; i<endIdx; i++){
+		ul.append("<li><a id='anker" + i + "' onclick='currIdx=" + i + "; loadImage();' href='#'>" + (i+1) + "</a></li>");
+	}
+}
+function goPage(){
+	var pNo = $("#goPage").val();
+	if(pNo > 0 || pNo < currIdx + 2){
+		currIdx = pNo - 1;
+		loadImage();
+	}
+}
+</script>
+</head>
+<body>
+
+<header>
+	<hgroup>
+		<h1>HTML5 Canvas Image Viewer</h1>
+	</hgroup>
+</header>
+
+<nav>
+	<ul id="navUL">
+	</ul>
+</nav>
+
+<article>
+	<section>
+		<table width="100%">
+			<tr>
+				<td><button onclick="viewPrevImage()">이전</button></td>
+				<td>
+					<canvas id="cv" width="800" height="600"></canvas>
+				</td>
+				<td><button onclick="viewNextImage()">다음</button></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="center"><figure id="imgName"></figure></td>
+				<td></td>
+		</table>
+	</section>
+</article>
+
+<footer>
+	<p>남종관 &copy; 2011 Handysoft. All rights reserved.</p>
+</footer>
+</body>
+</html>
