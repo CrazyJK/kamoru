@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Directory list </title>
+<style>
+* {
+	font-family:맑은 고딕;
+}
+#debugDiv {
+	width:100%; height:400px; font-size:9pt;
+}
+.filepath {
+	color:blue;
+}
+.filename {
+	padding: 10px;
+}
+.filesize {
+	color:red; width:200px;
+}
+section {
+	border: 1px solid #888;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;	
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;
+	background-color: #eee;
+}
+nav ul {
+	list-style: none;
+	padding: 0px;
+	display: block;
+	clear: right;
+	background-color: #666;
+	padding-left: 4px;
+	height: 24px;
+}
+
+nav ul li {
+	display: inline;
+	padding: 0px 20px 5px 10px;
+	height: 24px;
+	border-right: 1px solid #ccc;
+}
+
+nav ul li a {
+	color: #EFD3D3;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+nav ul li a:hover {
+	color: #fff;
+}
+header h1 {
+	font-size: 36px;
+	margin: 0px;
+}
+
+header h2 {
+	font-size: 18px;
+	margin: 0px;
+	color: #888;
+	font-style: italic;
+}
+</style>
+<script src="../js/jquery-1.5.js"></script>
+<script>
+var path = "";
+var prevPath = "";
+var files = new Array();
+
+$(document).ready(function(){
+	$("#loadingbar").hide();
+	$("#localpath").bind("keyup", function(event){
+		if (event.keyCode == '13') {
+			getFileList();
+		}
+	});
+});
+
+function getFileList()
+{
+	path = $("#localpath").val();
+	if(path != "")
+	{
+		$.ajax({
+			url: "filelistAction.jsp?p=" + path,
+			beforeSend: function() {
+	            $('#loadingbar').show().fadeIn('fast'); 
+	        },
+			success: function(data){
+				viewData(jQuery.trim(data));
+			},
+			error: function(xhr, status, error){ 
+				alert(error); 
+			},
+			complete: function() { 
+				$("#loadingbar").fadeOut();
+		    }
+		});
+	}
+}
+function viewData(data)
+{
+	$("#debugDiv").val(data).hide();
+	try{
+		files = eval(data);
+		prevPath = path;
+	}catch(e){
+		alert(data)
+		$("#localpath").val(prevPath);		
+		return;
+	}
+
+	$("#fileCnt").html("Total " + files.length);
+	$("#filelist").empty();
+	$("#complist").empty();
+	for(var i=0; i<files.length; i++)
+	{
+		$("#filelist").append("<li>" 
+				+ "<span class='filesize'>" + files[i].SIZE + "</span>"
+				+ "<span class='filename'>" + files[i].NAME + "</span>"
+				+ "<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+				+ "</li>");		
+	}
+	$("#filelist > li").bind("click", function(){
+		alert($(this).html());
+	});
+
+	allFile();
+}
+
+function sameSizeFile()
+{
+	$("#allFileSec").hide();
+	$("#sameSizeFileSec").show();
+	
+	var compArr = new Array();
+	var idx = 0;
+	for(var i=0; i<files.length-1; i++)
+	{
+		var except = false;
+		for(var k=0; k<compArr.length; k++)
+		{
+			if(i == compArr[k])
+			{
+				except = true;
+				break;
+			}
+		}
+		
+		var first = true;
+		if(!except)
+		{
+			for(var j=i+1; j<files.length; j++)
+			{
+				if(files[i].SIZE == files[j].SIZE)
+				{
+					// 번호 기억
+					//alert(i + ", " + j);
+					if(first)
+					{
+						$("#complist").append("<li>" + (i + 1) + ". "
+								+ "<span class='filesize'>" + files[i].SIZE + "</span>"
+								+ "<span class='filename'>" + files[i].NAME + "</span>"
+								+ "<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+								+ "</li>");		
+						first = false;
+					}
+					
+					
+					compArr[idx++] = j;
+					
+					$("#complist").append("<li>" + (j + 1) + ". "
+							+ "<span class='filesize'>" + files[j].SIZE + "</span>"
+							+ "<span class='filename'>" + files[j].NAME + "</span>"
+							+ "<span class='filepath'>" + files[j].PATH.replace(path, "") + "</span>" 
+							+ "</li>");		
+				}
+			}
+			if(!first)
+			{
+				$("#complist").append("<br/>");
+			}
+		}
+	}
+	$("#complist > li").bind("click", function(){
+		alert($(this).html());
+	});
+
+}
+function allFile()
+{
+	$("#allFileSec").show();
+	$("#sameSizeFileSec").hide();
+}
+</script>
+</head>
+<body>
+
+<header>
+	<hgroup>
+		<h1>Directory list</h1>
+		<h2>Path : <input id="localpath" placeholder="input local path" value="E:/ETC"/>
+			<input type="button" value="Get file list" onclick="getFileList()"/>
+		</h2>
+	</hgroup>
+</header>
+
+<nav>
+	<ul>
+		<li><a href="javascript:void()" onclick="allFile()">All file</a></li>
+		<li><a href="javascript:void()" onclick="sameSizeFile()">Same size file</a></li>
+	</ul>
+</nav>
+
+<section id="allFileSec" style="display:none">
+	<header>
+		<h4 id="fileCnt"></h4>
+	</header>
+	<ol id="filelist">
+	</ol>
+</section>
+
+<section id="sameSizeFileSec" style="display:none">
+	<ul id="complist">
+	</ul>
+</section>
+
+
+<textarea id="debugDiv" style="display:none;"></textarea>
+
+<div id="loadingbar" style="position: absolute; left:0px; top:0px;height: 100%; width: 100%;z-index: 99; display:none;">
+	<table width="100%" height="100%"> 
+		<TR valign="middle"> 
+			<TD align="center"> 
+				<img src="./loading.gif">
+			</TD> 
+		</TR> 
+	</TABLE> 
+</div>
+</body>
+</html>
