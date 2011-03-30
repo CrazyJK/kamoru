@@ -32,6 +32,7 @@ try
 				sb.append("NAME : \"").append(fileinfo.get("NAME")).append("\", ");
 				sb.append("SIZE : \"").append(fileinfo.get("SIZE")).append("\", ");
 				sb.append("PATH : \"").append(fileinfo.get("PATH")).append("\", ");
+				sb.append("URI  : \"").append(fileinfo.get("URI") ).append("\", ");
 				sb.append("MODIFIED : \"").append(fileinfo.get("MODIFIED")).append("\"");
 			
 				sb.append("}");
@@ -65,7 +66,11 @@ void getFilelist(ArrayList<HashMap<String, String>> list, String dir) throws Exc
 		}
 		else
 		{
-			list.add(getFileInfo(f));
+			String name = f.getName().toLowerCase();
+			if(name.endsWith("avi") || name.endsWith("wmv") || name.endsWith("mpg") || name.endsWith("mpeg") || name.endsWith("mkv"))
+			{
+				list.add(getFileInfo(f));
+			}
 		}
 	}
 	

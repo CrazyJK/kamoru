@@ -14,6 +14,7 @@
 	color:blue;
 }
 .filename {
+	color:black;
 	padding: 10px;
 }
 .filesize {
@@ -67,12 +68,19 @@ header h2 {
 	color: #888;
 	font-style: italic;
 }
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-shadow: 2px 2px 5px #333;
+}
 </style>
 <script src="../js/jquery-1.5.js"></script>
 <script>
 var path = "";
 var prevPath = "";
 var files = new Array();
+var currSection = "";
 
 $(document).ready(function(){
 	$("#loadingbar").hide();
@@ -122,23 +130,29 @@ function viewData(data)
 	$("#complist").empty();
 	for(var i=0; i<files.length; i++)
 	{
-		$("#filelist").append("<li>" 
-				+ "<span class='filesize'>" + files[i].SIZE + "</span>"
+		$("#filelist").append("<li><a href='javascript:void()' onclick='fileAction("+i+", \"PLAY\")'>" 
+				+ "<span class='filesize'>" + convertSize(files[i].SIZE) + "</span>"
 				+ "<span class='filename'>" + files[i].NAME + "</span>"
 				+ "<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+				+ "</a>"
+				+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 				+ "</li>");		
 	}
-	$("#filelist > li").bind("click", function(){
-		alert($(this).html());
-	});
-
-	allFile();
+	if(currSection == "sameSizeFileSec")
+	{
+		sameSizeFile();
+	}
+	else
+	{
+		allFile();
+	}
 }
 
 function sameSizeFile()
 {
 	$("#allFileSec").hide();
 	$("#sameSizeFileSec").show();
+	currSection = "sameSizeFileSec";
 	
 	var compArr = new Array();
 	var idx = 0;
@@ -165,10 +179,12 @@ function sameSizeFile()
 					//alert(i + ", " + j);
 					if(first)
 					{
-						$("#complist").append("<li>" + (i + 1) + ". "
+						$("#complist").append("<li><a href='javascript:void()' onclick='fileAction("+i+", \"PLAY\")'>" + (i + 1) + ". "
 								+ "<span class='filesize'>" + files[i].SIZE + "</span>"
 								+ "<span class='filename'>" + files[i].NAME + "</span>"
 								+ "<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+								+ "</a>"
+								+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 								+ "</li>");		
 						first = false;
 					}
@@ -176,10 +192,12 @@ function sameSizeFile()
 					
 					compArr[idx++] = j;
 					
-					$("#complist").append("<li>" + (j + 1) + ". "
+					$("#complist").append("<li><a href='javascript:void()' onclick='fileAction("+j+", \"PLAY\")'>" + (j + 1) + ". "
 							+ "<span class='filesize'>" + files[j].SIZE + "</span>"
 							+ "<span class='filename'>" + files[j].NAME + "</span>"
 							+ "<span class='filepath'>" + files[j].PATH.replace(path, "") + "</span>" 
+							+ "</a>"
+							+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 							+ "</li>");		
 				}
 			}
@@ -189,15 +207,67 @@ function sameSizeFile()
 			}
 		}
 	}
-	$("#complist > li").bind("click", function(){
-		alert($(this).html());
-	});
-
 }
 function allFile()
 {
 	$("#allFileSec").show();
 	$("#sameSizeFileSec").hide();
+	currSection = "allFileSec";
+}
+function convertSize(s)
+{
+	var i = parseInt(s);
+	if(i < 1000){
+		return i + "B";
+	}else if(i < 1000000){
+		return Math.round(i/1000) + "KB";
+	}else if(i < 1000000000){
+		return Math.round(i/1000000) + "MB";
+	}else if(i < 1000000000000){
+		return roundXL(i/1000000000,2) + "GB";
+	}else if(i < 1000000000000000){
+		return roundXL(i/1000000000000, 2) + "TB";
+	}else{
+		return s;
+	}
+}
+
+//엑셀 스타일의 반올림 함수 정의
+function roundXL(n, digits) {
+  if (digits >= 0) return parseFloat(n.toFixed(digits)); // 소수부 반올림
+
+  digits = Math.pow(10, digits); // 정수부 반올림
+  var t = Math.round(n * digits) / digits;
+
+  return parseFloat(t.toFixed(0));
+}
+
+function fileAction(idx, mode)
+{
+	var uri = files[idx].URI;
+//	alert(uri);
+	$.ajax({
+		url: "fileAction.jsp",
+		type: "POST",
+		data: "uri=" + uri + "&mode=" + mode, 
+		beforeSend: function() {
+            $('#loadingbar').show().fadeIn('fast'); 
+        },
+		success: function(data){
+			if(mode == "DEL")
+			{
+				getFileList();	
+			}
+		},
+		error: function(xhr, status, error){ 
+			alert(error); 
+		},
+		complete: function() { 
+			$("#loadingbar").fadeOut();
+	    }
+	});
+
+	
 }
 </script>
 </head>
@@ -206,7 +276,7 @@ function allFile()
 <header>
 	<hgroup>
 		<h1>Directory list</h1>
-		<h2>Path : <input id="localpath" placeholder="input local path" value="E:/ETC"/>
+		<h2>Path : <input id="localpath" placeholder="input local path" value="E:/av"/>
 			<input type="button" value="Get file list" onclick="getFileList()"/>
 		</h2>
 	</hgroup>
