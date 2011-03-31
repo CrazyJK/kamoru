@@ -1,0 +1,12 @@
+@CHARSET "EUC-KR";
+BODY {
+	background-image:url('../login.png'); 	
+}
+.roundBox {
+	border: 1px solid #888;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;	
+	background-color: #eee;
+}
+#loginMsg	{text-align:center; color:red;font-size:10pt;}

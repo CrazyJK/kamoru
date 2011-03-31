@@ -9,4 +9,59 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>WelcomekAmOrU</display-name>
+    <servlet-name>WelcomekAmOrU</servlet-name>
+    <servlet-class>kamoru.servlet.WelcomekAmOrU</servlet-class>
+    <init-param>
+      <description></description>
+      <param-name>kamoru</param-name>
+      <param-value>welcome</param-value>
+    </init-param>
+  </servlet>
+
+	<servlet>
+		<servlet-name>bwadkdbconfig</servlet-name>
+		<servlet-class>com.hs.bf.adk.config.DBConfigBag</servlet-class>
+		<init-param>
+			<param-name>dbconfig-xml-uri</param-name>
+			<param-value>/WEB-INF/bwadk_db.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>bwquery</servlet-name>
+		<servlet-class>com.hs.frmwk.db.BWQueryLoader</servlet-class>
+		<init-param>
+			<param-name>query-dir-uri</param-name>
+			<param-value>/WEB-INF/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>query-file-prefix</param-name>
+			<param-value>bwquery</param-value>
+		</init-param>
+		<init-param>
+			<param-name>query-file-suffix</param-name>
+			<param-value>.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>query-type</param-name>
+			<param-value>XML</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>bwquery</servlet-name>
+		<url-pattern>/servlet/bwquery</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>bwadkdbconfig</servlet-name>
+		<url-pattern>/servlet/bwadkdbconfig</url-pattern>
+	</servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>WelcomekAmOrU</servlet-name>
+    <url-pattern>/WelcomekAmOrU</url-pattern>
+  </servlet-mapping>
 </web-app>
