@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.*, java.util.*" %>
 <%
+long startNanoTime = System.nanoTime();
+
 String path = request.getParameter("p");
 
 StringBuilder sb = new StringBuilder();
@@ -50,6 +52,8 @@ catch(Exception e)
 	throw e;
 }
 out.println(sb.toString());
+System.out.println("[" + request.getRequestURI() + "]  elapsed time : " + ((System.nanoTime() - startNanoTime) / 1000000) + "ms");
+
 %>
 
 <%!

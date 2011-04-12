@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.net.*, java.io.*" %>
 <%
+long startNanoTime = System.nanoTime();
+
 String mode = request.getParameter("mode");
 String uri = request.getParameter("uri");
 
@@ -20,7 +22,6 @@ else if("DEL".equals(mode))
 	
 }
 	
+System.out.println("[" + request.getRequestURI() + "] " + mode + " elapsed time : " + ((System.nanoTime() - startNanoTime) / 1000000) + "ms");
 
-//C:\Program Files (x86)\GRETECH\GomPlayer\GOM.exe file:/E:/av/SOE-559.avi
-//C:\Program Files (x86)\GRETECH\GomPlayer\GOM.exe E:/av/SOE-559.avi
 %>
