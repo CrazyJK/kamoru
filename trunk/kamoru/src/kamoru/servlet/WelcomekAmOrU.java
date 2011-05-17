@@ -17,14 +17,13 @@ public class WelcomekAmOrU extends HttpServlet {
      */
     public WelcomekAmOrU() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		welcome(request, response);
 	}
 
 	/**
@@ -34,4 +33,17 @@ public class WelcomekAmOrU extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
+	void welcome(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Welcome message
+		print("**********************************");
+		print("* Welcome kAmOrU Server");
+		print("* Server start...");
+		print("* URL " + request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+				 + request.getContextPath() + "/");
+		print("**********************************");
+	}
+	
+	void print(Object o) throws ServletException, IOException {
+		System.out.println(o);
+	}
 }
