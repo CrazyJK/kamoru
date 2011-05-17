@@ -14,7 +14,7 @@ Eclipse Snippet<br>
 
 <% 
 try {
-
+	out.println("123456789");
 } catch(Exception e) {
 	e.printStackTrace();
 } finally {
