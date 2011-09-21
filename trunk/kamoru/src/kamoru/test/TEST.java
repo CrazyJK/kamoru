@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 
 public class TEST {
 
+    public static byte cElectronicDocFlag; 
+
 	public String getFormID(String strdate) throws ParseException, SQLException {
 		StringBuffer loadDataBuffer = new StringBuffer();
 		String dataValueBuffer = "";
@@ -51,6 +53,27 @@ public class TEST {
 		System.out.println("renameTo " + f.renameTo(new java.io.File("/home/kamoru/delete.pptx")));
 		System.out.println("Delete " + f.delete());
 
+		System.out.println((byte)50);
+		System.out.println(50);
+		System.out.println((byte)50 + "");
+		
+        cElectronicDocFlag = 49;
+
+        if(cElectronicDocFlag == 49)
+        	System.out.print(cElectronicDocFlag);
+        else
+        	System.out.print((byte)50);
+
+        
+		byte bt = 1;
+		System.out.println(cElectronicDocFlag);
+
+		char ch = 50;
+		System.out.println(ch);
+
+		
+		
+		
 	}
 
 }
