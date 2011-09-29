@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+/* DOM 레벨 1
+ * 이벤트의 등록과 헤제를 위한 클래스 만들기
+*/
+
+var Event = {};
+
+Event.addEvent = function(element, evt, handler, capture){
+	if(element.addEventListener){	
+		element.addEventListener(evt,handler,capture);
+	}else if(element.attachEvent){
+		element.attachEvent("on"+evt,handler);
+	}	
+}
+
+Event.removeEvent = function(element, evt, handler, capture){
+	if(element.removeEventListener){	
+		element.addEventListener(evt,handler,capture);
+	}else if(element.detachEvent){
+		element.detachEvent("on"+evt,handler);
+	}	
+}
+ 
+window.onload=function(){
+	var btn1 = document.getElementById("btn1");
+	var btn2 = document.getElementById("btn2");
+	var btn3 = document.getElementById("btn3");
+	var btn4 = document.getElementById("btn4");
+	var btn5 = document.getElementById("btn5");
+
+	Event.addEvent(btn1, "mouseover", jsMouseOver1, false);
+	Event.addEvent(btn2, "mouseover", jsMouseOver2, false);
+	Event.addEvent(btn3, "mouseover", jsMouseOver3, false);
+	Event.addEvent(btn4, "mouseover", jsMouseOver4, false);
+	Event.addEvent(btn5, "mouseover", jsMouseOver5, false);
+
+	Event.addEvent(btn1, "mouseout", jsMouseOut1, false);
+	Event.addEvent(btn2, "mouseout", jsMouseOut2, false);
+	Event.addEvent(btn3, "mouseout", jsMouseOut3, false);
+	Event.addEvent(btn4, "mouseout", jsMouseOut4, false);
+	Event.addEvent(btn5, "mouseout", jsMouseOut5, false);
+}
+
+function jsMouseOver1(){
+	var btn1 = document.getElementById("btn1");
+	btn1.style.backgroundColor = "red";
+}
+function jsMouseOver2(){
+	var btn2 = document.getElementById("btn2");
+	btn2.style.backgroundColor = "red";
+}
+function jsMouseOver3(){
+	var btn3 = document.getElementById("btn3");
+	btn3.style.backgroundColor = "red";
+}
+function jsMouseOver4(){
+	var btn4 = document.getElementById("btn4");
+	btn4.style.backgroundColor = "red";
+}
+function jsMouseOver5(){
+	var btn5 = document.getElementById("btn5");
+	btn5.style.backgroundColor = "red";
+}
+
+function jsMouseOut1(){
+	var btn1 = document.getElementById("btn1");
+	btn1.style.backgroundColor = "white";
+}
+function jsMouseOut2(){
+	var btn2 = document.getElementById("btn2");
+	btn2.style.backgroundColor = "white";
+}
+function jsMouseOut3(){
+	var btn3 = document.getElementById("btn3");
+	btn3.style.backgroundColor = "white";
+}
+function jsMouseOut4(){
+	var btn4 = document.getElementById("btn4");
+	btn4.style.backgroundColor = "white";
+}
+function jsMouseOut5(){
+	var btn5 = document.getElementById("btn5");
+	btn5.style.backgroundColor = "white";
+}
+
+
+</script>
+</head>
+<body>
+<form name="f">
+	<input id="btn1" type="button" value="click1"/>
+	<input id="btn2" type="button" value="click2"/>
+	<input id="btn3" type="button" value="click3"/>
+	<input id="btn4" type="button" value="click4"/>
+	<input id="btn5" type="button" value="click5"/>
+</form>
+<div id="output"></div>
+</body>
+</html>

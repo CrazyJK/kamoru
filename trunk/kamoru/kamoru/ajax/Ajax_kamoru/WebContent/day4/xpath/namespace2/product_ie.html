@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+  <title>복수개의  namespace</title>
+  <script type="text/javascript">
+  //XML 객체를 관리할 전역변수 
+  var xmlDoc = null;
+  
+  function createXMLDocFromURL(url) {
+    var xmlDoc = null;
+    
+    if (window.ActiveXObject != null) {
+      //MS XML Document 객체 생성 가능 
+      xmlDoc = new ActiveXObject("MSXML.DOMDocument");
+      //동기 모드로 XML 문서 읽기 설정
+      xmlDoc.async = false;
+      
+      // xml 을 파일로 불러올때.
+      xmlDoc.load(url);
+      //IE에서 오류 처리 하는 방법 
+      if (xmlDoc.parseError.errorCode != 0) {
+        var msg = "오류가 발생했습니다.\n";
+        msg += "오류 코드 : " + xmlDoc.parseError.errorCode + "\n" ;
+        msg += "오류 원인: " + xmlDoc.parseError.reason;
+        alert(msg);
+        return null;
+      }
+    } else {
+      //파이어 폭스에서 XML Document 객체 생성
+      var xmlDoc = document.implementation.createDocument("", "", null);
+      //동기 모드로 XML 문서 읽기 설정
+      xmlDoc.async = false;
+      
+      // xml 을 파일로 불러올때.
+      xmlDoc.load(url);
+
+      //파이어 폭스에서 오류 처리하는 방법
+      if (xmlDoc.documentElement.nodeName == "parsererror") {
+        var msg = "오류가 발생했습니다.\n";
+        msg += "오류 원인: " + xmlDoc.documentElement.childNodes[0].nodeValue;
+        alert(msg);
+        return null;
+      }
+    }
+      
+    return xmlDoc;
+  } 
+
+  //XML 객체로 부터 문자열을 얻는다.
+  function toString(xmlDoc) {
+    //MS XML document일 경우 xml Document로 부터 문자열을 얻는다.
+    if (xmlDoc.xml) {                                            
+      return xmlDoc.xml;                                         
+    } else {                                                     
+      //파이어 폭스 일 경우                                      
+      var serial = new XMLSerializer();                          
+      return serial.serializeToString(xmlDoc);                   
+    }                                                            
+    return "";                                                   
+  }
+
+  //XML 문서를 읽어 화면에 출력한다.  
+  function loadXML() {
+    //XML 파일명을 기술한다  
+    xmlDoc = createXMLDocFromURL("product.xml");
+    if (xmlDoc == null) return;
+    
+    //XML 객체를 문자열로 출력한다.
+    var xmlContents = document.getElementById("xmlContents");    
+    xmlContents.value = toString(xmlDoc);
+    
+    //nacespace를 설정한다 .
+    xmlDoc.setProperty("SelectionNamespaces", "xmlns:a='http://www.multicampus.or.kr/a' xmlns:b='http://www.multicampus.or.kr/b'");
+    
+    //XPath를 검색 언어로 지정한다 .
+    xmlDoc.setProperty("SelectionLanguage", "XPath");
+  }
+  
+  //노드의 문자열 값을 얻는다.  
+  function getNodeValue(node, name) {
+    if (node == null) return "";
+    
+    var childNodes = node.childNodes;
+    for (var i=0;i<childNodes.length;i++) {
+      if (childNodes[i].nodeType == 3 && null == name) {
+        return childNodes[i].nodeValue;
+      } else if (childNodes[i].nodeType == 1 && childNodes[i].nodeName == name) {
+        return getNodeValue(childNodes[i]);        
+      }
+    }
+    return "";
+  }
+
+  function nodeOutput(node) {
+    var xmlOutput = document.getElementById("xmlOutput");    
+    var msg;
+    
+    msg = "id : " + node.getAttribute("id");
+    msg += "\ntitle :" + getNodeValue(node, "name");
+    msg += "\nauthor :" + getNodeValue(node, "price");
+    
+    xmlOutput.value = msg;
+  }
+
+  function locationFilter1() {
+    var product = xmlDoc.selectSingleNode("//a:product[1]");
+    var xmlOutput = document.getElementById("xmlOutput");    
+    
+    if (null == product) {
+      xmlOutput.value = "product[1]의 노드를 찾을 수 없습니다."
+    } 
+    
+    nodeOutput(product);    
+  }
+
+  function locationFilter2() {
+    var product = xmlDoc.selectSingleNode("//b:product[1]");
+    var xmlOutput = document.getElementById("xmlOutput");    
+    
+    if (null == product) {
+      xmlOutput.value = "product[1]의 노드를 찾을 수 없습니다."
+    } 
+    
+    nodeOutput(product);    
+  }
+
+  window.onload = function() {
+    loadXML();
+  }
+
+  </script>
+</head>
+<body>
+<h3>복수개의 namespace </h3>
+<hr>
+XML 문서 내용 <br/>
+<textarea id='xmlContents' name='xmlContents' readonly="readonly" rows="20" cols="80" wrap="off"></textarea><br/>
+결과 화면 <br/>
+<textarea id='xmlOutput' name='xmlOutput' readonly="readonly" rows="10" cols="80" wrap="off"></textarea><br/>
+<input type="button" value="a:product[1]" onclick="locationFilter1()">
+<input type="button" value="b:product[1]" onclick="locationFilter2()">
+</body>
+</html>

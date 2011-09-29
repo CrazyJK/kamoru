@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>함수의 인자 처리기법</title>
+  <style type="text/css">
+    #main {
+      width:800px; 
+      height:600px; 
+      background-color: #CCCCCC;
+    }
+    #sub {
+      position:absolute; 
+      left:100px; 
+      top:200px; 
+      background-color: yellow; 
+      text-align: center;
+      vertical-align: middle;
+      padding: 50px;
+    }
+
+  </style>
+  <script type="text/javascript" src="event.js" ></script>
+  <script type="text/javascript" >
+  // 함수의 인자를 선언하지 않고 내부에서 
+  // 인자를 받아 사용하는 방법
+  // arguments의 사용법      
+  window.onload = function () {
+    //event handler DOM 0 방식 
+    document.onmousemove = eventHandler; 
+  }
+    
+  function eventHandler() {
+    var sub = document.getElementById("sub");
+    var html = "";
+    
+    html = "인자의 수 ->" + arguments.length + "<br/>";
+    if (arguments.length == 1) {
+        for (var name in arguments[0]) {
+            html += name + " = " + arguments[0][name] + "<br/>";
+        } 
+    }
+  
+    sub.innerHTML = html;        
+  }
+  </script>
+</head>
+
+<body>
+  <h3>함수의 인자 처리기법</h3>
+  <div id="main" >
+    <span id="sub">문자열입니다</span> 
+  </div>
+</body>
+</html>

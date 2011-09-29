@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Ajax - day1</title>
+<script type="text/javascript">
+/*
+ * javascript 로 객체를 동적으로 생성하는 방법
+   1. innerHTML 속성 - 고속
+   2. DOM API : document.createElement() - 약간 늦음
+                document.createTextNode()
+ */
+function jsCreate1(){
+	var output = document.getElementById("output");
+	var inTxt = document.getElementById("inTxt");
+	output.innerHTML = inTxt.value;
+}
+function jsCreate2(){
+	var output = document.getElementById("output");
+	var input = document.createElement("INPUT");
+	var label = document.createTextNode("이름");
+	input.type = "text";
+	input.value = "Ajax";
+	output.appendChild(input);
+	output.appendChild(label);
+}
+</script>
+</head>
+<body>
+<div id="output"></div>
+<textarea id="inTxt" name="inTxt" rows="10" cols="80"></textarea>
+<input type="button" value="InnerHTML생성"   onclick="jsCreate1()"/>
+<input type="button" value="createElement()" onclick="jsCreate2()"/>
+<a href="javascript:void(0)" onclick="jsCreate2()">jsCreate2</a>
+</body>
+</html>

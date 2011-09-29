@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript" src="request.js"></script>
+<script type="text/javascript">
+function callback(req) {
+	//서버 페이지로 부터 결과 얻는부분
+	alert("callbacak->" + req.responseText);
+	var result = eval('(' + req.responseText + ')');//req.responseText;
+	switch(result.code) {
+	case 1:
+		var loginForm = document.loginForm;
+		var logoutPanel =  document.getElementById("logoutPanel");
+
+		loginForm.style.display = "none";
+		logoutPanel.style.display = "";
+		break;
+	case -1:
+		alert("비밀번호가 잘못되었습니다.");
+		break;
+	case -2:
+		alert("아이디가 존재하지 않습니다.");
+		break;
+	}	
+}
+
+function jsSubmit() {
+	var loginForm = document.loginForm;
+	var logoutPanel =  document.getElementById("logoutPanel");
+
+	//var param = { uid :  loginForm.uid.value, pwd : loginForm.pwd.value }
+
+	var obj = new ajax.xhr.Request({
+		url          : "login.jsp", 
+		form         : loginForm, 
+		callbackFunc : callback, 
+		method       : "POST"
+	});
+	 
+	return false;
+}
+
+function jsLogout() {
+	new ajax.xhr.Request({
+		url : "logout.jsp", 
+		arg : null, 
+		callbackFunc : callback_logout, 
+	}); 
+	return false;
+}
+
+function callback_logout(req) {
+	var loginForm = document.loginForm;
+	var logoutPanel =  document.getElementById("logoutPanel");
+
+	loginForm.style.display = "";
+	logoutPanel.style.display = "none";
+
+	loginForm.reset();
+	loginForm.uid.focus();
+}
+
+window.onload = function () {
+	Event.addEvent(document.loginForm, "submit", jsSubmit);
+	Event.addEvent(document.getElementById("logout"), "click", jsLogout);
+	Event.addEvent(document.getElementById("regBN"), "click", jsRegister1);
+	Event.addEvent(document.getElementById("regBN"), "click", jsSubmit);
+}
+
+function jsRegister1() {
+	var loginForm = document.loginForm;
+
+	var param = { uid :  loginForm.uid.value, 
+            pwd : loginForm.pwd.value, 
+            uname : loginForm.uname.value 
+	}
+
+	new ajax.xhr.Request({
+		url : "register.jsp", 
+		arg : param, 
+		callbackFunc : callback_register, 
+		method : "POST"
+	}); 
+}
+
+function callback_register(req) {
+	var result = eval('(' + req.responseText + ')');//req.responseText;
+	switch(result.code) {
+	case 1:
+		alert(result.name + " 회원가입 성공.");
+		break;
+	case -1:
+		alert("아이디가 존재합니다.");
+		break;
+	}	
+}
+</script>
+</head>
+
+<body>
+<form name="loginForm" method="post" action="login.jsp" >
+	아이디 : <input type="text" name="uid" value="aaa" /><br/>
+	비밀번호: <input type="password" name="pwd" value="111" /><br/>
+	이름: <input type="text" name="uname" value="홍길동" /><br/>
+	<input type="submit" value="로그인"/>
+	<input type="reset" value="초기화"/>
+	<input type="button"  id="regBN" value="회원가입" />
+</form>
+
+<div id="logoutPanel" style="display:none">
+<a href="javascript:void(0)" id="logout" >홍길동</a>님 환영합니다.
+</div>
+
+</body>
+</html>

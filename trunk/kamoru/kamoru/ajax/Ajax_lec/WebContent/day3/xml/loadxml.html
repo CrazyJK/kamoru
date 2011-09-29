@@ -1,0 +1,134 @@
+<HTML>
+<HEAD>
+<TITLE> XML 문서에서 특정노드의 정보를 가지고 옵니다. </TITLE>
+
+<style>
+ body { font-size:9pt; }
+ table { font-size:9pt; }
+ tr { font-size:9pt; }
+ td { font-size:9pt; }
+</style>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var xmlDoc = null;
+
+
+function jsNodeStr(node, tabs) {
+
+    var msg = "";
+    if (tabs == null) {
+      tabs = "";
+    }
+    msg += tabs + "노드이름 : "    + node.nodeName  + "<br>";
+    msg += tabs + "노드의 타입 : " + node.nodeType  + "<br>";
+    msg += tabs + "노드문자 : "    + node.text      + "<br>";
+    msg += tabs + "노드의 값 : "   + node.nodeValue + "<br>";
+    
+    var nodeList = node.childNodes;
+
+    if (nodeList != null ) {
+      tabs += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      for(var i=0;i<nodeList.length;i++) {
+          msg += "---------------------------------------------<br>";
+          msg += jsNodeStr(nodeList[i], tabs);
+      }
+    }
+    return msg;
+
+}
+
+function jsNodeDisplay(msg) {
+
+    var outputPanel = document.getElementById('outputPanel');
+    
+    outputPanel.innerHTML = msg;
+}
+
+function jsLoadXML() {
+    var xmlContents = document.getElementById("xmlContents");    
+
+    xmlDoc = new ActiveXObject("MSXML.DOMDocument");
+    xmlDoc.async = false;
+    
+    // xml 을 파일로 불러올때.
+    xmlDoc.load("books.xml");
+
+    if(xmlDoc.parseError != 0) {
+        alert(xmlDoc.parseError.line + "|" + xmlDoc.parseError.linepos  + "|" + xmlDoc.parseError.reason);
+    }
+
+    xmlContents.innerText = xmlDoc.xml;
+
+}
+
+function jsChildNodes() {
+  
+    if(xmlDoc.parseError == 0) {
+        // 루트 요소찾기
+        var xroot = xmlDoc.documentElement;
+        var nodeList = null;
+        var msg = "";
+
+        nodeList = xroot.childNodes;        
+        
+        if (nodeList != null) {
+
+            for(var i=0;i<nodeList.length;i++) {
+                msg += "---------------------------------------------<br>";
+                msg += "Item : " + (i + 1) + "<br>";
+                msg += jsNodeStr(nodeList[i]);
+            }
+            jsNodeDisplay(msg);
+                
+        }        
+    }
+}
+
+function jsGetElementByTagName() {
+    if(xmlDoc.parseError == 0) {
+        var nodeList = xmlDoc.getElementsByTagName("book");
+        var msg = "";
+
+        if (nodeList != null) {
+
+            for(var i=0;i<nodeList.length;i++) {
+                msg += "---------------------------------------------<br>";
+                msg += "Item : " + (i + 1) + "<br>";
+                msg += jsNodeStr(nodeList[i]);
+            }
+            jsNodeDisplay(msg);
+                
+        }        
+    }
+}
+
+function jsClean() {
+  jsNodeDisplay("");
+}
+/*
+window.onload=function() {
+	jsLoadXML();
+}
+
+window.onload=jsLoadXML;
+*/
+//-->
+</SCRIPT>
+
+</HEAD>
+
+<BODY  >
+
+<div id='xmlContents'></div>
+<div id="outputPanel" >&nbsp;</div>
+<input type="button" value="childNodes" onclick="jsChildNodes()">
+<input type="button" value="getElementByTagName" onclick="jsGetElementByTagName()">
+<input type="button" value="clean" onclick="jsClean()">
+
+<script type="text/javascript">
+  jsLoadXML();
+</script>
+
+</BODY>
+</HTML>

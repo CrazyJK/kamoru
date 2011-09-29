@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>prototype을 이용한 메소드 재정의</title>
+</head>
+<body>
+<H3> prototype을 이용한 메소드 재정의 </H3>
+<hr>
+<script type="text/javascript">
+
+function UserInfo(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+//UserInfo 클래스의 메소드 정의 
+UserInfo.prototype.display = function () {
+  document.write("this.name = " + this.name + "<br/>");
+  document.write("this.age = " + this.age + "<br/>");
+}
+
+//객체의 상태를 문자열로 출력하는 함수 toString()를 재정의 한다.
+UserInfo.prototype.toString = function () {
+	var ret = "";
+	
+	ret += "this.name = " + this.name + "<br/>";
+	ret += "this.age = " + this.age + "<br/>";
+	
+	return ret;
+}
+
+//객체 생성 
+var obj1 = new UserInfo("홍길동", 35);
+var obj2 = new UserInfo("이순신", 30);
+var obj3 = new UserInfo("대조영", 25);
+
+//객체를 이용한 toString() 함수 호출   
+document.write(obj1.toString());
+document.write(obj2);
+document.write(obj3.toString());
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>클래스 메소드로 이벤트 핸들러 구현</title>
+  <style type="text/css">
+    #btn {
+      padding: 50px;
+      font-size: 50px;
+    }
+  </style>
+    <script type="text/javascript" src="event.js" ></script>
+  <script type="text/javascript" >
+    
+  window.onload = function () {
+//    new MouseEvent2("btn");
+    new MouseEvent3("btn");
+  }
+  
+  MouseEvent2 = function(id) {
+    //아이디를 이용하여 객체를 얻어 멤버 변수 element에 설정한다.
+    this.element = document.getElementById(id);
+    //지역변수에 this의 인자를 설정한다
+    var localThis = this ; 
+    
+    //MouseOver 이벤트 핸들러를 지역 함수로 작성한다.
+    overHandler = function () {
+       localThis.onover.apply(localThis, arguments) ;
+    }
+
+    //MouseOut 이벤트 핸들러를 지역 함수로 작성한다.
+    outHandler = function () {
+       localThis.onout.apply(localThis, arguments) ;
+    }
+
+    //객체에 click 이벤트 핸들러를 클래스의 멤버 함수로 등록한다.
+    Event.addListener(this.element, "mouseover", overHandler);
+    Event.addListener(this.element, "mouseout", outHandler);
+  }
+  
+  MouseEvent2.prototype = {
+    onover : function(e) {
+      //클래스의 멤버 변수 element에 있는 객체의 스타일 중 배경색을 변경한다.
+      this.element.style.background = "blue";
+    }, 
+    onout : function(e) {
+      //클래스의 멤버 변수 element에 있는 객체의 스타일 중 배경색을 변경한다.
+      this.element.style.background = "white";
+    }
+  }
+
+  //이벤트 핸들러를 클래스화 경우 3(정상적인 경우)
+  //클래스 정의 한다
+  MouseEvent3 = function(id) {
+    //아이디를 이용하여 객체를 얻어 멤버 변수 element에 설정한다.
+    this.element = document.getElementById(id);
+    
+    var handler1 = Event.bindAsListener(this, this.onover);
+    var handler2 = Event.bindAsListener(this, this.onout);
+    
+    //객체에 click 이벤트 핸들러를 클래스의 멤버 함수로 등록한다.
+    Event.addListener(this.element, "mouseover", handler1);
+    Event.addListener(this.element, "mouseout", handler2);
+  }
+  
+  MouseEvent3.prototype = {
+    onover : function(e) {
+      //클래스의 멤버 변수 element에 있는 객체의 스타일 중 배경색을 변경한다.
+      this.element.style.background = "blue";
+    }, 
+    onout : function(e) {
+      //클래스의 멤버 변수 element에 있는 객체의 스타일 중 배경색을 변경한다.
+      this.element.style.background = "white";
+    }
+  }
+    
+  </script>
+</head>
+<body>
+<h3>클래스 메소드로 이벤트 핸들러 구현</h3>
+<hr/>
+  <input type="button" id="btn" value="클릭해주세요" >
+</body>
+</html>

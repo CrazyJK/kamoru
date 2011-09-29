@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>이벤트 전파 중지</title>
+  <style type="text/css">
+    .css_num10 {
+      border-style: solid;
+      border-color: green;
+      border-width: 1px;
+      background-color: #ffcdcd;
+    }
+    .css_num16 {
+      border-style: solid;
+      border-color: green;
+      border-width: 2px;
+      background-color: #eee;
+    }
+  </style>
+  <script type="text/javascript" src="event.js" ></script>
+  <script type="text/javascript" >
+    
+  window.onload = function () {
+    Event.addListener(document, "keydown", document_keydown);
+  }
+  
+  function document_keydown(e) {
+    var event = event || e;
+    var target = Event.target(event);
+    var className = target.className;
+    
+    if (target.nodeName != "INPUT" || target.type.toUpperCase() != "TEXT")
+        return true;
+    
+    if (className == "css_num10") {
+      if (!Event.isDigit10(event)) {
+        Event.stopEvent(event);
+        return false;
+      }
+    } else if (className == "css_num16") {
+      if (!Event.isDigit16(event)) {
+        Event.stopEvent(event);
+        return false;
+      }
+    }
+  }
+  </script>
+</head>
+<body>
+<h3>이벤트 전파 중지</h3>
+<hr/>
+  문자열입력   : <input type="text" ><br/>
+  10수치 입력  : <input type="text" class="css_num10"><br/>
+  16진수 입력  : <input type="text" class="css_num16"><br/>
+  주민등록번호 : <input type="text" maxlength="6" class="css_num10"> - <input type="text" class="css_num10" maxlength="7"> <br/>
+  16진수 입력  : <input type="text" class="css_num16"><br/>
+</body>
+</html>

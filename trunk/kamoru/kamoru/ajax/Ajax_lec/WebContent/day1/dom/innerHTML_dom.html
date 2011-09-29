@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>InnerHTML 내용 보기</title>
+<script type="text/javascript">
+function view() {
+  var p1 = document.getElementById("p1");
+//  alert(p1.innerHTML);
+  alert(p1.innerText);
+  
+  
+}
+</script>
+</head>
+<body >
+<h3>InnerHTML 내용 보기</h3>
+<hr>
+<p id="p1"><strong>Ajax</strong>프로그래밍기초</p>
+<input type="button" value="보기" onclick="view()">
+</body>
+</html>

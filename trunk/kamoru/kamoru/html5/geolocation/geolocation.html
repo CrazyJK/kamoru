@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5 geolocation Demo</title>
+<meta name="viewport" content="initial-scale=1.0,user-scalable=no">
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
+}
+
+#map {
+	width: 100%;
+	height: 100%
+}
+</style>
+<script type="text/javascript"
+	src="http://apis.daum.net/maps/maps3.js?apikey=c36fe57a01160c0631bb2cc4c49cc9a7a78ca155"></script>
+<script type="text/javascript">
+	function successCallback(position) {
+		var lat = position.coords.latitude;
+		var lng = position.coords.longitude;
+
+		//  document.getElementById("msg").innerHTML = "위도" + lat + ", 경도:"+lng
+		showMap(lat, lng);
+	}
+
+	function errorCallback(error) {
+		alert(error.message);
+	}
+
+	window.onload = function() {
+	}
+	function getCurrentPosition() {
+		if (!!navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(successCallback,
+					errorCallback);
+		} else {
+			alert("이 브라우저는 Geolocation를 지원하지 않습니다");
+		}
+	}
+	var map;
+	function showMap(lat, lng) {
+		var position;
+		if (lat && lng) {
+			position = new daum.maps.LatLng(lat, lng);
+		} else {
+			position = new daum.maps.LatLng(37.537123, 127.005523);
+		}
+
+		map = new daum.maps.Map(document.getElementById('map'), {
+			center : position,
+			level : 4,
+			mapTypeId : daum.maps.MapTypeId.ROADMAP
+		} //HYBRID
+		);
+		var marker = new daum.maps.Marker({
+			position : position
+		});
+		marker.setMap(map);
+		//  	var infowindow = new daum.maps.InfoWindow({content: 'Hello, World!'});
+		//  	infowindow.open(map, marker);
+		map.addControl(new daum.maps.ZoomControl(),
+				daum.maps.ControlPosition.TOPRIGHT);
+	}
+	
+	function initMap() {
+		
+	}
+</script>
+</head>
+<body>
+	<div id="map"></div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+  <title>ajax.xml.Document 크로스 브라우저에서 XSLT 적용하기 </title>
+  <script type="text/javascript" src="ajax.js"></script>
+  <script type="text/javascript">
+  var xmlObj = new ajax.xml.Document();
+  
+  //XML 문서를 읽어 화면에 출력한다.  
+  function loadXML() {
+	new  ajax.xhr.Request("product.jsp", null, loadProductXML, "GET");
+    new  ajax.xhr.Request("product.xsl", null, loadProductXSL, "GET");
+  }
+    
+  function loadProductXML(reg) {
+    if (reg.readyState == 4) {
+      if (reg.status == 200) {
+        xmlObj.xmlDoc = reg.responseXML;
+        doXSLT();
+      }
+    }
+  }
+  
+  function loadProductXSL(reg) {
+    if (reg.readyState == 4) {
+      if (reg.status == 200) {
+        xmlObj.xslDoc = reg.responseXML;
+        doXSLT();
+      }
+    }
+  }
+
+  function doXSLT() {
+    if (xmlObj.xmlDoc == null || xmlObj.xslDoc == null) return;
+    
+    //XML 객체를 문자열로 출력한다.
+    var xmlList = document.getElementById("xmlList");
+    
+    //nacespace를 설정한다 .
+    xmlObj.setNamespace("xmlns:a='http://www.multicampus.or.kr/a' xmlns:b='http://www.multicampus.or.kr/b'");
+
+    xmlObj.transformXmlDoc(xmlList);
+  }
+  
+  window.onload = function() {
+    loadXML();
+  }
+
+  </script>
+</head>
+<body>
+<h3>ajax.xml.Document 크로스 브라우저에서 XSLT 적용하기 </h3>
+
+<div id="xmlList"></div>
+</body>
+</html>

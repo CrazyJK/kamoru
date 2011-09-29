@@ -1,0 +1,78 @@
+<HTML>                                                               
+<HEAD>                                                               
+<TITLE> 자바스크립트에서 CSS 클래스명 변경</TITLE>                                  
+  <style type="text/css" media="screen">
+  
+  body {
+    font-family: verdana, sans-serif;
+    font-size: 12px;
+  }
+
+  .red {
+    background-color: red;
+    border-style:inset;
+    border-width: 5px;
+    font-size: 30px;
+    padding: 20;
+  } 
+
+  .green {
+    background-color: green;
+    border-style:inset;
+    border-width: 5px;
+    font-size: 30px;
+    padding: 20;
+  } 
+
+  .blue {
+    background-color: blue;
+    border-style:inset;
+    border-width: 5px;
+    font-size: 30px;
+    padding: 20;
+  } 
+
+  </style>
+<script type="text/javascript">
+
+//className을 제거합니다.
+function onclick_none() {
+  var myDiv = document.getElementById("myDiv");
+  myDiv.className = "";
+}
+
+//className을  "red"로 변경한다.
+function onclick_red() {
+  var myDiv = document.getElementById("myDiv");
+  myDiv.className = "red";
+}
+
+//className을  "green"로 변경한다.
+function onclick_green() {
+  var myDiv = document.getElementById("myDiv");
+  myDiv.className = "green";
+}
+
+//className을  "blue"로 변경한다.
+function onclick_blue() {
+  var myDiv = document.getElementById("myDiv");
+  myDiv.className = "blue";
+}
+
+</script>
+
+</HEAD>                                                              
+
+<body >                                                               
+  <h3>자바스크립트에서 CSS 클래스명 변경</h3>                                      
+  <hr noshade>
+
+<div id="myDiv" class="blue" >
+   자바스크립트에서 CSS 클래스명 변경
+</div>
+<input type="button" value="없음" onclick="onclick_none()">
+<input type="button" value="빨간색" onclick="onclick_red()">
+<input type="button" value="초록색" onclick="onclick_green()">
+<input type="button" value="파란색" onclick="onclick_blue()">
+</body>                                                              
+</HTML>                                                                                            

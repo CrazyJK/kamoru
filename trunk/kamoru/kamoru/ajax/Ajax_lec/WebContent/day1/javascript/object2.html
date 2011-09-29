@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>객체 생성 및 메소드 설정</title>
+</head>
+<body>
+<H3> 객체 생성 및 메소드 설정 </H3>
+<hr>
+<script type="text/javascript">
+
+function display() {
+  document.write("this.name = " + this.name + "<br/>");
+  document.write("this.age = " + this.age + "<br/>");
+}
+  var obj = new Object();
+  
+  obj.name = "홍길동";
+  obj.age = 35;
+
+  //display() 함수의 객체에 설정한다.  
+  obj.display = display;
+  
+  //객체를 이용한 display() 함수 호출   
+  obj.display();
+  
+    
+</script>
+</body>
+</html>

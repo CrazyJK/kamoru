@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<style type="text/css">
+.required {
+	background :right no-repeat url("star.JPG	") ;
+	border: 1px solid;
+}
+</style>
+<script type="text/javascript">
+var Event = {}
+Event.addEvent = function(element, evt, handler, capture) {
+
+	if (element.addEventListener) {
+		element.addEventListener(evt, handler, capture); 
+	} else if (element.attachEvent) {
+		element.attachEvent( "on" + evt, handler);
+	}
+}
+ 
+Event.removeEvent  = function(element, evt, handler, capture) {
+
+	if (element.removeEventListener) { 
+		element.removeEventListener(evt, handler, capture); 
+	} else if (element.detachEvent) {
+		element.detachEvent( "on" + evt, handler);
+	}
+}
+
+Event.stopPropagation = function(event) { 
+	if (event.stopPropagation) {
+		event.stopPropagation();
+	} else {
+		event.cancelBubble = true;
+	}
+}
+
+Event.preventDefault = function(event) {
+	if (event.preventDefault) {
+		event.preventDefault();
+	} else {
+		event.returnValue = false;
+	}
+}
+
+Event.stopEvent = function(event) {
+	Event.stopPropagation(event);
+	Event.preventDefault(event);
+}
+
+Event.getTarget = function(event) {
+	return event.srcElement || event.target;
+}
+
+window.onload = function() {
+	var inputs = document.getElementsByTagName("INPUT");
+	for (var i=0;i<inputs.length;i++) {
+		if (inputs[i].getAttribute("required") == "true") {
+			inputs[i].className = "required";
+		}
+	}
+	Event.addEvent(document, "keydown", jsKeyDown, false);
+	Event.addEvent(document.f, "submit", jsSubmit, false);
+}
+
+function jsSubmit(e) {
+	var inputs = document.getElementsByTagName("INPUT");
+	for (var i=0;i<inputs.length;i++) {
+		if (inputs[i].getAttribute("required") == "true" && inputs[i].value == "") {
+			alert(inputs[i].name + " 필수 입력입니다");
+			inputs[i].focus();
+			return false;
+		}
+	}
+	return true;
+}
+
+jsKeyDown = function(e) {
+	var event = window.event || e;
+	var target  = Event.getTarget(event);
+
+	if (target.getAttribute("numType") != "10") {
+		return;
+	}
+	
+	switch(event.keyCode) {
+	case 0x30:
+	case 0x31:
+	case 0x32:
+	case 0x33:
+	case 0x34:
+	case 0x35:
+	case 0x36:
+	case 0x37:
+	case 0x38:
+	case 0x39:
+
+	case 0x25:
+	case 0x24:
+	case 0x27:
+	case 0x08:
+	case 0x09:
+	case 0x2e:
+		break;
+	default:
+		Event.stopEvent(event);
+		break;
+	}
+}
+</script>
+ 
+</head>
+<body>
+<form name="f" action="" >
+	영문자<input type="text" name="key1"  id="key1"/> <br/>
+	수치  <input type="text" name="key2"  id="key2" title="수치1"  numType="10"  required="true"/><br/>
+	영문자<input type="text" name="key3"  id="key3"  required="true"/><br/>
+	수치  <input type="text" name="key4"  id="key4" numType="10"/><br/>
+	영문자<input type="text" name="key3"  id="key3"  required="true"/><br/>
+	<input type="submit"  value="전송"/><br/>
+</form>
+</body>
+</html>

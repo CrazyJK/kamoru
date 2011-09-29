@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Ajax - day2 - class</title>
+<script type="text/javascript">
+/*
+ * Ajax를 이용하여 서버 페이지 호울한 결과 문자열을 사용하여 eval()함수호출하는 방법
+ */
+
+var req = null;
+
+function jsClick(){
+/**
+ * 1. XMLHttpRequest 객체생성
+   2. open()
+   3. callback function 생성
+   4. send()
+ */
+ 	//ie 7.0over, firefox, opera, safai
+	if(window.XMLHttpRequest){
+		req = new XMLHttpRequest();
+	}else{
+		//ie 6.0 under
+		if(window.ActiveXObject){
+			try{
+				//ie 6.0
+				req = new ActiveXObject("msxml2.XMLHTTP");
+			}catch(e){
+				//ie 5.0 under
+				req = new ActiveXObject("microsoft.XMLHTTP");
+			}
+		}	
+	}
+
+	if(null == req){
+		alert("XMLHttpRequest 객체 생성 오류");
+		return;
+	}
+
+// http://msdn.microsoft.com/en/library
+// MSDN / MSDN library / Web Development / HTML and CSS / HTML and DHTML reference / XMLHttpRequest
+
+	//object.open(sMethod, sUrl [, bAsync] [, sUser] [, sPassword])
+	req.open("GET","json1.jsp",true);
+	req.onreadystatechange = callback;
+	req.send(null);
+}
+
+function callback(){
+//	alert(req.readyState + "/" + req.status);
+	if(req.readyState == 4 && req.status == 200){
+		var uName = document.getElementById("uName");
+		var uAge = document.getElementById("uAge");
+		
+		var result = eval("(" + req.responseText + ")");
+
+		uName.innerHTML = result.name;
+		uAge.innerHTML = result.age;
+		
+	}else if(req.readyState == 4 && req.status != 200){
+		alert(req.status);
+	}
+}
+
+</script>
+
+</head>
+<body>
+<h3>Ajax를 이용하여 서버 페이지 호울한 결과 문자열을 사용하여 eval()함수호출하는 방법
+</h3>
+<form name="f">
+<div>이름 : <span id="uName"></span></div>
+<div>나이 : <span id="uAge"></span></div>
+<input type="button" value="서버호출" onclick="jsClick()"/>
+</form>
+</body>
+</html>

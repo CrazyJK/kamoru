@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>이벤트 핸들러 DOM 0</title>
+<script type="text/javascript">
+
+function onclick_button1(){
+  alert("첫번째 이벤트 핸들러");
+}
+
+function onclick_button2(){
+  alert("두번째 이벤트 핸들러");
+}
+
+function onload_body() {
+	var btn = document.getElementById("btn");
+	
+	btn.onclick = onclick_button1;
+	btn.onclick = onclick_button2;
+}
+
+/*DOM level 0의 단점 
+: HTML + javascript가 같이존재해서 
+코드에 혼란을 야기한다. 
+*/
+
+</script>
+</head>
+<body onload="onload_body()">
+<h3>이벤트 핸들러 DOM 0</h3>
+버튼 : <input type="button" 
+		value="클릭하세요!!!" 
+		id="btn"
+		onclick="onclick_button1();"
+		>
+		<br/>
+
+</body>
+</html>

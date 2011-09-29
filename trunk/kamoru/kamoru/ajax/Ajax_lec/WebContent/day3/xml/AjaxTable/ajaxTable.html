@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript">
+
+window.onload=function() {
+  var t1 = document.getElementById("t1");
+  
+  Event.addListener(t1, "click", onclick_table);
+}
+
+onclick_table = function(e) {
+  var event  = window.event || e;
+  var col = Event.target(event);
+
+  col.innerHTML= "<input type='text' value='"+col.innerHTML+"'>";
+}
+
+getParentNode = function(nodeName, child) {
+  if (null == child) {
+    return null;
+  }
+  if (child.parentNode == null) {
+    return null;
+  }
+  
+  if (child.parentNode.nodeName == nodeName) {
+    return child.parentNode;
+  }
+  
+  return getParentNode(nodeName, child.parentNode);
+}
+
+
+</script>
+</head>
+<body>
+
+<table id="t1" border="1" cellpadding="1" cellspacing="1">
+  <tr>
+    <td width="100">0_0</td>
+    <td width="100">0_1</td>
+    <td width="100">0_2</td>
+    <td width="100">0_3</td>
+    <td width="100">0_4</td>
+    <td width="100">0_5</td>
+  </tr>
+  <tr>
+    <td width="100">1_0</td>
+    <td width="100">1_1</td>
+    <td width="100">1_2</td>
+    <td width="100">1_3</td>
+    <td width="100">1_4</td>
+    <td width="100">1_5</td>
+  </tr>
+  <tr>
+    <td width="100">2_0</td>
+    <td width="100">2_1</td>
+    <td width="100">2_2</td>
+    <td width="100">2_3</td>
+    <td width="100">2_4</td>
+    <td width="100">2_5</td>
+  </tr>
+  <tr>
+    <td width="100">3_0</td>
+    <td width="100">3_1</td>
+    <td width="100">3_2</td>
+    <td width="100">3_3</td>
+    <td width="100">3_4</td>
+    <td width="100">3_5</td>
+  </tr>
+  <tr>
+    <td width="100">4-0</td>
+    <td width="100">4-1</td>
+    <td width="100">4-2</td>
+    <td width="100">4-3</td>
+    <td width="100">4-4</td>
+    <td width="100">4-5</td>
+  </tr>
+  <tr>
+    <td width="100">5_0</td>
+    <td width="100">5_1</td>
+    <td width="100">5_2</td>
+    <td width="100">5_3</td>
+    <td width="100">5_4</td>
+    <td width="100">5_5</td>
+  </tr>
+</table>
+
+</body>
+</html>

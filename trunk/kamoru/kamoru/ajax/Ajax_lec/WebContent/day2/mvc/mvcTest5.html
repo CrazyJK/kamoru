@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=euc-kr" />
+  <title>CheckButtonCtrl 컴포넌트 사용</title>
+  <script type="text/javascript" src="event.js"></script>
+  <script type="text/javascript" src="checkbutton4.js"></script>
+  <script type="text/javascript">
+//  var mail = new CheckButton('receiveMail', '메일 수신', false);
+//  var sms = new CheckButton('receiveSMS', 'SMS 수신', true);
+  var mail; 
+  var sms;
+   
+  window.onload = function() {
+	  mail = new CheckButton('receiveMail', '메일 수신', false);
+	  sms = new CheckButton('receiveSMS', 'SMS 수신', true);
+
+	  var updateLabel = document.getElementById("updateLabel");
+	  Event.addListener(updateLabel, "click", function (e) {
+		  var  label = document.getElementById("label");
+
+		  sms.setLabel(label.value);
+	  	}
+	  );	  
+  }
+  </script>
+</head>
+<body>
+<!--
+<span id="receiveMail" style="background-color: green"></span> <br/>
+<span id="receiveSMS" style="background-color: blue"></span>
+-->
+ 
+<div id="receiveMail" style="background-color: blue"></div> 
+<div id="receiveSMS" style="background-color: red"></div>
+한 줄단위로 출력을 하기 때문에 label이 
+아닌 다른 곳을 클릭해도 클릭효과가 된다.
+
+
+<br/><br/>
+<input type="text" value="" name="label"/>
+<input type="button" value="레벨수정" id="updateLabel"/><br/>
+
+<input type="button" value="메일수신토글" onclick="mail.toggle()"/>
+<input type="button" value="SMS수신토글" onclick="sms.toggle()"/>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>마우스 이벤트 처리</title>
+  <style type="text/css">
+    #main {
+      width:800px; 
+      height:1500px; 
+      background-color: #CCCCCC;
+    }
+    #sub {
+      position:absolute; 
+      left:100px; 
+      top:600px; 
+      background-color: yellow; 
+      text-align: center;
+      vertical-align: middle;
+      padding: 50px;
+    }
+
+  </style>
+  <script type="text/javascript" src="event.js" ></script>
+  <script type="text/javascript" >
+    
+   window.onload = function () {
+      var main = document.getElementById("main");
+      var sub = document.getElementById("sub");
+      
+      Event.addListener(main, "mousemove", mouseEventHandler);
+      Event.addListener(main, "mousedown", mouseEventHandler1);
+      Event.addListener(main, "mouseup", mouseEventHandler2);
+      
+    }
+    
+    var flag = false; 
+    function mouseEventHandler1(e) {
+    	flag = true; 
+    }
+    
+    function mouseEventHandler2(e) {
+    	flag = false; 
+    }
+    
+    //window.enevt; -> ie
+    //파이어폭스 -> eventHandler(e)
+    
+    function mouseEventHandler(e) {
+      //event 객체가 null이 아니면 event 변수에 event 값을 설정하고, event 변수의 
+      //값이 null 이면 함수의 첫번째 인자인 e를 event 변수에 설정한다.      
+      var event = event || e;
+      //var event = window.event || e;
+//      var event = (event != null ? event : e);
+      var pos = Event.getMousePos(event);
+      var isLeft = flag ? Event.isLeftButton(event) : false;
+      var msg;
+      var sub = document.getElementById("sub");
+
+      msg = "[event : " + event.type + "] " ;
+      msg += " 좌표(" + pos.x + ", " + pos.y +") ";
+      msg += " 버튼(" +  (isLeft == true ? " 왼쪽버튼 클릭) " : "왼쪽버튼 아님) ");
+      
+      sub.innerHTML = msg + " isLeft = " + isLeft;
+      
+    }
+    
+  </script>
+</head>
+
+<body>
+  <h3>이벤트 핸들러 모듈화 작성법</h3>
+  <div id="main" >
+    <span id="sub">문자열입니다</span> 
+  </div>
+</body>
+</html>

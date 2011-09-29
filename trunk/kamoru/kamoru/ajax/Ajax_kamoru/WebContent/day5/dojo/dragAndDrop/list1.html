@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>DOJO select 객체 사용법</title>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR" />
+<link rel="stylesheet" type="text/css" href="../theme/dojolab.css" />
+<script type="text/javascript">
+      var djConfig = {isDebug: true
+              ,debugAtAllCosts : false
+              ,debugContainerId : "_dojoDebugConsole"
+              };
+</script>
+<script language="JavaScript" type="text/javascript" src="../dojoAjax/dojo.js"></script>
+
+<script type="text/javascript" language="JavaScript">
+    //전역변수 선언 
+    var list1;
+    var list2;
+
+    var insertButton;
+    var removeButton;
+
+    //Button class를 사용하기 위해 포함 하는 부분 
+    dojo.require('dojo.widget.Button');
+
+    /*
+      선택 가능한 제품이 존재할 경우 
+        추가 버튼 사용가능  
+        제거 버튼 사용불가능 
+    */
+    function onChange_List1()
+    {
+      dojo.debug("선택 가능한 제품에 대한 이벤트 핸들러 동작");
+      dojo.debug("list1.selectedIndex = " + list1.selectedIndex);
+      //list1.selectedIndex 의 selectedIndex속성은 HTML 객체의 속성임 
+        
+      if (list1.selectedIndex > -1)
+      {
+        list2.selectedIndex = -1;
+        insertButton.setDisabled(false);
+        removeButton.setDisabled(true);
+      }
+    }
+
+    /*
+    선택한 제품이 존재할 경우 
+        추가 버튼 사용가능  
+        제거 버튼 사용불가능 
+    */
+    function onChange_List2()
+    {
+      dojo.debug("선택한 제품에 대한 이벤트 핸들러 동작");
+
+      if (list2.selectedIndex > -1)
+      {
+        list1.selectedIndex = -1;
+        insertButton.setDisabled(true);
+        removeButton.setDisabled(false);
+      }
+    }
+
+    /*
+      선택 가능한 제품을 선택한 제품 목록에 추가한다.
+    */
+    function insertBttnHandler ()
+    {
+      dojo.debug("삽입버튼에 대한 이벤트 핸들러 동작");
+      moveOption(list1, list2);
+
+      if (list1.selectedIndex == -1)
+      {
+        insertButton.setDisabled(true);
+      }
+
+      list1.focus();
+    }
+
+    /*
+      선택한 제품을 제거하여 선택 가능한 제품 목록에 추가한다.
+    */
+    function removeBttnHandler ()
+    {
+      dojo.debug("선택한 제품을 제거하여 선택 가능한 제품 목록에 추가한다");
+      moveOption(list2, list1);
+
+      if (list2.selectedIndex == -1)
+      {
+        removeButton.setDisabled(true);
+      }
+
+      list2.focus();
+    }
+
+    function moveOption ( fromList, toList )
+    {
+      dojo.debug("목록 이동 ( " + fromList.name + ", " + toList.name + " )");
+      var selIndex = fromList.selectedIndex;
+      var removed = new Array();
+      var opt, txt;
+      var child;
+      //선택된 항목이 없으면  해당 함수를 종료한다.
+      if (selIndex == -1) {return;}
+
+      //선택된 OPTION 객체를 생성하여 등록된 목록에 추가한다.
+      for (var i=0;i<fromList.options.length;i++) {
+        child = fromList.options[i];
+
+        if (child.selected) {
+          //OPTION 객체를 생성하고 값을 텍스트를 설정한다.
+          opt = document.createElement("option");
+          txt = document.createTextNode( child.text );
+          opt.value = child.value;
+          opt.appendChild(txt);
+          
+          if( !toList.appendChild( opt ) ) {
+              // 만약 위 appendChild() 메소드가 실패하면 아래의 함수 실행하여 추가한다.
+              toList.add( opt );
+          }
+          //삭제 배열에 객체를 담는다.
+          removed[removed.length] = child;
+        }
+      }
+      
+      //DOM 관리 모듈을 이용하여 option 객체를 삭제한다.
+      for (i=0;i<removed.length;i++) {
+        dojo.dom.removeNode(removed[i]);
+      }
+    }
+
+    function init ()
+    {
+      dojo.debug("init() 함수 호출 시작 ", "INFO");
+      
+      //dojo 객체를 얻을 때 사용하는 메소드 
+      insertButton = dojo.widget.manager.getWidgetById('insertBTN');
+      removeButton = dojo.widget.manager.getWidgetById('removeBTN');
+
+      dojo.debug("버튼을 사용불가능하게 한다.");
+      //HTML 객체 속성 disabled 를 dojo에서 
+      //메소드로 구현해 놓은 것임  
+      insertButton.setDisabled(true);
+      removeButton.setDisabled(true);
+
+      dojo.debug("버튼에 이벤트 핸들러를 등록한다.");
+      dojo.event.connect(insertButton, "onClick", insertBttnHandler);
+      dojo.event.connect(insertButton, "onKey"  , insertBttnHandler);
+      dojo.event.connect(removeButton, "onClick", removeBttnHandler);
+      dojo.event.connect(removeButton, "onKey"  , removeBttnHandler);
+
+      //리스트 박스 아이디를 이용하여 객체를 얻는다.
+      list1 = dojo.byId("list1");
+      list2 = dojo.byId("list2");
+
+      dojo.event.connect(list1, "onchange", onChange_List1);
+      dojo.event.connect(list2, "onchange", onChange_List2);
+      
+      dojo.debug("리스트 컨트롤에 포커스를 설정한다.");
+      list1.focus(); // -> HTML 객체 메소드임 
+      dojo.debug("초기화 작업 완료");
+    }
+
+    //dojo framework에 의해 초기화 작업이 호출될 
+    //수 있도록 함수를 등록하는 부분  
+    dojo.addOnLoad(init);
+    //window.onload = function() {init()}
+    //window.onload = init;
+    
+    //예를 들어 초기화 과정이 여러개일 경우 
+    /*
+     * dojo.addOnLoad(init1);
+     * dojo.addOnLoad(init2);
+     * dojo.addOnLoad(init3);
+     * 
+     * window.onload = function() {
+    	   init1();
+    	   init2();
+    	   init3();
+       }
+     * 위와 같음  
+     */
+</script>
+</head>
+<body>
+<div id="container">
+  <div id="header">
+    <h1>DOJO select 객체 사용법</h1>
+  </div>
+
+  <div id="leftDiv">
+    <h3>선택 가능한 제품 </h3>
+    <select name="list1" multiple="multiple" id="list1" size="10" >
+      <option value="notebook">노트북 </option>
+      <option value="Desktop PC">Desktop PC</option>
+      <option value="Window Vista">Windows Vista</option>
+      <option value="LCD TV">LCD TV</option>
+      <option value="PDP TV">PDP TV</option>
+      <option value="PS3">PS3 </option>
+     </select>
+  </div>
+
+  <div id="rightDiv">
+    <h3>선택한 제품</h3>
+    <select name="list2" multiple="multiple" id="list2" size="10" >
+    </select>
+  </div>
+  
+  <div id="centerDiv" align="center">
+    <button dojotype="Button" id="insertBTN" tabindex="2">추가</button><br />
+    <button dojotype="Button" id="removeBTN" tabindex="3">삭제</button>
+  </div>
+</div>
+<!--  디버깅 윈도우  -->
+<div dojoType="FloatingPane" title="Debug Console"
+  constrainToContainer="1"
+  style="width: 100%; height: 100px; left: 0px; bottom: 20px;">
+<div id="_dojoDebugConsole"></div>
+</div>
+</body>
+</html>

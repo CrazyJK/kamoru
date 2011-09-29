@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript">
+
+window.onload=function() {
+  var b1 = document.getElementById("b1");
+  var del1 = document.getElementById("del1");
+  
+  Event.addListener(b1, "click", onclick_b1);
+  Event.addListener(del1, "click", onclick_delete);
+}
+
+onclick_b1 = function(e) {
+  var t1 = document.getElementById("t1");
+  var out = document.getElementById("out");
+  
+  var newNode = t1.cloneNode(true);
+  out.appendChild(newNode);
+}
+
+getParentNode = function(nodeName, child) {
+  if (null == child) {
+    return null;
+  }
+  if (child.parentNode == null) {
+    return null;
+  }
+  
+  if (child.parentNode.nodeName == nodeName) {
+    return child.parentNode;
+  }
+  
+  return getParentNode(nodeName, child.parentNode);
+}
+
+onclick_delete = function(e) {
+  var out = document.getElementById("out");
+  var event  = window.event || e;
+  var del1 = Event.target(event);
+  var t1 = getParentNode("TABLE", del1);
+
+  if (t1 == null) return;
+  
+  out.removeChild(t1);
+}
+
+</script>
+</head>
+<body>
+
+<table id="t1">
+  <tr>
+    <td>첨부파일</td>
+    <td>
+      <input type="file" name="name">
+      <a href="#" id="del1">삭제</a>
+    </td>
+  </tr>
+</table>
+
+<div id="out">
+</div>
+
+<input type="button" value="복사" name="b1" id="b1">
+
+</body>
+</html>

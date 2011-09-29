@@ -1,0 +1,133 @@
+<HTML>                                                               
+<HEAD>                                                               
+<TITLE> 자바스크립트에서 아이디 클래스명 변경</TITLE>                                  
+  <style type="text/css" media="screen">
+  
+  body {
+    font-family: verdana, sans-serif;
+    font-size: 12px;
+  }
+  /*row : 3 단 ,  중앙은 2단 으로 구분 */
+  /*상단 : header */
+  /*메뉴 : menu */
+  /*내용 : content */
+  /*하단 : footer */
+
+  #skin_1 #header   {
+    background: #ccc;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  #skin_1 #menu {
+    float: right;
+    width: 10%;
+    background: #999;
+  }
+  
+  #skin_1 #content {
+    margin-right: 34%;
+  }
+  
+  #skin_1 #footer {
+    clear: right;
+    background: #eee;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  #skin_2 #header {
+    padding: 20px;
+    background: #ccc;
+    text-align: left;
+  }
+  
+  #skin_2 #menu {
+    float: left;
+    width: 10%;
+    background: #ddd;
+  }
+
+  #skin_2 #content {
+    clear: right;
+    width: 66%;
+    margin-right: 6%;
+  }
+  
+  #skin_2 #footer {
+    clear: left;
+    padding: 20px;
+    background: #eee;
+    text-align: left;
+  }
+
+  #skin_3 #header {
+    padding: 20px;
+    background: blue;
+    text-align: right;
+  }
+  
+  #skin_3 #menu {
+    float: left;
+    width: 10%;
+    background: #ddd;
+  }
+
+  #skin_3 #content {
+    clear: right;
+    width: 66%;
+    margin-right: 6%;
+  }
+  
+  #skin_3 #footer {
+    clear: left;
+    padding: 20px;
+    background: yellow;
+    text-align: center;
+  }
+  
+  </style>
+<script type="text/javascript">
+var skin;
+
+window.onload = function() {
+ skin = document.getElementById("skin_1");
+}
+
+function onclick_skin(num) {
+  skin.id = "skin_" + num;;
+}
+
+</script>
+
+</HEAD>                                                              
+
+<body >                                                               
+  <h3>자바스크립트에서 아이디 클래스명 변경</h3>                                      
+  <hr noshade>
+
+<div id="skin_1" >
+  <div id="header" class="header_1">
+  상단입니다 .
+  </div>
+  <div id="menu" class="menu_1">
+  <p><strong>메인입니다</strong></p>
+  <ul>
+  <li><a href="#">링크 항목 1</a></li>
+  <li><a href="#">링크 항목 2</a></li>
+  <li><a href="#">링크 항목 3</a></li>
+  <li><a href="#">링크 항목 4</a></li>
+  </ul>
+  </div>
+  <div id="content" class="content_1">
+  내용입니다.
+  </div>
+  <div id="footer" class="footer_1">
+  하단입니다.
+  </div>
+</div>
+<input type="button" value="skin1" onclick="onclick_skin('1')">
+<input type="button" value="skin2" onclick="onclick_skin('2')">
+<input type="button" value="skin3" onclick="onclick_skin('3')">
+</body>                                                              
+</HTML>                                                                                            

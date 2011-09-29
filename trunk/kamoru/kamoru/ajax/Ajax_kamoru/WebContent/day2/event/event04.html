@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+/* DOM 레벨 1
+ */
+var count = 0;
+window.onload=function(){
+	var btn1 = document.getElementById("btn1");
+	var btn2 = document.getElementById("btn2");
+	var btn3 = document.getElementById("btn3");
+
+	if(btn1.addEventListener){	
+		btn1.addEventListener("click",jsClick1,false);
+		btn2.addEventListener("click",jsClick2,false);
+		btn3.addEventListener("click",jsClick3,false);
+	}else if(btn1.attachEvent){
+		btn1.attachEvent("onclick",jsClick1);
+		btn2.attachEvent("onclick",jsClick2);
+		btn3.attachEvent("onclick",jsClick3);
+	}	
+}
+function jsClick1(){
+	var btn3 = document.getElementById("btn3");
+	if(btn3.addEventListener){	
+		btn3.addEventListener("click",jsClick3,false);
+	}else if(btn3.attachEvent){
+		btn3.attachEvent("onclick",jsClick3);
+	}	
+	document.getElementById("output").innerHTML = "add event";
+}
+function jsClick2(){
+	var btn3 = document.getElementById("btn3");
+
+	if(btn3.removeEventListener){	
+		btn3.removeEventListener("click",jsClick3,false);
+	}else if(btn3.detachEvent){
+		btn3.detachEvent("onclick",jsClick3);
+	}	
+	document.getElementById("output").innerHTML = "remove event";
+}
+function jsClick3(){
+	alert("click3");
+}
+
+</script>
+</head>
+<body>
+<div id="output"></div>
+<form name="f">
+	<input id="btn1" type="button" value="click1"/>
+	<input id="btn2" type="button" value="click2"/>
+	<input id="btn3" type="button" value="actionBtn"/>
+</form>
+</body>
+</html>

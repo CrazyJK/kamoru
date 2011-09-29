@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title> 색인 배열 </title>
+<script type="text/javascript">
+//문자열을 수식으로 변환한다.
+var a = "5 + 10";
+var b = eval(a);
+
+alert(a);
+alert(b);
+
+
+//문자열을 선언한다.
+var result = "[100, 'abcdef', {name:'홍길동', age : 35}]";
+
+//문자열을 이용하여 객체를 생성한다.
+var arr = eval(result);
+
+for (var name in arr) {
+	document.write("arr["+name+"] = " + arr[name] + "<br/>");
+}
+
+document.write("arr[2].name = " + arr[2].name + "<br/>");
+document.write("arr[2].age = " + arr[2].age + "<br/>");
+
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

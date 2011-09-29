@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+var objA = {
+		a:10, 
+		b:20,
+		c:30
+	};
+var objB = {
+		a:'안녕하세요'
+	};
+
+function methodA(){
+	alert(this.a);	
+}
+var a = '11111';
+methodA.apply(objB);
+
+A = function(v){
+	this.a = v;
+
+	var privateData = v * 10;
+	alert("함수 안쪽->" + privateData);
+
+	this.getData = function(){
+		return privateData;
+	}
+};
+
+var obj = new A(10);
+alert(obj.a);
+alert("함수 바깥쪽->" + obj.privateData);
+alert("함수 바깥쪽->" + obj.getData());
+
+
+</script>
+</head>
+<body>
+<form action="" id="f" name="f">
+	<input type="button" name="btn" id="btn" value="클릭" style="padding:50px;"/><br/>
+</form>
+<div id=output></div>
+</body>
+</html>

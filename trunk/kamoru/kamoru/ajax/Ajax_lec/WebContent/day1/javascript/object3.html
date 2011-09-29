@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>많은 동일한 객체 생성 및 메소드 설정</title>
+</head>
+<body>
+<H3> 많은 동일한 객체 생성 및 메소드 설정 </H3>
+<hr>
+<script type="text/javascript">
+
+function display() {
+  document.write("this.name = " + this.name + "<br/>");
+  document.write("this.age = " + this.age + "<br/>");
+}
+
+var obj1 = new Object();
+var obj2 = new Object();
+var obj3 = new Object();
+
+/* JSON 표기법으로 객체 생성하는 코드  
+var obj1 = {};
+var obj2 = {};
+var obj3 = {};
+*/
+obj1.name = "홍길동";
+obj1.age = 35;
+
+//display() 함수의 객체에 설정한다.  
+obj1.display = display;
+
+obj2.name = "이순신";
+obj2.age = 30;
+
+//display() 함수의 객체에 설정한다.  
+obj2.display = display;
+
+obj3.name = "대조영";
+obj3.age = 25;
+
+//display() 함수의 객체에 설정한다.  
+obj3.display = display;
+
+//동일한 유형의 객체를 여러건 생성할 경우 위와 같이 
+//반복적인 코드를 작성해야 한다.
+//좋은 방법이 아니다.
+
+//객체를 이용한 display() 함수 호출   
+obj1.display();
+obj2.display();
+obj3.display();
+  
+    
+</script>
+</body>
+</html>

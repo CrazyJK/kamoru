@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript">
+	var boardRequest = null;
+	var timeoutHandle;
+	var intrvalHandle = null;
+
+	window.onload = function() {
+		boardList();
+	}
+	
+	function onclick_board_id(id) {
+		if (intrvalHandle != null) {
+			window.clearInterval(intrvalHandle);
+			intrvalHandle = null;
+		}
+		var params = {board_id : id};
+		
+		new ajax.xhr.Request("delete.jsp", params, deleteList);   
+	}
+	
+	function boardList() {
+		boardRequest = new ajax.xhr.Request("list2.jsp", null, callbackBoardList);
+//		intrvalHandle = window.setInterval("boardList()", 1000);
+	}
+	
+	function callbackBoardList(httpRequest) {
+		if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+			//timeout 작업 취소 
+			window.clearTimeout(timeoutHandle);
+			
+			var result = eval(httpRequest.responseText);
+
+			var list = document.getElementById("list");
+			var html = "";
+			
+			html += "<table border='1'>                 ";
+			html += "    <tr>                           ";
+			html += "      <th width='10%'>삭제</th>    ";
+			html += "      <th width='10%'>번호</th>    ";
+			html += "      <th >제목</th>               ";
+			html += "      <th width='10%'>작성자</th>  ";
+			html += "      <th width='30%'>작성일시</th>";
+			html += "    </tr>                          ";
+			
+			for (var i=0;i<result.length;i++) {			
+				html += "    <tr>                           ";
+				html += "      <td><input type='checkbox' name='board_id' value="+result[i].board_id+" onclick='onclick_board_id(this.value)'></td>";
+				html += "      <td>"+result[i].board_id+"</td>";
+				html += "      <td>"+result[i].title+"</td>";
+				html += "      <td>"+result[i].writer+"</td>";
+				html += "      <td>"+result[i].makedate+"</td>";
+				html += "    </tr>                          ";
+			}
+						
+			html += "</table>                           ";
+			
+			list.innerHTML = html;	
+
+		}
+	}
+
+	function deleteList(req) {
+		if (req.readyState != 4 || req.status != 200) return;
+		
+		boardList();
+	}
+		
+	
+</script>
+
+</head>
+<body>
+
+<div id="list">
+</div>
+<a href="javascript:jsDeleteList()">삭제</a>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+function output() {
+	var msg = document.getElementById("msg");
+	msg.innerHTML = "<input type='text' value='aaaa'>";
+}
+function output2() {
+	var root = document.documentElement;
+	
+	alert(root.innerHTML);
+}
+</script>
+</head>
+<body>
+<div id="msg">
+</div>
+<input type="button" value="click" onclick="output()">
+<input type="button" value="출력" onclick="output2()">
+</body>
+</html>

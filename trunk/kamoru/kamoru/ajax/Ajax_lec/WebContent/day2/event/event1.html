@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>이벤트 핸들러 DOM 0</title>
+<script type="text/javascript">
+
+function onclick_button1(){
+  alert("첫번째 이벤트 핸들러");
+}
+
+function onclick_button2(){
+  alert("두번째 이벤트 핸들러");
+}
+
+//이벤트 핸들러 중간에서 분기해주는 함수 작성  
+function onclick_button3() {
+  onclick_button1();
+  onclick_button2();
+}
+
+
+function onload_body() {
+	var btn = document.getElementById("btn");
+	
+	//이벤트 핸들러 설정 
+	btn.onclick = onclick_button3;
+}
+
+</script>
+</head>
+<body onload="onload_body()">
+<h3>이벤트 핸들러 DOM 0을 이용하여 여러개의 이벤트 핸들러 호출 </h3>
+버튼 : <input type="button" value="클릭하세요!!!" id="btn"><br/>
+
+</body>
+</html>

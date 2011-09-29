@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title> 로그인 </title>
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript" >
+
+function login() {
+  var uid = document.getElementById("UID");
+  var pwd = document.getElementById("PWD");
+  var args = "UID=" + uid.value + "&PWD=" + pwd.value;
+  //json 표기법으로 전송할 인자를 생성한다.
+  var param = {UID : uid.value, PWD : pwd.value}; 
+	
+  new ajax.xhr.Request("login2.jsp",
+  		param,
+  		callbackFunction,
+  		"GET");
+      
+/*
+  httpRequest = getXMLHttpRequest();
+  httpRequest.onreadystatechange = callbackFunction;
+  httpRequest.open("GET", "login.jsp?" + args, true);
+  httpRequest.send(null);
+*/
+}
+
+function trim(s) {
+	s = s.replace(/(^\s*)|(\s*$)/g,"");
+    return s;
+}
+
+//서버로 부터 전달되는 자료의 형식은 
+//header : data 
+//header 와 data를 구분하는 것은 ,
+//header가 수치로 실제 성공 실패여부 나타내는 
+//오류 코드
+/*
+<result>
+  <errorCode>3</errorCode>
+  <msg>아이디가 존재하지 않습니다</msg>
+</result>
+*/
+
+function callbackFunction(httpRequest) {
+   switch (httpRequest.readyState) {
+   case 1:
+   case 2:
+   case 3:
+   	 break;
+   case 4:
+        //서버로부터 응답 도착 
+        if (httpRequest.status == 200) {
+        	//처리
+        	var result = eval(httpRequest.responseText);
+      		if (parseInt(result[0].status) == 1) {
+      			//성공에 대한 처리
+      			var html;
+      			var loginPanel = document.getElementById("loginPanel");
+      			html = "사용자 : " + result[0].msg + "<br>";
+      			html += "<input type='button' value='로그아웃' onclick='logout()'>";
+      			
+      			orgLoginForm = loginPanel.innerHTML;  	
+      			loginPanel.innerHTML = html;
+      			
+      		} else {
+      			//경고 메시지 출력
+      			alert(result[0].msg);
+      		}
+        }
+        break;
+   }
+}
+
+function logout() {
+	var loginPanel = document.getElementById("loginPanel");
+	var logoutPanel = document.getElementById("logoutPanel");
+
+	loginPanel.style.display = "block";
+	logoutPanel.style.display = "none";
+	
+	var uid = document.getElementById("UID");
+	uid.value = "";
+	uid.focus();
+}
+
+</script>
+</head>
+<body>
+
+<h3>로그인</h3>
+<hr>
+
+<br/>
+
+<div id="loginPanel">
+	아이디 : <input type="text" name="UID" id="UID" maxlength="8"> <br/>
+	비밀번호  : <input type="password" name="PWD" id="PWD" maxlength="8"> <br/>
+	<input type="button" value="로그인" onclick="login()">
+</div>
+<div id="logoutPanel" style="display:none">
+	이름  : <span id="uname"></span> <br/>
+	<input type="button" value="로그아웃" 
+	       onclick="logout()">
+</div>
+
+
+</body>
+</html>

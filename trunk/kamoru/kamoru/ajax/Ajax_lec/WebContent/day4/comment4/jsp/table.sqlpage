@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SQLPage encodedConnection="Generic JDBC_1.x:mySQL::">
+<Statement><![CDATA[
+DROP TABLE IF EXISTS  tb_comment ;
+
+CREATE TABLE   tb_comment  (
+
+   id  int(10) unsigned NOT NULL auto_increment,
+
+   name  varchar(32) NOT NULL,
+
+   content  longtext NOT NULL,
+
+  PRIMARY KEY  ( id )
+
+) ENGINE=InnoDB DEFAULT CHARSET=euckr;
+
+
+
+select * from tb_comment
+]]></Statement>
+</SQLPage>

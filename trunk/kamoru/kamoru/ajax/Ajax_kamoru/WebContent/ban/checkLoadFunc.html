@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+ <script>
+// 5초후에 실행
+//setTimeout("SFinalReason()",15000); 
+
+function SFinalReason()
+{
+ if (document.forms[0].DocReason.options[0].value!=" ") {
+  rs1 = document.getElementById("tb1_reason").innerHTML;
+  cd1 = document.getElementById("tb1_cd").innerHTML;
+  var DocReasonSelect = document.forms[0].DocReason;
+  DocReasonSelect.options[0] = new Option('선택하세요', ' ');
+  DocReasonSelect.add(new Option(rs1,cd1));
+  
+  for (i=2; i<1000; i++ )
+  { 
+   if (document.getElementById("tb1_reason_DOT_"+i))
+   {
+    rsi = document.getElementById("tb1_reason_DOT_"+i).innerHTML;
+    cdi = document.getElementById("tb1_cd_DOT_"+i).innerHTML;
+    DocReasonSelect.add(new Option(rsi,cdi));
+   } else {
+    return;
+   }  
+  }
+ }
+}
+
+//var isLoadComplete = false;
+/*
+setTimeout("jsCheckSDRFunc()",6000); 
+//var count = 0;
+function jsCheckSDRFunc(){
+//	var output = document.getElementById("output");
+//	output.innerHTML += ++count + "<br>";
+//	if(isLoadComplete == false){
+		var DocReasonSelect = document.forms[0].DocReason;
+		var optionLength = DocReasonSelect.options.length; 
+		if(optionLength < 2){
+//			output.innerHTML += "SELECT의 OPTION 갯수[" + optionLength + "]가 1보다 작기에 함수를 다시 호출하고 1초후 다시 검사한다.<br/>";
+			setTimeout("SFinalReason()",100);
+			setTimeout("jsCheckSDRFunc()",1000); 
+//		}else{
+//			output.innerHTML += "SELECT의 OPTION 갯수[" + optionLength + "]가 1보다 크기에 정상으로 판단<br/>";
+//			isLoadComplete = true;
+		}
+//	}
+}
+*/
+
+// SFinalReason() 함수의 수행이 끝났다고 기대되는 시간이후에 수행되도록 설정.
+setTimeout("jsCheckSDRFunc()",6000); 
+/*
+ * DocReason <select>의 <option>개수를 기준으로 SFinalReason() 함수의 호출여부를 결정
+ */
+function jsCheckSDRFunc(){
+	var DocReasonSelect = document.forms[0].DocReason;
+	var optionLength = DocReasonSelect.options.length; 
+	// 옵션 개수가 2보다 작으면, 0.1초후에 SFinalReason()함수를 호출하고
+	// 1초후에 자신을 재귀호출하여 다시 체크한다.
+	if(optionLength < 2){
+		setTimeout("SFinalReason()",100);
+		setTimeout("jsCheckSDRFunc()",1000); 
+	}
+}
+
+var debug = null;
+window.onload = function(){
+	debug = document.getElementById("output");
+}
+
+ </script>
+ </HEAD>
+
+ <BODY>
+  <form name="f">
+    <select name="DocReason"><option> </option></select>
+  </form>
+  
+  <span id="tb1_reason">tb1_reason</span>
+  <span id="tb1_cd">tb1_cd</span>
+  <span id="tb1_reason_DOT_2">tb1_reason_DOT_2</span>
+  <span id="tb1_cd_DOT_2">tb1_cd_DOT_2</span>
+
+  <input type="button" onclick="SFinalReason()" value="SFinalReason"/>
+
+  <div id="output"></div>
+ </BODY>
+</HTML>

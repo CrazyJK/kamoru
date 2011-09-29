@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>dojo.io.bind() 예제</title>
+
+<script type="text/javascript">
+      var djConfig = {isDebug: true
+              ,debugAtAllCosts : false
+              ,debugContainerId : "_dojoDebugConsole"
+              };
+</script>
+
+<script type="text/javascript" src="../dojoAjax/dojo.js"></script>
+
+<script language="JavaScript" type="text/javascript">
+      //require statements
+      dojo.require( "dojo.widget.*" );
+      dojo.require( "dojo.widget.FloatingPane" );
+      
+      //all dojo.require above this line
+      dojo.hostenv.writeIncludes(); //makes debugging in Venkman possible      
+    </script>
+
+<script language="JavaScript" type="text/javascript">
+      dojo.require( "dojo.widget.Button" );
+      dojo.require( "dojo.event.*" );
+      
+      function loadTextPressed() {
+          dojo.io.bind({
+              //요청을 위해 만들어진 URL
+              url : "sample.txt",
+              //성공적인 응답후에 실행되는 콜백 함수
+              load : function(type,data,evt) { 
+              /*데이타 처리를 하기위한 부분*/
+              dojo.debug("type= " + type + "  data = "+ data + "evt = " + evt);
+              },
+              //리턴되어지는 데이타의 타입
+              mimetype: "text/plain"
+              //그밖의 옵션들    
+          });
+      }
+      
+      function loadTextErrorPressed() {
+          dojo.io.bind({
+              //요청을 위해 만들어진 URL
+              url : "sample1.txt",
+              //성공적인 응답후에 실행되는 콜백 함수
+              load : function(type,data,evt) { 
+              /*데이타 처리를 하기위한 부분*/
+              dojo.debug("성공 : " + data);
+              },
+              error : function(type,data,evt) { 
+              /*오류 발생시 처리를 하기위한 부분*/
+              dojo.debug("오류 발생 : " + data.message);
+              },
+              //리턴되어지는 데이타의 타입
+              mimetype: "text/plain"
+              //그밖의 옵션들    
+          });
+      }
+
+      function getSendPressed() {
+          dojo.io.bind({
+              //성공적인 응답후에 실행되는 콜백 함수
+              load : function(type,data,evt) { 
+                /*데이타 처리를 하기위한 부분*/
+                dojo.debug("성공 : " + data);
+              },
+              error : function(type,data,evt) { 
+                /*오류 발생시 처리를 하기위한 부분*/
+                dojo.debug("오류 발생 : " + data.message);
+              },
+              //리턴되어지는 데이타의 타입
+              mimetype: "text/plain",
+              formNode : document.getElementById("form1"),
+              encoding : "utf-8"
+              
+          });
+      }
+      function postSendPressed() {
+          dojo.io.bind({
+              //요청을 위해 만들어진 URL
+              url : "send.jsp",
+              //성공적인 응답후에 실행되는 콜백 함수
+              load : function(type,data,evt) { 
+              /*데이타 처리를 하기위한 부분*/
+              dojo.debug("성공 : " + data);
+              },
+              error : function(type,data,evt) { 
+              /*오류 발생시 처리를 하기위한 부분*/
+              dojo.debug("오류 발생 : " + data.message);
+              },
+              //리턴되어지는 데이타의 타입
+              mimetype: "text/plain",
+              method : "post",
+              formNode : document.getElementById("form1"),
+              encoding : "utf-8"
+          });
+      }
+      
+      function init() {
+        var loadText = dojo.widget.byId("loadText");
+        var loadTextError = dojo.widget.byId("loadTextError");
+        var getSend = dojo.widget.byId("getSend");
+        var postSend = dojo.widget.byId("postSend");
+
+        dojo.event.connect(loadText, "onClick", loadTextPressed);
+        dojo.event.connect(loadTextError, "onClick", loadTextErrorPressed);
+        dojo.event.connect(getSend, "onClick", getSendPressed);
+        dojo.event.connect(postSend, "onClick", postSendPressed);
+      }
+      
+      dojo.addOnLoad(init);
+      
+      
+    </script>
+
+<style>  </style>
+</head>
+<body>
+
+
+<!-- Content Here -->
+<button dojoType="Button" widgetId="loadText">텍스트 파일로드</button>
+<button dojoType="Button" widgetId="loadTextError">텍스트 파일로드 오류 발생 </button>
+<form name="form1" action="send.jsp" method="get">
+전송 문자열1 : <input dojoType="Textbox"  name="msg1"/><br/>
+전송 문자열2 : <input dojoType="Textbox"  name="msg2"/><br/>
+</form>
+<button dojoType="Button" widgetId="getSend">Get 방식으로 자료 전달</button>
+<button dojoType="Button" widgetId="postSend">Post 방식으로 자료 전달</button>
+
+<!-- START Debug Console -->
+<div dojoType="FloatingPane" title="Debug Console"
+  constrainToContainer="1"
+  style="width: 100%; height: 100px; left: 0px; bottom: 20px;">
+<div id="_dojoDebugConsole"></div>
+</div>
+<!-- END Debug Console -->
+</body>
+</html>

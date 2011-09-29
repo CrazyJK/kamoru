@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<root   xmlns="http://multicampus.or.kr/schema/book">
+  <product id="1">             <!-- 책 product -->
+    <title> 자바스크립트 기초</title>
+    <author>홍길동</author>
+  </product>
+  <product id="2">             <!-- 책 product -->
+    <title> XML 기초  </title>
+    <author>이순신</author>
+  </product>
+  <product id="3">             <!-- 책 product -->
+    <title> AJAX 프로그래밍 </title>
+    <author>장길산</author>
+  </product>
+</root>

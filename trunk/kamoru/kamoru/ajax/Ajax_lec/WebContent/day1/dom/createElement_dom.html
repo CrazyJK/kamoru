@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>DOM Node 생성 </title>
+<script language=javascript>
+<!-- 
+
+function createCommon(label, tagName, type, alignLabel) {
+  var myDiv = document.getElementById("myDiv");
+  var ctrlLabel = null;
+  //tagName에 맞는 객체를 생성합니다.
+  var ctrlTag = document.createElement(tagName);
+  //줄바꿈 HTML 객체를 생성합니다.
+  var ctrlBR = document.createElement("BR");
+
+  // type이 button이면 문자열 노드를 생성하지 않고
+  // 아니면 문자열을 노드를 생성한다.
+  if (type != "BUTTON") {
+    ctrlLabel = document.createTextNode(label);
+  }
+
+  //label의 삽입 위치 
+  if (alignLabel == null) {
+    alignLabel = "left";
+  }
+  
+  //input 객체의 종류를 설정합니다.
+  if (tagName == "INPUT") {
+    ctrlTag.type = type;
+  }
+  
+  //생성된 객체를 구분하기 위한 ID를 부여합니다.
+  ctrlTag.name = "Input" + myDiv.childNodes.length;
+  if (type == "BUTTON") {
+    ctrlTag.value = label;
+  }
+  
+  if (alignLabel == "left" && ctrlLabel != null) {
+    //label을 myDiv 자식 노드로 등록을 합니다
+    myDiv.appendChild(ctrlLabel);
+  } 
+  
+  //ctrlTag를 myDiv 자식 노드로 등록을 합니다
+  myDiv.appendChild(ctrlTag);
+  
+  if (alignLabel == "right" && ctrlLabel != null) {
+    //label을 myDiv 자식 노드로 등록을 합니다
+    myDiv.appendChild(ctrlLabel);
+  }
+  
+  //<br/> 을 myDiv 자식 노드로 등록을 합니다
+  myDiv.appendChild(ctrlBR);
+  
+  return ctrlTag;
+}
+
+function createInputText(){
+  createCommon("문자열 : ", "INPUT", "TEXT")
+}
+
+function createInputPassword(){
+  createCommon("비밀번호 : ", "INPUT", "PASSWORD")
+}
+
+function createInputCheckBox(){
+  createCommon("체크박스: ", "INPUT", "CHECKBOX", "right");
+}
+
+function createInputRadio(){
+  createCommon("라디오버튼 : ", "INPUT", "RADIO", "right");
+}
+
+function createInputButton(){
+  createCommon("버튼", "INPUT", "BUTTON");
+}
+
+function createComboBox(){
+  var combo = createCommon("콤보박스", "SELECT");
+  var option;
+  
+  for(var i=0;i<10;i++) {
+//    option = document.createElement("OPTION");
+//    option.value = i;
+//    option.text = "선택항목 -> " + i;
+	option = new Option("선택항목 -> " + i, i);
+    combo.options[i] = option;
+  }
+}
+
+function createListBox(){
+  var list = createCommon("리스트박스", "SELECT");
+  var option;
+  
+  list.size = 5;  
+  for(var i=0;i<10;i++) {
+    option = document.createElement("OPTION");
+    option.value = i;
+    option.text = "선택항목 -> " + i;
+    list.options[i] = option;
+  }
+}
+
+var table;
+
+function createTable(){
+  table = createCommon("테이블", "TABLE");
+  table.border = 1;
+}
+
+function createTableRow(){
+  //테이블로 부터 마지막 위치에 row을 생성한다.
+  var tr = table.insertRow(-1);
+  var cell;
+  
+  for (var i=0;i<10;i++) {
+    //row에서 마지막 위치에 cell을 생성한다.
+    cell = tr.insertCell(-1);
+    //생성된 cell에 문자열을 추가한다.
+    cell.appendChild(document.createTextNode("cell_" + i));
+  }
+}
+
+-->
+</script>
+</head>
+<body>
+  <h3 id="myHead">DOM Node 생성 </h3>
+  <hr noshade>
+  <div id="myDiv"></div>      
+  <div>
+    <ul>
+      <li> <a href="javascript:void(0)" onclick="createInputText()"> 문자열 박스 생성 </a>
+      <li> <a href="javascript:void(0)" onclick="createInputPassword()"> 비밀번호 박스 생성</a>
+      <li> <a href="javascript:void(0)" onclick="createInputCheckBox()"> 체크 박스 생성</a>
+      <li> <a href="javascript:void(0)" onclick="createInputRadio()"> 라디오 버튼 생성</a>
+      <li> <a href="javascript:void(0)" onclick="createInputButton()"> 버튼 생성</a>
+      <li> <a href="javascript:void(0)" onclick="createComboBox()"> 콤보 박스  생성</a>
+      <li> <a href="javascript:void(0)" onclick="createListBox()"> 리스트 박스  생성</a>
+      <li> <a href="javascript:void(0)" onclick="createTable()"> 테이블 생성 </a>
+      <li> <a href="javascript:void(0)" onclick="createTableRow()"> Row/Col 생성 </a>
+    </ul>
+  </div>
+</body>
+</html>

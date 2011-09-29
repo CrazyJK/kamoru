@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>제시어 기능 구현하기  </title>
+  <script type="text/javascript" src="ajax.js"></script>
+  <script type="text/javascript">
+
+  var checkFirst = false;
+  var lastKeyword = '';
+  var loopSendKeyword = false;
+  
+  function startSuggest() {
+
+    if (checkFirst == false) {
+      setTimeout("sendKeyword();", 500);
+      loopSendKeyword = true;
+    }
+    checkFirst = true;
+  }
+  function sendKeyword() {
+    if (loopSendKeyword == false) return;
+    
+    var keyword = document.search.keyword.value;
+    if (keyword == '') {
+      lastKeyword = '';
+      hide('suggest');
+    } else if (keyword != lastKeyword) {
+      lastKeyword = keyword;
+      
+      if (keyword != '') {
+        //응답 인자를 JSON 표기법으로 생성 한다.
+        var params  = {"keyword" : keyword};
+        //var params  = {keyword : keyword};
+      
+        //웹서버의  seggest.jsp를 호출 할때 요청 인자 전달하고 호출방식은 POST 방식으로 한다. 
+        //응답결과는 displayResult 함수에서 처리한다.
+         new ajax.xhr.Request("suggest.jsp", params, displayResult, "POST");
+      } else {
+        hide('suggest');
+      }
+    }
+    setTimeout("sendKeyword();", 500);
+  }
+  function displayResult(req) {
+    if (req.readyState == 4) {
+      if (req.status == 200) {
+
+//          var resultText = trim(req.responseText);
+          var resultText = req.responseText.trim();
+        var result = resultText.split(',');
+        var count = result != null ? result.length-1 : 0;
+        if (count == 0) {
+          hide('suggest');
+        } else {
+          var html = '';
+          for (var i = 0 ; i < result.length-1 ; i++) {
+            html += "<a href=\"javascript:select('"+
+                    result[i]+"')\">"+
+                    result[i]+"</a><br/>";
+          }
+          var listView = document.getElementById('suggestList');
+          listView.innerHTML = html;
+          
+          show('suggest');
+        }
+      } else {
+        alert("에러 발생: "+req.status);
+      }
+    }
+  }
+  function select(selectedKeyword) {
+    document.search.keyword.value = selectedKeyword;
+    loopSendKeyword = false;
+    checkFirst = false;
+    hide('suggest');
+  }
+  function show(elementId) {
+    var element = document.getElementById(elementId);
+    if (element) {
+      element.style.display = '';
+    }
+  }
+  function hide(elementId) {
+    var element = document.getElementById(elementId);
+    if (element) {
+      element.style.display = 'none';
+    }
+  }
+  function trim(s) {
+    //s = s.replace(/(^\s*)|(\s*$)/g,"");
+	//return s;
+	return s.replace(/(^\s*)|(\s*$)/g,"");
+  }
+  String.prototype.trim = function(){
+	return this.replace(/(^\s*)|(\s*$)/g,"");
+  }
+  </script>
+  <style>
+  #view {
+    border: 1px solid #999;
+  }
+  a {font:9pt}
+  </style>
+ </head>
+<body>
+
+<h3>제시어 기능 구현하기 </h3>
+<hr>
+<form name="search">
+  <input type="text" name="keyword" onkeydown="startSuggest()"> 
+  <input type="button" value="검색" >
+  <!--  서버가 전송한 제시어 목록을 출력하는 영역 -->
+  <div id="suggest" style="display:none; position: absolute; left: 10px; top: 93px; background-color: aqua; width: 150px">
+  	<div id="suggestList"></div>
+  </div>
+</form>
+</body>
+</html>

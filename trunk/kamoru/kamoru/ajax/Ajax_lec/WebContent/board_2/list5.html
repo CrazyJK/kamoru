@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+//문자열로 색인배열에 연관 배열을 추가하여 여러건의 자료를 구성한 후 
+//eval() 함수를 호출하여 실 색인 배열 만든다.
+window.onload = function() {
+	var html = "";
+	var responseText  = "[" +  
+		    "{ board_id : 1, title : '제목1', writer : '홍길동', makedate : '2009-11-12 오후 05:22'}" + 
+			",{ board_id : 2, title : '제목2', writer : '홍길동', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 3, title : '제목3', writer : '홍길동', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 4, title : '제목4', writer : '홍길동', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 5, title : '제목5', writer : '홍길동', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 6, title : '제목6', writer : '이순신', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 7, title : '제목7', writer : '이순신', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 8, title : '제목8', writer : '이순신', makedate : '2009-11-12 오후 05:22'}" +
+			",{ board_id : 9, title : '제목9', writer : '이순신', makedate : '2009-11-12 오후 05:22'}" +
+	"]";
+	var arr = eval(responseText);
+	
+	html += '<table border="1">'
+	html += '<tr>'
+	html += '  <th width="10%">번호</th>'
+	html += '  <th >제목</th>'
+	html += '  <th width="10%">작성자</th>'
+	html += '  <th width="30%">작성일시</th>'
+	html += '</tr>'
+	for (var i=0;i<arr.length;i++) {
+		html += '<tr>'
+		html += '  <td>' + arr[i].board_id + '</td>'
+		html += '  <td>' + arr[i].title + '</td>'
+		html += '  <td>' + arr[i].writer + '</td>'
+		html += '  <td>' + arr[i].makedate + '</td>'
+		html += '</tr>'
+	}
+			
+	html += '</table>'
+
+	var listPanel = document.getElementById("listPanel");
+
+	listPanel.innerHTML = html;
+}
+</script>
+</head>
+<body>
+<!--  자바스크립트를 이용하여 문서 생성  -->
+<div id="listPanel"></div>
+
+<a href="insertForm.jsp">등록</a>
+<a href="delete.jsp">삭제</a>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="request.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	jsInit();
+}
+
+function jsInit(){
+	  new ajax.xhr.Request({
+		    url : "list_ajax.jsp",
+		    load : jsGetData	
+			});
+//	window.setTimeout("jsInit()", 1000);
+}
+
+function jsGetData(responseText){
+	var boardList = document.getElementById("boradlist");
+	var result = eval(responseText);
+	var html = '';
+	html += '<table border="1">                ';
+	html += '  <tr>                            ';
+	html += '    <th width="10%">번호</th>     ';
+	html += '    <th >제목</th>                ';
+	html += '    <th width="10%">작성자</th>   ';
+	html += '    <th width="30%">작성일시</th> ';
+	html += '  </tr>                           ';
+	for(var i=0; i<result.length; i++){
+		html += '  <tr>                                 ';
+		html += '    <td>' + result[i].board_id + '</td>';
+		html += '    <td>' + result[i].title    + '</td>';
+		html += '    <td>' + result[i].writer   + '</td>';
+		html += '    <td>' + result[i].makedate + '</td>';
+		html += '  </tr>                                ';
+	}
+	html += '</table>                          ';
+	boardList.innerHTML = html;
+
+	var htmlCode = document.getElementById("htmlCode");
+	htmlCode.value = document.documentElement.innerHTML;
+}
+</script>
+</head>
+<body>
+<div id="boradlist"></div>
+<a href="insertForm.jsp">등록</a>
+<a href="delete.jsp">삭제</a>
+<textarea id="htmlCode" rows="40" cols="120"></textarea>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>DOJO 드래그 앤 드롭 사용법</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<link rel="stylesheet" type="text/css" href="../theme/dojolab.css" />
+<style type="text/css">
+  ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    width: 20em;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+ }
+ ul li {
+    cursor:move;
+    padding: 2px 2px;
+    border: 1px solid #ccc;
+    background-color: #eee;
+ }
+
+ img {
+    border-style: none;
+    float: right;
+ }
+</style>
+<script type="text/javascript">
+      var djConfig = {isDebug: true
+              ,debugAtAllCosts : false
+              ,debugContainerId : "_dojoDebugConsole"
+              };
+</script>
+<script language = "JavaScript" type = "text/javascript" src = "../dojoAjax/dojo.js"></script>
+
+<script type = "text/javascript" language = "JavaScript">
+
+var list1;
+var list2;
+
+//드래그 앤 드롭 처리를 위해서는 반드시 아래의 패키지를 포함해야한다.
+dojo.require("dojo.dnd.*"); 
+//HTML UI 객체를 사용하기 위해서 widget 패키지를 포함한 것 
+dojo.require("dojo.widget.*");
+//debug 창 때문에 포함한것
+dojo.require("dojo.widget.FloatingPane");
+
+function dropHandler1(e) {
+  list1.appendChild( e.dragObject.domNode );
+  return true;
+}
+
+function dropHandler2(e) {
+  list2.appendChild( e.dragObject.domNode );
+  return true;
+}
+
+function init ()
+{
+  list1 = dojo.byId("list1");
+  list2 = dojo.byId("list2");
+  
+  new dojo.dnd.HtmlDragSource("item1", "item");
+  new dojo.dnd.HtmlDragSource("item2", "item");
+  new dojo.dnd.HtmlDragSource("item3", "item");
+  new dojo.dnd.HtmlDragSource("item4", "item");
+  new dojo.dnd.HtmlDragSource("item5", "item");
+  new dojo.dnd.HtmlDragSource("item6", "item");
+
+  var target;
+  target = new dojo.dnd.HtmlDropTarget("leftDiv", [ "item" ] );
+  dojo.event.connect(target, "onDrop", "dropHandler1");
+  
+  target = new dojo.dnd.HtmlDropTarget("rightDiv", [ "item" ] );
+  dojo.event.connect(target, "onDrop", dropHandler2);
+
+/*  
+   var leftTarget  = new dojo.dnd.HtmlDropTarget( list1, [ "*" ] );
+   dojo.lang.forEach( list1.getElementsByTagName("li"), function ( child )
+   {
+       var dragSource = new dojo.dnd.HtmlDragSource( child, "*" );
+       dojo.event.connect(dragSource, "onDragStart", function(e){ dojo.debug( "Procesing onDragStart()" ); });
+       dojo.event.connect(dragSource, "onDragEnd", function(e){ dojo.debug( "Procesing onDragEnd()" ); });
+   });
+   
+   var righthandDropTarget = new dojo.dnd.HtmlDropTarget( list2, [ "*" ] );
+
+   // Give the user someplace to drop if the right side UL is empty
+   dojo.event.connect( new dojo.dnd.HtmlDropTarget( dojo.byId( "rightDiv" ), [ "*" ] ), "onDrop", function(e)
+   {
+     list2.appendChild( e.dragObject.domNode );
+     return true;
+   });
+
+   // Give the user someplace to drop if the left side UL is empty
+   dojo.event.connect( new dojo.dnd.HtmlDropTarget( dojo.byId( "leftDiv" ), [ "*" ] ), "onDrop", function(e)
+   {
+     list1.appendChild( e.dragObject.domNode );
+     return true;
+   });
+*/
+
+
+  dojo.debug("Initialization complete");
+}
+
+dojo.addOnLoad(init);
+
+</script>
+</head>
+<body>
+<div id="container">
+  <div id="header"><h1>DOJO 드래그 앤 드롭 사용법</h1></div>
+  <div id="leftDiv">
+    <h3>선택 가능한 제품</h3>
+    <ul id="list1" >
+        <li id="item1">노트북</li>
+        <li id="item2"> Desktop PC</li>
+        <li id="item3"> Window Vista</li>
+        <li id="item4"> LCD TV</li>
+        <li id="item5"> PDP TV</li>
+        <li id="item6"> PS3</li>
+    </ul>
+  </div>
+  <div id="rightDiv">
+    <h3>선택한 제품</h3>
+    <ul id="list2" ></ul>
+    
+  </div>
+  <div id="centerDiv">
+  </div>
+</div>
+
+<!--  디버깅 윈도우  -->
+<div dojoType="FloatingPane" title="Debug Console"
+  constrainToContainer="1"
+  style="width: 100%; height: 100px; left: 0px; bottom: 20px;">
+  <div id="_dojoDebugConsole"></div>
+</div>
+</body>
+</html>

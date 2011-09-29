@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Ajax - day1 - class - array</title>
+<script type="text/javascript">
+/*
+ * 배열 : 동일한 자료를 관리하는 것
+   배열종류
+    1. 색인 배열 : 우리가 알고 있는 일반 배열(최신표기법 : JSON - Java Script Object notation)
+
+	 var arr = [];
+     var arr = [,,,,,,,,,,]; //10개짜리 배열
+     var arr = [10,20,30]; //10,20,30의 값이 들어간 3개짜리 배열
+
+ 	배열 접근 방법(쓰기)
+ 	 arr[0] = 1;
+	 arr[1] = 2;
+
+	배열 접근 방법(읽기)
+	 alert(arr[0]);
+	 alert(arr[1]);
+    			 
+	배열 접근 방법 반복문
+	 for( var i=0 ; i<arr.length ; i++){
+		 alert(arr[i]);
+	 }
+
+ */
+
+// var arr = [];
+ var arr = [,,,,,,,,,,]; //10개짜리 배열
+// var arr = [10,20,30]; //10,20,30의 값이 들어간 3개짜리 배열
+
+document.write("Step 1 <br>");
+for(var i=0 ; i<arr.length ; i++){
+ document.write("arr[" + i + "] = " + arr[i] + "<br>");
+}
+
+ document.write("배열의 크기 = " + arr.length + "<br>");
+arr[0] = 100;
+document.write("배열의 크기 = " + arr.length + "<br>");
+
+arr[1] = 90;
+document.write("배열의 크기 = " + arr.length + "<br>");
+
+arr[2] = 80;
+document.write("배열의 크기 = " + arr.length + "<br>");
+arr[3] = 70;
+document.write("배열의 크기 = " + arr.length + "<br>");
+
+document.write("Step 2 <br>");
+for(var i=0 ; i<arr.length ; i++){
+ document.write("arr[" + i + "] = " + arr[i] + "<br>");
+}
+
+
+/*
+ * 	 2. 연관 배열
+ 
+ */
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

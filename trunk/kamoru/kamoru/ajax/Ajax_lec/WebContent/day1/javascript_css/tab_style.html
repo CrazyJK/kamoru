@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<style type="text/css">
+
+  #minitabs {
+    margin: 0;
+    padding: 0 0 20px 10px;
+    border-bottom: 1px solid #9FB1BC;
+    }
+  
+  #minitabs li {
+    margin: 0; 
+    padding: 0;
+    display: inline;
+    list-style-type: none;
+    }
+    
+  #minitabs a {
+    float: left;
+    line-height: 14px;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 0 12px 6px 12px;
+    text-decoration: none;
+    color: #708491;
+    }
+  
+  #minitabs a.active, #minitabs a:hover {
+    color: #000;
+    background: url(/ajax/img/tab_pyra.gif) no-repeat bottom center;
+  } 
+
+</style>
+
+<script type="text/javascript">
+function jLink(obj) {
+  var id_link;
+  
+  for (var i=1;i<=4;i++) {
+    id_link = document.getElementById("id_link"+i);
+    if (id_link == obj) {
+      obj.className = "active";  
+    } else {
+      id_link.className = "";  
+    }
+  }
+}
+</script>
+</head>
+<body>
+
+<h3> CSS 가 적용된 예제 </h3>
+  <ul id="minitabs">
+    <li><a href="#" id="id_link1" onclick="jLink(this)">소개하고픈 링크</a></li>
+    <li><a href="#" id="id_link2" onclick="jLink(this)" class="active">즐겨읽는 책</a></li>
+    <li><a href="#" id="id_link3" onclick="jLink(this)" >좋아하는 영화</a></li>
+    <li><a href="#" id="id_link4" onclick="jLink(this)" >함께 듣는 음악</a></li>
+  </ul>
+
+<h3> CSS 가 적용 안된 예제 </h3>
+  <ul >
+    <li><a href="#">소개하고픈 링크</a></li>
+    <li><a href="#">즐겨읽는 책</a></li>
+    <li><a href="#">좋아하는 영화</a></li>
+    <li><a href="#">함께 듣는 음악</a></li>
+  </ul>
+
+</body>
+</html>

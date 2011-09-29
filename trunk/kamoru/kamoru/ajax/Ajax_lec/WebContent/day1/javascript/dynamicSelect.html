@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+//기존에 존재하는 option 객체를 모두 제거한다.
+function clean_select(selObj) {
+	 if (!selObj) return; 
+	 for (var i=selObj.length-1;i>=0;i--) {
+	 	selObj.remove(i);
+	 }
+}
+
+function load_select(selObj, arr) {
+	for (var i=0;i<arr.length;i++) {
+//		selObj.options[i] = new Option(arr[i], i);
+  		selObj.options[i] = document.createElement("OPTION");
+  		selObj.options[i].text = arr[i];
+  		selObj.options[i].value = i;
+	}
+}
+
+function onload_body() {
+	var high = document.getElementById("high");
+	var arr = new Array("aaaa", "bbbb", "cccc", "dddd");
+	load_select(high, arr);				
+}
+
+var arrHigh = new Array();
+var arrMiddle = new Array();
+
+for (var i=0;i<5;i++) {
+	arrHigh[i] = new Array();
+	arrMiddle[i] = new Array();
+	for (var j=0;j<10;j++) {
+		arrHigh[i][j] = "문자열_" + i + "_" + j;
+		arrMiddle[i][j] = new Array();
+		for (var k=0;k<10;k++) {
+			arrMiddle[i][j][k] = "문자열_" + i + "_" + j + "_" + k;
+		}
+	}
+}
+
+function onchnage_high()
+{
+	var high = document.getElementById("high");
+	var middle = document.getElementById("middle");
+	var low = document.getElementById("low");
+	var selectedIndex = high.selectedIndex;
+	
+	clean_select(middle);
+	clean_select(low);
+					
+	load_select(middle, arrHigh[selectedIndex]);
+/*	
+	var html;
+	
+	html = "<select name='middle'>";
+	for (var i=0;i<arrHigh[selectedIndex].length;i++) {
+	html += "<option value='" + i + ">" + arrHigh[i][j] + "</option>";
+	
+	html = "</select>"
+	
+ 	middle.outerHTML = html; 
+*/
+}
+
+function onchnage_middle()
+{
+	var high = document.getElementById("high");
+	var middle = document.getElementById("middle");
+	var low = document.getElementById("low");
+	var index1 = high.selectedIndex;
+	var index2 = middle.selectedIndex;
+	
+	clean_select(low);
+
+	load_select(low, arrMiddle[index1][index2]);
+}
+
+</script>
+	
+</head>
+<body onload="onload_body()">
+
+<select name="high" onchange="onchnage_high()">
+	<option value="0">1111</option>
+</select>
+<select name="middle" onchange="onchnage_middle()">
+</select>
+<select name="low">
+</select>
+
+</body>
+</html>

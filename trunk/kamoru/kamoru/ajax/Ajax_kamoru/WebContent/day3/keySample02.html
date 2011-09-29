@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+var Event = {};
+
+Event.addEvent = function(element, evt, handler, capture){
+	if(element.addEventListener){	
+		element.addEventListener(evt,handler,capture);
+	}else if(element.attachEvent){
+		element.attachEvent("on"+evt,handler);
+	}	
+}
+
+Event.removeEvent = function(element, evt, handler, capture){
+	if(element.removeEventListener){	
+		element.addEventListener(evt,handler,capture);
+	}else if(element.detachEvent){
+		element.detachEvent("on"+evt,handler);
+	}	
+}
+
+window.onload=function(){
+	var key = document.f.key;
+
+	Event.addEvent(key, "keydown", jsKeyDown, false);
+}
+
+jsKeyDown = function(e){
+	var event = window.event || e;
+
+	var output = document.getElementById("output");
+	output.innerHTML += event.keyCode + "&nbsp;";
+
+	switch(event.keyCode){
+	case 0x30:
+	case 0x31:
+	case 0x32:
+	case 0x33:
+	case 0x34:
+	case 0x35:
+	case 0x36:
+	case 0x37:
+	case 0x38:
+	case 0x39:
+		
+	case 0x23:
+	case 0x24:
+	case 0x25:
+	case 0x27:
+	case 0x08:
+	case 0x09:
+	case 0x2e:
+		break;
+	default:
+		//IE일때
+		event.cancelBubble = true;
+		event.returnValue = false;
+		//비IE
+		event.stopPropagation();
+		event.preventDefault();
+		break;
+	}
+}
+
+</script>
+</head>
+<body>
+<form action="" id="f" name="f">
+	<input type="text" name="key" id="key" />
+</form>
+<div id=output></div>
+</body>
+</html>

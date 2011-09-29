@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html id="myHTML">
+<head id="myHead">
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title> DHTML 객체 접근 방법 </title> 
+<script language=javascript>
+function show() {
+  var str = "";
+
+  //myHTML id에 해당하는 객체를 얻는다.
+  var myHTML = document.getElementById('myHTML');
+  //myHead id에 해당하는 객체를 얻는다.
+  var myHead = document.getElementById('myHead');
+  //myImg id에 해당하는 객체를 얻는다.
+  var myImg = document.getElementById('myImg');
+  //myDiv id에 해당하는 객체를 얻는다.
+  var myDiv = document.getElementById('myDiv');
+  
+  //myHTML 객체의 태그 이름을 얻어 문자열로 구성한다.
+  str += "\n\ndocument.getElementById('myHTML').nodeName = ";
+  str += myHTML.nodeName;
+  
+  //myHead 객체의 태그 이름을 얻어 문자열로 구성한다.
+  str += "\n\ndocument.getElementById('myHead').nodeName = ";
+  str += myHead.nodeName;
+  
+  //myImg 객체의 태그 이름을 얻어 문자열로 구성한다.
+  str += "\n\ndocument.getElementById('myImg').nodeName = ";
+  str += myImg.nodeName;
+  
+  //myDiv 객체의 태그 이름을 얻어 문자열로 구성한다.
+  str += "\n\ndocument.getElementById('myDiv').nodeName = ";
+  str += myDiv.nodeName;
+//  str += myDiv.tagName;
+  alert(str);
+}
+</script>
+</head>
+
+<body onload="show()">
+  <h3 id="myHead">DHTML 객체 접근 방법 -> getElementById() </h3>
+  <hr noshade>
+  <img src="button.gif" id="myImg">
+  <div id="myDiv">
+    DHTML의 객체를 접근하는 여러가지 방법을 알아봅시다.
+  </div>      
+</body>
+</html>

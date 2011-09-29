@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Ajax - day1 - class - array</title>
+<script type="text/javascript">
+
+function jsClick(){
+	var output = document.getElementById("output");
+	var a = document.getElementById("a");
+	var html = "";
+	for(var name in a){
+		html += "a[" + name + "] = " + a[name] + "<br>";
+	}
+	output.innerHTML = html;
+}
+
+function jsKeyDown(){
+
+}
+
+</script>
+</head>
+<body>
+<form name="f" >
+<input type="text" name="a" id="a" value="kamoru" onkeydown="jsKeyDown()"/>
+<input type="button" value="click" onclick="jsClick()"/>
+</form>
+<div id="output"></div>
+</body>
+</html>

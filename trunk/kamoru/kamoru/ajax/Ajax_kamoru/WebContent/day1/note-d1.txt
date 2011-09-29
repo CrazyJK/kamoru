@@ -1,0 +1,66 @@
+과정매니저 : 김지연 내선번호 5608
+강사 : 마성일 masungil@paran.com SDS전임교수
+
+mysql 설치시
+	매뉴얼로 해서 언어셋 euckr로 변경할것 기본은 latin1
+
+	설치후 확인
+		C:\Documents and Settings\student>mysql -u root -p
+		Enter password: ******
+		Welcome to the MySQL monitor.  Commands end with ; or \g.
+		Your MySQL connection id is 2
+		Server version: 5.0.51b-community-nt MySQL Community Edition (GPL)
+		
+		Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+		
+		mysql>
+
+Ajax = DHTML        +  XMLHttpRequest
+      └ HTML/CSS
+      └ JavaScript  ==> 객체지향 + 이벤트핸들링
+      └ DOM
+         └ XML
+
+DOM 개체 관리 방법
+	계층적인 방법 -> childNodes()
+	ID or TagName -> getElementById(), getElementByTag()
+	all
+
+javscript에서 DOM 객체 접근하는 방법
+	childNodes()
+	getElementById()
+	getElementByTag()
+
+XMLHttpRequest() 객체생성방법
+	open()
+	onreadystatechange = callback;
+	send()
+	
+	readyState == 0, 1, 2, 3, 4
+	status -> 200, 404, 500
+	
+	responseText
+	
+javascript를 이용한 클래스 선언
+	javascript 배열
+	표기법
+	표준 / JSON	
+	
+	
+진행 과정
+	UI설계 > 게시판 > 제시어 > RSS > proxy(자바스크립트) > API(네이트,구글)
+	> 오픈소스 : 도조(DOJO) > 자바스크립트 JSON
+
+강의 내용 - 내가 정리
+day1
+    1. 간단 Ajax 맛보기 
+    	day1 / hello
+    2. javascript 객체를 동적으로 생성하는 방법
+    	day1 / dynamicCreate / index
+	3. javascript 클래스 생성, prototype
+		day1 / class / index
+    4. javascript 배열 
+    	day1 / class / array
+    	
+    
+ 	

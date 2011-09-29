@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html id="html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+  <title>네이버 API를 이용한 RSS </title>
+  <style type="text/css">
+    ul {
+      margin: 0px 0px;
+      border-style: solid;
+      border-width: 1px;
+      padding: 1px 1px;
+    }
+    li {
+      list-style-type: none;
+    }
+    #kin {
+      border-style: solid;
+      border-width: 1px;
+    }
+    #blog {
+      border-style: solid;
+      border-width: 1px;
+    }
+    #webkr {
+      border-style: solid;
+      border-width: 1px;
+    }
+    #image {
+      border-style: solid;
+      border-width: 1px;
+    }
+  </style>
+  <script type="text/javascript" src="js/ajax.js"></script>
+  <script type="text/javascript" src="js/naver.js"></script>
+  <script type="text/javascript">
+    var kinObj   = new NaverRSS("resultKin");
+    var blogObj  = new NaverRSS("resultBlog");
+    var webkrObj = new NaverRSS("resultWebkr");
+    var imageObj = new NaverRSS("resultImage");
+    
+    function naverSearch() {
+      var result = document.getElementById("result");
+      result.style.display = "none";
+
+      if (document.searchForm.search.value == "") {
+        alert("검색어를 입력하시오");
+        document.searchForm.search.focus();
+        return;
+      }
+
+      var kin = document.getElementById("kin");
+      var blog = document.getElementById("blog");
+      var webkr = document.getElementById("webkr");
+      var image = document.getElementById("image");
+      
+      //조회 대상이 없으면 종료한다.
+      if (document.searchForm.kinChk.checked == false &&
+          document.searchForm.blogChk.checked == false &&
+          document.searchForm.imageChk.checked == false &&
+          document.searchForm.webkrChk.checked == false) {
+        return;
+      }
+
+      //결과 창을 화면에 출력한다.
+      result.style.display = "block";
+      
+      if (document.searchForm.kinChk.checked == true) {
+        kinObj.search(document.searchForm.search.value, "kin");
+        kin.style.display   = "block" ;
+      } else {
+        kin.style.display   = "none";
+      }
+
+      if (document.searchForm.blogChk.checked == true) {
+        blogObj.search(document.searchForm.search.value, "blog");
+        blog.style.display   = "block" ;
+      } else {
+        blog.style.display   = "none";
+      }
+
+      if (document.searchForm.webkrChk.checked == true) {
+          webkrObj.search(document.searchForm.search.value, "webkr");
+          webkr.style.display   = "block" ;
+        } else {
+          webkr.style.display   = "none";
+      }
+
+      if (document.searchForm.imageChk.checked == true) {
+          imageObj.search(document.searchForm.search.value, "image");
+          image.style.display   = "block" ;
+        } else {
+          image.style.display   = "none";
+      }
+      
+    }
+  </script>
+</head>
+<body>
+<H3>네이버 API를 이용한 RSS</H3>
+
+  <form name="searchForm" onsubmit="naverSearch(); return false">
+    <table border="0">
+      <tr>
+        <td>
+          <img src="images/naver_log.gif">
+        </td>
+        <td>
+                  검색어   : 
+          <input type="text" name="search" size="20" value="문근영">
+          <input type="submit" value="검색" />
+        </td>
+        <td>
+          <input type="checkbox" value="kin" checked="checked" name="kinChk" onclick="naverSearch();">지식인 
+        </td>
+        <td>
+          <input type="checkbox" value="blog" checked="checked" name="blogChk" onclick="naverSearch();">블로그 
+        </td>
+        <td>
+          <input type="checkbox" value="webkr" checked="checked" name="webkrChk" onclick="naverSearch();">웹 검색
+        </td>
+        <td>
+          <input type="checkbox" value="image" checked="checked" name="imageChk" onclick="naverSearch();">이미지
+        </td>
+      </tr>
+    </table>
+  </form>
+  
+  <div id="result" style="display:none">
+    <!-- 지식인 검색 결과  -->
+    <div id="kin" style="display:none">
+          <h1>지식인 검색 결과 </h1>
+      <div id="resultKin" ></div>
+    </div>
+    <!-- 블로그 검색 결과  -->
+    <div id="blog" style="display:none">
+      <h1>블로그 검색 결과</h1>
+      <div id="resultBlog" ></div>
+    </div>
+    <!-- 웹 검색 결과  -->
+    <div id="webkr" style="display:none">
+      <h1>웹 검색 결과 </h1>
+      <div id="resultWebkr" ></div>
+    </div>
+    <!-- 이미지 검색 결과  -->
+    <div id="image" style="display:none">
+      <h1>이미지 검색 결과 </h1>
+      <div id="resultImage" ></div>
+    </div>
+  </div>
+  <div align=center style="background-color:fuchsia; ">
+ 	네이버 OPEN API를 이용한 검색서비스 제공 
+  </div>
+</body>
+</html>
+

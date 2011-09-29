@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+  <title>책정보 보기</title>
+  <script type="text/javascript" src="ajax.js"></script>
+  <script type="text/javascript">
+  var xmlDoc = null;
+  var xslDoc = null;
+
+  function loadBooks() {
+	new  ajax.xhr.Request("books.jsp", null, loadBooksXML, "GET");
+    new  ajax.xhr.Request("books.xsl", null, loadBooksXSL, "GET");
+  }
+    
+  function loadBooksXML(reg) {
+    if (reg.readyState == 4) {
+      if (reg.status == 200) {
+        xmlDoc = reg.responseXML;
+        doXSLT();
+      }
+    }
+  }
+  
+  function loadBooksXSL(reg) {
+    if (reg.readyState == 4) {
+      if (reg.status == 200) {
+        xslDoc = reg.responseXML;
+        doXSLT();
+      }
+    }   
+  }
+	
+  function doXSLT() {
+    if (xmlDoc == null || xslDoc == null) return;
+    
+    var msg_id = document.getElementById("xmlList");
+    
+    if (window.ActiveXObject) {
+      msg_id.innerHTML = xmlDoc.transformNode(xslDoc);
+    } else {
+      var xsltProc = new XSLTProcessor();
+      xsltProc.importStylesheet(xslDoc);
+      var fragment = xsltProc.transformToFragment(xmlDoc, document);
+//      msg_id.innerHTML = "";
+      msg_id.appendChild(fragment);
+    }
+  } 
+
+  function elementAppendChild() {
+    //root 요소를 얻는다.
+    var root = xmlDoc.documentElement;
+    
+    //book 요소를 생성한다.
+    var book = xmlDoc.createElement("book");
+    //isbn 요소를 생성한다.
+    var isbn = xmlDoc.createElement("isbn");
+    //title 요소를 생성한다.
+    var title = xmlDoc.createElement("title");
+    //author 요소를 생성한다.
+    var author = xmlDoc.createElement("author");
+    
+    //book 요소의 하위에 isbn 요소를 삽입한다.
+    book.appendChild(isbn);
+    //book 요소의 하위에 title 요소를 삽입한다.
+    book.appendChild(title);
+    //book 요소의 하위에 author 요소를 삽입한다.
+    book.appendChild(author);
+
+    //isbn 요소의 하위에 문자열노드를 생성한 후 추가한다.
+    isbn.appendChild(xmlDoc.createTextNode("12-1234-123-5"));
+    //title 요소의 하위에 문자열노드를 생성한 후 추가한다.
+    title.appendChild(xmlDoc.createTextNode("타짜"));
+    //author 요소의 하위에 문자열노드를 생성한 후 추가한다.
+    author.appendChild(xmlDoc.createTextNode("허영만"));
+    
+    //루트 노드에 book 노드를 삽입한다 .
+    root.appendChild(book);
+    
+    //화면에 출력한다 .
+    doXSLT();
+  }  
+
+  function elementInsertBefore() {
+    //root 요소를 얻는다.
+    var root = xmlDoc.documentElement;
+    
+    //book 요소를 생성한다.
+    var book = xmlDoc.createElement("book");
+    //isbn 요소를 생성한다.
+    var isbn = xmlDoc.createElement("isbn");
+    //title 요소를 생성한다.
+    var title = xmlDoc.createElement("title");
+    //author 요소를 생성한다.
+    var author = xmlDoc.createElement("author");
+    
+    //book 요소의 하위에 isbn 요소를 삽입한다.
+    book.appendChild(isbn);
+    //book 요소의 하위에 title 요소를 삽입한다.
+    book.appendChild(title);
+    //book 요소의 하위에 author 요소를 삽입한다.
+    book.appendChild(author);
+
+    //isbn 요소의 하위에 문자열노드를 생성한 후 추가한다.
+    isbn.appendChild(xmlDoc.createTextNode("12-1234-123-5"));
+    //title 요소의 하위에 문자열노드를 생성한 후 추가한다.
+    title.appendChild(xmlDoc.createTextNode("타짜"));
+    //author 요소의 하위에 문자열노드를 생성한 후 추가한다.
+    author.appendChild(xmlDoc.createTextNode("허영만"));
+    
+    //루트 노드에 book 노드를 beforeInsert 메소드를 이용하여 삽입한다 .
+    root.insertBefore(book, root.childNodes[0]);
+    
+    //화면에 출력한다 .
+    doXSLT();
+  }  
+  window.onload = function() {
+    loadBooks();
+  }
+
+  </script>
+</head>
+<body>
+신규책 목록 
+<div id="xmlList"></div>
+<a href="javascript:elementAppendChild()">appendChild</a>
+<a href="javascript:elementInsertBefore()">insertBefore</a>
+</body>
+</html>

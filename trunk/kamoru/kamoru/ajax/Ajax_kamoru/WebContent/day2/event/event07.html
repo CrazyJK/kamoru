@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript">
+/* DOM 레벨 1
+ * 이벤트의 등록과 헤제를 위한 클래스 만들기
+*/
+
+var Event = {};
+
+Event.addEvent = function(element, evt, handler, capture){
+	if(element.addEventListener){	
+		element.addEventListener(evt,handler,capture);
+	}else if(element.attachEvent){
+		element.attachEvent("on"+evt,handler);
+	}	
+}
+
+Event.removeEvent = function(element, evt, handler, capture){
+	if(element.removeEventListener){	
+		element.addEventListener(evt,handler,capture);
+	}else if(element.detachEvent){
+		element.detachEvent("on"+evt,handler);
+	}	
+}
+ 
+
+var count = 0;
+window.onload=function(){
+	var btn1 = document.getElementById("btn1");
+	var btn2 = document.getElementById("btn2");
+	Event.addEvent(btn1, "click", jsClick1, false);
+	Event.addEvent(btn2, "click", jsClick2, false);
+}
+
+function jsClick1(){
+	var btn1 = document.getElementById("btn1");
+	Event.removeEvent(btn1, "click", jsClick1, false);
+	btn1.disabled = true;
+		
+	setTimeout("jsTest()",0);
+}
+
+function jsTest(){
+	var output = document.getElementById("output");
+	output.innerHTML += "before =>" + new Date() + "<br/>";
+	
+	for(var i=0 ; i<1000000;i++){
+		(i % 100) % 100;
+	}
+	output.innerHTML += "After =>" + new Date() + "<br/>";
+
+	var btn1 = document.getElementById("btn1");
+	Event.addEvent(btn1, "click", jsClick1, false);
+	btn1.disabled = false;
+}
+
+function jsClick2(){
+	var btn1 = document.getElementById("btn1");
+	Event.removeEvent(btn1, "click", jsClick1, false);
+}
+
+</script>
+</head>
+<body>
+<form name="f">
+	<input id="btn1" type="button" value="click1"/>
+	<input id="btn2" type="button" value="click2"/>
+</form>
+<div id="output"></div>
+</body>
+</html>

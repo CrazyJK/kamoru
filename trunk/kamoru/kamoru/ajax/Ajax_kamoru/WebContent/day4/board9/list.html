@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="request.js"> </script>
+<script type="text/javascript">
+
+var ajaxBoard = null;
+var timerId=null;
+
+window.onload = function() {
+	jsInit();
+}
+
+function jsInit() {
+	var output = document.getElementById("output");
+	output.innerHTML = new Date();
+		
+	if (null == ajaxBoard) {
+		ajaxBoard = new ajax.xhr.Request( {
+			url : "list_ajax.jsp" ,
+			load : jsBoardList
+		});
+	} else {
+		ajaxBoard.sendRequest();
+	}
+//	alert("aaaa");
+	timerId = window.setTimeout("jsInit()", 3000);
+}
+
+function jsAbort() {
+	if (timerId) {
+		window.clearTimeout(timerId);
+		ajaxBoard.abort();
+	}
+}
+
+function jsBoardList(responseText) {
+	timerId = null;
+	
+	var html = "";
+	var boardList = document.getElementById("boardList");
+	var result = eval(responseText);
+	
+	html += '<table border="1">              ';
+	html += '    <tr>                        ';
+	html += '      <th width="10%">번호</th>   ';
+	html += '      <th >제목</th>              ';
+	html += '      <th width="10%">작성자</th>  ';
+	html += '      <th width="30%">작성일시</th> ';
+	html += '    </tr>                       ';
+
+	for (var i=0;i<result.length;i++) {
+		html += '    <tr>';
+		html += '      <td>' + result[i].board_id + '</th>';
+		html += '      <td>' + result[i].title + '</th>';
+		html += '      <td>' + result[i].writer + '</th>';
+		html += '      <td>' + result[i].makedate + '</th>';
+		html += '    </tr>';
+	}
+	
+	html += '</table>';
+
+	boardList.innerHTML = html;
+}
+</script>
+</head>
+<body>
+<div id="output"></div>
+<div id="boardList"></div>
+<a href="javascript:void(0)" onclick="jsAbort()">취소</a>
+<a href="javascript:void(0)" onclick="jsInit()">요청</a>
+<a href="insertForm.jsp">등록</a>
+<a href="delete.jsp">삭제</a>
+
+</body>
+</html>

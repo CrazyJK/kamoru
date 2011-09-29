@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+function jsClick(){
+	var output = document.getElementById("output");
+	output.innerHTML = "Hello world";
+}
+</script>
+<body>
+<pre>
+1. 객체생성
+2. Open(URL)
+3. callback 함수 생성
+	readystate
+		0,1,2,3,4
+	status 200,404
+	응답
+		text responseText
+		xml  responseXML
+4. 자료전송
+</pre>
+<span id="output"></span>
+<input type="button" value="click" onclick="jsClick()"/>
+</body>
+</html>

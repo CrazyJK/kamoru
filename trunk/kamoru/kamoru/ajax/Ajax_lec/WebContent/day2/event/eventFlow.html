@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>이벤트 흐름 </title>
+  <style type="text/css">
+    #parent {
+      width:550px; 
+      height:400px; 
+      background-color: #CCCCCC;
+      text-align: center;
+    }
+    #child {
+      position:absolute; 
+      left:200px; 
+      top:200px; 
+      background-color: yellow; 
+      text-align: center;
+      vertical-align: middle;
+      padding: 50px;
+    }
+
+  </style>
+  <script type="text/javascript" src="event.js" ></script>
+  <script type="text/javascript" >
+    
+  window.onload = function () {
+      var body = document.getElementById("body");
+      var parent = document.getElementById("parent");
+      var child = document.getElementById("child");
+      
+      Event.addListener(document, "mousedown", document_mousedown_capture, true);
+      Event.addListener(document, "mousedown", document_mousedown);
+      Event.addListener(body, "mousedown", body_mousedown);
+      Event.addListener(parent, "mousedown", parent_mousedown_capture, true);
+      Event.addListener(parent, "mousedown", parent_mousedown);
+      Event.addListener(child, "mousedown", child_mousedown);
+      
+  }
+
+  function document_mousedown  (e) {
+    log("-->document_mousedown   event handler...");
+  }
+  function body_mousedown(e) {
+    log("-->body_mousedown event handler...");
+  }
+
+  function document_mousedown_capture(e) {
+    log("<----document_mousedown_capture event capture handler...");
+  }
+  
+  function parent_mousedown_capture(e) {
+    log("<----parent_mousedown event capture handler...");
+  }
+
+  function parent_mousedown(e) {
+  	var event = window.event || e;
+  	Event.stopEvent(event);
+    log("---->parent_mousedown event handler...");
+  }
+
+  function child_mousedown(e) {
+    log("------>child_mousedown event handler...");
+  }
+  
+  function log(msg) {
+    var debugPanel = document.getElementById("debugPanel");
+  	if (debugPanel == null) return;
+    
+    debugPanel.innerHTML += msg + "<br/>";
+  }
+  
+  </script>
+</head>
+<body id="body">
+<h3>이벤트 흐름</h3>
+<hr/>
+  <div id="parent" >
+  	부모영역
+    <span id="child" >자식영역 </span>
+  </div>
+  <div id="debugPanel"></div>
+</body>
+</html>

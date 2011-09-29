@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title> 연관 배열 반복문 사용하기  </title>
+<script type="text/javascript">
+
+UserInfo = function(name, age) {
+  var privateData ="클래스 내부변수" ;
+
+  this.name = name;
+  this.age  = age;
+
+  this.setData = function (name, age) {
+	  this.name = name;
+	  this.age = age;
+  }
+
+  this.toString = function () {
+	return "[이름 : " + this.name 
+		+ "\n나이 : " + this.age 
+		+ "\n내부변수 : " + privateData + "]";
+  }
+  
+  this.getPrivateData = function() {
+  	return privateData;
+  }
+}
+
+var obj = new UserInfo("홍길동", 35);
+for (var name in obj) {
+  document.write('obj.'+name+' = ' + obj[name] + "<br/>");
+}
+
+//배열의 선언하고 값을 설정한다.
+var arr = {kor:100, eng : 200, mat : 300};
+
+//연관배열을 반복문으로 이름과 값을 얻을때는 
+//for in 구문을 사용한다.
+for (var name in arr) {
+  document.write('arr.'+name+' = ' + arr[name] + "<br/>");
+}
+
+
+for (var name in document) {
+  document.write('document.'+name+' = ' + document[name] + "<br/>");
+}
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+window.onload = function() {
+	var html = "";
+	html += '<table border="1">'
+	html += '<tr>'
+	html += '  <th width="10%">번호</th>'
+	html += '  <th >제목</th>'
+	html += '  <th width="10%">작성자</th>'
+	html += '  <th width="30%">작성일시</th>'
+	html += '</tr>'
+	html += '<tr>'
+	html += '  <td>${row.board_id}</td>'
+	html += '  <td>${row.title}</td>'
+	html += '  <td>${row.writer}</td>'
+	html += '  <td>${row.makedate}</td>'
+	html += '</tr>'
+	html += '</table>'
+
+	var listPanel = document.getElementById("listPanel");
+
+	listPanel.innerHTML = html;
+}
+</script>
+</head>
+<body>
+<!--  자바스크립트를 이용하여 문서 생성  -->
+<div id="listPanel"></div>
+
+<a href="insertForm.jsp">등록</a>
+<a href="delete.jsp">삭제</a>
+
+</body>
+</html>
