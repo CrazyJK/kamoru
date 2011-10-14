@@ -11,9 +11,13 @@
 
 <header>
 	<hgroup>
-		<h1>Directory list</h1>
-		<h2>Path : <input id="localpath" placeholder="input local path" value="E:/av"/>
-			<input type="button" value="Get file list" onclick="getFileList()"/>
+		<h1>Directory list
+		</h1>
+		<h2>
+			Path : <input id="localpath" placeholder="input local path" value="E:/av"/>
+			Filter : <input id="filter" type="text" value="avi wmv mpg mpeg mkv" size="30"/>
+			Player Uri : <input id="playeruri"type="text" value="C:\\Program Files (x86)\\GRETECH\\GomPlayer\\GOM.exe" size="60" />
+			<input class="getButton" type="button" value="Get file list" onclick="getFileList()"/>
 		</h2>
 	</hgroup>
 </header>

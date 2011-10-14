@@ -4,7 +4,8 @@
 <%
 long startNanoTime = System.nanoTime();
 
-String path = request.getParameter("p");
+String path   = request.getParameter("p");
+String filter = request.getParameter("f");
 
 StringBuilder sb = new StringBuilder();
 
@@ -18,7 +19,7 @@ try
 	else
 	{
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-		getFilelist(list, path);
+		getFilelist(list, path, filter);
 
 		if(list.size() == 0)
 		{
@@ -58,8 +59,11 @@ System.out.println("[" + request.getRequestURI() + "]  elapsed time : " + ((Syst
 
 <%!
 
-void getFilelist(ArrayList<HashMap<String, String>> list, String dir) throws Exception
+void getFilelist(ArrayList<HashMap<String, String>> list, String dir, String filter) throws Exception
 {
+	String[] filterArr = filter.split(" ");
+	
+	
 	ArrayList<String> dirList = new ArrayList<String>();
 	File[] files = new File(dir).listFiles();
 	for(File f: files)
@@ -71,16 +75,19 @@ void getFilelist(ArrayList<HashMap<String, String>> list, String dir) throws Exc
 		else
 		{
 			String name = f.getName().toLowerCase();
-			if(name.endsWith("avi") || name.endsWith("wmv") || name.endsWith("mpg") || name.endsWith("mpeg") || name.endsWith("mkv"))
+			for(int i=0; i<filterArr.length; i++)
 			{
-				list.add(getFileInfo(f));
+				if(name.endsWith(filterArr[i]))
+				{
+					list.add(getFileInfo(f));
+				}
 			}
 		}
 	}
 	
 	for(String path: dirList)
 	{
-		getFilelist(list, path);
+		getFilelist(list, path, filter);
 	}
 }
 

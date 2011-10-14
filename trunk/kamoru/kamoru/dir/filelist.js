@@ -17,11 +17,12 @@ $(document).ready(function(){
 
 function getFileList()
 {
-	path = $("#localpath").val();
+	path = jQuery.trim($("#localpath").val());
+	var filter = jQuery.trim($("#filter").val());
 	if(path != "")
 	{
 		$.ajax({
-			url: "filelistAction.jsp?p=" + path,
+			url: "filelistAction.jsp?p=" + path + "&f=" + filter,
 			beforeSend: function() {
 	            $('#loadingbar').show().fadeIn('fast'); 
 	        },
@@ -170,11 +171,12 @@ function roundXL(n, digits) {
 function fileAction(idx, mode)
 {
 	var uri = files[idx].URI;
+	var player = $("#playeruri").val();
 //	alert(uri);
 	$.ajax({
 		url: "fileAction.jsp",
 		type: "POST",
-		data: "uri=" + uri + "&mode=" + mode, 
+		data: "uri=" + uri + "&mode=" + mode + "&player=" + player, 
 		beforeSend: function() {
             $('#loadingbar').show().fadeIn('fast'); 
             $("#filelist > li").removeClass("selectfile");

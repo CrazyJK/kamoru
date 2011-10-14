@@ -4,13 +4,14 @@
 <%
 long startNanoTime = System.nanoTime();
 
-String mode = request.getParameter("mode");
-String uri = request.getParameter("uri");
+String mode 	= request.getParameter("mode");
+String uri 		= request.getParameter("uri");
+String player 	= request.getParameter("player");
 
 if("PLAY".equals(mode))
 {
 	uri = uri.substring(6);
-	String[] cmd = new String[]{"C:\\Program Files (x86)\\GRETECH\\GomPlayer\\GOM.exe", uri};
+	String[] cmd = new String[]{player, uri};
 	System.out.println("[" + cmd[0] + "] - [" + cmd[1] + "]");
 	Process process = new ProcessBuilder(cmd).start();
 }

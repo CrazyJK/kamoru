@@ -101,3 +101,10 @@ footer p {
 	color: #888;
 	margin-top: 24px;
 }
+input {
+	font-size: 9pt;
+	border-left: 0px; border-right: 0px; border-top: 0px;  
+}
+.getButton {
+	height:100%; border:1px solid #EFD3D3;
+}
