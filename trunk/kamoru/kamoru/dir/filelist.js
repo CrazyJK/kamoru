@@ -22,7 +22,7 @@ function getFileList()
 	if(path != "")
 	{
 		$.ajax({
-			url: "filelistAction.jsp?p=" + path + "&f=" + filter,
+			url: "filelistAction.jsp?p=" + path + "&f=" + filter + "&t=" + new Date().getTime(),
 			beforeSend: function() {
 	            $('#loadingbar').show().fadeIn('fast'); 
 	        },
@@ -55,10 +55,12 @@ function viewData(data)
 	for(var i=0; i<files.length; i++)
 	{
 		totalFileLength += parseInt(files[i].SIZE);
-		$("#filelist").append("<li id='file" + i + "'><a href='javascript:void()' onclick='fileAction("+i+", \"PLAY\")'>" 
-				+ "<span class='filesize'>" + convertSize(files[i].SIZE) + "</span>"
-				+ "<span class='filename'>" + files[i].NAME + "</span>"
-				+ "<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+		$("#filelist").append(
+				"<li id='file" + i + "'>" 
+				+ "<a href='javascript:void()' onclick='fileAction("+i+", \"PLAY\")'>" 
+				+ 	"<span class='filesize'>" + convertSize(files[i].SIZE) 		+ "</span>"
+				+ 	"<span class='filename'>" + files[i].NAME 			 		+ "</span>"
+				+ 	"<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
 				+ "</a>"
 				+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 				+ "</li>");		
@@ -176,7 +178,7 @@ function fileAction(idx, mode)
 	$.ajax({
 		url: "fileAction.jsp",
 		type: "POST",
-		data: "uri=" + uri + "&mode=" + mode + "&player=" + player, 
+		data: "uri=" + uri + "&mode=" + mode + "&player=" + player + "&t=" + new Date().getTime(), 
 		beforeSend: function() {
             $('#loadingbar').show().fadeIn('fast'); 
             $("#filelist > li").removeClass("selectfile");

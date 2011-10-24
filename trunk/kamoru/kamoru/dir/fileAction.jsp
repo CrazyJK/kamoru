@@ -4,6 +4,8 @@
 <%
 long startNanoTime = System.nanoTime();
 
+request.setCharacterEncoding("UTF-8");
+
 String mode 	= request.getParameter("mode");
 String uri 		= request.getParameter("uri");
 String player 	= request.getParameter("player");
