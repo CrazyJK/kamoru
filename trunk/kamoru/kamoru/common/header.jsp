@@ -5,7 +5,7 @@
 <%@ taglib prefix="x"   uri="http://java.sun.com/jsp/jstl/xml"%>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="contextpath" scope="application" value="<%=request.getContextPath()%>"/>
-<% 
+<%
 System.out.println(
 		"[" + new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new java.util.Date()) + "] "
 	+ request.getRequestURI()		

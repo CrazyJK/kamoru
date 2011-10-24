@@ -68,4 +68,15 @@
 		<servlet-name>WelcomekAmOrU</servlet-name>
 		<url-pattern>/WelcomekAmOrU</url-pattern>
 	</servlet-mapping>
+
+  <jsp-config>
+    <jsp-property-group>
+    	<url-pattern>*.jsp</url-pattern>
+    	<el-ignored>false</el-ignored>
+    	<page-encoding>utf-8</page-encoding>
+    	<scripting-invalid>false</scripting-invalid>
+    	<include-prelude>/common/header.jsp</include-prelude>
+    </jsp-property-group> 
+  </jsp-config>
+
 </web-app>
