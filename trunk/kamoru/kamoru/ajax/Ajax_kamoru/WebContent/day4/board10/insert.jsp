@@ -4,7 +4,7 @@
 <%@ page import="com.multicampus.*" %>
 <%--한글 처리를 위해 utf8 로 변경한다 --%> 
 <%request.setCharacterEncoding("utf-8");%>
-
+ 
 <!-- 
 DROP TABLE IF EXISTS `test`.`t_board`;
 CREATE TABLE  `test`.`t_board` (
