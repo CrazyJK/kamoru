@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> Site management apps</title>
+<link rel="stylesheet" type="text/css" href="mng.css">
+</head>
+<script type="text/javascript">
+function viewFrame(idx){
+	for(i=0 ; i<9 ; i++){
+		var iFrm = document.getElementById("if" + i);
+		if(idx == i){
+			iFrm.style.display = "";
+		}else{
+			iFrm.style.display = "none";
+		}
+	}
+}
+function windowonLoad(){
+	viewFrame(0);
+	document.getElementById("loading").style.display = "none";
+	document.getElementById("body").style.display = "";
+}
+</script>
+<body onLoad="windowonLoad()">
+<div id="loading" align="center">
+	<img src="ajax-loader_Pk.gif">
+	<br>로딩중...
+</div>
+<div id="body" style="display:none;">
+<fieldset>
+	<legend>
+		<span class="TITLE" onclick="viewFrame(1)">1. webquery</span>
+		<span class="TITLE" onclick="viewFrame(2)">2. log4j control</span>
+		<span class="TITLE" onclick="viewFrame(3)">3. memory(JVM) view</span>
+		<span class="TITLE" onclick="viewFrame(4)">4. param check</span>
+		<span class="TITLE" onclick="viewFrame(5)">5. external app execute</span>
+		<span class="TITLE" onclick="viewFrame(6)">6. bpm process mng</span>
+		<span class="TITLE" onclick="viewFrame(7)">7. web variables</span>
+		<span class="TITLE" onclick="viewFrame(8)">8. bwadkdbpool</span>
+	</legend>
+	<br>
+	<iframe class="IFRM" id="if0" height="600" frameborder="0" src=""></iframe>
+	<iframe class="IFRM" id="if1" height="600" frameborder="0" src="query"></iframe>
+	<iframe class="IFRM" id="if2" height="600" frameborder="0" src="log4j"></iframe>
+	<iframe class="IFRM" id="if3" height="600" frameborder="0" src="jvminfo"></iframe>
+	<iframe class="IFRM" id="if4" height="600" frameborder="0" src="encode"></iframe>
+	<iframe class="IFRM" id="if5" height="600" frameborder="0" src="exec"></iframe>
+	<iframe class="IFRM" id="if6" height="600" frameborder="0" src="bpm"></iframe>
+	<iframe class="IFRM" id="if7" height="600" frameborder="0" src="webvars"></iframe>
+	<iframe class="IFRM" id="if8" height="600" frameborder="0" src="bwadkdb"></iframe>
+</fieldset>
+</div>
+</body>
+</html>

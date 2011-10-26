@@ -1,0 +1,12 @@
+/* PAL 스타일시트 - login.css */
+
+.textBg{
+	background-color: #EAEAEA;
+}
+
+.input{
+	width: 102px;
+	height: 21px;
+	font-family: "verdana";
+	font-size: 12px;
+}

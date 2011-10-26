@@ -1,0 +1,174 @@
+/* PAL 스타일시트 - table.css */
+
+h2{
+	padding-left: 12px;
+	background: url("/bizflow/pal/img/icon/tH2.gif") no-repeat 1px 50%;
+	color: #015190;
+	font-size: 90%;
+	margin-bottom: 7px;
+	margin-top:6px;
+}
+h3{
+	padding-left: 25px;
+	background: url("/bizflow/pal/img/icon/tH3.gif") no-repeat 12px 50%;  /* left 12px top 50% */
+	color: #4b89b0;
+	font-size: 90%;
+	margin-bottom: 7px;
+	margin-top: 2px;
+}
+div.tShadow{
+	background-color: #efefef;
+	width: 778px;
+	margin-left: 4px;
+}
+/* table by table */
+div.tShadowDivide{
+	background-color: #efefef;
+	margin-bottom: 12px;
+	width: 778px;
+	margin-left: 4px;
+}
+/* End-table by table */
+/* for dhtml */
+div.tShadow-dhtml{
+	background-color: #efefef;
+	width: 580px;
+}
+/* list */
+div.tShadowList{
+	margin-top: 9px;
+	background-color: #efefef;
+	width: 778px;
+	margin-left: 4px;
+}
+div.tShadowList-1{
+	margin-top: 12px;
+	background-color: #efefef;
+	width: 778px;
+	margin-left: 4px;
+}
+/* End-list */
+
+table{
+	position: relative;
+	top:-4px;
+	left:-4px;
+	border-collapse: collapse;
+	width:778px;
+	border:1px solid #cacaca;
+	font-size: 90%;	
+}
+/* by 0621 YJ for Popup */
+table.popup650{
+	width:630px;
+}
+table.popup500{
+	width:480px;
+}
+table.popup400{
+	width:380px;
+}
+table.popup580{
+	width:580px;
+}
+/* Popup End */
+tr{
+	background-color: #fff;
+}
+tr.alt{
+	background-color: #fafbfd;
+}
+th, td{
+	margin:0;
+	padding: 3px 6px;
+	border-right: 1px solid #cacaca;
+	border-bottom:1px solid #cacaca;
+}
+th.tRow{
+	background-color: #edece7;
+}
+th.tCol{
+	border-bottom:1px solid #919a99;
+	border-right:1px solid #919a99;
+	background: #dddddd url("/bizflow/pal/img/table/thBg.gif") repeat-x;
+}
+td{
+	display: block;
+}
+td.aRight{
+	text-align: right;
+}
+td.aLeft{
+	text-align: left;
+}
+td.aCenter{
+	text-align: center;
+}
+span.required{
+	color: #cc0000;
+	padding-left:2px;
+}
+
+/* for using process diff 2006.05.24 by wslee*/ 
+.addItem{ color: #48992d; } 
+.addItem a:link {color: #48992d; text-decoration: none;} 
+.addItem a:visited {color: #48992d; text-decoration: none;} 
+.addItem a:hover {color: #48992d; text-decoration: none;} 
+.addItem a:active {color: #48992d; text-decoration: none;} 
+.deleteItem{ color: #b52e8a; } 
+.deleteItem a:link {color: #b52e8a; text-decoration: none;} 
+.deleteItem a:visited {color: #b52e8a; text-decoration: none;} 
+.deleteItem a:hover {color: #b52e8a; text-decoration: none;} 
+.deleteItem a:active {color: #b52e8a; text-decoration: none;} 
+.modifyItem{ color: #ae9224; } 
+.modifyItem a:link {color: #ae9224; text-decoration: none;} 
+.modifyItem a:visited {color: #ae9224; text-decoration: none;} 
+.modifyItem a:hover {color: #ae9224; text-decoration:none;} 
+.modifyItem a:active {color: #ae9224; text-decoration:  none;} 
+
+/* 1024 전체를 사용할 경우 by YJ 06.08.08 */
+
+div.tShadow_wide{
+	background-color: #efefef;
+	width:980px;
+	margin-left: 4px;
+}
+div.tShadowDivide_wide{
+	background-color: #efefef;
+	margin-bottom: 12px;
+	width:980px;
+	margin-left: 4px;
+}
+div.tShadowList_wide{
+	margin-top: 9px;
+	background-color: #efefef;
+	width:980px;
+	margin-left: 4px;
+}
+div.tShadowList-1_wide{
+	margin-top: 12px;
+	background-color: #efefef;
+	width:980px;
+	margin-left: 4px;
+}
+.table_wide{
+	position: relative;
+	top:-4px;
+	left:-4px;
+	border-collapse: collapse;
+	width:980px;
+	border:1px solid #cacaca;
+	font-size: 90%;
+}
+
+/* 통계 매트릭스 th */
+th.tRowMatrix{
+    background-color: #ffffd9;
+    border-bottom:1px solid #cbca77;
+    border-right:1px solid #cbca77;
+}
+th.tColMatrix{
+    background-color: #e1f1ff;
+    border-bottom:1px solid #8cc9ff;
+    border-right:1px solid #8cc9ff;
+}

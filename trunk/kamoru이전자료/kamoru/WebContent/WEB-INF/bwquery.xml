@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QueryList>
+	<Query ID="SELECT_MAP_MEMBER_LIST_BY_DEPT_ID" Description="부서ID로 임직원 map 정보 가져오기">
+		<![CDATA[
+			SELECT m.memberid, m.type, m.name, u.dept_id, u.dept_name, m.customid, m.latitude, 
+			       m.longitude, m.status, m.site, m.task, m.address, m.starttime, m.arrivaltime, m.dscpt
+			  FROM map_member m, sa.tb_userinfo u
+			 WHERE m.type = 'M'
+			   AND m.customid = u.user_id
+			   AND u.dept_id in (?, ?, ?, ?)
+			 ORDER BY u.dept_name, m.name
+   		]]>
+	</Query>
+	<Query ID="SELECT_MAP_CUSTOMER_LIST_ALL" Description="고객 map 정보 가져오기">
+		<![CDATA[
+			SELECT *
+			FROM   map_member
+			WHERE  type = 'C'
+   		]]>
+	</Query>
+	<Query ID="SELECT_MAP_MEMBER_BY_MEMBER_ID" Description="MemberID로 임직원 map 정보 가져오기">
+		<![CDATA[
+			SELECT m.memberid, m.type, m.name, u.dept_id, u.dept_name, m.customid, m.latitude, 
+			       m.longitude, m.status, m.site, m.task, m.address, m.starttime, m.arrivaltime, m.dscpt
+			  FROM map_member m, sa.tb_userinfo u
+			 WHERE m.type = 'M'
+			   AND m.customid = u.user_id
+			   AND m.memberid = ?
+			 ORDER BY u.dept_name, m.name
+   		]]>
+	</Query>
+</QueryList>		

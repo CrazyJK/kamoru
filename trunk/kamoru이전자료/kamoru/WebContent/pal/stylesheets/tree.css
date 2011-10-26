@@ -1,0 +1,88 @@
+/* PAL 스타일시트 - tree.css */
+
+#treemain { 
+    margin-left: -6px; 
+	font-family: tahoma, Dotum, "돋움", sans-serif;
+	font-size: 80%;
+} 
+
+#treemain ul { 
+    list-style: none; 
+    margin-left: 0; 
+} 
+
+#treemain ul li { 
+    margin-left: 14px; 
+}
+
+#procTree {
+	font-family: tahoma, Dotum, "돋움", sans-serif;
+	font-size: 80%;
+}
+
+#procTree ul {
+	list-style: none;
+    margin-left: 0;
+}
+
+#procTree ul li {
+	margin-left: 14px;
+}
+
+.haschild { 
+    background: url(/bizflow/pal/img/tree/vertline.gif) repeat-y 0 0; 
+} 
+
+.hasnochild1 { 
+    background: url(/bizflow/pal/img/tree/tree_tn.gif) no-repeat 0 0; 
+    padding-left: 11px; 
+} 
+
+.hasnochild2 { 
+    background: url(/bizflow/pal/img/tree/tree_ln.gif) no-repeat 0 0; 
+    padding-left: 11px; 
+} 
+
+.hasnochild3 { 
+    background: url(/bizflow/pal/img/tree/tree_an.gif) no-repeat 0 0; 
+    padding-left: 11px; 
+}
+.defspan, .treeMenu 
+{ 
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,굴림";
+	Overflow: auto;
+} 
+.SPAN a:link { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.SPAN a:active { font-family: "verdana,굴림"; font-size: 11px; color: #FF7200; text-decoration: none; }
+.SPAN a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.SPAN a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#FF7200; text-decoration:none;}
+
+A.CLR2_A 
+{ 
+	COLOR: Black;
+	TEXT-DECORATION: none;
+} 
+A.CLR2_A:hover 
+{ 
+	COLOR: Black;
+	TEXT-DECORATION: none;
+} 
+A.CLR2_A:visited 
+{ 
+	COLOR: Black;
+	TEXT-DECORATION: none;
+} 
+
+
+/* Tree Search 2006.04.13 by wslee */ 
+.treesearchbox { 
+    margin-left: 1px; 
+    width: 126px; 
+} 
+
+.treesearchbox2 { 
+    margin-left: 8px; 
+    width: 126px; 
+}

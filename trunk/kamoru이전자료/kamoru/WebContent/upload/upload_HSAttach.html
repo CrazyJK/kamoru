@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> Simple File Upload </title>
+<link rel="stylesheet" type="text/css" href="upload.css">
+<style type="text/css">
+#submitMessage {color:red;}
+</style>
+<script type="text/javascript">
+function jsSubmitCheck(){
+	var hsattach = document.forms[0].HSAttach;
+	var msg = document.getElementById("submitMessage");
+	var hsattachSize = 0;
+
+	//hsattach.getFilesCount()	
+	if(hsattach.AttachCount < 1){
+		msg.innerHTML = "장난하냐? 암것두 없잔아!";
+		setTimeout("clearMsg()",5*1000);
+		return false;
+	}
+
+	for(var i=0; i < hsattach.getFilesCount(); i++){
+		hsattachSize += hsattach.getFileSize(i);
+	}
+	// 1024*1024*1024 = 1073741824 
+	if(hsattachSize > 1073741824){
+		msg.innerHTML = "파일이 너무 커! 똑바로 해!!! 제한 1GB. 니껀 " + Math.round(hsattachSize/1024/1024/1024) + "GB";
+		return false;
+	}else{
+		msg.innerHTML = "보내는 중이니까 꼼짝말고 기다리라이~~~!";
+		return true;
+	}
+}
+
+function jsSubmit(){
+	if(jsSubmitCheck())
+		document.forms[0].HSAttach.DoPost();
+}
+
+function clearMsg(){
+	document.getElementById("submitMessage").innerHTML = "";
+}
+
+window.onload = function(){
+}
+</script>
+</head>
+<body>
+
+<fieldset>
+<legend>
+	[
+	<a href="javascript:void(0)" title="addButton"    onclick="document.forms[0].HSAttach.Attach();">첨부추가</a>
+	<a href="javascript:void(0)" title="removeButton" onclick="document.forms[0].HSAttach.Remove();">첨부제거</a>
+	][
+	<a href="javascript:void(0)" title="LargeIcon" onclick="document.forms[0].HSAttach.ViewStyle = 'LargeIcon'"/>LargeIcon</a>
+	<a href="javascript:void(0)" title="Simple"    onclick="document.forms[0].HSAttach.ViewStyle = 'Simple'   "/>Simple   </a>
+	<a href="javascript:void(0)" title="Detail"    onclick="document.forms[0].HSAttach.ViewStyle = 'Detail'   "/>Detail   </a>
+	]
+	<!-- display:none;
+	<INPUT TYPE="button" VALUE="Add" name="addButton"    onclick="document.forms[0].HSAttach.Attach();"/>
+	<INPUT TYPE="button" VALUE="Del" name="removeButton" onclick="document.forms[0].HSAttach.Remove();"/>
+
+	<input type="radio" name="ViewStyle2" value="LargeIcon" id="LargeIcon" onclick="document.forms[0].HSAttach.ViewStyle = this.value"/><label for="LargeIcon">Large</label>
+	<input type="radio" name="ViewStyle2" value="Simple"    id="Simple"    onclick="document.forms[0].HSAttach.ViewStyle = this.value"/><label for="Simple"   >Simple</label>
+	<input type="radio" name="ViewStyle2" value="Detail"    id="Detail"    onclick="document.forms[0].HSAttach.ViewStyle = this.value"/><label for="Detail"   >Detail</label>
+	<SELECT NAME="ViewStyle" onChange="document.forms[0].HSAttach.ViewStyle = this.value" style="display:none;">  
+		<OPTION VALUE="LargeIcon">Tiles
+		<OPTION VALUE="Simple">Icons
+		<OPTION VALUE="Detail">Details
+	</SELECT>
+	 -->
+</legend>
+<form method="get" name="f" action="upload2.jsp" enctype="multipart/form-data" onsubmit="return false;">
+<OBJECT ID="HSAttach" NAME="HSAttach" CLASSID="CLSID:205D1F4F-DB85-4393-AC6D-D3FF2434E37E" codebase="/activeX/hsattach.cab#version=1,0,2,5" width="100%" height="100%">
+	<PARAM NAME="FormName" VALUE="f">
+	<PARAM NAME="MaxAttachCount" VALUE=20>
+	<PARAM NAME="MaxAttachSize" VALUE=1073741824>
+	<PARAM NAME="AttachName" VALUE="ATT">
+	<PARAM NAME="ViewStyle" VALUE="Simple">
+	<PARAM NAME="BaseURL" VALUE="./">
+	<PARAM NAME="FileFilter" VALUE="all files|*.*|doc file(*.doc,*.hwd)|*.doc;*.hwd|image file(*.bmp,*.gif,*.jpg,*.tif)|*.bmp;*.gif;*.jpg;*.tif|">
+</OBJECT>
+
+<input type="button" onclick="jsSubmit()" value="Upload"/> <span id="submitMessage"/>
+
+</form>
+</fieldset>	
+
+</body>
+</html>

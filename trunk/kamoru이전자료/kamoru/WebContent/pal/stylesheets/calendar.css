@@ -1,0 +1,79 @@
+/* PAL 스타일시트 - calendar.css */
+
+div#Bt01_calendar{
+	width: 228px;
+	margin-bottom: 4px;
+	font-size: 90%;
+}
+.calendarHead{
+	background: #fda100 url("../img/calendar/head.jpg") no-repeat;
+	width:223px;
+	height: 21px;
+	font-size: 90%;
+  	text-align:center;
+	padding-top: 8px;
+	padding-bottom: 4px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #ffffff;
+}
+div#calendarBody{
+	background: url("../img/calendar/body.jpg") repeat-y;
+	width:223px;
+	font-size: 90%;
+	padding-top: 14px;
+}
+.calendarTable{
+	width:221px;
+	margin-left: 5px;
+	padding: 0;
+	border: 0px;
+}
+.calendarTable td{
+	border: 0px;
+	text-align: right;
+	padding-right: 4px;
+	padding-left:1px;
+	line-height:14px;
+}
+.calendarTable td#dotline{
+	background: url("../img/calendar/line_dot.gif") repeat-x;
+}
+.calendarTable td {
+	color: #666666;
+}
+.calendarTable td a{
+	color: #666666;
+}
+td.sunday {
+	color: #c64b14;
+}
+td.sunday a{
+	color: #c64b14;
+}
+td.othermonth {
+	color: #cccccc;
+}
+td.othermonth a{
+	color: #cccccc;
+}
+td.today {
+	color: #0066b6;
+	background: url("../img/calendar/bg_today.gif") no-repeat 9px 70%;
+	width: 25px;
+}
+td.today a{
+	color: #0066b6;
+}
+td.select {
+	color: #de7025;
+	background: url("../img/calendar/bg_select.gif") no-repeat 9px 70%;
+	width: 25px;
+}
+td.select a{
+	color: #de7025;
+}
+.calendarEnd{
+	background: url("../img/calendar/end.jpg") no-repeat;
+	width:223px;
+}

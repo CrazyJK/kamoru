@@ -1,0 +1,16 @@
+user bizflowg bpm0901
+bin
+cd /BPMNAS1/lgexbpm/bpmcheck
+get LGEBPM1Q_bizflowd.txt
+get LGEBPM1Q_bizflowg.txt
+get LGEBPM1Q_date.txt
+get LGEBPM1Q_df.txt
+get LGEBPM1Q_vmstat.txt
+get LGEBPM1Q_runhistory.txt
+get LGEBPM2Q_bizflowg.txt
+get LGEBPM2Q_date.txt
+get LGEBPM2Q_df.txt
+get LGEBPM2Q_vmstat.txt
+get LGEBPM2Q_runhistory.txt
+bye
+

@@ -1,0 +1,111 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%!
+//사이트에 맞게 수정
+final String uploadurl    = "/upload/";
+final String filedownpath = "E:\\temp";
+final int    maxfilesize  = 1024*1024*1024; //1Gb
+final String encoding     = "UTF-8";
+
+public java.util.ArrayList getMultiAttachFileInfo(com.oreilly.servlet.MultipartRequest multi){
+	java.util.Enumeration eeee = multi.getFileNames();
+	java.util.ArrayList infoList = new java.util.ArrayList();
+	while(eeee.hasMoreElements()){
+		infoList.add(getAttachFileInfo(multi,(String)eeee.nextElement()));
+	}
+	return infoList;
+}
+
+public String[] getAttachFileInfo(com.oreilly.servlet.MultipartRequest multi, String fileName){
+	
+	System.out.println("\tgetAttachFileInfo fileName=" + fileName);
+	
+	String       contentType      = null;
+	String       originalFileName = null;
+	String       filesystemName   = null;
+	java.io.File file             = null;
+	long         fileLength       = 0l;
+	String       filesize         = null;
+	String       lastModified     = null;
+	String       filepath         = null;
+	try{
+		contentType      = multi.getContentType(fileName);
+		originalFileName = multi.getOriginalFileName(fileName);		
+		filesystemName   = multi.getFilesystemName(fileName);		
+		file             = multi.getFile(fileName);		
+		fileLength       = file.length();		
+		filesize         = getFilesizeTxt(fileLength);		
+		lastModified     = new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new java.util.Date(file.lastModified()));		
+		filepath         = file.getPath().replaceAll(filesystemName, "");		
+	}catch(Exception e){
+	}
+	return new String[]{filesystemName, originalFileName, contentType, filepath, filesize, lastModified};
+}
+
+
+public String[] getFileInfo(java.io.File f){
+	String name = null;
+	String path = null;	
+	String size = null;	
+	String date = null;	
+	try{
+		name = f.getName();
+		path = f.getPath().replaceAll(name, "");
+		size = getKB(f.length()) + "KB";
+		date = new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new java.util.Date(f.lastModified()));
+	}catch(Exception e){
+	}
+	return new String[]{name, path, size, date};
+}
+public String getFilesizeTxt(long filesize){
+	if(filesize < 1024){
+		return filesize + "b";
+	}else if(filesize < 1024*1024l){
+		return Math.round(filesize/1024) + "Kb";
+	}else if(filesize < 1024*1024*1024l){
+		return Math.round(filesize/1024/1024) + "Mb";
+	}else if(filesize < 1024*1024*1024*1024l){
+		return Math.round(filesize*10l/1024l/1024l/1024l) / 10f + "Gb";
+	}else if(filesize < 1024*1024*1024*1024*1024l){
+		return Math.round(filesize*100l/1024/1024/1024/1024l) / 100f + "Tb";
+	}else{
+		return "unknown size [" + filesize + "]";
+	}
+}
+public static String getKB(long filesize){
+	if(filesize < 1024) // 1kb 이하
+	{
+		return "1";
+	}else// 1KB 이상
+	{
+		return commify(Math.round(filesize/1024));
+	}
+}
+public static String commify(int n){
+	java.text.DecimalFormat df = new java.text.DecimalFormat("#,##0");
+	return df.format(n);
+}
+public static String replaceAll(String strSour, String strFind, String strReplace)
+{
+    int iEnd = strSour.indexOf(strFind);
+    if(iEnd != -1)
+    {
+        int iStart = 0;
+        int iFindLen = strFind.length();
+        StringBuffer sbTemp = new StringBuffer();
+        for(; iEnd != -1; iEnd = strSour.indexOf(strFind, iStart))
+        {
+            sbTemp.append(strSour.substring(iStart, iEnd));
+            sbTemp.append(strReplace);
+            iStart = iEnd + iFindLen;
+        }
+
+        sbTemp.append(strSour.substring(iStart));
+        return sbTemp.toString();
+    } else
+    {
+        return strSour;
+    }
+}
+
+%>

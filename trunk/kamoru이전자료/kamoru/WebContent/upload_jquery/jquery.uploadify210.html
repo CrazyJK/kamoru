@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Uploadify Example Script</title>
+<link href="./css/default.css"   rel="stylesheet" type="text/css" />
+<link href="./css/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="./scripts/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="./scripts/swfobject.js"></script>
+<script type="text/javascript" src="./scripts/jquery.uploadify.v2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	var resultMsg = document.getElementById("resultMsg");
+	$("#uploadify").uploadify({
+		'uploader'       : 'scripts/uploadify.swf',
+		'script'         : 'jquery.uploadify.jsp',
+		'cancelImg'      : 'cancel.png',
+		'folder'         : 'uploads',
+		'queueID'        : 'fileQueue',
+		'fileName'       : 'Filedata',
+		'auto'           : false,
+		'multi'          : true,
+		'fileDesc'       : '모든 파일 선택(*.*)',
+		'fileExt'        : '*.*;',
+		'buttonImg'      : '',
+		'buttonText'     : 'Select Files',
+		'onComplete'     : function(event,queueID,fileObj,response,data){
+							   var html = "";
+							   html += "<fieldset>";
+							   html += "<legend>"+fileObj["name"]+" Complete</legend>";
+							   html += "<li>size : " + getKB(fileObj["size"]) + " KB<br/>";
+							   html += "<li>date : " + new Date(fileObj["modificationDate"]["time"]).toLocaleString() + "<br/>";
+							   html += "<li>Upload speed : " + commify(Math.round(data["speed"])) + "KB/s<br/>";
+							   html += "</fieldset>";
+								
+           			        	resultMsg.innerHTML = html + resultMsg.innerHTML;
+           			           /*
+						       for(var name in fileObj){
+							       var value = fileObj[name];
+							       if(name == 'modificationDate' || name == 'creationDate'){
+								       value = new Date(value["time"]).toLocaleString();
+							       }
+						    	   resultMsg.innerHTML += name + " : " + value + "<br/>";
+						       }
+						       resultMsg.innerHTML += "response" + " : " + response + "<br/>";
+						       for(var name in data){
+							       resultMsg.innerHTML += name + " : " + data[name] + "<br/>";
+							   }
+							   */
+						   },
+		'onAllComplete'  : function(event, data) {
+							   $('#uploadStart').hide();
+							   var html = "";
+								html += "<fieldset>";
+//           			           html += "<h2>onAllComplete</h2>";
+								html += "<legend><span style='font-weight:bold'>onAllComplete</span></legend>";
+						       for(var name in data){
+							       var value = data[name];
+							       if(name == "speed"){
+										value = commify(Math.round(value)) + "KB/s";
+							       }else if(name == "allBytesLoaded"){
+							    	   	value = getKB(value) + " KB"; 
+							       }
+							       html += "<li>" + name + " : " + value;
+							   }
+						        html += "</fieldset>";
+						       resultMsg.innerHTML = html + resultMsg.innerHTML;
+							   parent.filelistFrame.location.reload();
+						   },
+		'onError'        : function(event,queueID,fileObj,errorObj){
+								var html = "";
+								html += "<fieldset>";
+								html += "<legend>"+fileObj["name"]+" <span style='color:red'>Error</span></legend>";
+						        for(var name in errorObj){
+						    	   html += "<li>" + name + " : " + errorObj[name];
+							    }
+						        html += "</fieldset>";
+						        resultMsg.innerHTML = html + resultMsg.innerHTML;
+						   },
+		'onSelect'       : function(event,queueID,fileObj){
+								$('#uploadStart').show();
+						   }
+	});
+});
+
+function getKB(filesize){
+	if(filesize < 1024) // 1kb 이하
+	{
+		return "1";
+	}else// 1KB 이상
+	{
+		return commify(Math.round(filesize/1024));
+	}
+}
+function commify(n) {
+	  var reg = /(^[+-]?\d+)(\d{3})/;   // 정규식
+	  n += '';                          // 숫자를 문자열로 변환
+
+	  while (reg.test(n))
+	    n = n.replace(reg, '$1' + ',' + '$2');
+
+	  return n;
+}
+</script>
+</head>
+
+<body>
+<input type="file" name="uploadify" id="uploadify" />
+<input type="button" id="uploadStart" value="전송 시작" style="display:none;" onclick="$('#uploadify').uploadifyUpload();"/>
+<a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">Cancel All Uploads</a>
+<div id="fileQueue"></div>
+<div id="resultMsg"></div>
+</body>
+</html>

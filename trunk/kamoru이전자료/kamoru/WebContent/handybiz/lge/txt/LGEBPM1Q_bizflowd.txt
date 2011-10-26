@@ -1,0 +1,12 @@
+bizflowd  4973  2764  0 17:14:24 ?         0:00 ./hworaexe -c 2 -m 100 -t prod -s 7201 -p eaglepipe
+bizflowd  2761     1  0  Jul 26  ?         0:00 ./hworaexe -c 100 -m 200 -t bpmprod -s 7201
+bizflowd  2762  2761  0  Jul 26  ?         3:35 ./hworaexe -c 100 -m 200 -t bpmprod -s 7201
+bizflowd  2764     1  0  Jul 26  ?         0:00 ./hworaexe -c 2 -m 100 -t prod -s 7201 -p eaglepipe
+bizflowd  2758     1  0  Jul 26  ?         0:00 ./hworaexe -c 5 -m 100 -t bpmprod -s 7201 -p bizflowpipe
+bizflowd  2759  2758  0  Jul 26  ?         0:32 ./hworaexe -c 5 -m 100 -t bpmprod -s 7201 -p bizflowpipe
+bizflowd  2782     1  0  Jul 26  ?         0:00 ./hwqueuex -daemon -s 7201
+bizflowd  2783  2782  0  Jul 26  ?        23:52 ./hwqueuex -daemon -s 7201
+bizflowd  2779     1  0  Jul 26  ?         0:00 ./hwschd -s 7201 8201
+bizflowd  2780  2779  0  Jul 26  ?         1:31 ./hwschd -s 7201 8201
+bizflowd  2785     1  0  Jul 26  ?         0:00 ./hwserd -s 7201 -m 8201
+bizflowd  2786  2785  0  Jul 26  ?         1:29 ./hwserd -s 7201 -m 8201

@@ -1,0 +1,220 @@
+/* PAL 스타일시트 - pal_print.css */
+
+.bodyPrint{
+	margin-left: 15;
+	margin-right: 15;
+	margin-top: 9;
+	margin-bottom: 15;
+}
+.printTitle{
+	font-size: 12px;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	height: 18px;
+}
+.printTabTitle{
+	font-size: 12px;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	height: 18px;
+}
+.printSubTitle{
+	font-size: 11px;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.printTitleLine{
+	background-color: #000000;
+	height: 1px;
+}
+.tablePrint{
+    background-color: #000000;
+}
+.tablePrintHead{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+.tablePrintData{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+.diffTitle{
+	font-size: 12px;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	height: 18px;
+}
+.diffSubTitle{
+	font-size: 11px;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.tableDiff{
+    background-color: #000000;
+}
+.tableDiff1{
+    background-color: #000000;
+}
+.tableDiffHead{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+.tableDiffHead1{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+    border-bottom-style: double;
+}
+.tableDiffHead2{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+.tableDiffData{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+<!-- equals -->
+.tableDiffData0{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+<!-- modified -->
+.tableDiffData1{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: red;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+<!-- DIFF_ADDED -->
+.tableDiffData2{
+	font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: blue;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+<!-- deleted -->
+.tableDiffData3{
+    font-size: 11px;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: green;
+	height: 23px;
+	line-height: 16px;
+    word-break: break-all;
+}
+
+A.DIFF_0
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_0:hover
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_0:visited
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+
+A.DIFF_1
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_1:hover
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_1:visited
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+
+A.DIFF_2
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_2:hover
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_2:visited
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+
+A.DIFF_3
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_3:hover
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.DIFF_3:visited
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}

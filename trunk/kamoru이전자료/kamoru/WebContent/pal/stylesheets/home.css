@@ -1,0 +1,136 @@
+/* PAL 스타일시트 - home.css */
+
+body.home{
+	position: relative;
+	margin: 0 auto;			/* 상하여백 0 좌우여백 자동계산 */
+	padding: 12px 5px 12px;
+	font-size: small;
+}
+body.home div#right{
+	position: absolute;
+	top: 12px;
+	left: 506px;
+}
+body.home ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+body.home ul li{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 80%;
+}
+body.home li.more{
+	float: right;
+	margin-top: -16px;
+}
+body.home div.homeCont{
+	margin: 0;
+	padding: 4px 15px 15px 15px;
+}
+body.home table.homeTable{
+	width:493px;
+}
+body.home li.titleText{
+	text-indent: -5000px;	 /* 텍스트 타이틀 사용할 경우 삭제 */
+	margin: 0;
+	padding-left: 22px;
+	margin-top: -17px;
+	font-weight: bold;
+	color: #746457;
+	font-size: 90%;
+	line-height: 21px;
+}
+body.home div#noticeBox, div#processBox, div.contBox{
+	width: 493px;
+	margin-bottom: 10px;
+	padding: 0;
+}
+body.home div#noticeTitle, div#proTitle, div#mJob, div#mChange, div#mFavorite, div#mPart, div#mPermit, div#mModeling{
+	margin: 0;
+	padding: 20px 8px 2px 0px;
+	height: 5px;
+}
+body.home li.noticeText, li.proText, li.contText{
+	color:#7b6f5f;
+	vertical-align: middle;
+	line-height: 17px;
+}
+body.home li.noticeText a, li.proText a, li.contText a{
+	color:#7b6f5f;
+	padding-left: 15px;
+}
+body.home li.noticeText a:hover, li.proText a:hover, li.contText a:hover{
+	color:#fc7b20;
+}
+body.home div.homeCont table{
+	border-collapse: collapse;
+	width: 463px;
+	border: none;
+	margin-bottom: -10px;
+}
+body.home div.homeCont td{
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+body.home td.image{
+	width: 71px;
+	text-align: center;
+}
+/* 공지사항 */
+body.home div#noticeBox{
+	background: url("/bizflow/pal/img/home/noticeBottom.gif") no-repeat bottom left;
+}
+body.home div#noticeTitle{
+	background: url("/bizflow/pal/img/home/noticeTitle.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 noticeTitleBg.jpg로 수정 */
+}
+body.home li.noticeText{
+	background: #fff url("/bizflow/pal/img/home/noticeDot.gif") no-repeat 5px 50%;
+	border-bottom: 1px dotted #b8cf9a;
+	font-size: 90%;
+}
+/* 최근 공개된 프로세스 */
+body.home div#processBox{
+	background: url("/bizflow/pal/img/home/processBottom.gif") no-repeat bottom left;
+}
+body.home div#proTitle{
+	background: url("/bizflow/pal/img/home/processTitle.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 processTitleBg.jpg로 수정 */
+}
+body.home li.proText{
+	background: #fff url("/bizflow/pal/img/home/processDot.gif") no-repeat 5px 50%;
+	border-bottom: 1px dotted #9ab3ce;
+}
+/* Process Cont */
+body.home div.contBox{
+	background: url("/bizflow/pal/img/home/contBottom.gif") no-repeat bottom left;
+}
+body.home div#mChange{
+	background: url("/bizflow/pal/img/home/myChange.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 contTitleBg.jpg로 수정 */
+}
+body.home div#mFavorite{
+	background: url("/bizflow/pal/img/home/myFavorite.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 contTitleBg.jpg로 수정 */
+}
+body.home div#mJob{
+	background: url("/bizflow/pal/img/home/myJob.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 contTitleBg.jpg로 수정 */
+}
+body.home div#mModeling{
+	background: url("/bizflow/pal/img/home/myModeling.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 contTitleBg.jpg로 수정 */
+}
+body.home div#mPart{
+	background: url("../img/home/myPart.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 contTitleBg.jpg로 수정 */
+}
+body.home div#mPermit{
+	background: url("../img/home/myPermit.jpg") no-repeat top left; /* 텍스트 타이틀 사용할 경우 이미지를 contTitleBg.jpg로 수정 */
+}
+body.home li.contText{
+	background: #fff url("../img/home/contDot.gif") no-repeat 5px 50%;
+	border-bottom: 1px dotted #b4b4b4;
+}
+
+/* Show only to IE PC \*/
+* html .boxhead h2 {height: 1%;} /* For IE 5 PC */
+
+/* 참고사이트 http://www.vertexwerks.com/tests/sidebox/ */

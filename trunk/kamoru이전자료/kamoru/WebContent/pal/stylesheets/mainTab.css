@@ -1,0 +1,70 @@
+/* PAL 스타일시트 - mainTab.css */
+
+#mainTabs {
+	width:100%;
+	background-color:#fff;
+	font-size:80%;
+	border-bottom:1px solid #2f77a3;
+	font-weight:bold;
+	line-height: 14px;
+}
+#mainTabs ul {
+	width:781px;
+	margin:0;
+  	padding:5px 10px 0 0;
+  	list-style:none;
+}
+#mainTabs li {
+  	display:inline;
+  	margin:0;
+  	padding:0;
+}
+#mainTabs DD {
+  	float:left;
+  	background:url("/bizflow/pal/img/tab/tableft.gif") no-repeat left top;
+  	margin:0;
+  	padding:0 0 0 7px;
+  	text-decoration:none;
+}
+#mainTabs DD span {
+  	float:left;
+  	display:block;
+  	background:url("/bizflow/pal/img/tab/tabright.gif") no-repeat right top;
+  	padding:5px 17px 3px 8px;
+  	color:#000;
+}
+#mainTabs a {
+	color:#000;
+	text-decoration:none;
+}
+#mainTabs a:hover {
+  	color:#e0670c;
+}
+#mainTabs a:hover span {
+  	color:#FFF;
+}
+#mainTabs a:hover {
+  	background-position:0% -42px;
+}
+#mainTabs a:hover span {
+  	background-position:100% -42px;
+}
+#mainTabs #current DD {
+  	background-position:0% -42px;
+}
+#mainTabs #current a {
+  	color:#FFF;
+}
+#mainTabs #current a:hover {
+  	color:#e0670c;
+}
+#mainTabs #current DD span {
+  	background-position:100% -42px;
+ 	color:#FFF;
+}
+
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#mainTabs a span {
+	float:none;
+}
+/* End IE5-Mac hack */

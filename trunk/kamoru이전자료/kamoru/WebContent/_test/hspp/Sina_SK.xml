@@ -1,0 +1,1249 @@
+﻿<?xml version="1.0"?>
+<Window xmlns="http://www.chi-tai.info/BatteryStatus" custombg="-1" gesture="0"  imagesrc="..\..\MITs Store\Sina" version="1.0"  mode="2">
+<image left="0" top="0" src="bg\bg.jpg" height="750" width="480" />
+
+<Row rowtoggle="0" name="Top" itemselect="1" absolute="3">
+<!--	TOP_0	-->
+
+<!--  맨 위 줄 -->
+
+	<View height="60" selmode="2" animate="101"> 
+		
+<!-- 블루투스 --> <Item class="registry_tracker" ontap="DoN" onhold="ToggleBluetooth">
+			<image src="Main\bluetooth%d.png" left="0" top="0" />
+				<registry key_value="HKLM\System\State\Hardware\Bluetooth" mask="0x1" />
+		  </Item>
+
+
+
+<!-- 와이파이 --> <Item class="registry_tracker" ontap="DoN" onhold="ToggleWiFi">
+			<image src="Main\wifi%d.png" left="96" top="0" />
+				<registry key_value="HKLM\System\State\Hardware\MITs\wifi" mask="0x1" />
+   	          </Item>
+
+
+<!-- 싱크 -->     <Item class="registry_tracker" ontap="DoN" onhold="StartApp" path1="\Windows\시작 메뉴\프로그램\Activesync.lnk">
+			<image src="Main\sync%d.png" left="192" top="0" />
+				<registry key_value="HKLM\System\State\Hardware\Cradled" mask="0x1" />
+		</Item>
+
+
+<!-- 소리 -->	<Item class="registry_tracker" ontap="DoN"  onhold="StartApp" path1="BsSound.exe">
+			<image src="Main\vol%s.png" left="288" top="0" />
+				<registry key_value="HKCU\ControlPanel\Sounds\RingTone0\Sound"/>
+		</Item>
+
+
+<!-- 시계매니저 --> <Item class="registry_tracker" ontap="DoN" onhold="StartApp" path1="\Windows\TimeManager.exe">
+			<image src="Main\alarm%d.png" left="384" top="0" />
+				<registry key_value="HKLM\Software\Samsung\E_Today\IsAlarm" mask="0x1"/>
+		    </Item>	
+	</View>
+
+</Row>
+
+<Row rowtoggle="0" name="middle" itemselect="1" absolute="3">
+<!--	Middle_0	-->
+<!-- 중 간 화 면 -->
+
+	<View height="618" selmode="-2" animate="101">
+
+
+<!-- 배터리 --> <Item class="battery_meter" type="iconvalue" ontap="CtlPnl" index="3">
+			<image src="bg\batt.png" left="96" top="43" />
+			<label left="88" top="80" fontsize="22" width="100" height="24" align="center" color="ffffff" />
+		</Item>
+
+
+<!-- 메모리 -->	<Item class="memory_program" type="iconvalue" ontap="CtlPnl" index="4" onhold="StartApp" path1="\Windows\시작 메뉴\프로그램\freeup ram.lnk">
+			<image src="bg\ram.png" left="200" top="43" />
+			<label left="192" top="80" fontsize="22" width="100" height="24" align="center" color="ffffff" />
+		</Item>
+
+
+<!-- 스토리지 --> <Item class="memory_sdcard" type="iconvalue" ontap="CtlPnl" index="4" subindex="1">
+			<image src="bg\stor.png" left="304" top="43" />
+			<label left="296" top="80" fontsize="22" width="100" height="24" align="center" color="ffffff" />
+		</Item>
+
+
+
+<!-- 메인화면중앙 -->
+
+<!-- 3단분리선 -->	<image left="0" top="150" src="Main\m_line.png" />
+
+<!-- Clock -->	<Item class="space" ontap="StartApp" path="\Windows\TimeManager.exe" onhold="DoN">
+			<image src="icon_clock.png" left="10" top="190" />
+		</Item>
+		
+<!-- Weather -->	<Item class="space" ontap="View" index="1" subindex="7" onhold="DoN">
+			<image src="icon_weather.png" left="188" top="190" />
+		</Item>
+
+
+<!-- Calendar -->	<Item class="space" ontap="View" index="1" subindex="9" onhold="DoN">
+			<image src="icon_calendar.png" left="364" top="190" />
+		</Item>
+
+
+<!-- 시계 -->	<Item class="clock_digit" ontap="DoN" onhold="DoN">
+			<image left="10" top="220" />
+		</Item>
+		<Item class="clock_digit" ontap="DoN" onhold="DoN">
+			<image left="34" top="220" />
+		</Item>
+		<Item class="clock_seperator" ontap="DoN" onhold="DoN">
+			<image left="59" top="215" />
+		</Item>
+		<Item class="clock_digit" ontap="DoN" onhold="DoN">
+				<image left="70" top="220" />
+		</Item>
+		<Item class="clock_digit" ontap="DoN" onhold="DoN">
+			<image left="94" top="220" />
+		</Item>
+		<Item class="clock_apm" ontap="DoN" onhold="DoN">
+			<image left="34" top="180" />
+		</Item>
+
+
+
+
+
+<!-- 날씨 -->	<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="오늘" left="236" top="180" fontsize="26" width="100" height="28" color="FFFFFF" align="center" />
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" left="236" top="212" fontsize="56" width="120" height="62" color="FFFFFF" align="center">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0최고기온" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="View" index="1" subindex="7">
+			<image src="Weather\%s.png" left="132" top="162" width="124" height="124"/>
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0날씨이미지" />
+		</Item>
+
+
+
+<!-- 달력 -->	<Item class="date" ontap="DoN" onhold="DoN">
+			<label text="dddd" left="338" top="180" fontsize="26" width="150" height="28" color="FFFFFF" align="center" />
+		</Item>
+		<Item class="date" ontap="DoN" onhold="DoN">
+			<label text="dd" left="340" top="212" fontsize="56" width="150" height="62" color="FFFFFF" align="center" />
+		</Item>
+		<Item  class="registry_tracker" ontap="DoN" onhold="DoN">
+			<image src="Main\leave%d.png" left="40" top="480" />
+				<label text="%d" suppress0="1" fontsize="28" left="76" top="488" width="50" height="30" bold="2" align="center" color="ffffff">
+					<registry key_value="HKCU\System\State\Phone\Missed Call Count" />
+				</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+			<image src="Main\leave%d.png" left="180" top="480" />
+				<label text="%d" suppress0="1" fontsize="28" left="216" top="488" width="50" height="30" bold="2" align="center" color="ffffff">
+					<registry key_value="HKLM\System\State\Messages\SMS\Unread\Count" />
+				</label>
+		</Item>
+		<Item  class="registry_tracker" ontap="DoN" onhold="DoN">
+			<image src="Main\leave%d.png" left="320" top="480" />
+				<label text="%d" suppress0="1" fontsize="28" left="356" top="488" width="50" height="30" bold="2" align="center" color="ffffff">
+					<registry key_value="HKCU\System\State\Messages\OtherEmail\Unread\Count" />
+				</label>
+		</Item>
+
+
+<!-- 뉴스 -->  <image left="15" top="343" src="Main\m_line2.png" height="158" />  
+		 <Item class="space" type="value" ontap="DoN" onhold="DoN">
+		<label text="News" fontsize="30" left="15" top="360" width="100" height="48" valign="top" format="wordbreak"/>
+		</Item>
+
+                <Item class="registry_tracker" absolute="3" ontap="View" index="1" subindex="10" onhold="DoN">
+	   	
+			<label text="%s" suppress0="1" left="99" top="362" width="390" height="25" fontsize="23" bold="1" align="left" valign="center" color="FFFFFF">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title01" />
+
+		 	</label>
+
+
+		</Item>
+
+              		<Item class="registry_tracker" absolute="3"  ontap="View" index="1" subindex="10" onhold="DoN">
+	
+			<label text="%s" suppress0="1" left="99" top="392" width="390" height="25" fontsize="23" bold="1" align="left" valign="center" color="FFFFFF">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title02" />
+		 	</label>
+		</Item>
+		
+		<Item class="registry_tracker" absolute="3"  ontap="View" index="1" subindex="10" onhold="DoN">
+	
+		  <label text="%s" suppress0="1" left="99" top="422" width="390" height="25" fontsize="23" bold="1" align="left" valign="center" color="FFFFFF">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title03" />
+		  </label>
+		</Item>
+		<Item class="registry_tracker" absolute="3"  ontap="View" index="1" subindex="10" onhold="DoN">
+
+		  <label text="%s" suppress0="1" left="99" top="452" width="390" height="25" fontsize="23" bold="1" align="left" valign="center" color="FFFFFF">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title04" />
+		  </label>
+		</Item>
+
+
+
+
+
+<!-- 아래쪽 탭바 -->
+		
+
+<!-- PHONE --> <image src="bg\tabbar.jpg" left="0" top="540" height="62" width="480" />
+		<Item  class="registry_tracker" ontap="DoN" onhold="PhoneMissed" >
+			<image src="Main\phone%d.png" left="40" top="540" />
+			<imagealt src="Main\phone-1.png" left="40" top="540" />
+				<registry key_value="HKCU\System\State\Phone\Missed Call Count" />
+			</Item>
+
+
+
+<!-- message --> <Item class="registry_tracker" ontap="DoN" onhold="StartApp" path1="\Windows\MMSC.exe" >
+			<image src="Main\message%d.png" left="180" top="540" />
+			<imagealt src="Main\message-1.png" left="180" top="540" />
+				<registry key_value="HKLM\System\State\Messages\SMS\Unread\Count" />
+		</Item>
+
+
+
+<!-- Email -->	<Item class="registry_tracker" ontap="DoN" onhold="StartApp" path1="\Windows\tmail.exe" >
+			<image src="Main\email%d.png" left="320" top="540" />
+			<imagealt src="Main\email-1.png" left="320" top="540" />
+				<registry key_value="HKCU\System\State\Messages\OtherEmail\Unread\Count" />
+		</Item>
+                
+	</View>
+
+
+
+
+<!--	Apps_1	-->
+	<View height="618" selmode="-2" animate="101">
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\pword.exe">
+			<image src="Program\Notebooks.png" left="20" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Word" fontsize="22" left="16" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\ppt.exe" >
+			<image src="Program\Cooliris-White.png" left="140" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="PowerPoint" fontsize="22" left="136" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\pxl.exe">
+			<image src="Program\cash.png" left="260" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Excel" fontsize="22" left="256" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\시작 메뉴\프로그램\opera browser.lnk" >
+			<image src="Program\opera.png" left="380" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Opera" fontsize="22" left="376" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\PowerDic2_V1\PowerDic.exe" >
+			<image src="Program\dic.png" left="20" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Dic" fontsize="22" left="16" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\infTranslator\infTranslator.exe">
+			<image src="Program\Finder.png" left="140" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Transfer" fontsize="22" left="136" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\DioHanDic\DioHanDic.exe" >
+			<image src="Program\handic.png" left="260" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="HanDic" fontsize="22" left="256" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+
+
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\시작 메뉴\프로그램\계산기.lnk">
+			<image src="Program\calculator.png" left="380" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Calculator" fontsize="22" left="376" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\Smart Memo\SmartMemo.exe" >
+			<image src="Program\memo.png" left="20" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Memo" fontsize="22" left="16" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\Vice\Vice.exe" >
+			<image src="Program\Stanza.png" left="140" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="E-Book" fontsize="22" left="136" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\JungUM\JungUMPPC.exe" >
+			<image src="Program\iStudent.png" left="260" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Jungum" fontsize="22" left="256" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\Resco Explorer\Explorer.exe" >
+			<image src="Program\resco.png" left="380" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Resco" fontsize="22" left="376" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<image left="0" top="540" src="bg\tabbar.jpg" height="62" width="480" />
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Program\apps_on.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="2">
+			<image src="Program\media.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="3">
+			<image src="Program\games.png" left="320" top="540" />
+		</Item>
+	</View>
+
+<!--	Media_2	-->
+	<View height="618" selmode="-2" animate="101">
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\caload.exe" >
+			<image src="Program\dmb.png" left="20" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="DMB" fontsize="22" left="16" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\TouchPlayer.exe" >
+			<image src="Program\touch.png" left="140" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Player" fontsize="22" left="136" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\Camera.exe" >
+			<image src="Program\camera.png" left="260" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Camera" fontsize="22" left="256" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\Program Files\S2v\S2v.exe" >
+			<image src="Program\poto.png" left="380" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Photo" fontsize="22" left="376" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\SubWay\SubWay.exe" >
+			<image src="Program\subway.png" left="20" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Subway" fontsize="22" left="16" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\Google Navigator\Navigator.exe" >
+			<image src="Program\navi.png" left="140" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="GooNavi" fontsize="22" left="136" top="295" width="100" height="48" align="center" valign="top" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\SmartConverter\SmartConverter.exe" >
+			<image src="Program\Converter.png" left="260" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Converter" fontsize="22" left="256" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+
+                <Item class="space" ontap="DoN" onhold="StartApp" path1="\windows\worldmap.exe" >
+			<image src="Program\Safari.png" left="380" top="200" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="WorldMap" fontsize="22" left="376" top="295" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\TorchButton\TorchButton.exe" >
+			<image src="Program\sktools.png" left="20" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Lantern" fontsize="22" left="16" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\windows\ums.exe" >
+			<image src="Program\Disk-Yellow.png" left="140" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="USB" fontsize="22" left="136" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\mymits\tomnia tuner\tomniatuner.exe" >
+			<image src="Program\Settings.png" left="260" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="T*Tuner" fontsize="22" left="256" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\windows\anycallas.exe" >
+			<image src="Program\MedRef.png" left="380" top="350" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="A/S" fontsize="22" left="376" top="445" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+		<image left="0" top="540" src="bg\tabbar.jpg" height="62" width="480" />
+		<Item class="space" ontap="View" index="1" subindex="1">
+			<image src="Program\apps.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Program\media_on.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="3">
+			<image src="Program\games.png" left="320" top="540" />
+		</Item>
+	</View>
+
+<!--	Games_3	-->
+	<View height="618" selmode="-2" animate="101">
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Games\sudoku\sudokuwm.exe" >
+			<image src="Program\Sudoku.png" left="20" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Sudoku" fontsize="22" left="16" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>	
+
+                <Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Games\Dice\Dice.exe" >
+			<image src="Program\dice.png" left="140" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Dice" fontsize="22" left="136" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+
+		<Item class="space" ontap="DoN" onhold="StartApp" path1="\MITs Store\Program Files\omniano the band\omniano.exe">
+			<image src="Program\Pianist.png" left="260" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Piano" fontsize="22" left="256" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+
+                <Item class="space" ontap="DoN" onhold="StartApp" path1="\Windows\시작 메뉴\프로그램\게임\카드놀이.lnk" >
+			<image src="Program\card.png" left="380" top="50" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+			<label text="Card" fontsize="22" left="376" top="145" width="100" height="48" align="center" valign="top" format="wordbreak"/>
+		</Item>
+
+
+
+
+
+
+		<image left="0" top="540" src="bg\tabbar.jpg" height="62" width="480" />
+		<Item class="space" ontap="View" index="1" subindex="1">
+			<image src="Program\apps.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="2">
+			<image src="Program\media.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Program\games_on.png" left="320" top="540" />
+		</Item>
+	</View>
+
+<!--	Contact_4	-->
+<!-- Friend -->
+
+	<View height="618" selmode="-2" animate="101">
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont1.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont1.lnk&quot;">
+			<image src="Contact\Cont1.png" left="24" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="조성호" fontsize="22" left="26" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\1\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont2.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont2.lnk&quot;">
+			<image src="Contact\Cont2.png" left="140" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="이관형" fontsize="22" left="142" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\2\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont3.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont3.lnk&quot;">
+			<image src="Contact\Cont3.png" left="256" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="박기섭" fontsize="22" left="258" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\3\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont4.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont4.lnk&quot;">
+			<image src="Contact\Cont4.png" left="372" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="전준표" fontsize="22" left="374" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\4\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont5.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont5.lnk&quot;">
+			<image src="Contact\Cont5.png" left="24" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="26" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\5\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont6.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont6.lnk&quot;">
+			<image src="Contact\Cont6.png" left="140" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="142" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\6\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont7.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont7.lnk&quot;">
+			<image src="Contact\Cont7.png" left="256" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="258" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\7\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont8.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont8.lnk&quot;">
+			<image src="Contact\Cont8.png" left="372" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="374" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\8\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont9.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont9.lnk&quot;">
+			<image src="Contact\Cont9.png" left="24" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="26" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\9\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont10.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont10.lnk&quot;">
+			<image src="Contact\Cont10.png" left="140" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="142" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\10\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont11.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont11.lnk&quot;">
+			<image src="Contact\Cont11.png" left="256" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="258" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\11\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont12.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont12.lnk&quot;">
+			<image src="Contact\Cont12.png" left="372" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="374" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\12\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="20" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="136" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="252" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="368" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="20" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="136" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="252" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="368" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="20" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="136" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Contact\contact_line.png" left="252" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+			<image src="Contact\contact_line.png" left="368" top="350" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="Script\DelContact.mscr" onhold="DoN">
+			<image src="delate.png" left="204" top="486"/>
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" height="62" width="480" />
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Contact\friend_on.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="5">
+			<image src="Contact\company.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="6">
+			<image src="Contact\family.png" left="320" top="540" />
+		</Item>
+	</View>
+
+<!--	Contact_5	-->
+<!-- Company -->
+
+
+	<View height="618" selmode="-2" animate="101">
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont13.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont13.lnk&quot;">
+			<image src="Contact\Cont13.png" left="24" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="박현주" fontsize="22" left="26" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\13\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont14.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont14.lnk&quot;">
+			<image src="Contact\Cont14.png" left="140" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="박남철" fontsize="22" left="142" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\14\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont15.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont15.lnk&quot;">
+			<image src="Contact\Cont15.png" left="256" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="배강연" fontsize="22" left="258" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\15\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont16.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont16.lnk&quot;">
+			<image src="Contact\Cont16.png" left="372" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="김태규" fontsize="22" left="374" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\16\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont17.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont17.lnk&quot;">
+			<image src="Contact\Cont17.png" left="24" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="성백완" fontsize="22" left="26" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\17\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont18.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont18.lnk&quot;">
+			<image src="Contact\Cont18.png" left="140" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="박노연" fontsize="22" left="142" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\18\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont19.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont19.lnk&quot;">
+			<image src="Contact\Cont19.png" left="256" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="홍정수" fontsize="22" left="258" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\19\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont20.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont20.lnk&quot;">
+			<image src="Contact\Cont20.png" left="372" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="황지섭" fontsize="22" left="374" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\20\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont21.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont21.lnk&quot;">
+			<image src="Contact\Cont21.png" left="24" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="김수진" fontsize="22" left="26" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\21\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont22.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont22.lnk&quot;">
+			<image src="Contact\Cont22.png" left="140" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="장응주" fontsize="22" left="142" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\22\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont23.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont23.lnk&quot;">
+			<image src="Contact\Cont23.png" left="256" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="문동환" fontsize="22" left="258" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\23\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont24.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont24.lnk&quot;">
+			<image src="Contact\Cont24.png" left="372" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="조규장" fontsize="22" left="374" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\24\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="20" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="136" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="252" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="368" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="20" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="136" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="252" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="368" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="20" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="136" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+		<image src="Contact\contact_line.png" left="252" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="368" top="350" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="Script\DelContact.mscr" onhold="DoN">
+			<image src="delate.png" left="204" top="486"/>
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" height="62" width="480" />
+		<Item class="space" ontap="View" index="1" subindex="4">
+			<image src="Contact\friend.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Contact\company_on.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="6">
+			<image src="Contact\family.png" left="320" top="540" />
+		</Item>
+	</View>
+
+<!--	Contact_6	-->
+<!-- Family -->
+
+
+	<View height="618" selmode="-2" animate="101">
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont25.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont25.lnk&quot;">
+			<image src="Contact\Cont25.png" left="24" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="26" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\25\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont26.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont26.lnk&quot;">
+			<image src="Contact\Cont26.png" left="140" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="142" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\26\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont27.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont27.lnk&quot;">
+			<image src="Contact\Cont27.png" left="256" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="종현" fontsize="22" left="258" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\27\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont28.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont28.lnk&quot;">
+			<image src="Contact\Cont28.png" left="372" top="54" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="제수씨" fontsize="22" left="374" top="150" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\28\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont29.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont29.lnk&quot;">
+			<image src="Contact\Cont29.png" left="24" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="26" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\29\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont30.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont30.lnk&quot;">
+			<image src="Contact\Cont30.png" left="140" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="142" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\30\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont31.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont31.lnk&quot;">
+			<image src="Contact\Cont31.png" left="256" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="258" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\31\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont32.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont32.lnk&quot;">
+			<image src="Contact\Cont32.png" left="372" top="204" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="374" top="300" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\32\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont33.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont33.lnk&quot;">
+			<image src="Contact\Cont33.png" left="24" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="26" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\33\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont34.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont34.lnk&quot;">
+			<image src="Contact\Cont34.png" left="140" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="142" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\34\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont35.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont35.lnk&quot;">
+			<image src="Contact\Cont35.png" left="256" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="258" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\35\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmCall.mscr&quot; target=&quot;cont36.lnk&quot;" onhold="StartApp" path1="\Program Files\MortScript\MortScript.exe ::&quot;\MITs Store\Sina\Script\ConfirmMSG.mscr&quot; target=&quot;cont36.lnk&quot;">
+			<image src="Contact\Cont36.png" left="372" top="354" width="86" height="86"/>
+		</Item>
+		<Item class="registry_tracker" type="value" ontap="DoN" onhold="DoN">
+		    <label text="%s" fontsize="22" left="374" top="450" width="80" height="46" align="center" valign="top" format="wordbreak">
+				<registry key_value="HKLM\SOFTWARE\Microsoft\Today\Items\HomeScreen PlusPlus\Cont\36\name"/>
+			</label>
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="20" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="136" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="252" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="368" top="50" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="20" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="136" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="252" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="368" top="200" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="20" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="136" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+		<image src="Contact\contact_line.png" left="252" top="350" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN" >
+		<image src="Contact\contact_line.png" left="368" top="350" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="Script\DelContact.mscr" onhold="DoN">
+			<image src="delate.png" left="204" top="486"/>
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" height="62" width="480" />
+		<Item class="space" ontap="View" index="1" subindex="4">
+			<image src="Contact\friend.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="5">
+			<image src="Contact\company.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Contact\family_on.png" left="320" top="540" />
+		</Item>
+	</View>	
+
+<!--	Weather_7	-->
+<!-- 날씨 페이지 -->
+
+	<View height="618" selmode="-2" animate="101">
+		<Item class="registry_tracker" ontap="DoN" >
+			<image src="Weather\%s.png" left="40" top="40" width="128" height="128"/>
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0날씨이미지" />
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="오늘 (%s)" fontsize="26" left="250" top="52" width="150" height="26" bold="1" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0요일" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="250" top="88" width="300" height="26" bold="1" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0날씨" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="404" top="124" width="100" height="26" bold="1" color="007EFF" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0최고기온" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="304" top="124" width="100" height="26" bold="1" color="FFB400" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day0최저기온" />
+			</label>
+		</Item>
+		
+		<Item class="registry_tracker" ontap="DoN" >
+			<image src="Weather\%s.png" left="40" top="210" width="128" height="128" />
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day1날씨이미지" />
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="내일 (%s)" fontsize="26" left="250" top="222" width="150" height="26" bold="1" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day1요일" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="250" top="258" width="300" height="26" bold="1" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day1날씨" />
+			</label>
+		</Item>
+		
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="404" top="294" width="100" height="26" bold="1" color="007EFF" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day1최고기온" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="304" top="294" width="100" height="26" bold="1" color="FFB400" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day1최저기온" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" >
+			<image src="Weather\%s.png" left="40" top="380" width="128" height="128" />
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day2날씨이미지" />
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="모레 (%s)" fontsize="26" left="250" top="392" width="150" height="26" bold="1" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day2요일" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="250" top="428" width="300" height="26" bold="1" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day2날씨" />
+			</label>
+		</Item>
+		
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="404" top="464" width="100" height="26" bold="1" color="007EFF" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day2최고기온" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+       		<label text="%s" fontsize="26" left="304" top="464" width="100" height="26" bold="1" color="FFB400" align="left" valign="top">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day2최저기온" />
+			</label>
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="최고:" fontsize="26" left="346" top="124" width="50" height="26" color="ffffff" align="left" valign="top" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="최저:" fontsize="26" left="250" top="124" width="50" height="26" color="ffffff" align="left" valign="top" />
+		</Item>
+	
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="최고:" fontsize="26" left="346" top="294" width="50" height="26" color="ffffff" align="left" valign="top" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="최저:" fontsize="26" left="250" top="294" width="50" height="26" color="ffffff" align="left" valign="top" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="최고:" fontsize="26" left="346" top="464" width="50" height="26" color="ffffff" align="left" valign="top" />
+		</Item>
+		<Item class="space" type="value" ontap="DoN" onhold="DoN">
+       		<label text="최저:" fontsize="26" left="250" top="464" width="50" height="26" color="ffffff" align="left" valign="top" />
+		</Item>
+		<image src="w_line.png" left="0" top="180" />
+		<image src="w_line.png" left="0" top="350" />
+		<image src="bg\tabbar.jpg" left="0" top="540" width="480" height="62" />
+		<Item class="space" ontap="StartApp" path="Widget\Widget-W-N.mscr" onhold="DoN">
+			<image src="Widget\widgetupdate.png" left="140" top="540" />
+			<imagealt src="Widget\widgetupdate-1.png" left="140" top="540" />
+		</Item>
+	</View>
+
+<!--	System_8	-->
+	<View height="618" selmode="-2" animate="101">
+		<image left="0" top="130" src="w_line.png" />
+		<image left="0" top="260" src="w_line.png" />
+		<image left="0" top="390" src="w_line.png" />
+		<Item class="space" ontap="StartApp" path="\Windows\extconnect.exe" onhold="DoN">
+			<image src="System\usb.png" left="46" top="40" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="\windows\ctlpnl.exe :: \Windows\seccplmain.cpl,8" onhold="DoN">
+			<image src="System\light.png" left="266" top="40" />
+		</Item>
+		<Item class="space" ontap="CtlPnl" index="20" subindex="0" onhold="DoN">
+			<image src="System\ring.png" left="46" top="170" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Windows\R2VS_Effect_Control_Panel.exe" onhold="DoN">
+			<image src="System\dnse.png" left="266" top="170" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="\windows\ctlpnl.exe :: \Windows\seccplmain.cpl,4" onhold="DoN">
+			<image src="System\xtra.png" left="46" top="300" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="\windows\taskmgr.exe" onhold="DoN">
+			<image src="System\taskmgr.png" left="266" top="300" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="\windows\ctlpnl.exe :: \Windows\cplmain.cpl,10,0" onhold="DoN">
+			<image src="System\uninstall.png" left="46" top="430" />
+		</Item>
+		<Item class="space" ontap="SoftReset" onhold="DoN">
+			<image src="System\softreset.png" left="266" top="430" />
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" width="480" height="62" />
+		<Item class="space" ontap="StartApp" path="\Windows\favoritesettings.exe" onhold="DoN">
+			<image src="System\fs.png" left="140" top="540" />
+			<imagealt src="System\fs-1.png" left="140" top="540" />
+		</Item>
+	</View>
+
+<!--	Agenda_9	-->
+	<View height="618" selmode="-2" animate="101">
+		<image src="bg\tabbar.jpg" left="0" top="540" height="62" width="480" />
+		<Item class="tPlug" title="&quot;TodayAgenda&quot;" unload="0" cachebg="1" gesture="0" >
+			<label left="10" top="30" width="460" height="500" align="left" valign="top" />
+		</Item>
+		<Item class="space" ontap="StartApp" path="\Windows\시작 메뉴\프로그램\일정.lnk" onhold="DoN">
+			<image src="sche.png" left="180" top="540"/>
+		</Item>
+	</View>
+<!--	News_10	-->
+<!-- 뉴스 1페이지 -->
+
+
+	<View height="618" selmode="-2" animate="101">
+		<image src="news_line.png" left="0" top="166" />
+		<image src="news_line.png" left="0" top="254" />
+		<image src="news_line.png" left="0" top="342" />
+		<image src="news_line.png" left="0" top="430" />
+		<Item class="space" ontap="StartApp" path="Widget\Widget-W-N.mscr" onhold="DoN">
+			<image src="Widget\news.png" left="16" top="14" />
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent1.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="100" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title01" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent2.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="188" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title02" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent3.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="276" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title03" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent4.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="364" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title04" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent5.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="452" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title05" />
+			</label>
+		</Item>
+
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\News-refresh.mscr" onhold="DoN">
+			<label text="%s" fontsize="24" left="164" top="34" width="200" height="30" color="FFB400" align="left" >
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Update" />
+			</label>
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" width="480" height="62" />
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Widget\page1_on.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="11" onhold="DoN">
+			<image src="Widget\page2.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="12" onhold="DoN">
+			<image src="Widget\page3.png" left="320" top="540" />
+		</Item>	
+	</View>
+
+<!--	News_11	-->
+<!-- 뉴스 2페이지 -->
+
+	<View height="618" selmode="-2" animate="101">
+		
+		<image src="news_line.png" left="0" top="166" />
+		<image src="news_line.png" left="0" top="254" />
+		<image src="news_line.png" left="0" top="342" />
+		<image src="news_line.png" left="0" top="430" />
+		<Item class="space" ontap="StartApp" path="Widget\Widget-W-N.mscr" onhold="DoN">
+			<image src="Widget\news.png" left="16" top="14" />
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent6.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="100" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title06" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent7.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="188" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title07" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent8.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="276" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title08" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent9.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="364" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title09" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent10.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="452" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title10" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\News-refresh.mscr" onhold="DoN">
+			<label text="%s" fontsize="24" left="164" top="34" width="200" height="30" color="FFB400" align="left" >
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Update" />
+			</label>
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" width="480" height="62" />
+		<Item class="space" ontap="View" index="1" subindex="10" onhold="DoN">
+			<image src="Widget\page1.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Widget\page2_on.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="12" onhold="DoN">
+			<image src="Widget\page3.png" left="320" top="540" />
+		</Item>
+	</View>
+
+<!--	News_12	-->
+<!-- 뉴스 3페이지 -->
+
+	<View height="618" selmode="-2" animate="101">
+		<image src="news_line.png" left="0" top="166" />
+		<image src="news_line.png" left="0" top="254" />
+		<image src="news_line.png" left="0" top="342" />
+		<image src="news_line.png" left="0" top="430" />
+		<Item class="space" ontap="StartApp" path="Widget\Widget-W-N.mscr" onhold="DoN">
+			<image src="Widget\news.png" left="16" top="14" />
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent11.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="100" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title11" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent12.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="188" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title12" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent13.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="276" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title13" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent14.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="364" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title14" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\Widget-Newscontent15.mscr" onhold="DoN">
+			<label text="%s" fontsize="26" left="30" top="452" width="450" height="56" align="left" valign="top" format="wordbreak">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Title15" />
+			</label>
+		</Item>
+		<Item class="registry_tracker" ontap="StartApp" path="Widget\News-refresh.mscr" onhold="DoN">
+			<label text="%s" fontsize="24" left="164" top="34" width="200" height="30" color="FFB400" align="left" >
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Update" />
+			</label>
+		</Item>
+		<image src="bg\tabbar.jpg" left="0" top="540" width="480" height="62" />
+		<Item class="space" ontap="View" index="1" subindex="10" onhold="DoN">
+			<image src="Widget\page1.png" left="40" top="540" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="11" onhold="DoN">
+			<image src="Widget\page2.png" left="180" top="540" />
+		</Item>
+		<Item class="space" ontap="DoN" onhold="DoN">
+			<image src="Widget\page3_on.png" left="320" top="540" />
+		</Item>
+	</View>
+
+</Row>
+
+
+<!--	bottom_0	-->
+<!-- 맨아래줄 -->
+
+
+<Row rowtoggle="0" name="bottom" itemselect="3" absolute="3">
+
+
+	<View height="68" selmode="2" animate="101">
+		<Item class="space" ontap="View" index="1" subindex="0">
+			<image src="Main\home.png" left="0" top="0" />
+			<imagealt src="Main\home-1.png" left="0" top="5" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="1" onhold="StartApp" path1="\windows\SamsungPrograms.exe">
+			<image src="Main\apps.png" left="96" top="0" />
+			<imagealt src="Main\apps-1.png" left="96" top="5" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="4" onhold="StartApp" path1="\Windows\IPhoneBook.exe">
+			<image src="Main\contact.png" left="192" top="0" />
+			<imagealt src="Main\contact-1.png" left="192" top="5" />
+		</Item>
+		<Item class="space" ontap="View" index="1" subindex="8" onhold="StartApp" path1="\Windows\ControlPanel.exe">
+			<image src="Main\settings.png" left="288" top="0" />
+			<imagealt src="Main\settings-1.png" left="288" top="5" />
+		</Item>
+		<Item class="space" onhold="StartApp" path1="Script\Poweroff.mscr">
+			<image src="Main\power.png" left="384" top="0" />
+			<imagealt src="Main\power-1.png" left="384" top="5" />
+		</Item>
+	</View>
+
+</Row>
+</Window>

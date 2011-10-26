@@ -1,0 +1,6 @@
+action list
+	1. 선택한 tag & 검색어에 대한 리스팅	- list
+	2. 선택한 게시물에 대한 view			- view
+	3. 새 게시물 저장 & 새 tag 추가		- write
+	4. 게시물 수정/삭제					- edit/delete
+	

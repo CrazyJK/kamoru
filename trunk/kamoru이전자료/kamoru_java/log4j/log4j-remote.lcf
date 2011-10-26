@@ -1,0 +1,45 @@
+# log level WARN - INFO - WARN - ERROR - FATAL 
+log4j.debug=false
+log4j.rootLogger=DEBUG, A0, A1
+log4j.appender.A0=org.apache.log4j.ConsoleAppender
+log4j.appender.A0.layout=org.apache.log4j.PatternLayout
+log4j.appender.A0.layout.ConversionPattern=%5p [%d{kk:mm:ss}] (%F:%L) - %m%n
+###########################################################
+# RemoteAgent.log
+###########################################################
+log4j.logger.kamoru.remote.RemoteAgent=DEBUG, A1
+
+log4j.appender.A1=org.apache.log4j.RollingFileAppender
+log4j.appender.A1.File=../logs/RemoteAgent.log
+log4j.appender.A1.maxBackupIndex=10
+log4j.appender.A1.maxFileSize=10MB
+log4j.appender.A1.Append=true
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
+
+###########################################################
+# RemoteCenter.log
+###########################################################
+log4j.logger.kamoru.remote.RemoteCenter=DEBUG, A2
+
+log4j.appender.A2=org.apache.log4j.RollingFileAppender
+log4j.appender.A2.File=../logs/RemoteCenter.log
+log4j.appender.A2.maxBackupIndex=10
+log4j.appender.A2.maxFileSize=10MB
+log4j.appender.A2.Append=true
+log4j.appender.A2.layout=org.apache.log4j.PatternLayout
+log4j.appender.A2.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
+
+###########################################################
+# util.log
+###########################################################
+log4j.logger.kamoru.util=DEBUG, A3
+
+log4j.appender.A3=org.apache.log4j.RollingFileAppender
+log4j.appender.A3.File=../logs/util.log
+log4j.appender.A3.maxBackupIndex=10
+log4j.appender.A3.maxFileSize=10MB
+log4j.appender.A3.Append=true
+log4j.appender.A3.layout=org.apache.log4j.PatternLayout
+log4j.appender.A3.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
+

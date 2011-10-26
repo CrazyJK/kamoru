@@ -1,0 +1,44 @@
+/home                  (/dev/vg01/lvol1       ) : 36044800 total allocated Kb
+                                                   7565232 free allocated Kb
+                                                  28479568 used allocated Kb
+                                                        79 % allocation used
+/BPMNAS1               (172.21.100.111:/vol/vol4/bpm2) : 509607936 total allocated Kb
+                                                  256206360 free allocated Kb
+                                                  253401576 used allocated Kb
+                                                        49 % allocation used
+/KIC                   (/dev/vg00/lvol9       ) :  4153409 total allocated Kb
+                                                    918713 free allocated Kb
+                                                   3234696 used allocated Kb
+                                                        77 % allocation used
+/home1                 (/dev/vg00/lvol5       ) : 20971520 total allocated Kb
+                                                  15169392 free allocated Kb
+                                                   5802128 used allocated Kb
+                                                        27 % allocation used
+/opt                   (/dev/vg00/lvol6       ) :  3136568 total allocated Kb
+                                                   1169256 free allocated Kb
+                                                   1967312 used allocated Kb
+                                                        62 % allocation used
+/tar_backup            (/dev/vg02/lvol1       ) : 358398032 total allocated Kb
+                                                  128007368 free allocated Kb
+                                                  230390664 used allocated Kb
+                                                        64 % allocation used
+/tmp                   (/dev/vg00/lvol4       ) :  3140648 total allocated Kb
+                                                   1301472 free allocated Kb
+                                                   1839176 used allocated Kb
+                                                        58 % allocation used
+/usr                   (/dev/vg00/lvol7       ) :  3134752 total allocated Kb
+                                                   1395392 free allocated Kb
+                                                   1739360 used allocated Kb
+                                                        55 % allocation used
+/var                   (/dev/vg00/lvol8       ) :  4189920 total allocated Kb
+                                                    629904 free allocated Kb
+                                                   3560016 used allocated Kb
+                                                        84 % allocation used
+/stand                 (/dev/vg00/lvol1       ) :   269032 total allocated Kb
+                                                    228008 free allocated Kb
+                                                     41024 used allocated Kb
+                                                        15 % allocation used
+/                      (/dev/vg00/lvol3       ) :  3123192 total allocated Kb
+                                                   2919512 free allocated Kb
+                                                    203680 used allocated Kb
+                                                         6 % allocation used

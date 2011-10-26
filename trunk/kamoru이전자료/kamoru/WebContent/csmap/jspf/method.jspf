@@ -1,0 +1,104 @@
+<%@ page import="java.util.*, java.sql.*" %>
+<%@ include file="helper.jspf" %>
+<%!
+public String isnull(String str, String def){
+	return str == null ? def : str;
+}
+public String isnull(Object str, String def){
+	return str == null ? def : str.toString();
+}
+public void saveLocation(String locationName, String latitude, String longitude, String locationDesc) throws SQLException{
+	BWDBHelper helper = BWDBHelperFactory.getBWDBHelper();
+	helper.setPreparedSQL("INSERT INTO handymap(NAME,GUBUN,LATITUDE,LONGITUDE,DSCPT) VALUES(?, ? , ?, ?, ?)");
+	int index = 1;
+	helper.setString(index++, locationName);
+	helper.setString(index++, "사이트");
+	helper.setString(index++, latitude);
+	helper.setString(index++, longitude);
+	helper.setString(index++, locationDesc);
+	helper.executeUpdate();
+	helper.commit();
+	helper.close();	
+}
+
+public void savePlaceToGo(String myUserID, String goSite, String goTask, String goTime, String latitude, String longitude)throws Exception{
+	Vector vParams = new Vector();
+	vParams.add(myUserID);
+	vParams.add(goSite);
+	vParams.add(goTask);
+	vParams.add(goTime);
+	vParams.add(latitude);
+	vParams.add(longitude);
+	
+	executeProcedure("sp_update_csmap", vParams, null);	
+}
+
+public ArrayList[] getUserinfo(String[] deptIDs) throws Exception{
+	String sql  = "SELECT u.dept_id, u.dept_name, u.user_id, u.login_id, (SELECT p.pos_name FROM pos p WHERE u.pos_id = p.pos_id) pos, "
+				+ "       u.phone, u.mobile_phone, u.e_mail, "
+				+ "       m.gubun, m.latitude, m.longitude, m.site, m.task, m.startingtime, m.arrivaltime "
+				+ "FROM TB_USERINFO u, tb_csmap m "
+				+ "WHERE u.user_id = m.userid(+) ";
+	if(deptIDs != null && deptIDs.length > 0){
+		sql += "AND u.dept_id in ( '";
+		for(int i=0 ; i<deptIDs.length ; i++){
+			sql += deptIDs[i];
+			if(i<deptIDs.length-1){
+				sql += "', '";
+			}else{
+				sql += "' ";
+			}
+		}
+		sql += ") ";
+	}else{
+		throw new Exception("부서ID가 하나이상은 입력되어야 한다.");
+	}
+	sql += "ORDER BY dept_name, seq";
+	ArrayList dataList = executeQuery(sql);
+
+	ArrayList[] depts = new ArrayList[deptIDs.length];
+	for(int i=0 ; i<deptIDs.length ; i++){
+		depts[i] = new ArrayList();
+	}
+	for(int i=0 ; i<dataList.size() ; i++){
+		HashMap data = (HashMap)dataList.get(i);
+		String deptname = (String)data.get("DEPT_ID");
+
+		for(int j=0 ; j<deptIDs.length ; j++){
+			if(deptname.equals(deptIDs[j])){
+				depts[j].add(data);
+				continue;
+			}
+		}
+	}
+	return depts;
+}
+
+public String[] getDeptNames(String[] deptIDs) throws Exception{
+	String sql = "SELECT DISTINCT dept_name FROM tb_userinfo WHERE dept_id = ?";
+	String[] ret = new String[deptIDs.length];
+
+	for(int i=0 ; i<deptIDs.length ; i++){
+		ArrayList dataList = executeQuery(sql, deptIDs[i]);
+		HashMap data = (HashMap)dataList.get(0);
+		ret[i] = (String)data.get("DEPT_NAME");
+	}
+	return ret;
+}
+
+public ArrayList getSiteList() throws Exception{
+	String sql = "SELECT * FROM handymap ORDER BY gubun, name";
+	return executeQuery(sql);
+}
+
+public int getMydeptIdx(String[] deptIDs, String myDeptID){
+	int ret = 0;
+	for(int i=0 ; i<deptIDs.length ; i++){
+		if(deptIDs[i].equals(myDeptID)){
+			ret = i;
+			break;
+		}
+	}
+	return ret;
+}
+%>

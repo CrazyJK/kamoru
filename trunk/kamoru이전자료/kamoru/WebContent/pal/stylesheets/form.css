@@ -1,0 +1,50 @@
+/* PAL 스타일시트 - form.css */
+
+form {
+	margin: 0;
+	padding: 0;
+	display: inline;
+}
+input.inputText, textarea{
+	border-top: 1px solid #797979;
+	border-right: 1px solid #D4D1C8;
+	border-bottom: 1px solid #D4D1C8;
+	border-left: 1px solid #797979;
+	background: #fff;
+}
+input.inputText:hover,
+input.inputText:focus,
+textarea:hover,
+textarea:focus {
+	background-color: #6ba700;
+}
+input, select, textarea {
+	vertical-align: middle;
+	font-size: 90%;
+	font-family: tahoma, Dotum, sans-serif;	
+}
+input.inputText{
+	height:16px;
+}
+input, select {
+	margin: -4px 0 -1px 0;
+}
+select.tree {
+	margin-bottom: 5px;
+}
+div.listAlignSelect, div.listAlignSelectOuter{
+	font-size: 90%;
+	padding:0;
+	width: 783px;
+}
+div.listAlignSelectOuter{
+	margin: 6px 0 0;
+	padding-top: 1px;
+}
+div.listAlignSelect{
+	margin: 7px 0 -27px 0;
+	padding-top: 1px;
+}
+select.outer {
+	margin: 0 0 1px;	
+}

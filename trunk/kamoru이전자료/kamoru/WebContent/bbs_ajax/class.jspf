@@ -1,0 +1,217 @@
+<%@ page import="java.util.*, java.sql.*, com.hs.frmwk.db.*" %>
+<%!
+static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("JSP.bbs");
+
+public ArrayList executeQuery(String sql) throws Exception
+{
+	String param = null;
+	return executeQuery(sql, param);
+}
+public ArrayList executeQuery(String sql, String paramS) throws Exception
+{
+	ArrayList param = null;
+	if(paramS != null){
+		param = new ArrayList();
+		param.add(paramS);
+	}
+	return executeQuery(sql, param);
+}
+public ArrayList executeQuery(String sql, ArrayList param) throws Exception
+{
+	ArrayList recordList = null;
+	BWDBHelper helper = null;
+	try{
+		recordList = new ArrayList();
+		helper = BWDBHelperFactory.getBWDBHelper();
+		helper.setPreparedSQL(sql);
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		if(param != null){
+			for(int i=0 ; i<param.size() ; i++){
+				helper.setString(i+1, param.get(i).toString());
+				if(logger.isDebugEnabled())
+					logger.debug("\t PARAM " + (i+1) + ".[" + param.get(i).toString() + "]");
+			}
+		}
+		helper.executeQuery();
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeQuery");
+
+		//get header name
+		ResultSetMetaData metadata = helper.getMetaData();
+		int columnCnt = metadata.getColumnCount();
+		if(logger.isDebugEnabled())
+			logger.debug("\t columnCount [" + columnCnt + "]");
+		String[] columnName = new String[columnCnt];
+		for(int i=0 ; i<columnCnt ; i++){
+			columnName[i] = metadata.getColumnName(i+1);
+			if(logger.isDebugEnabled())
+				logger.debug("\t columnName " + (i+1) + ".[" + columnName[i] + "]");
+		}
+		
+		//get data
+		while(helper.next()){
+			HashMap record = new HashMap();
+			for(int i=0 ; i<columnCnt ; i++){
+				record.put(columnName[i], helper.getRSString(columnName[i]));
+			}
+			recordList.add(record);
+		}	
+		if(logger.isDebugEnabled())
+			logger.debug("\t RecordCount [" + recordList.size() + "]");
+		return recordList;
+	}catch(Exception e){
+		logger.error("ERROR [" + e.getMessage() + "]", e);
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]", e);
+			}
+	}
+}
+
+
+public int executeUpdate(String sql) throws Exception
+{
+	String param = null;
+	return executeUpdate(sql, param);
+}
+public int executeUpdate(String sql, String paramS) throws Exception
+{
+	ArrayList param = null;
+	if(paramS != null){
+		param = new ArrayList();
+		param.add(paramS);
+	}
+	return executeUpdate(sql, param);
+}
+public int executeUpdate(String sql, ArrayList param) throws Exception
+{
+	int count = 0;
+	BWDBHelper helper = null;
+	try{
+		helper = BWDBHelperFactory.getBWDBHelper();
+		helper.setPreparedSQL(sql);
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		if(param != null){
+			for(int i=0 ; i<param.size() ; i++){
+				helper.setString(i+1, param.get(i).toString());
+				if(logger.isDebugEnabled())
+					logger.debug("\t PARAM " + (i+1) + ".[" + param.get(i).toString() + "]");
+			}
+		}
+		count = helper.executeUpdate();
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeUpdate. count " + count);
+		helper.commit();
+		if(logger.isDebugEnabled())
+			logger.debug("\t commit");
+		return count;
+	}catch(Exception e){
+		helper.rollback();
+		logger.error("ERROR [" + e.getMessage() + "]");
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]");
+			}
+	}
+}
+
+public Vector executeProcedure(String sql, Vector vParams, Vector vDirections) throws Exception
+{
+	BWDBHelper helper = null;
+	try{
+		helper = BWDBHelperFactory.getBWDBHelper();
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		Vector result = helper.executeProcedure(sql, vParams, vDirections);
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeProcedure");
+		helper.commit();
+		if(logger.isDebugEnabled())
+			logger.debug("\t commit");
+		return result;
+	}catch(Exception e){
+		helper.rollback();
+		logger.error("ERROR [" + e.getMessage() + "]");
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]");
+			}
+	}
+}
+
+
+public String highlight(Object obj, String highlight){
+	String str = kamoru.util.StringUtil.getNullString(obj);
+	try{
+		if(highlight != null && highlight.trim().length() > 0)
+			str = str.toString().replaceAll(highlight, "<span style='color:red;'>" + highlight + "</span>");
+	}catch(Exception e){
+		logger.error("highlight error :" + e.getMessage());
+	}
+	return str;
+}
+
+public ArrayList getTagList() throws Exception {
+	String tagsql = "SELECT * FROM bbs_tag WHERE status != 0 ORDER BY lower(tagname), status DESC ";
+	return executeQuery(tagsql);
+}
+
+public HashMap getBBS(String bbsid) throws Exception {
+	String bbsSql = "SELECT bbsid,tags,fn_gettagname(tags) tagnames,title,content, " +
+					"       creator,creatdtime,hit,state,modifier,modifydtime      " +
+					"FROM bbs                                                      " +
+					"WHERE bbsid = ?                                               ";
+	ArrayList bbsList = executeQuery(bbsSql, bbsid);
+	if(bbsList.size() > 0)
+		return (HashMap)bbsList.get(0);
+	else
+		return null;
+}
+
+public void setBBSHitCount(String bbsid) throws Exception {
+	String hitSql 	= "UPDATE bbs SET hit = hit+1 WHERE bbsid = ? ";
+	executeUpdate(hitSql, bbsid);
+}
+
+public ArrayList getBBSList(String selectTag, String searchWord, String oper) throws Exception {
+	ArrayList param = new ArrayList();
+	String sql = "SELECT * \n  FROM ( SELECT bbsid,tags,fn_gettagname(tags) tagnames,title,content,creator,creatdtime,hit,state,modifier,modifydtime FROM bbs WHERE state = 'N' ) \n ";
+	if(selectTag.trim().length() != 0){
+		sql += "WHERE ( ";
+		String[] tags = selectTag.split(",");
+		for(int i=0 ; i<tags.length ; i++){
+			sql += "tags like ? ";
+			param.add("%" + tags[i] + "%");
+			if(i != tags.length-1){
+				sql += "OR ";
+			}
+		}
+		sql += ") ";
+	}
+	if(searchWord.trim().length() != 0){
+		if(selectTag.trim().length() != 0){
+			if(oper.equals("AND")){
+				sql += "\n   AND ";
+			}else{
+				sql += "\n    OR ";
+			}
+		}else{
+			sql += "WHERE ";
+		}
+		sql += "(title like ? OR content like ? OR tagnames like ?) ";
+		param.add("%" + searchWord + "%");
+		param.add("%" + searchWord + "%");
+		param.add("%" + searchWord + "%");
+	}
+	sql += "\n ORDER BY bbsid DESC ";
+	return executeQuery(sql, param);
+}
+%>

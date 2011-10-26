@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CS사업부 내부교육 : About Ajax</title>
+<script type="text/javascript" src="../../../js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#btn1").bind("click",function(){
+		$.ajax({
+			  url: 'data1.jsp',
+			  success: function(data) {
+			    $('#data1').html(data);
+			  }
+			});
+	});
+	$("#btn2").bind("click",function(){
+		$.ajax({
+			  url: 'data2.jsp',
+			  success: function(data) {
+			    $('#data2').html(data);
+			  }
+			});
+		});
+	$("#btn3").bind("click",function(){
+		var data = $("#input3").val();
+		$.ajax({
+			  url: 'data3.jsp?data=' + data,
+			  success: function(data) {
+			    $('#data3').html(data);
+			  }
+			});
+		});
+	$("#input3").bind("keyup",function(){
+		$("#btn3").click();
+		});
+});
+
+</script>
+</head>
+<body>
+<h2>CS사업부 내부교육 : About Ajax</h2>
+<input type="button" value="GET Data1" id="btn1">
+<fieldset>
+	<legend>Data1 Result</legend>
+	<div id="data1"></div>
+</fieldset>
+
+<hr/>
+
+<input type="button" value="GET Data2" id="btn2">
+<fieldset>
+	<legend>Data2 Result</legend>
+	<div id="data2"></div>
+</fieldset>
+
+<hr/>
+
+<input type="button" value="SET Data3" id="btn3">
+
+<fieldset>
+	<legend>Data3 Input</legend>
+	<input type="text" id="input3" style="width:100%" />
+	<div id="data3"></div>
+</fieldset>
+
+</body>
+</html>

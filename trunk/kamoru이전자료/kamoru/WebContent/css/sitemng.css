@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+span.TITLE {background: lightblue; border: 1px dashed blue; padding:5pt;}
+span.TITLE:hover {background: orange; color:white; cursor:pointer;}
+iframe.IFRM {width:100%; display:;}
+.legend		{font-size:12px;font-weight:bold; color:#6495ed;margin-right:4px; font-family:verna}
+.title		{font: bold 30px  Arial;background:#fff;border-bottom:6px solid #c00;margin-bottom:12px;height:30px;}
+iframe.ACTIONFRAME {border: 1pt dotted gray;}
+
+td.pageTitle {background: lightblue; border: 1px dashed blue; padding:5pt;}
+legend.TITLE {font: bold 11pt #000000;}

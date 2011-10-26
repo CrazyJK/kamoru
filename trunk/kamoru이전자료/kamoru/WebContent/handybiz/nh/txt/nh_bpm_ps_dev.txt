@@ -1,0 +1,24 @@
+     bpm 25800 25799   0   7월 02 ?          11:14 /userdir/bpm/bin/hworaexearc -c 4 -m 20 -s 7201 -p arcpipe
+     bpm 25783     1   0   7월 02 ?           0:01 /userdir/bpm/bin/splitlogs.solaris /userdir/bpm/logs/%Y%m%d.hworaolearc.log
+     bpm 25795 25792   0   7월 02 ?        5906:52 /userdir/bpm/bin/hworaexe -s 7201
+     bpm 25820     1   0   7월 02 ?           0:00 /userdir/bpm/bin/hwserd -s 7201 -m 8201
+     bpm 25794 25792   0   7월 02 ?        5861:30 /userdir/bpm/bin/hworaexe -s 7201
+     bpm 25780     1   0   7월 02 ?           0:21 /userdir/bpm/bin/splitlogs.solaris /userdir/bpm/logs/%Y%m%d.hworaexe.log
+     bpm 25797 25792   0   7월 02 ?        5882:45 /userdir/bpm/bin/hworaexe -s 7201
+     bpm 25781     1   0   7월 02 ?           0:00 /userdir/bpm/bin/splitlogs.solaris /userdir/bpm/logs/%Y%m%d.hworaole.log
+     bpm 25802     1   0   7월 02 ?           0:00 /userdir/bpm/bin/splitlogs.solaris /userdir/bpm/logs/%Y%m%d.hwqueue.log
+     bpm 25801     1   0   7월 02 ?           0:01 /userdir/bpm/bin/splitlogs.solaris /userdir/bpm/logs/%Y%m%d.hwserd.log
+     bpm 25792 25791   0   7월 02 ?        5873:00 /userdir/bpm/bin/hworaexe -s 7201
+     bpm 25815     1   0   7월 02 ?           0:00 /userdir/bpm/bin/hwqueuex -daemon -s 7201
+     bpm 25791     1   0   7월 02 ?           0:00 /userdir/bpm/bin/hworaexe -s 7201
+     bpm 25789 25788   0   7월 02 ?           5:24 /userdir/bpm/bin/hworaexe -c 4 -m 20 -s 7201 -p bizflowpipe
+     bpm 25821 25820   0   7월 02 ?          22:38 /userdir/bpm/bin/hwserd -s 7201 -m 8201
+     bpm 25796 25792   0   7월 02 ?        5884:51 /userdir/bpm/bin/hworaexe -s 7201
+     bpm 25803     1   0   7월 02 ?           0:02 /userdir/bpm/bin/splitlogs.solaris /userdir/bpm/logs/%Y%m%d.hwschd.log
+     bpm 25799     1   0   7월 02 ?           0:00 /userdir/bpm/bin/hworaexearc -c 4 -m 20 -s 7201 -p arcpipe
+     bpm 25816     1   0   7월 02 ?           0:00 /userdir/bpm/bin/hwschd -s 7201 8201
+     bpm 25818 25815   0   7월 02 ?        10366:50 /userdir/bpm/bin/hwqueuex -daemon -s 7201
+     bpm 25793 25792   0   7월 02 ?        5812:38 /userdir/bpm/bin/hworaexe -s 7201
+     bpm  8220 25816   0   7월 27 ?           9:18 /userdir/bpm/bin/hwschd -s 7201 8201
+     bpm  1990  1373   0 09:00:46 pts/11      0:00 grep hw
+     bpm 25788     1   0   7월 02 ?           0:00 /userdir/bpm/bin/hworaexe -c 4 -m 20 -s 7201 -p bizflowpipe

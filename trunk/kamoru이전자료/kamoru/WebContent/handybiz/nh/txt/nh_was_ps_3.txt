@@ -1,0 +1,1 @@
+  jeuspi    40 28613   0 18:33:29 ?           1:33 /usr/j2sdk1.4.2_12/jre/bin/java -server -Dpiad01 -Xbootclasspath/p:/JEUS/jeusPI

@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+body		{background: #FFFFFF url() no-repeat center; font: 9pt 맑은 고딕;}
+
+table		{border:1 collapse;}
+tbody > tr:hover{}
+td			{font:normal 10pt/1.5;}
+
+a			{color:#000000; text-decoration:none; }
+a:hover		{color:#FFFFFF; text-decoration:none; background: lightblue;}
+
+fieldset	{}
+li			{}

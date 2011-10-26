@@ -1,0 +1,256 @@
+<%@ page import="java.util.*, java.sql.*, com.hs.frmwk.db.*" %>
+<%!
+static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("JSP.bbs");
+
+public ArrayList executeQuery(String sql) throws Exception
+{
+	String param = null;
+	return executeQuery(sql, param);
+}
+
+public ArrayList executeQuery(String sql, String paramS) throws Exception
+{
+	ArrayList param = null;
+	if(paramS != null){
+		param = new ArrayList();
+		param.add(paramS);
+	}
+	return executeQuery(sql, param);
+}
+
+public ArrayList executeQuery(String sql, String[] paramArr) throws Exception
+{
+	ArrayList param = null;
+	if(paramArr != null){
+		param = new ArrayList();
+		for(int i=0 ; i<paramArr.length ; i++){
+			param.add(paramArr[i]);
+		}
+	}
+	return executeQuery(sql, param);
+}
+
+public ArrayList executeQuery(String sql, ArrayList param) throws Exception
+{
+	ArrayList recordList = null;
+	BWDBHelper helper = null;
+	try{
+		recordList = new ArrayList();
+		helper = BWDBHelperFactory.getBWDBHelper();
+		helper.setPreparedSQL(sql);
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		if(param != null){
+			for(int i=0 ; i<param.size() ; i++){
+				helper.setString(i+1, param.get(i).toString());
+				if(logger.isDebugEnabled())
+					logger.debug("\t PARAM " + (i+1) + ".[" + param.get(i).toString() + "]");
+			}
+		}
+		helper.executeQuery();
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeQuery");
+
+		//get header name
+		ResultSetMetaData metadata = helper.getMetaData();
+		int columnCnt = metadata.getColumnCount();
+		if(logger.isDebugEnabled())
+			logger.debug("\t columnCount [" + columnCnt + "]");
+		String[] columnName = new String[columnCnt];
+		for(int i=0 ; i<columnCnt ; i++){
+			columnName[i] = metadata.getColumnName(i+1);
+			if(logger.isDebugEnabled())
+				logger.debug("\t columnName " + (i+1) + ".[" + columnName[i] + "]");
+		}
+		
+		//get data
+		while(helper.next()){
+			HashMap record = new HashMap();
+			for(int i=0 ; i<columnCnt ; i++){
+				record.put(columnName[i], helper.getRSString(columnName[i]));
+			}
+			recordList.add(record);
+		}	
+		if(logger.isDebugEnabled())
+			logger.debug("\t RecordCount [" + recordList.size() + "]");
+		return recordList;
+	}catch(Exception e){
+		logger.error("ERROR [" + e.getMessage() + "]", e);
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]", e);
+			}
+	}
+}
+
+
+public int executeUpdate(String sql) throws Exception
+{
+	String param = null;
+	return executeUpdate(sql, param);
+}
+public int executeUpdate(String sql, String paramS) throws Exception
+{
+	ArrayList param = null;
+	if(paramS != null){
+		param = new ArrayList();
+		param.add(paramS);
+	}
+	return executeUpdate(sql, param);
+}
+public int executeUpdate(String sql, ArrayList param) throws Exception
+{
+	int count = 0;
+	BWDBHelper helper = null;
+	try{
+		helper = BWDBHelperFactory.getBWDBHelper();
+		helper.setPreparedSQL(sql);
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		if(param != null){
+			for(int i=0 ; i<param.size() ; i++){
+				helper.setString(i+1, param.get(i).toString());
+				if(logger.isDebugEnabled())
+					logger.debug("\t PARAM " + (i+1) + ".[" + param.get(i).toString() + "]");
+			}
+		}
+		count = helper.executeUpdate();
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeUpdate. count " + count);
+		helper.commit();
+		if(logger.isDebugEnabled())
+			logger.debug("\t commit");
+		return count;
+	}catch(Exception e){
+		helper.rollback();
+		logger.error("ERROR [" + e.getMessage() + "]");
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]");
+			}
+	}
+}
+
+public Vector executeProcedure(String sql, Vector vParams, Vector vDirections) throws Exception
+{
+	BWDBHelper helper = null;
+	try{
+		helper = BWDBHelperFactory.getBWDBHelper();
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		Vector result = helper.executeProcedure(sql, vParams, vDirections);
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeProcedure");
+		helper.commit();
+		if(logger.isDebugEnabled())
+			logger.debug("\t commit");
+		return result;
+	}catch(Exception e){
+		helper.rollback();
+		logger.error("ERROR [" + e.getMessage() + "]");
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]");
+			}
+	}
+}
+
+public String executeQueryGetArrayText(String sql) throws Exception {
+	String param = null;
+	return executeQueryGetArrayText(sql, param);
+}
+public String executeQueryGetArrayText(String sql, String paramS) throws Exception
+{
+	ArrayList param = null;
+	if(paramS != null){
+		param = new ArrayList();
+		param.add(paramS);
+	}
+	return executeQueryGetArrayText(sql, param);
+}
+public String executeQueryGetArrayText(String sql, String[] paramArr) throws Exception
+{
+	ArrayList param = null;
+	if(paramArr != null){
+		param = new ArrayList();
+		for(int i=0 ; i<paramArr.length ; i++){
+			param.add(paramArr[i]);
+		}
+	}
+	return executeQueryGetArrayText(sql, param);
+}
+
+public String executeQueryGetArrayText(String sql, ArrayList param) throws Exception
+{
+	StringBuffer sb = null;
+	BWDBHelper helper = null;
+	try{
+		sb = new StringBuffer();
+		
+		helper = BWDBHelperFactory.getBWDBHelper();
+		helper.setPreparedSQL(sql);
+		if(logger.isDebugEnabled())
+			logger.debug("SQL [" + sql + "]");
+		if(param != null){
+			for(int i=0 ; i<param.size() ; i++){
+				helper.setString(i+1, param.get(i).toString());
+				if(logger.isDebugEnabled())
+					logger.debug("\t PARAM " + (i+1) + ".[" + param.get(i).toString() + "]");
+			}
+		}
+		helper.executeQuery();
+		if(logger.isDebugEnabled())
+			logger.debug("\t executeQuery");
+
+		//get header name
+		ResultSetMetaData metadata = helper.getMetaData();
+		int columnCnt = metadata.getColumnCount();
+		if(logger.isDebugEnabled())
+			logger.debug("\t columnCount [" + columnCnt + "]");
+		String[] columnName = new String[columnCnt];
+		for(int i=0 ; i<columnCnt ; i++){
+			columnName[i] = metadata.getColumnName(i+1);
+			if(logger.isDebugEnabled())
+				logger.debug("\t columnName " + (i+1) + ".[" + columnName[i] + "]");
+		}
+		
+		//get data
+		int rowCount = 0;
+		sb.append("[");
+		while(helper.next()){
+			sb.append(rowCount > 0 ? "," : "");
+			rowCount++;
+			sb.append("{");
+			for(int i=0 ; i<columnCnt ; i++){
+				sb.append(i > 0 ? "," : "");
+				sb.append(columnName[i]);
+				sb.append(":");
+				sb.append("\"");
+				sb.append(helper.getRSString(columnName[i]));
+				sb.append("\"");
+			}
+			sb.append("}");
+		}
+		sb.append("]");
+		if(logger.isDebugEnabled())
+			logger.debug("\t RecordCount [" + rowCount + "]");
+		//System.out.println(sb.toString());
+		return sb.toString();
+	}catch(Exception e){
+		logger.error("ERROR [" + e.getMessage() + "]", e);
+		throw e;
+	}finally{
+		if(helper != null) 
+			try{helper.close();}catch(Exception e){
+				logger.error("ERROR finally.helper.close()[" + e.getMessage() + "]", e);
+			}
+	}
+}
+
+%>

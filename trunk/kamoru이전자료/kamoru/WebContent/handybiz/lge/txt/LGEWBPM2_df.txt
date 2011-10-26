@@ -1,0 +1,16 @@
+Filesystem    1024-blocks      Free %Used    Iused %Iused Mounted on
+/dev/hd4          4194304   4126064    2%     1923     1% /
+/dev/hd2          5242880   3265120   38%    39931     6% /usr
+/dev/hd9var       4194304   4149996    2%      514     1% /var
+/dev/hd3         10485760  10347728    2%      228     1% /tmp
+/dev/fwdump       2883584   2882816    1%        4     1% /var/adm/ras/platform
+/dev/hd1         20971520  20629608    2%     2140     1% /home
+/proc                   -         -    -         -     -  /proc
+/dev/hd10opt      1048576    953616   10%     1774     1% /opt
+/dev/logs_lv001    20971520   5046232   76%      262     1% /log001
+/dev/data1_lv001    11010048   1268812   89%    24073     8% /array01
+/dev/data1_lv002    26345472   6698240   75%  2327108    51% /array02
+/dev/data1_lv003     1572864    965576   39%     6606     3% /KIC
+/dev/data1_lv004     1572864   1413056   11%      336     1% /engn003
+172.21.100.110:/vol/wbpm/wbpm    44040192  31804508   28%    65605     5% /data01
+/dev/logs_lv002    14417920  12704132   12%       74     1% /log002

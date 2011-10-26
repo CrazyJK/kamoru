@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SQL executer</title>
+<link rel="stylesheet" type="text/css" href="/css/kamoru.css">
+<link rel="stylesheet" type="text/css" href="../sitemng.css">
+<script>
+function checkquery(){
+	var query = document.f.query.value;
+	if(query == ""){
+		alert("type query");
+		return;
+	}
+	document.f.submit();
+}
+</script>
+</head>
+<body>
+<form name="f" method="post" action="queryresult.jsp" target="queryresult">
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr height="200">
+		<td width="60%"><!-- 쿼리 입력 부분 -->
+			<table width="100%">
+				<tr>
+					<td>SELECT SQL only!</td>
+					<td align="right">
+						rownum &lt;= &nbsp;<input type="text" name="row_limit" value="1000" size="2" /></td>
+				</tr>
+				<tr height="150">
+					<td colspan="2">
+						<textarea name="query" style="width:100%;height:100%;"></textarea>
+					</td>
+				</tr>
+				<tr height="30">
+					<td colspan="2">
+						<input type="button" value="Send Query" onClick="checkquery();"/>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="40%" align="right">
+			<table width="100%" height="100%" border="0">
+				<tr height="30">
+					<td rowspan="2" width="30"></td>
+					<td><br>
+						DB Connection 선택
+						<input type="radio" name="db_conn" value="jdbc"  
+							OnClick="javascript:jdbc_param.style.display='';javascript:bwadk_param.style.display='none';javascript:jndi_param.style.display='none';" > JDBC
+						<input type="radio" name="db_conn" value="bwadk" 
+							OnClick="javascript:jdbc_param.style.display='none';javascript:bwadk_param.style.display='';javascript:jndi_param.style.display='none'" CHECKED> BWADK
+						<input type="radio" name="db_conn" value="jndi" 
+							OnClick="javascript:jdbc_param.style.display='none';javascript:bwadk_param.style.display='none';javascript:jndi_param.style.display=''"> JNDI
+					</td>
+				</tr>
+				<tr height="*" valign="top">
+					<td>
+						<div id="jdbc_param" style="DISPLAY:none">
+						<table border="0" width="100%">		
+							<TR>
+								<td align="left">URL</td>
+								<td><input type="text" name="DB_URL" value="jdbc:oracle:thin:@222.106.70.224:1521:ORCL" size="35"></td>
+							</TR>
+							<TR>
+								<td align="left">USER</td>
+								<td><input type="text" name="DB_USER" value="bizflow" size="35"></td>
+							</TR>
+							<TR>
+								<td align="left">PWD</td>
+								<td><input type="password" name="DB_PASSWORD" value="bizflow" size="35"></td>
+							</TR>
+							<TR>
+								<td align="left">DRIVER</td>
+								<td><input type="text" name="DB_JDBC_DRIVER" value="oracle.jdbc.driver.OracleDriver" size="35"></td>
+							</TR>
+						</TABLE>		
+						</div>
+						<div id="bwadk_param" style="DISPLAY:">
+						<table border="0" width="100%">		
+							<TR>
+								<TD align="left">DB Alias</td>
+								<td><input type="text" name="BWADK_DB_ALIAS" value="" size="35"></td>
+							</tr>
+						</table>
+						</div>
+						<div id="jndi_param" style="DISPLAY:none">
+						<table border="0" width="100%">		
+							<TR>
+								<TD align="left">JNDI Name</td>
+								<td><input type="text" name="JNDI_NAME" value="wraithdb" size="35"></td>
+							</tr>
+						</table>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

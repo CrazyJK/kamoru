@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+body	{background: #FFFFFF url() no-repeat center; font: 9pt 맑은 고딕;}
+form	{display: inline;}
+ul		{font:bold 12pt 맑은 고딕;}
+li		{font: 9pt 맑은 고딕;}
+a		{text-decoration:none;color:DarkGreen;font: 10pt 맑은 고딕;}
+a:hover	{text-decoration:none;color:DarkGreen;border-bottom:1pt dashed Orange;}
+input 	{border:0pt}
+pre 	{border: 1px dotted #525D76;}
+button 				{border: 0px dotted #525D76; font: 9pt 맑은 고딕; background: #FFFFFF; cursor:pointer;}	
+input.INPUTTEXT 	{border-bottom: 1px dotted red;     font:10pt 맑은 고딕; background-color:#FFFFFF;}
+td		{font: 9pt 맑은 고딕;}
+span.ANCHOR			{font:10pt 맑은 고딕; cursor:pointer;}

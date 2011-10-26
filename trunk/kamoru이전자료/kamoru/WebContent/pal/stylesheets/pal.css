@@ -1,0 +1,1364 @@
+/* PAL 스타일시트 - pal.css */
+
+/* Left Area */
+.treeMenu{
+	font-size: 11px;
+	color: #666666;
+	background-color: #9AC7F6;
+	font-family: "verdana,굴림";
+	text-align: left;
+	padding-left: 1px;
+}
+.treeMenu a:link { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.treeMenu a:active { font-family: "verdana,굴림"; font-size: 11px; color: #FF7200; text-decoration: none; }
+.treeMenu a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.treeMenu a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#FF7200; text-decoration:none;}
+.treeSubMenu{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,굴림";
+	padding-left: 2px;
+}
+.treeSubMenu a:link { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.treeSubMenu a:active { font-family: "verdana,굴림"; font-size: 11px; color: #FF7200; text-decoration: none; }
+.treeSubMenu a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.treeSubMenu a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#FF7200; text-decoration:none;}
+
+DIV
+{
+	Overflow: auto;
+}
+
+.defspan
+{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,굴림";
+	Overflow: auto;
+}
+.SPAN a:link { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.SPAN a:active { font-family: "verdana,굴림"; font-size: 11px; color: #FF7200; text-decoration: none; }
+.SPAN a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.SPAN a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#FF7200; text-decoration:none;}
+
+A.CLR2_A
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.CLR2_A:hover
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+A.CLR2_A:visited
+{
+	COLOR: Black;
+	TEXT-DECORATION: none;
+}
+
+th.BoxBorderAll{
+	color: #4B4B4B;
+	background-color: #ececec;
+	border-color: #c6c6c6;
+	border-style: solid;
+	border-width: 1px;
+}
+.BoxBorder{
+	color: #4B4B4B;
+	background-color: #ffffff;
+	font-size: 12px;
+	font-family: "굴림";
+	border-color: #c6c6c6;
+	border-style: solid;
+	border-width: 1px;
+}
+
+
+.leftImgOn{
+    background-image: url(/bizflow/pal/img/menu/menuLineLeftOver.jpg);
+
+}
+
+.centerImgOn{
+    background-image: url(/bizflow/pal/img/menu/menuOver.jpg);
+
+}
+
+.RightImgOn{
+    background-image: url(/bizflow/pal/img/menu/menuLineRightOver.jpg);
+
+
+}
+
+.defaultLineImg{
+    background-image: url(/bizflow/pal/img/menu/menuLine.jpg);
+}
+
+.defaultCenterImg{
+    background-image: none;
+}
+
+/* 11.일반버튼 */
+.ButtonLeftBg{
+	background: white url(/bizflow/seine/img/button/btLeft.gif);
+	background-repeat: no-repeat;
+	height:23;
+	border: none;
+	width: 13;
+}
+.ButtonRightBg{
+	background: white url(/bizflow/seine/img/button/btRight.gif);
+	background-repeat: no-repeat;
+	border: none;
+	width: 12;
+}
+.ButtonCenterBg{
+	background: white url(/bizflow/seine/img/button/btCenter.gif);
+	border: none;
+	color: #4D4D4D;
+	font-family: "verdana, 굴림";
+	font-size: 11px;
+}
+.ButtonCenterBg a:link{ color:#4F5E78; text-decoration:none;}
+.ButtonCenterBg a:visited{ color:#4F5E78; text-decoration:none;}
+.ButtonCenterBg a:active{ color:#4F5E78; text-decoration:none;}
+.ButtonCenterBg a:hover{ color:#00A3D2; text-decoration:none;}
+
+.ButtonText{
+	color: #4D4D4D;
+	font-family: "verdana, 굴림";
+	font-size: 11px;
+}
+.ButtonText a:link{ color:#4F5E78; text-decoration:none;}
+.ButtonText a:visited{ color:#4F5E78; text-decoration:none;}
+.ButtonText a:active{ color:#4F5E78; text-decoration:none;}
+.ButtonText a:hover{ color:#00A3D2; text-decoration:none;}
+
+.BottomBg{
+	background-color: #D2D2D2;
+	height: 3px;
+}
+
+
+th.Border{
+	background-color: #ececec;
+	border-color: #c6c6c6;
+	border-style: none solid solid solid;
+	border-width: 1px;
+}
+
+.TopMenuFont{
+	background-color: "blue";
+}
+
+
+.Rollover{
+	background: url(/bizflow/seine/img/menuBar.jpg);
+/*	background-color: #E5EDF7;   */
+	height: 21;
+	font-size: 11px;
+	color: #ffffff;
+	font-family: "verdana,굴림";
+
+}
+.Rollover a:link{ font-family: "verdana,굴림"; font-size: 11px; color: #ffffff; text-decoration: none;}
+.Rollover a:visited{ font-family: "verdana,굴림"; font-size: 11px; color: #ffffff; text-decoration: none; }
+.Rollover a:active{ font-family: "verdana,굴림"; font-size: 11px; color: #FF7200; text-decoration: none;}
+.Rollover a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#FF7200; text-decoration:none;}
+
+.favoriteTabOff{
+	background-image: url(/bizflow/pal/img/map/tabFavorite.jpg);
+}
+
+.favoriteTabOn{
+	background-image: url(/bizflow/pal/img/map/tabFavoriteOn.jpg);
+}
+
+.folderTabOff{
+	background-image: url(/bizflow/pal/img/map/tabProcess.jpg);
+}
+
+.folderTabOn{
+	background-image: url(/bizflow/pal/img/map/tabProcessOn.jpg);
+}
+
+
+/*yoo: new Style*/
+/*on*/
+.tabLeftOn{
+	background-image: url(/bizflow/pal/img/tab/subTabLeftOn.gif);
+	width: 6px;
+	height: 24px;
+	border: 0px;
+}
+.tabLeftOn a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabLeftOn a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabLeftOn a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabLeftOn a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.tabCenterOn{
+	background-image: url(/bizflow/pal/img/tab/subTabOnBg.gif);
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.tabCenterOn a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabCenterOn a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabCenterOn a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabCenterOn a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.tabRightOn{
+	background-image: url(/bizflow/pal/img/tab/subTabRightOn.gif);
+	width: 10px;
+	height: 24px;
+	border: 0px;
+}
+.tabRightOn a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabRightOn a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabRightOn a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabRightOn a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+/*off*/
+
+.tabLeftOff{
+	background-image: url(/bizflow/pal/img/tab/subTabLeft.gif);
+	width: 6px;
+	height: 24px;
+	border: 0px;
+}
+.tabLeftOff a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabLeftOff a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabLeftOff a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabLeftOff a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.tabCenterOff{
+	background-image: url(/bizflow/pal/img/tab/subTabBg.gif);
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.tabCenterOff a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabCenterOff a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabCenterOff a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabCenterOff a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.tabRightOff{
+	background-image: url(/bizflow/pal/img/tab/subTabRight.gif);
+	width: 10px;
+	height: 24px;
+	border: 0px;
+}
+.tabRightOff a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabRightOff a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabRightOff a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.tabRightOff a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+/*subTabOn*/
+
+.actTabLeftOn{
+	background-image: url(/bizflow/pal/img/tab/actTabLeftOn.gif);
+	width: 6px;
+	height: 24px;
+	border: 0px;
+}
+.actTabLeftOn a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabLeftOn a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabLeftOn a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabLeftOn a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.actTabCenterOn{
+	background-image: url(/bizflow/pal/img/tab/actTabOnBg.gif);
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.actTabCenterOn a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabCenterOn a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabCenterOn a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabCenterOn a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.actTabRightOn{
+	background-image: url(/bizflow/pal/img/tab/actTabRightOn.gif);
+	width: 10px;
+	height: 24px;
+	border: 0px;
+}
+.actTabRightOn a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabRightOn a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabRightOn a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabRightOn a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+/*subTabOff*/
+
+.actTabLeftOff{
+	background-image: url(/bizflow/pal/img/tab/subTabLeft.gif);
+	width: 6px;
+	height: 24px;
+	border: 0px;
+}
+.actTabLeftOff a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabLeftOff a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabLeftOff a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabLeftOff a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.actTabCenterOff{
+	background-image: url(/bizflow/pal/img/tab/subTabBg.gif);
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.actTabCenterOff a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabCenterOff a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabCenterOff a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabCenterOff a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+.actTabRightOff{
+	background-image: url(/bizflow/pal/img/tab/subTabRight.gif);
+	width: 10px;
+	height: 24px;
+	border: 0px;
+}
+.actTabRightOff a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabRightOff a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabRightOff a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.actTabRightOff a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+
+
+//(변경 5/23) top area
+
+.menu{
+	font-size: 12px;
+	color: #ffffff;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	/* 영문과 한글을 같이 사용하는 메뉴일경우필요. 한글로만 된 메뉴일 경우는 지울것*/
+	padding-bottom: 1px;
+}
+.menu a:link { font-family: "verdana,굴림"; font-size: 12px; color: #ffffff; text-decoration: none; }
+.menu a:active { font-family: "verdana,굴림"; font-size: 12px; color: #FD8F35; text-decoration: none; }
+.menu a:visited { font-family: "verdana,굴림"; font-size: 12px; color: #ffffff; text-decoration: none; }
+.menu a:hover{ font-family: "verdana,굴림"; font-size: 12px; color:#FD8F35; text-decoration:none;}
+
+
+.accessTabel{
+	background-color: #7F9DB9;
+}
+.accessTabel01{
+	background-color: #ffffff;
+}
+.accessTabel02{
+	background-color: #BCBDBE;
+	width:1;
+}
+.accessTabelBar{
+	background: white url(/bizflow/pal/img/table/accessTableBar.gif) repeat-x;
+	font-size: 11px;
+	color: #666666;
+	text-align: center;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	height:21px;
+}
+.accessTabelBar01{
+	background: white url(/bizflow/pal/img/table/accessTableBar01.gif) repeat-x;
+}
+.accessText{
+	font-size: 11px;
+	color: #333333;
+	padding-left: 8px;
+	font-family: "verdana, 굴림";
+	height: 22px;
+}
+.accessTextRead{
+	font-size: 11px;
+	color: #777777;
+	font-family: "verdana, 굴림";
+}
+.accessTextRead01{
+	font-size: 11px;
+	color: #777777;
+	padding-left: 8px;
+	font-family: "verdana, 굴림";
+	height: 22px;
+}
+
+
+/* Top Area */
+.topBg{
+	background: url(/bizflow/pal/img/toparea/topBg.gif) repeat-x;
+	height:77px;
+	width:100%
+}
+.topMenu{
+	font-size: 11px;
+	color: #C8E7FA;
+	font-family: "tahoma,굴림";
+	text-align: right;
+	height: 21;
+}
+.topMenu a:link { font-family: "tahoma,굴림"; font-size: 11px; color: #C8E7FA; text-decoration: none; }
+.topMenu a:active { font-family: "tahoma,굴림"; font-size: 11px; color: #C8E7FA; text-decoration: none; }
+.topMenu a:visited { font-family: "tahoma,굴림"; font-size: 11px; color: #C8E7FA; text-decoration: none; }
+.topMenu a:hover{ font-family: "tahoma,굴림"; font-size: 11px; color:#FF9E16; text-decoration:none;}
+.GNB{
+	font-size: 12px;
+	color: #ffffff;
+	font-family: "tahoma,굴림";
+	font-weight: bold;
+	height: 30px;
+	width: 118px;
+	text-align: center;
+}
+.GNB a:link { font-family: "tahoma,굴림"; font-size: 12px; color: #ffffff; text-decoration: none;}
+.GNB a:active { font-family: "tahoma,굴림"; font-size: 12px; color: #ffffff; text-decoration: none;}
+.GNB a:visited { font-family: "tahoma,굴림"; font-size: 12px; color: #ffffff; text-decoration: none;}
+.GNB a:hover{ font-family: "tahoma,굴림"; font-size: 12px; color:#FF9E16; text-decoration:none;}
+.GNBOn{
+	font-size: 12px;
+	color: #FF9E16;
+	font-family: "tahoma,굴림";
+	font-weight: bold;
+	height: 30px;
+	width: 118px;
+	text-align: center;
+	background: url(/bizflow/pal/img/toparea/GNBOnbg.gif);
+}
+.GNBOn a:link { font-family: "tahoma,굴림"; font-size: 12px; color: #FF9E16; text-decoration: none; }
+.GNBOn a:active { font-family: "tahoma,굴림"; font-size: 12px; color: #FF9E16; text-decoration: none; }
+.GNBOn a:visited { font-family: "tahoma,굴림"; font-size: 12px; color: #FF9E16; text-decoration: none; }
+.GNBOn a:hover{ font-family: "tahoma,굴림"; font-size: 12px; color:#FF9E16; text-decoration:none;}
+.GNBsub{
+	font-size: 11px;
+	color: #C8E7FA;
+	font-family: "tahoma,굴림";
+	height: 25px;
+}
+.GNBsub a:link { font-family: "tahoma,굴림"; font-size: 11px; color: #C8E7FA; text-decoration: none; }
+.GNBsub a:active { font-family: "tahoma,굴림"; font-size: 11px; color: #C8E7FA; text-decoration: none; }
+.GNBsub a:visited { font-family: "tahoma,굴림"; font-size: 11px; color: #C8E7FA; text-decoration: none; }
+.GNBsub a:hover{ font-family: "tahoma,굴림"; font-size: 11px; color:#FF9E16; text-decoration:none;}
+
+/* Left Area */
+.treeTitle{
+	font-size: 12px;
+	color: #333333;
+	font-family: "tahoma,굴림";
+	font-weight: bold;
+	padding-left: 11px;
+	height: 24px;
+}
+.treeTitle a:link { font-family: "tahoma,굴림"; font-size: 12px; color: #333333; text-decoration: none; }
+.treeTitle a:active { font-family: "tahoma,굴림"; font-size: 12px; color: #333333; text-decoration: none; }
+.treeTitle a:visited { font-family: "tahoma,굴림"; font-size: 12px; color: #333333; text-decoration: none; }
+.treeTitle a:hover{ font-family: "tahoma,굴림"; font-size: 12px; color:#FF9E16; text-decoration:none;}
+tr.treeTitleBgOn{
+	background: url(/bizflow/pal/img/map/leftTreeTitleOn.gif) repeat-x;
+}
+tr.treeTitleBg{
+	background: url(/bizflow/pal/img/map/leftTreeTitle.gif) repeat-x;
+}
+tr.treeTitleBgSelect{
+	background: url(/bizflow/pal/img/map/leftTreeTitleSelect.gif) repeat-x;
+}
+tr.treeBg{
+	background: url(/bizflow/pal/img/map/leftTreeBg.gif);
+	height:100%;
+	vertical-align: top;
+}
+treeBgLine{
+	background-color: #D9DDE2;
+}
+.leftTreeMenu{
+	font-size: 11px;
+	color: #333333;
+	font-family: "tahoma,굴림";
+	height: 18px;
+}
+.leftTreeMenu a:link { font-family: "tahoma,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.leftTreeMenu a:active { font-family: "tahoma,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.leftTreeMenu a:visited { font-family: "tahoma,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.leftTreeMenu a:hover{ font-family: "tahoma,굴림"; font-size: 11px; color:#FF9E16; text-decoration:none;}
+.leftTreeMenuOn{
+	font-size: 11px;
+	color: #FF9E16;
+	font-family: "tahoma,굴림";
+	height: 18px;
+	font-weight: bold;
+}
+.leftTreeMenu a:link { font-family: "tahoma,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.leftTreeMenu a:active { font-family: "tahoma,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.leftTreeMenu a:visited { font-family: "tahoma,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.leftTreeMenu a:hover{ font-family: "tahoma,굴림"; font-size: 11px; color:#FF9E16; text-decoration:none;}
+
+/* Main Contents */
+.contentsBody{
+	margin-left: 15;
+	margin-right: 15;
+	margin-top: 9;
+	margin-bottom: 15;
+}
+.noticeTitle{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	height: 18px;
+}
+.noticeBoxMid{
+	width: 5px;
+	background: url(/bizflow/pal/img/main/noticeBoxMid.gif) repeat-y;
+}
+.noticeText{
+	font-size: 11px;
+	color: #666666;
+	font-family: "verdana, 굴림";
+	height: 18px;
+}
+.noticeText a:link { font-family: "verdana, 굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.noticeText a:active { font-family: "verdana, 굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.noticeText a:visited { font-family: "verdana, 굴림"; font-size: 11px; color: #666666; text-decoration: none; }
+.noticeText a:hover{ font-family: "verdana, 굴림"; font-size: 11px; color:#FF9E16; text-decoration:none;}
+.noticeLine{
+	background-color: #D1D1D1;
+	height: 1px;
+}
+.mainContLine{
+	background-color: #A7C5E6;
+	height: 2px;
+}
+tr.mainContText{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+	padding-left: 8px;
+	height: 23px;
+	background-color: #F4F8FC;
+}
+tr.mainContText a:link { font-family: "verdana, 굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+tr.mainContText a:active { font-family: "verdana, 굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+tr.mainContText a:visited { font-family: "verdana, 굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+tr.mainContText a:hover{ font-family: "verdana, 굴림"; font-size: 11px; color:#FF9E16; text-decoration:none;}
+
+
+/* Main Area */
+.pageTitle{
+	font-size: 12px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	height: 18px;
+}
+.pageSubTitle{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.pageSubTitle a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.pageSubTitle a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.pageSubTitle a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.pageSubTitle a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#1579B6; text-decoration:none;}
+.pageSubTitle02{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+}
+.pageSubTitle02 a:link { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.pageSubTitle02 a:active { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.pageSubTitle02 a:visited { font-family: "tahoma, 돋움"; font-size: 11px; color: #666666; text-decoration: none; }
+.pageSubTitle02 a:hover{ font-family: "tahoma, 돋움"; font-size: 11px; color:#0991A5; text-decoration:none;}
+form{
+	display: inline;
+}
+.control{
+	color: #4D4D4D;
+	font-family: "verdana, 굴림";
+	font-size: 11px;
+}
+.bt{
+	color: #000000;
+	font-family: "tahoma, 굴림";
+	font-size: 11px;
+}
+.bt a:link { font-family: "tahoma,굴림"; font-size: 11px; color: #000000; text-decoration: none; }
+.bt a:active { font-family: "tahoma,굴림"; font-size: 11px; color: #000000; text-decoration: none; }
+.bt a:visited { font-family: "tahoma,굴림"; font-size: 11px; color: #000000; text-decoration: none; }
+.bt a:hover{ font-family: "tahoma,굴림"; font-size: 11px; color:#1579B6; text-decoration:none;}
+tr.tableHead{
+	font-size: 12px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 4px;
+	height: 23px;
+}
+.tableHead a:link { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead a:active { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead a:visited { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead a:hover{ font-family: "verdana,굴림"; font-size: 12px; color:#666666; text-decoration:none;}
+td.tableHead{
+	font-size: 12px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 4px;
+	height: 23px;
+}
+.tableHead a:link { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead a:active { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead a:visited { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead a:hover{ font-family: "verdana,굴림"; font-size: 12px; color:#666666; text-decoration:none;}
+tr.tableHead01{
+	font-size: 12px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 4px;
+	height: 23px;
+	background-color: #EBF2F9;
+}
+.tableHead01 a:link { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead01 a:active { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead01 a:visited { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead01 a:hover{ font-family: "verdana,굴림"; font-size: 12px; color:#666666; text-decoration:none;}
+tr.tableHead02{
+	font-size: 12px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 4px;
+	height: 23px;
+	background-color: #EEF8F9;
+}
+.tableHead02 a:link { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead02 a:active { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead02 a:visited { font-family: "verdana,굴림"; font-size: 12px; color: #666666; text-decoration: none; }
+.tableHead02 a:hover{ font-family: "verdana,굴림"; font-size: 12px; color:#666666; text-decoration:none;}
+.tableHeadLine{
+	background-color: #5A8DC7;
+	height: 3px;
+}
+.tableHeadLine02{
+	background-color: #64C1D5;
+	height: 3px;
+}
+.tableHead01Line{
+	background-color: #a7c5e6;
+	height: 1px;
+}
+.tableHead02Line{
+	background-color: #a7dbe6;
+	height: 1px;
+}
+tr.tableCont{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+    padding-left: 5px;
+    height: 22px;
+	line-height: 14px;
+}
+.tableCont a:link { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont a:active { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#1579B6; text-decoration:none;}
+td.tableCont{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+    padding-left: 5px;
+    height: 22px;
+	line-height: 14px;
+}
+.tableCont a:link { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont a:active { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#1579B6; text-decoration:none;}
+tr.tableCont01{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+    height: 22px;
+	line-height: 14px;
+}
+.tableCont01 a:link { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont01 a:active { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont01 a:visited { font-family: "verdana,굴림"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableCont01 a:hover{ font-family: "verdana,굴림"; font-size: 11px; color:#1579B6; text-decoration:none;}
+.tableContLine{
+	background-color: #dddddd;
+	height: 1px;
+}
+.tableEndLine{
+	background-color: #dddddd;
+	height: 1px;
+}
+.tablePage{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana";
+}
+.tablePage a:link { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.tablePage a:active { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.tablePage a:visited { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.tablePage a:hover{ font-family: "verdana"; font-size: 11px; color:#2F99C8; text-decoration:none;}
+.tableSelectPage{
+	font-size: 11px;
+	color: #2F99C8;
+	font-family: "verdana";
+	font-weight: bold;
+}
+.tableWriteHead{
+	font-size: 11px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #EBF2F9;
+	height: 23px;
+	line-height: 16px;
+}
+.tableWriteHead02{
+	font-size: 11px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #EEF8F9;
+	height: 23px;
+	line-height: 16px;
+}
+
+.tableWriteBody{
+	font-size: 11px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	padding-left: 4px;
+	line-height: 16px;
+	height: 22px;
+}
+.tableWriteBody a:link { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBody a:active { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBody a:visited { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBody a:hover{ font-family: "verdana"; font-size: 11px; color:#2F99C8; text-decoration:none;}
+
+/* Admin Code */
+.tableContLine01{
+	background-color: #E4E7E8;
+	width: 1px;
+}
+.codeTitle{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+	height: 25px;
+	background-color: #D0E0F5;
+}
+.codeTitleBg{
+	background-color: #D0E0F5;
+}
+.codeTitleBg01{
+	background-color: #DBF0F3;
+}
+.codeTitle01{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+	height: 25px;
+}
+.codeTitle01Bg{
+	background-color: #EBEBE6;
+}
+.codeSubTitle{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	padding-left: 8px;
+	height: 25px;
+	background-color: #DBF0F3;
+}
+.codeContBg{
+	background-color: #EBF1F9;
+}
+.codeContBg01{
+	background-color: #FAFAF5;
+}
+.codeSubContBg{
+	background-color: #EEF8F9;
+}
+.codeCont{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana, 굴림";
+	padding-left: 16px;
+	height: 22px;
+}
+.codeCont a:link { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.codeCont a:active { font-family: "verdana"; font-size: 11px; color: #0079FF; font-weight: bold; text-decoration: none; }
+.codeCont a:visited { font-family: "verdana"; font-size: 11px; color: #333333; text-decoration: none; }
+.codeCont a:hover{ font-family: "verdana"; font-size: 11px; color:#0079FF; font-weight: bold; text-decoration:none;}
+.codeContOn{
+	font-size: 11px;
+	color: #0079FF;
+	font-family: "verdana, 굴림";
+	font-weight: bold;
+}
+.codeSubContOn{
+	font-size: 11px;
+	color: #06A3C5;
+	font-family: "verdana, 굴림";
+	font-weight: bold;
+}
+
+/* Org */
+.orgText{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana, 굴림";
+	height: 22px;
+}
+tr.orgHead{
+	font-size: 11px;
+	color: #666666;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	padding-left: 7px;
+	background-color: #EBF5F9;
+}
+tr.orgHead01{
+	font-size: 11px;
+	color: #666666;
+	text-align: center;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	height: 23px;
+	background-color: #FAFAF5;
+}
+
+
+/* Access (0618)*/
+.accessTabel{
+	background-color: #7F9DB9;
+}
+.accessTabel01{
+	background-color: #ffffff;
+}
+.accessTabel02{
+	background-color: #BCBDBE;
+	width:1;
+}
+.accessTabelBar{
+	background: white url(img/accessTableBar.gif) repeat-x;
+	font-size: 11px;
+	color: #666666;
+	text-align: center;
+	font-family: "verdana,굴림";
+	font-weight: bold;
+	height:21px;
+}
+.accessTabelBar01{
+	background: white url(img/accessTableBar01.gif) repeat-x;
+}
+.accessText{
+	font-size: 11px;
+	color: #333333;
+	padding-left: 8px;
+	font-family: "verdana, 굴림";
+	height: 22px;
+}
+.accessTextRead{
+	font-size: 11px;
+	color: #777777;
+	font-family: "verdana, 굴림";
+}
+.accessTextRead01{
+	font-size: 11px;
+	color: #777777;
+	padding-left: 8px;
+	font-family: "verdana, 굴림";
+	height: 22px;
+}
+
+/* 0620 */
+.adminProcessMove{
+	color: #4F96EE;
+}
+.adminTemplateHead{
+	font-size: 11px;
+	color: #333333;
+	font-family: "tahoma, 굴림";
+	padding-left: 5px;
+	height: 23px;
+	background-color: #F2F2ED;
+}
+.adminTemplateHead01{
+	font-size: 11px;
+	color: #333333;
+	font-family: "tahoma, 굴림";
+	padding-left: 5px;
+	height: 23px;
+	background-color: #FAFAF5;
+}
+.adminTemplateCont{
+	padding-left: 4px;
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+}
+
+/* 0621 */
+.essentialInput{
+	color: #FF622C;
+}
+
+/* 0804 - by YOO */
+.tableContNoPadding{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+	height: 22px;
+	line-height: 14px;
+}
+/* 0824 - by YJ */
+.searchLeft{
+	background: white url(/bizflow/pal/img/search/left.jpg) repeat-y;
+	width : 6px;
+}
+.searchRight{
+	background: white url(/bizflow/pal/img/search/right.jpg) repeat-y;
+	width : 6px;
+}
+.searchBg{
+	background-color: #FAFAF4;
+}
+.searchTitle{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+	height: 20px;
+	width: 84px;
+}
+.searchCont{
+	font-size: 11px;
+	color: #333333;
+	font-family: "verdana,굴림";
+}
+
+/*
+    change at the IE ime Eng-> Kor
+*/
+input { color:black; font-family:"굴림"; font-size: 12px; IME-MODE: ACTIVE; }
+textarea { color:black; font-family:"굴림"; font-size: 12px; IME-MODE: ACTIVE; }
+
+.treeBg{
+	background: url(/bizflow/pal/img/map/leftTreeBg.gif);
+	height:100%;
+	vertical-align: top;
+}
+
+/* 051130 */
+.tdVerticalLine{
+  background-color: #dddddd;
+  width: 1px;
+  padding-left: 0px;
+}
+
+.ObjectIconBg{
+    background: url(/bizflow/pal/img/tree/iconObjectIconBg.gif);
+    width: 100%;
+	height:9px;
+	text-align : center;
+}
+
+.ObjectIconShow{
+    background: url(/bizflow/pal/img/tree/iconObjectHide.gif);
+    width: 100%;
+	text-align : center;
+}
+
+.ObjectIconHide{
+    background: url(/bizflow/pal/img/tree/iconObjectShow.gif);
+    width: 100%;
+	text-align : center;
+}
+
+/*내용있는테이블에 공통으로 사용*/
+table.common{
+	font-family:"tahoma,돋움";
+	font-size:11px;
+	vertical-align:middle;
+	color:#333333;
+	border-top: 1px solid #666666;
+	border-left: 1px solid #666666;
+	border-collapse: collapse;
+}
+table.common a:link { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+table.common a:active { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+table.common a:visited { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+table.common a:hover{ font-family: "tahoma,돋움"; font-size: 11px; color:#009711; text-decoration:underline;}
+
+/*헤더중 짙은 파랑 배경*/
+th.darkBlue{
+	padding: 4px;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	vertical-align: middle;
+    background-color:#b3cdee;
+}
+/*헤더중 밝은 파랑 배경*/
+th.lightBlue{
+	padding: 4px;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	vertical-align: middle;
+    background-color:#d8e9ff;
+}
+
+/*내용 흰색 배경*/
+.tdWhite{
+	padding: 3px;
+	padding-left: 5px;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+}
+/*내용 흰색 배경 텍스트 중앙정렬*/
+.tdWhite01{
+	padding: 3px;
+	padding-left: 5px;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	text-align: center;
+}
+/*내용 흰색 배경 텍스트 오른정렬*/
+.tdWhite02{
+	padding: 3px;
+	padding-left: 5px;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	text-align: right;
+}
+/*내용 회색 배경*/
+.tdGray{
+	padding: 3px;
+	padding-left: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+}
+/*내용 회색 배경 텍스트 중앙정렬*/
+.tdGray01{
+	padding: 3px;
+	padding-left: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	text-align: center;
+}
+/*내용 회색 배경 텍스트 오른정렬*/
+.tdGray02{
+	padding: 3px;
+	padding-left: 5px;
+	background-color: #f5f5f5;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	text-align: right;
+}
+/*내용 노랑 배경*/
+.tdYellow{
+	padding: 3px;
+	padding-left: 5px;
+	background-color: #f9f9e8;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+}
+/*내용 노랑 배경 텍스트 중앙정렬*/
+.tdYellow01{
+	padding: 3px;
+	padding-left: 5px;
+	background-color: #f9f9e8;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	text-align: center;
+}
+/*내용 노랑 배경 텍스트 오른정렬*/
+.tdYellow02{
+	padding: 3px;
+	padding-left: 5px;
+	background-color: #f9f9e8;
+	border: 1px solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	text-align: right;
+}
+/* LeftTree Tab 060202-byYJ */
+/*
+활성 On */
+/* 왼쪽 */
+.treeTabLeftOn{
+	background-image: url(/bizflow/pal/img/tree/tabLeftOn.gif);
+	border: none;
+	background-repeat: no-repeat;
+	width: 4px;
+	height:26px;
+}
+/* 오른쪽 */
+.treeTabRightOn{
+	background-image: url(/bizflow/pal/img/tree/tabRightOn.gif);
+	border: none;
+	background-repeat: no-repeat;
+	width: 4px;
+	height:26px;
+}
+/* 가운데 */
+.treeTabMidOn{
+	background-image: url(/bizflow/pal/img/tree/tabMidOn.gif);
+	border: none;
+	text-align: center;
+	width: *;
+	height:26px;
+	vertical-align:middle;
+	font-size: 11px;
+	color: #ffffff;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+}
+.treeTabMidOn a:link {color: #ffffff; text-decoration: none; }
+.treeTabMidOn a:visited {color: #ffffff; text-decoration: none; }
+.treeTabMidOn a:hover{color:#FF9E16; text-decoration:none;}
+.treeTabMidOn a:active {color: #ffffff; text-decoration: none; }
+/*
+비활성 off */
+/* 왼쪽 */
+.treeTabLeftOff{
+	background-image: url(/bizflow/pal/img/tree/tabLeftOff.gif);
+	border: none;
+	background-repeat: no-repeat;
+	width: 4px;
+	height:26px;
+}
+/* 오른쪽 */
+.treeTabRightOff{
+	background-image: url(/bizflow/pal/img/tree/tabRightOff.gif);
+	border: none;
+	background-repeat: no-repeat;
+	width: 4px;
+	height:26px;
+}
+/* 가운데 */
+.treeTabMidOff{
+	background-image: url(/bizflow/pal/img/tree/tabMidOff.gif);
+	border: none;
+	width: *;
+	height:26px;
+	text-align: center;
+	vertical-align:middle;
+	font-size: 11px;
+	color: #333333;
+	font-family: "tahoma, 돋움";
+	font-weight: bold;
+}
+.treeTabMidOff a:link {color: #333333; text-decoration: none; }
+.treeTabMidOff a:visited {color: #333333; text-decoration: none; }
+.treeTabMidOff a:hover {color:#FF9E16; text-decoration:none;}
+.treeTabMidOff a:active {color: #333333; text-decoration: none; }
+
+.treeSelect{
+    margin-left: 1px;
+    width: 126px;
+	background-color: #64acf2;
+	color: #ffffff;
+	font-size: 11px;
+	font-family: "tahoma,돋움";
+}
+table{
+	border: none;
+}
+#Margin8{
+	margin-bottom: 8px;
+}
+.tableWriteHeadCenter{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,돋움";
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #EBF2F9;
+	height: 23px;
+	line-height: 16px;
+	text-align: center;
+}
+
+.tableWriteBodyLeft{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,돋움";
+	padding-left: 4px;
+	line-height: 20px;
+	text-align: left;
+}
+.tableWriteBodyLeft a:link { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyLeft a:active { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyLeft a:visited { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyLeft a:hover{ font-family: "tahoma,돋움"; font-size: 11px; color:#2F99C8; text-decoration:none;}
+
+.tableWriteBodyCenter{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,돋움";
+	padding-left: 4px;
+	line-height: 16px;
+	text-align: center;
+}
+.tableWriteBodyCenter a:link { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyCenter a:active { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyCenter a:visited { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyCenter a:hover{ font-family: "tahoma,돋움"; font-size: 11px; color:#2F99C8; text-decoration:none;}
+
+.tableWriteBodyRight{
+	font-size: 11px;
+	color: #666666;
+	font-family: "tahoma,돋움";
+	padding-left: 4px;
+	line-height: 16px;
+	text-align: right;
+}
+.tableWriteBodyRight a:link { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyRight a:active { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyRight a:visited { font-family: "tahoma,돋움"; font-size: 11px; color: #333333; text-decoration: none; }
+.tableWriteBodyRight a:hover{ font-family: "tahoma,돋움"; font-size: 11px; color:#2F99C8; text-decoration:none;}
+
+/* Version Diff by 0306 YJ*/
+.versionHead{
+	font-size: 11px;
+	color: #333333;
+	font-family: "tahoma, 돋움";
+	padding: 4px;
+	background-color: #f5f5f5;
+	text-align: center;
+	font-weight: bold;
+}
+.versionBar{
+	background-image: url(/bizflow/pal/img/table/vBar.gif);
+	border: none;
+	background-repeat: y-repeat;
+	width: 3px;
+}
+.versionLine{
+	background-color: #5a8dc7;
+	height: 3px;
+}
+.modifyItem{
+	padding: 3px;
+	color: #ae9224;
+	font-size: 11px;
+	font-family: "tahoma,돋움";
+}
+.modifyItem a:link {color: #ae9224; text-decoration: underline; }
+.modifyItem a:visited {color: #ae9224; text-decoration: underline; }
+.modifyItem a:hover {color:#ae9224; text-decoration:none;}
+.modifyItem a:active {color: #ae9224; text-decoration:  underline; }
+A.modifyItem:link {color: #ae9224; text-decoration: underline; }
+A.modifyItem:visited {color: #ae9224; text-decoration: underline; }
+A.modifyItem:hover {color:#ae9224; text-decoration:none;}
+A.modifyItem:active {color: #ae9224; text-decoration:  underline; }
+.deleteItem{
+	padding: 3px;
+	color: #b52e8a;
+	font-size: 11px;
+	font-family: "tahoma,돋움";
+}
+.deleteItem a:link {color: #b52e8a; text-decoration: underline; }
+.deleteItem a:visited {color: #b52e8a; text-decoration: underline; }
+.deleteItem a:hover {color:#b52e8a; text-decoration:none;}
+.deleteItem a:active {color: #b52e8a; text-decoration:  underline; }
+A.deleteItem:link {color: #b52e8a; text-decoration: underline; }
+A.deleteItem:visited {color: #b52e8a; text-decoration: underline; }
+A.deleteItem:hover {color:#b52e8a; text-decoration:none;}
+A.deleteItem:active {color: #b52e8a; text-decoration:  underline; }
+.addItem{
+	padding: 3px;
+	color: #48992d;
+	font-size: 11px;
+	font-family: "tahoma,돋움";
+}
+.addItem a:link {color: #48992d; text-decoration: underline; }
+.addItem a:visited {color: #48992d; text-decoration: underline; }
+.addItem a:hover {color:#48992d; text-decoration:none;}
+.addItem a:active {color: #48992d; text-decoration:  underline; }
+A.addItem:link {color: #48992d; text-decoration: underline; }
+A.addItem:visited {color: #48992d; text-decoration: underline; }
+A.addItem:hover {color:#48992d; text-decoration:none;}
+A.addItem:active {color: #48992d; text-decoration:  underline; }
+
+/* Tree View 2006.04.11 by wslee */
+#treemain {
+    margin-left: -6px;
+    margin-bottom: -16px;
+}
+
+#treemain ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+#treemain ul li {
+    margin-left: 14px;
+}
+
+.haschild {
+    background: url(/bizflow/pal/img/tree/vertline.gif) repeat-y 0 0;
+}
+
+.hasnochild1 {
+    background: url(/bizflow/pal/img/tree/tree_tn.gif) no-repeat 0 0;
+    padding-left: 11px;
+}
+
+.hasnochild2 {
+    background: url(/bizflow/pal/img/tree/tree_ln.gif) no-repeat 0 0;
+    padding-left: 11px;
+}
+
+.hasnochild3 {
+    background: url(/bizflow/pal/img/tree/tree_an.gif) no-repeat 0 0;
+    padding-left: 11px;
+}
+
+/* Tree Search 2006.04.13 by wslee */
+.treesearchbox {
+    margin-left: 1px;
+    width: 126px;
+}
+
+.treesearchbox2 {
+    margin-left: 8px;
+    width: 126px;
+}

@@ -1,0 +1,7 @@
+
+System configuration: lcpu=20 mem=16383MB ent=5.00
+
+kthr    memory              page              faults              cpu          
+----- ----------- ------------------------ ------------ -----------------------
+ r  b   avm   fre  re  pi  po  fr   sr  cy  in   sy  cs us sy id wa    pc    ec
+ 3  0 3578006 11062   0   0   0   0    0   0 3646 22969 23402 28 16 56  0  2.26  45.2

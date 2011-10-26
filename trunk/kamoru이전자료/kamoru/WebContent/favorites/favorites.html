@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Favorites Website</title>
+<link rel="stylesheet" type="text/css" href="/css/default.css">
+<script type="text/javascript" src="/js/kamoru.js"></script>
+<script>
+<!--
+var linkType;
+if(top.location != location){//top이 있을 경우 새창으로 띠우기
+	linkType = "new";
+}else{
+	linkType = "";
+}
+
+//opener 위치찾기  이페이지에선 안씀.
+var openerLocation;
+try{
+	if(opener){
+		openerLocation = opener.location;
+	}
+}catch(e){
+	openerLocation = "NaN";
+}
+
+function goUrl(url, ispopup, name, reqW, reqH){
+	if(ispopup){
+		windowopen(url, name, reqW, reqH);
+	}else{
+		if(linkType == "new"){
+			document.f.method = "get";
+			document.f.action = url;
+			document.f.target = "_blank";
+			document.f.submit();
+		}else{
+			location.href = url;
+		}
+	}
+}
+//-->
+</script>
+</head>
+<body topmargin="0" leftmargin="0">
+<form name="f"></form>
+<table width="100%" border="0">
+	<tr valign="top">
+		<td> 
+			<UL>Handy
+				<li><a href="http://gw.handysoft.co.kr/customize/login/HomePageSSO.jsp?EMPCODE=2007143&PASS=22222" target="_blank">HandyData GW</a>
+				<li><a href="http://csd.handysoft.co.kr:8080" target="_blank">HandyData CSD</a>
+				<li><a href="https://secure.logmein.com">LogMeIn secure</a>
+			</ul>
+			<UL>kAmOrU
+				<li><a href="/bbs" target="_blank">kAmOrU`s bbs</a>
+				<li><a href="/log4jinit" target="_blank">Log4j control</a>
+				<li><a href="/fckeditor/_samples/">fckeditor</a>&nbsp;<a href="javascript:goUrl('/fckeditor/',true,'',800,550);">Popup</a>
+				<li><a href="/manager/html">Tomcat manager</a>
+				<li><a href="/bizflow">HandyBPM 10 - CSDdev</a>
+				<li><a href="http://kamoruserver/kamoru">kAmOrU Server Public IP</a>
+				<li><a href="https://kamoruserver:8443/kamoru">kAmOrU Server Public IP Secure</a>
+			</ul>
+			<UL>kAmOrU Oracle
+				<li><a href="https://HDK01-NAMJK24:1158/em">Enterprise Manager Database Control</a>
+				<li><a href="http://HDK01-NAMJK24:5560/isqlplus">Oracle iSQL*Plus</a>
+				<li><a href="http://HDK01-NAMJK24:5560/isqlplus/dba">Oracle iSQL*Plus DBA</a>
+			</ul>
+			<UL>Mail
+				<li><a href="http://www.gmail.com">GMail</a>
+				<li><a href="http://www.hotmail.com">Hotmail</a>
+			</ul>
+			<UL>Finance
+				<li><a href="http://www.wooribank.com">우리은행</a>
+				<li><a href="http://www.shinhanbank.co.kr">신한은행</a>
+				<li><a href="http://www.ibk.co.kr">기업은행</a>
+				<li><a href="http://www.wooricard.co.kr">우리카드</a>
+				<li><a href="http://www.shinhancard.co.kr">신한카드</a>
+				<li><a href="http://www.miraeasset.com/stock.jsp">Mirae Asset</a>
+				<li><a href="http://www.creditbank.co.kr">Credit Bank</a>
+			</ul>
+		</td>
+		<td>
+			<UL> Sun
+				<li><a href="http://java.sun.com/api">JAVA API</a>
+				<li><a href="http://java.sun.com/j2se/1.3/docs/api/">JAVA 1.3 API</a>
+				<li><a href="http://java.sun.com/j2se/1.4.2/docs/api/">JAVA 1.4 API</a>
+				<li><A href="http://pllab.kw.ac.kr/j2seAPI/api/index.html">5.0API한글</A>
+			</UL>
+			<UL> Web	
+				<li><A href="http://www.w3schools.com/">Web tutorials</A>
+			</UL>
+			<UL> Apache	
+				<li><A href="http://www.apache.org/">Apache Software Foundation</A>
+				<li><a href="http://db.apache.org/derby/manuals/index.html#docs_10.3">Derby Docs</a>
+				<li><A href="http://jakarta.apache-korea.org/">자카르타 서울 프로젝트</A>
+				<li><A href="http://www.jakartaproject.com/">The Jakarta Project ^^</A>
+			</UL>
+			<UL> Oracle
+				<li><A href="http://www.oracleclub.com/">OracleClub.com</A>
+				<li><A href="http://www.oracleclub.com/oracle/lecture/LectureSearch.jsp">OracleClub.com LectureSearch</A>
+				<li><A href="http://database.sarang.net/">데이터베이스 사랑넷</A>
+				<li><A href="http://www.oracle.com/technology/software/tech/migration/workbench/index.html">Orale Migration Workbench</A>
+			</UL>
+			<UL> Subversion
+				<li><A href="http://subversion.tigris.org/">http://subversion.tigris.org</A>
+				<li><A href="http://www.pyrasis.com/main/Subversion-HOWTO">Subversion-HOWTO</A>
+			</UL>
+			<UL> Java
+				<li><A href="http://50001.com/">50001.com</A>
+				<li><A href="http://www.march-hare.com/cvspro/">CVS Professional Support and CVSNT</A>
+				<li><A href="http://www.tortoisecvs.org/">TortoiseCVS About</A>
+				<li><A href="http://www.javajigi.net/javajigi/index.jsp">JavaJiGi</A>
+				<li><A href="http://javaservice.net/">JavaService Net</A>
+				<li><A href="http://www.nettop.pe.kr/nettop/nettopjsp/board/view.jsp?table=jsp_nettop_study&nettop_ref=jsp&Page=2&board_idx=181&search=&search_str=">NETTOP.PE.KR</A>
+				<li><A href="http://okjsp.pe.kr/">OKJSP</A>
+				<li><A href="http://xml.80port.net/">미니의 XML DeveloperGroup!!</A>
+				<li><A href="http://javastudy.co.kr/javastudy/index.jsp">자바스터디</A>
+				<li><a href="http://download.eclipse.org/webtools/downloads/">Web Tools Platform downloads</a>
+				<li><a href="http://charisma2rt.namoweb.net/tt6/isis/category/JavaScript?page=1">::Visual in Style:javascript:</a>
+				<li><a href="http://wiki.javajigi.net/display/FRAMEWORK/Jakarta+Struts+Getting+Started">struts 강좌</a>
+				<li><a href="http://itplus.co.kr">itplus</a>
+			</UL>
+		</td>
+		<td>
+			<UL> Search
+				<li><a href="http://www.terms.co.kr">Terms</a>
+				<li><a href="http://ko.wikipedia.org">wikipedia ko</a>
+				<li><a href="http://www.naver.com">Naver</a>
+				<li><a href="http://www.daum.net">Daum</a>
+				<li><a href="http://blog.naver.com/namjk24">Blog Naver</a>
+				<li><a href="http://www.google.com">Google</a>
+				<li><a href="http://kamoru.blogspot.com/">Blog Google </a>
+				<li><a href="http://www-06.ibm.com/jp/domino04/pc/support/beginner.nsf/navigation?SearchView&SearchMax=0&SearchOrder=4&Start=1&Count=25&Query=%28%5Bdoctype%5D%3D%22Downloads%20and%20drivers%22%29+AND+%28%5Bbrand%5D%3D%22Notebooks%20and%20handhelds%22%29+AND+%28%5Bfamily%5D%3D%22ThinkPad%20T61%22+OR+%5Bfamily%5D%3D%22All%22%29+AND+%28%5Bapplicable_os%5D%3D%22Windows%20Vista%22+OR+%5Bapplicable_os%5D%3D%22all%22%29">Lenovo T61 download </a>
+			</UL>
+			<UL>etc
+				<li><a href="http://blog.daum.net/sm8921019/7882252">원피스 모음</a>
+				<li><a href="http://www.afreeca.co.kr">aFreeCa</a>&nbsp;<a href="javascript:windowopen('afreeca.html','',260,250, 0)">X-Man</a>
+				<li><a href="http://a3box.co.kr">a3box</a>
+				<li><a href="http://news.naver.com/news/presscenter.nhn">press center</a>
+				<li><A href="http://www.ddanzi.com/">딴지일보</A>
+				<li><a href="http://speed.nia.or.kr/">인터넷속도체크</a>
+				<li><A href="http://www.egocube.pe.kr/cubeboard/listview.asp?tablename=asp&cpage=1">EgoCube</A>
+				<li><A href="http://www.magicn.com/Default.asp">magicN</A>
+				<li><A href="http://www.tworld.com">T*World</A>
+				<li><A href="http://qaos.com/">QAOS.com</A>
+				<li><A href="http://v3.nonghyup.com/">농협 안랩 클리닉센터</A>
+				<li><A href="http://www.edonkey.or.kr/">당나귀 사용자 포럼</A>
+				<li><A href="http://mytheme.net/">마이테마쩜넷</A>
+				<li><A href="http://www.deviantart.com/">deviantART</A>
+				<li><A href="http://gall.dcinside.com/list.php?id=f_drama"> 디시:::기타미국드라마갤러리</A>
+			</UL>
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td style="padding-left:10px">
+						<form name="terms" method="post"  action="http://www.terms.co.kr/cgi-bin/mclient.cgi" target="self">
+							<input type="image" SRC="/images/search.png" WIDTH="26" HEIGHT="26" BORDER="0" ALT="" align="absmiddle">
+							<input type="text" name="p" size="18" value="Terms" onFocus="javaScript:value=''" onBlur="javaScript:value='Terms'">
+							<input type="hidden" name="ns" value="1">
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left:10px">
+						<form name="endic" action="http://www.google.co.kr/dictionary" method="get" target="self">
+							<input type="image" SRC="/images/search.png" WIDTH="26" HEIGHT="26" BORDER="0" ALT="" align="absmiddle">
+							<input type="text" name="q" size="18" value="Google Dictionary" onFocus="javaScript:value=''" onBlur="javaScript:value='Google Dictionary'"> 
+							<input type="hidden" name="aq" value="f"/>
+							<input type="hidden" name="hl" value="ko"/>
+							<input type="hidden" name="langpair" value="ko|en"/>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left:10px">
+						<form name="searchnaver" action="http://www.google.co.kr/search" method="get" target="self">
+							<input type="image" SRC="/images/search.png" WIDTH="26" HEIGHT="26" BORDER="0" ALT="" align="absmiddle">
+							<input type="text" name="q" size="18" value="Google Search" onFocus="javaScript:value=''" onBlur="javaScript:value='Google Search'"> 
+							<input type="hidden" name="aq" value="f"/>
+							<input type="hidden" name="hl" value="ko"/>
+							<input type="hidden" name="complete" value="1"/>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left:10px">
+						<form name="searchnaver" action="http://search.naver.com/search.naver" method="get" target="self">
+							<input type="image" SRC="/images/search.png" WIDTH="26" HEIGHT="26" BORDER="0" ALT="" align="absmiddle">
+							<input type="text" name="query" size="18" value="Naver Search" onFocus="javaScript:value=''" onBlur="javaScript:value='Naver Search'"> 
+						</form>
+					</td>
+				</tr>
+			</table>
+			<!--<script language="javascript" charset="euc-kr" src="http://live.afreeca.com:8057/app/opentv.php?szStr=5d5e11500b574d06545b50054c135646405e5719&nWidth=240&nHeight=180&isAutoPlay=0"></script>-->
+		</td>
+	</tr>
+</table>
+</body>
+</html>

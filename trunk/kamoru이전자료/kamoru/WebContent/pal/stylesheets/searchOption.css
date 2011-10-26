@@ -1,0 +1,141 @@
+/* PAL 스타일시트 - searchOption.css */
+
+div#searchOption{
+	width:980px;
+	margin: 8px 0 -5px 4px;
+}
+.searchOptionTableBg{
+	width:980px;
+	height: 40px;
+	padding: 0;
+	border: 0px;
+	font-size: 105%;
+}
+td#a, td#b, td#c{
+	border:0px;
+	margin:0;
+	padding:0;
+}
+td#a{
+	width:4px;
+	background: url("../img/searchOption/bg_01.gif") no-repeat;
+}
+td#b{
+	width:980px;
+	background-image: url("../img/searchOption/bg_02.gif");
+	background-repeat: repeat-x;
+	padding-left:6px;
+}
+td#c{
+	width:4px;
+	background: url("../img/searchOption/bg_03.gif") no-repeat;
+}
+.searchOptionTable{
+	width:100%;
+	height: 34px;
+	padding: 0;
+	border: 0px;
+	background-color:#f5faff;
+	top:0px;
+	left:0px;
+}
+.searchOptionTableTr{
+	background-color:#f5faff;
+}
+.searchOptionTable td{
+	border:0px;
+	margin:0;
+	padding:0;
+	color: #526c8a;
+	font-weight: bold;
+	text-align:right;
+}
+td.titleWidth01{
+	padding-right: 9px;
+	font-size:95%;
+	padding-top: 2px;
+
+}
+td.titleWidth02{
+	padding-right: 9px;
+	font-size:95%;
+	padding-top: 2px;
+}
+td.input01{
+	text-align:left;
+	padding-top: 1px;
+}
+div#searchOption input, select {
+	margin: 0px 0 1px 0;
+}
+
+/* popup */
+
+div#searchOptionPopup{
+    width:520px;
+	margin: 10px 0 0 4px;
+}
+.searchOptionTableBgPopup{
+	width:520px;
+	height: 58px;
+	padding: 0;
+	border: 0px;
+	font-size: 105%;
+}
+td#aPopup, td#bPopup, td#cPopup{
+	border:0px;
+	margin:0;
+	padding:0;
+}
+td#aPopup{
+	width:4px;
+	background: url("../img/searchOption/bg_01Popup.gif") no-repeat;
+}
+td#bPopup{
+	width:512px;
+	background-image: url("../img/searchOption/bg_02Popup.gif");
+	background-repeat: repeat-x;
+}
+td#cPopup{
+	width:4px;
+	background: url("../img/searchOption/bg_03Popup.gif") no-repeat;
+}
+.searchOptionTablePopup{
+	width:100%;
+	height: 48px;
+	padding: 0;
+	border: 0px;
+	background-color:#f5faff;
+	top:0px;
+	left:0px;
+}
+.searchOptionTableTrPopup{
+	background-color:#f5faff;
+}
+.searchOptionTablePopup td{
+	border:0px;
+	margin:0;
+	padding:0;
+	color: #526c8a;
+	font-weight: bold;
+	text-align:right;
+}
+td.titleWidth01Popup{
+	width:12%;
+	padding-right: 9px;
+	font-size:95%;
+	padding-top: 2px;
+}
+td.titleWidth02Popup{
+	width:15%;
+	padding-right: 9px;
+	font-size:95%;
+	padding-top: 2px;
+}
+td.input01Popup{
+	text-align:left;
+	padding-top: 1px;
+}
+div#searchOptionPopup input, select {
+	margin: 0px 0 1px 0;
+}

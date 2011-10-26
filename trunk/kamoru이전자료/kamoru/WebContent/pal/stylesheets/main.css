@@ -1,0 +1,148 @@
+/* PAL 스타일시트 - main.css */
+
+@import url("home.css");
+@import url("table.css");
+@import url("mainTab.css");
+@import url("button.css");
+@import url("form.css");
+@import url("admin.css");
+@import url("tree.css");
+@import url("calendar.css");
+@import url("searchOption.css");
+
+body{
+	padding:0;
+	margin: 5px 12px 12px 6px;
+	font-family: tahoma, Dotum, "돋움", sans-serif;
+	font-size:small;
+}
+img{
+	border: none;
+	vertical-align: middle;
+	padding-bottom:1px;
+}
+hr{
+	display:none;
+}
+a{
+	color: #000000;
+	text-decoration: none;
+}
+a:hover{
+	color: #004fbd;
+	text-decoration: underline;
+}
+h1{
+	color:#005190;
+	font-size: 106%;
+	padding-left: 18px;
+	padding-bottom: 6px;
+	margin-left: -4px;
+	margin-bottom: 0px;
+	background: #fff url("/bizflow/pal/img/icon/pageTitle.gif") no-repeat 6px 10%;
+	border-bottom: 1px dotted #e1e1e1;
+	vertical-align: middle;
+	line-height: 17px;
+}
+
+/* location */
+div#location{
+	position: absolute;
+	top: 8px;
+	float: right;
+	text-align: right;
+	line-height: 25px;
+	font-size: 80%;
+	color: #666;
+	width: 781px;
+}
+div#location a{
+	color: #666;
+}
+div#location a.current{
+	font-weight: bold;
+	color: #d58000;
+}
+
+/* paging */
+div#paging{
+	color :#666;
+  	font-size: 80%;
+	text-align: center;
+	margin-top: 10px;
+	width: 781px;
+}
+div#paging a{
+	color: #666;
+}
+div#paging a:hover{
+	color: #bd9300;
+	text-decoration: none;
+	background-color: #f7ebc7;
+}
+div#paging a.current{
+	color: #d58001;
+	font-weight: bold;
+	background-color: #ffde7b;
+}
+
+/* list Search */
+div#pageSearch{
+ 	font-size: 90%;
+	text-align: center;
+	margin-top: 10px;
+	width: 781px;
+	padding-top: 1px;
+}
+
+/* 1024 전체를 사용할 경우 by YJ 06.08.08 */
+
+div#location_wide{
+	position: absolute;
+	top: 8px;
+	float: right;
+	text-align: right;
+	line-height: 25px;
+	font-size: 80%;
+	color: #666;
+	width: 983px;
+}
+div#location_wide a{
+	color: #666;
+}
+div#location_wide a.current{
+	font-weight: bold;
+	color: #d58000;
+}
+div#paging_wide{
+	color :#666;
+  font-size: 80%;
+	text-align: center;
+	margin-top: 10px;
+	width: 983px;
+}
+div#paging_wide a{
+	color: #666;
+}
+div#paging_wide a:hover{
+	color: #bd9300;
+	text-decoration: none;
+	background-color: #f7ebc7;
+}
+div#paging_wide a.current{
+	color: #d58001;
+	font-weight: bold;
+	background-color: #ffde7b;
+}
+div#pageSearch_wide{
+  font-size: 90%;
+	text-align: center;
+	margin-top: 10px;
+	width: 983px;
+}
+span.checkout{
+	background: #fff url("/bizflow/pal/img/icon/iconCheckUser.gif") no-repeat;
+	font-size: 11px;
+	font-weight: bold;
+	padding-left: 18px;
+}

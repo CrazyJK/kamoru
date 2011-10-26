@@ -1,0 +1,494 @@
+﻿<?xml version="1.0"?>
+<Window xmlns="http://www.chi-tai.info/BatteryStatus" version="1.0" imagesrc="..\..\MITs Store\kamoru\app\hspp\oasis\image" custombg="-1" mode="2" fontsize="22">
+
+	<image src="\MITs Store\kamoru\app\hspp\oasis\background\background.jpg" left="0" top="-55" width="480" height="800" />
+
+	<!-- Top -->
+	<Row name="Top" rowtoggle="0" itemselect="1" gesture="0">
+		<View absolute="3" height="100" selmode="2">
+			<image src="bg_round.png" left="24" top="10" height="72" width="434" />
+			<Item class="clock_digit" optap="DoN" onhold="StartApp" path1="\Windows\TimeManager.exe">
+				<image left="33" top="16" />
+			</Item>
+			<Item class="clock_digit" optap="DoN" onhold="StartApp" path1="\Windows\TimeManager.exe">
+				<image left="77" top="16" />
+			</Item>
+			<Item class="clock_seperator" optap="DoN" onhold="StartApp" path1="\Windows\TimeManager.exe">
+				<image left="124" top="16" />
+			</Item>
+			<Item class="clock_digit" optap="DoN" onhold="StartApp" path1="\Windows\TimeManager.exe">
+				<image left="151" top="16" />
+			</Item>
+			<Item class="clock_digit" optap="DoN" onhold="StartApp" path1="\Windows\TimeManager.exe">
+				<image left="195" top="16" />
+			</Item>
+			<Item class="clock_apm" ontap="DoN" onhold="DoN">
+				<image left="254" top="20" />
+			</Item>
+			<!--
+				<Item class="registry_tracker" ontap="DoN" onhold="DoN"> <image
+				src="snd%s.png" left="390" top="4"/> <registry
+				key_value="HKCU\ControlPanel\Sounds\RingTone0\Sound"/> </Item>
+			-->
+			<!--
+			<Item class="space" ontap="CtlPnl" index="4" subindex="2"
+				onhold="CtlPnl" index1="4" subindex1="1">
+				<image src="sys_info.png" left="254" top="52" width="30"
+					height="20" />
+			</Item>
+			<Item class="memory_program" type="value" ontap="DoN" onhold="DoN">
+				<label left="280" top="54" fontsize="18" bold="1" height="18"
+					width="52" align="right" />
+			</Item>
+			-->
+			<!--
+			<Item class="memory_sdcard" type="value" ontap="DoN" onhold="DoN">
+				<label left="320" top="54" fontsize="18" bold="1" height="18"
+					width="52" align="right" />
+			</Item>
+			-->
+			<Item class="date" ontap="DoN" onhold="DoN">
+				<label text="dd" left="254" top="52" fontsize="26" width="50" height="25" color="FFFFFF" align="left" />
+			</Item>
+			<Item class="date" ontap="DoN" onhold="DoN">
+				<label text="dddd" left="285" top="52" fontsize="26" width="65" height="25" color="FFFFFF" align="left" />
+			</Item>
+			<Item class="memory_program" type="value" ontap="DoN" onhold="DoN">
+				<label left="360" top="20" fontsize="40" bold="1" height="44" width="40" align="left" />
+			</Item>
+			<!-- 			
+			<Item class="registry_tracker" ontap="ToggleWiFi" onhold="MenuWiFi">
+				<image src="wifi%d.png" left="380" top="20" width="35" height="40" />
+				<registry key_value="HKLM\System\State\Hardware\MITs\wifi"
+					mask="0x1" />
+			</Item>
+ 			-->
+			<Item class="registry_tracker" ontap="ToggleBluetooth" onhold="MenuBluetooth">
+				<image src="bluetooth%d.png" left="412" top="20" width="44" height="44" />
+				<registry key_value="HKLM\System\State\Hardware\Bluetooth" mask="0x1" />
+			</Item>
+		</View>
+	</Row>
+
+
+
+
+	<!-- Pages -->
+	<Row name="Pages" rowtoggle="0" itemselect="1">
+
+		<!--	Page0 (Main)	-->
+		<View absolute="3" height="645" selmode="-2" multi="1" gesture="1"
+			animate="101">
+
+			<!-- Plug-in TodayAgenda -->
+			<!--<Item class="tPlug" title="&quot;TodayAgenda&quot;" unload="0"
+				cachebg="1" gesture="1">
+				<label align="center" valign="top" width="400" height="300"
+					left="50" top="30" />
+			</Item>-->
+
+			<Item class="space" type="value" ontap="DoN" onhold="DoN">
+				<label text="" fontsize="25" left="139" top="83" width="66" height="25" bold="4" color="FFFFFF" align="center" valign="center"/>
+			</Item>
+
+			<!-- weather_start -->
+			<image src="bg_weatherinfo.png" left="360" top="1" width="100" height="100" />
+			<Item class="registry_tracker" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\weather_day1_2.mscr"
+				onhold="StartApp" path1="\MITs Store\kamoru\app\hspp\oasis\Script\widget_update.mscr">
+				<image src="weather\yWB%s.png" left="1" top="1" width="120"
+					height="120" />
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\View이미지" />
+			</Item>
+			<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+				<label text="%s" fontsize="21" left="360" top="5" width="95" height="25" bold="1" color="FFFFFF" align="right" valign="center">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\날" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+				<label text="%s" fontsize="22" left="360" top="35" width="95" height="25" bold="4" color="FFFFFF" align="right" valign="center">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\View날씨" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+				<label text="%s" fontsize="25" left="390" top="65" width="40" height="25" bold="4" color="FFFFFF" align="left" valign="center">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\View최저기온" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+				<label text=" / %s" fontsize="25" left="360" top="65" width="95" height="25" bold="4" color="FFFFFF" align="right" valign="center">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\View최고기온" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" ontap="DoN" onhold="DoN">
+				<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptWeather\Day2날씨" />
+			</Item>
+			<!-- weather_end  -->
+
+			<!-- phone/sms/mail start -->
+			<image src="bg_round.png" left="24" top="550" height="60" width="434" />
+			<Item class="registry_tracker" absolute="3" ontap="PhoneMissed" onhold="DoN">
+				<image src="phone-1.png" left="40" top="550" />
+				<label text="%d" suppress0="1" left="40" top="550" width="120" height="22" fontsize="22" bold="1" align="center" color="FFFFFF">
+					<registry key_value="HKCU\System\State\Phone\Missed Call Count" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp" path="\Windows\MMSC.exe" onhold="DoN">
+				<image src="message-1.png" left="180" top="550" />
+				<label text="%d" suppress0="1" left="180" top="550" width="120" height="22" fontsize="22" bold="1" align="center" color="FFFFFF">
+					<registry key_value="HKLM\System\State\Messages\SMS\Unread\Count" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp" path="\Windows\tmail.exe" onhold="DoN">
+				<image src="email-1.png" left="320" top="550" />
+				<label text="%d" suppress0="1" left="320" top="550" width="120" height="22" fontsize="22" bold="1" align="center" color="FFFFFF">
+					<registry key_value="HKCU\System\State\Messages\OtherEmail\Unread\Count" />
+				</label>
+			</Item>
+			<!-- phone/sms/mail end -->
+
+
+			<!--
+			<image src="bg1.png" left="24" top="13" width="432" height="490" />
+			-->
+
+			<!-- Navigator -->
+			<Item animate="0" class="space" ontap="DoN" selmode="4">
+				<image src="navi_on.png" left="140" top="610" />
+			</Item>
+			<Item animate="0" class="space" ontap="View" selmode="4" onhold="DoN" index="1" subindex="1">
+				<image src="navi_off.png" left="220" top="610" />
+			</Item>
+			<Item animate="0" class="space" ontap="View" selmode="4" onhold="DoN" index="1" subindex="2">
+				<image src="navi_off.png" left="300" top="610" />
+			</Item>
+			<!-- Navigator -->
+
+			<!-- Dummy Item for Gesture -->
+			<Item class="space" type="value" ontap="DoN" onhold="DoN">
+				<label left="0" top="0" width="480" height="575" />
+			</Item>
+			<!-- Dummy Item for Gesture -->
+
+		</View>
+
+
+
+
+		<!--	Page1 (Application1)-->
+
+		<View absolute="3" height="645" selmode="-2" multi="1" gesture="1" animate="101">
+		
+			<Item class="space" ontap="StartApp"
+				path="\MITs Store\Program Files\Google Navigator\Navigator.exe" onhold="StartApp"
+				path1="\MITs Store\Program Files\TRUE.Map\TRUE.Map.exe">
+				<image src="Icons\Mappy.png" left="39" top="17" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\Windows\opera9.exe"
+				onhold="StartApp" path1="\Windows\WebSurfing.exe">
+				<image src="Icons\Opera.png" left="365" top="183" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\MITs Store\kamoru\app\mangameeya2.4beta\MangaMeeyaCE.exe"
+				onhold="StartApp" path1="\MITs Store\kamoru\app\hspp\oasis\Script\wp_change_m.mscr">
+				<image src="Icons\Photo.png" left="365" top="266" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp"
+				path="\MITs Store\Games\Dice\Dice.exe" onhold="StartApp"
+				path1="\windows\BubbleBreaker.exe">
+				<image src="Icons\Games2.png" left="365" top="17" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\Windows\Notes.exe"
+				onhold="StartApp" path1="\MITs Store\Program Files\MyMITs\ChekView\ChekView.exe">
+				<image src="Icons\Notes.png" left="39" top="100" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\MITs Store\Program Files\PowerDic2_V1\PowerDic.exe"
+				onhold="StartApp" path1="\MITs Store\Program Files\InfTranslator\간이번역기.exe">
+				<image src="Icons\PowerDic.png" left="39" top="183" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\windows\taskmgr.exe"
+				onhold="StartApp" path1="\MITs Store\Program Files\Resco Explorer\Explorer.exe">
+				<image src="Icons\MDic.png" left="39" top="266" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\Windows\시작 메뉴\프로그램\계산기.lnk"
+				onhold="StartApp" path1="\MITs Store\Program Files\PowerCalc\PowerCalc.exe">
+				<image src="Icons\Calculator.png" left="365" top="100" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\Windows\caload.exe"
+				onhold="StartApp" path1="\Windows\BackLight.exe">
+				<image src="Icons\TU.png" left="39" top="349" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\Windows\TouchPlayer.exe" onhold="StartApp" path1="\MITs Store\kamoru\app\hspp\oasis\script\dnse(3d).mscr">
+				<image src="Icons\TouchPlayer.png" left="39" top="431" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" 
+				path="\MITs Store\Program Files\SubWay\SubWay.exe" onhold="DoN">
+				<image src="Icons\Subway.png" left="365" top="349" height="66" width="66" />
+			</Item>
+
+			<Item class="space" ontap="StartApp" path="\Windows\favoritesettings.exe" onhold="SoftReset">
+				<image src="Icons\Setting.png" left="365" top="431" height="66" width="66" />
+			</Item>
+
+			<!-- Navigator -->
+			<Item animate="0" class="space" ontap="View" onhold="DoN" index="1"
+				subindex="0" selmode="4">
+				<image src="navi_off.png" left="140" top="610" />
+			</Item>
+			<Item animate="0" class="space" ontap="DoN" selmode="4">
+				<image src="navi_on.png" left="220" top="610" />
+			</Item>
+			<Item animate="0" class="space" ontap="View" onhold="DoN" index="1"
+				subindex="2" selmode="4">
+				<image src="navi_off.png" left="300" top="610" />
+			</Item>
+
+			<!-- Navigator -->
+
+
+
+
+			<!-- Dummy Item for Gesture -->
+			<Item class="space" type="value" ontap="DoN" onhold="DoN">
+				<label left="0" top="0" width="480" height="575" />
+			</Item>
+			<!-- Dummy Item for Gesture -->
+
+		</View>
+
+
+
+		<!--	Page2 (Add Applrication)-->
+		<View absolute="3" height="645" selmode="-2" multi="1" gesture="1"
+			animate="101">
+
+			<!-- news_start -->
+			<image src="bg.png" left="24" top="3" width="432" height="600" />
+
+			<image src="news.png" left="21" top="0" width="100" height="40" />
+
+			<Item class="registry_tracker" ontap="DoN" onhold="StartApp" path1="\MITs Store\kamoru\app\hspp\oasis\Script\widget_update.mscr">
+				<image src="bg.png" left="246" top="2" width="210" height="25" />
+				<label text="Updated %s" fontsize="20" left="248" top="3"
+					width="210" height="23" bold="4" color="FFFFFF" align="center"
+					valign="center">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\Update" />
+				</label>
+			</Item>
+
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent1.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="40" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle1" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent2.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="76" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle2" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent3.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="112" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle3" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent4.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="148" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle4" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent5.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="184" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle5" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent6.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="220" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle6" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent7.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="256" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle7" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent8.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="292" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle8" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent9.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="328" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle9" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent10.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="364" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle10" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent11.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="400" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center"	color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle11" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent12.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="436" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center"	color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle12" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent13.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="472" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle13" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent14.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="508" width="375" 
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle14" />
+				</label>
+			</Item>
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\MITs Store\kamoru\app\hspp\oasis\Script\Widget-Newscontent15.mscr" onhold="DoN">
+				<label text="▶%s" suppress0="1" left="40" top="544" width="375"
+					height="25" fontsize="25" bold="1" align="left" valign="center" color="FFFFFF">
+					<registry key_value="HKLM\Software\Samsung\MobileWidget\ScriptNews\ViewTitle15" />
+				</label>
+			</Item>
+
+			<!-- news_end -->
+
+			<!-- Navigator -->
+			<Item animate="0" class="space" ontap="View" onhold="DoN" index="1"
+				subindex="0" selmode="4">
+				<image src="navi_off.png" left="140" top="610" />
+			</Item>
+			<Item animate="0" class="space" ontap="View" onhold="DoN" index="1"
+				subindex="1" selmode="4">
+				<image src="navi_off.png" left="220" top="610" />
+			</Item>
+			<Item animate="0" class="space" ontap="DoN" selmode="4">
+				<image src="navi_on.png" left="300" top="610" />
+			</Item>
+			<!-- Navigator -->
+
+
+			<!-- Dummy Item for Gesture -->
+			<Item class="space" type="value" ontap="DoN" onhold="DoN">
+				<label left="0" top="0" width="480" height="575" />
+			</Item>
+			<!-- Dummy Item for Gesture -->
+
+		</View>
+
+
+	</Row>
+
+	<!-- Menu : keep shape-->
+	<Row name="Menu" rowtoggle="1" itemselect="1" gesture="0">
+		<View height="1" selmode="2" animate="101">
+			<Item class="space" absolute="3" ontap="DoN" onhold="DoN">
+				<image src="bg_point.png" left="0" top="0" width="480" height="1" />
+			</Item>
+		</View>
+	<!--
+		<View height="68" selmode="2" animate="101">
+
+			<Item class="space" absolute="3" ontap="View" index="1"
+				subindex="0" onhold="StartApp"
+				path1="\MITs Store\kamoru\app\hspp\oasis\Script\Poweroff.mscr">
+				<image src="bottom\home-1.png" left="10" top="0" width="60"
+					height="60" />
+
+			</Item>
+
+			<Item class="space" absolute="3" ontap="View" index="1"
+				subindex="1" onhold="DoN">
+				<image src="bottom\apps-1.png" left="106" top="0" width="60"
+					height="60" />
+
+			</Item>
+
+			<Item class="space" absolute="3" ontap="View" index="1"
+				subindex="2" onhold="DoN">
+				<image src="bottom\News-1.png" left="202" top="0" width="65"
+					height="50" />
+
+			</Item>
+
+			<Item class="space" absolute="3" ontap="StartApp" path="\Windows\calllog.exe"
+				onhold="StartApp" path1="\Windows\calllog.exe">
+				<image src="bottom\call-1.png" left="303" top="10" width="55"
+					height="55" />
+
+			</Item>
+			<Item class="space" absolute="3" ontap="StartApp" path="\Windows\mmsc.exe"
+				onhold="StartApp" path1="\Windows\NEW_MSG.lnk">
+				<image src="bottom\message-1.png" left="394" top="5" width="70"
+					height="70" />
+
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="PhoneMissed"
+				onhold="DoN">
+				<label text="%d" suppress0="1" left="330" top="0" width="24"
+					height="22" fontsize="22" bold="1" align="center" color="FFFFFF">
+					<registry key_value="HKCU\System\State\Phone\Missed Call Count" />
+				</label>
+			</Item>
+
+			<Item class="registry_tracker" absolute="3" ontap="StartApp"
+				path="\Windows\MMSC.exe" onhold="DoN">
+				<label text="%d" suppress0="1" left="401" top="0" width="24"
+					height="22" fontsize="22" bold="1" align="center" color="FFFFFF">
+					<registry key_value="HKLM\System\State\Messages\SMS\Unread\Count" />
+				</label>
+			</Item>
+
+		</View>
+	-->
+	</Row>
+
+</Window>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> Event </title>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	var  btn = document.f.btn;
+	new ButtonClass(btn);
+
+	var btn2 = document.getElementById("btn2");
+	Event.addEvent(btn2, 'click', jsClick);
+
+	Event.addEvent(btn3, 'click', function(e){ btn3.style.backgroundColor = 'blue'; });
+
+	// 요건 안됨.
+	Event.addEvent(btn4, 'click', btn4, function(e){ btn3.style.backgroundColor = 'blue'; });
+
+	Event.addEvent(btn5, 'click', function(e){ btn5.style.backgroundColor = 'blue'; });
+	
+}
+
+ButtonClass = function(element) {
+	this.element = element;
+
+	var localThis = this;
+	Event.addEvent(this.element, "click", this, this.jsClick);
+}
+
+ButtonClass.prototype.jsClick = function(e) {
+	this.element.style.backgroundColor = 'blue'; 
+}
+
+jsClick = function(e){
+	alert("event2");		
+}
+</script>
+</head>
+<body>
+
+<button id="btn5" style="padding:50px">클릭5</button>
+
+<input type="button" name="btn4"  id="btn4" value="클릭4" style="padding:50px" />
+
+<input type="button" name="btn3"  id="btn3" value="클릭3" style="padding:100px" />
+
+
+<input type="button" name="btn2"  id="btn2" value="클릭2" style="padding:150px" />
+
+
+<form name="f" action="">
+	<input type="button" name="btn"  id="btn" value="클릭" style="padding:50px" />
+</form>
+
+</body>
+</html>

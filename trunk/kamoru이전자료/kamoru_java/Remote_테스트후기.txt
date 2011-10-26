@@ -1,0 +1,34 @@
+
+bizflow@psmssv1:/home/bizflow/kamoru_java/bin> RemoteAgent.sh
+Log4j Init.
+ INFO [16:47:51] (RemoteAgent.java:20) - RemoteAgent init
+java.net.BindException: 파일 액세스 권한이 지정된 조치를 허용하지 않습니다.
+        at java.net.PlainDatagramSocketImpl.bind(Native Method)
+        at java.net.DatagramSocket.create(DatagramSocket.java:188)
+        at java.net.DatagramSocket.<init>(DatagramSocket.java:160)
+        at java.net.DatagramSocket.<init>(DatagramSocket.java:132)
+        at kamoru.remote.RemoteAgent.startup(RemoteAgent.java:29)
+        at kamoru.remote.RemoteAgent.main(RemoteAgent.java:63)
+ERROR [16:47:52] (RemoteAgent.java:50) - java.net.BindException: 파일 액세스 권한이 지정된 조치를 허용하지 않습니다.
+
+
+==> 외환은행 서버에서 발생했음. 
+	서버에서는 13 이나 1004 정도의 작은 포트에서는 안되기도 함.
+
+
+
+ps -ef | grep hw  등과 같은 파이프 연결 명령은 되지 않음.
+스크립트로 하는것이 제일.
+
+
+java.io.IOException: 소켓 데이터 전송을 위한 메시지가 너무 깁니다.
+        at java.net.PlainDatagramSocketImpl.send(Native Method)
+        at java.net.PlainDatagramSocketImpl.send(PlainDatagramSocketImpl.java:77)
+        at java.net.DatagramSocket.send(DatagramSocket.java:341)
+        at kamoru.remote.RemoteAgent.startup(RemoteAgent.java:45)
+        at kamoru.remote.RemoteAgent.main(RemoteAgent.java:63)
+ERROR [17:09:08] (RemoteAgent.java:53) - java.io.IOException: 소켓 데이터 전송을 위한 메시지가 너무 깁니다.
+
+패킷 크기 제한도 고려!
+
+에러 발생후 서비스 지속 여부를 고려한 로직 필요.

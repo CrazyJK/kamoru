@@ -1,0 +1,8 @@
+bizflowg  2860     1  0  Jul 26  ?         0:00 ./hworaexe -c 100 -m 200 -t xbpmprod -s 7202
+bizflowg  2861  2860  0  Jul 26  ?        851:00 ./hworaexe -c 100 -m 200 -t xbpmprod -s 7202
+bizflowg  2863     1  0  Jul 26  ?         0:00 ./hworaexe -c 4 -m 100 -t xbpmprod -s 7202 -p bizflowpipe
+bizflowg  2864  2863  0  Jul 26  ?         1:05 ./hworaexe -c 4 -m 100 -t xbpmprod -s 7202 -p bizflowpipe
+bizflowg  2876     1  0  Jul 26  ?         0:00 ./hwqueuex -daemon -s 7202
+bizflowg  2877  2876  0  Jul 26  ?        103:00 ./hwqueuex -daemon -s 7202
+bizflowg  2879     1  0  Jul 26  ?         0:00 ./hwserd -s 7202 -m 8202
+bizflowg  2880  2879  0  Jul 26  ?        4614:00 ./hwserd -s 7202 -m 8202

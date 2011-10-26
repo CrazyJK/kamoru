@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+var wih = null;
+
+function signup(){
+alert(wih);
+if(wih == null){
+ 
+var vUrl    = "popup.html";
+var vName   = "signup";
+var vWidth  = 620;
+var vHeight = 450;
+var vLeft  = (window.screen.width- vWidth)/2;
+var vTop = (window.screen.height - vHeight)/2;
+var vFeature = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft;
+vFeature = vFeature + "toolbar=0,location=0,directories=0,"+
+      "status=0,menubar=0,scrollbars=0,"+
+      "resizable=0,copyhistory=1";
+
+wih = window.open(vUrl,vName,vFeature);
+
+}
+}
+//var inputDeptNm;
+</script>
+
+</head>
+<body>
+<a href="javascript:signup()">popup</a>
+
+</body>
+</html>

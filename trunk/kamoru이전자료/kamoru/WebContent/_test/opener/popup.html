@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+function Init(){
+	//alert(opener.location);
+	//alert(opener.inputDeptNm);
+//	opener.inputDeptNm.value = "popup write";
+//	treeInfo.document.location.href = "http://www.naver.com";
+//	alert(treeInfo.document.location);
+//	var datetxt = document.getElementById("datetxt");
+//	datetxt.value =
+	document.write(new Date());
+}
+</script>
+</head>
+<body onload="Init()" onunload="opener.location.reload()">
+<input type=text id="datetxt"><br></br>
+<iframe name="treeInfo"></iframe>
+
+</body>
+</html>

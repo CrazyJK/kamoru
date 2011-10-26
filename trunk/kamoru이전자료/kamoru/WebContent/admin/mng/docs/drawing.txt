@@ -1,0 +1,7 @@
+site 관리에 유용한 기능 모음.
+
+1. webquery
+2. log4j control
+3. memory(JVM) view
+4. param check
+5. external app execute

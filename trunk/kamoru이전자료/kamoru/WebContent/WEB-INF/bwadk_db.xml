@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<Connection 
+		Default="true" 
+		Driver="oracle.jdbc.driver.OracleDriver"
+		Impl="com.hs.frmwk.db.BWConnectionPoolDbcpImpl" 
+		InitConn="0"
+		MaxConn="23" 
+		Name="kamoru" 
+		Url="jdbc:oracle:thin:@123.212.192.30:1521:orcl"
+		User="kamoru" 
+		Password="kamoru" 
+		Vendor="dbcp" />
+
+	<!-- CSD 2009년 하반기 개발을 위한 임시 연결 -->
+	<Connection 
+		Default="false" 
+		Driver="oracle.jdbc.driver.OracleDriver"
+		Impl="com.hs.frmwk.db.BWConnectionPoolDbcpImpl" 
+		InitConn="0"
+		MaxConn="3" 
+		Name="csdt" 
+		Url="jdbc:oracle:thin:@123.212.190.11:1521:CSD"
+		User="sa" 
+		Password="csd" 
+		Vendor="dbcp" />
+
+	<!-- 삼성중공업 통합모니터링 개선을 위한 임시 연결 -->
+	<Connection 
+		Default="false" 
+		Driver="oracle.jdbc.driver.OracleDriver"
+		Impl="com.hs.frmwk.db.BWConnectionPoolDbcpImpl" 
+		InitConn="0"
+		MaxConn="3" 
+		Name="bpmshi" 
+		Url="jdbc:oracle:thin:@211.112.36.111:1521:orcl"
+		User="bpmshi" 
+		Password="bpmshi" 
+		Vendor="dbcp" />
+</Database>

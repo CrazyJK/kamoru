@@ -1,0 +1,179 @@
+/* PAL 스타일시트 - admin.css */
+
+div.one, .one-1, .one-2, .one-3, .one-4, .one99, .two, .two-1, .two-2, .two-3, .two-4, .one_wide, .one-3_wide, .one99_wide, .two_wide, .two-1_wide, #twoBody_wide{
+	font-size: 80%;
+}
+div.one{
+	margin-top: 5px;	/*margin-top: 31px;*/
+	float: left;
+	width: 255px;		/*width: 256px;*/
+}
+div.one-1{
+	margin-top: 31px;
+	float: left;
+	width: 100%;
+}
+div.one-2{
+	margin-top: 31px;
+	float: left;
+	width: 60%;
+}
+div.one-3{
+	margin-top: 0px;
+	margin-left: 0px;
+	float: left;
+	width: 240PX;
+}
+div.one-4{
+	margin-top: 31px;
+	float: left;
+	width: 50%;
+}
+div.one99{
+	margin-top: 31px;
+	float: left;
+	width: 255px;
+}
+div.two{
+	margin-top: 5px;
+	width: 523px;
+	position: absolute;
+	left: 264px;
+}
+div.two-1{
+	margin-top: 31px;
+	width: 523px;
+}
+div.two-2{
+	margin-top: 31px;
+	float: right;
+	width: 40%;
+}
+div.two-3{
+	float: right;
+}
+div.two-4{
+	margin-top: 31px;
+	float: right;
+	width: 50%;
+}
+h2#HeadTextLeft, #HeadTextRight, #HeadTextRight-1{
+	line-height: 1.1em;
+	margin: 0;
+	font-size: 100%;
+	color: #000;
+	background: url("/bizflow/pal/img/icon/tAdminH2.gif") no-repeat 7px 50%;
+}
+h2#HeadTextLeft{
+	padding: 5px 5px 5px 20px;
+}
+h2#HeadTextRight{
+	padding: 2px 5px 5px 20px;
+}
+h2#HeadTextRight-1{
+	padding: 5px 5px 5px 20px;
+}
+div#oneHeadBg, #twoHeadBg{
+	margin: 0;
+	padding: 0;
+	border: 1px solid #9bb8ea;
+}
+div#oneHeadBg{
+	background: #bacff4 url("/bizflow/pal/img/table/h2adminHeadLeftBg.gif") repeat-x;
+}
+div#oneHeadBg input, div#oneHeadBg select, div#oneHeadBg textarea {
+	font-size: 100%;
+}
+div#twoHeadBg{
+	background: #bcbcbc url("/bizflow/pal/img/table/h2adminHeadRightBg.gif") repeat-x;
+}
+div#twoHeadBg input, div#twoHeadBg select, div#twoHeadBg textarea {
+	font-size: 100%;
+}
+div#oneBody, table#twoBody{
+	padding: 0;
+}
+div#oneBody{
+	overflow: auto;
+	margin: 0;
+	border-left: 1px solid #cacaca;
+	border-bottom: 1px solid #cacaca;
+	border-right: 1px solid #cacaca;
+	background-color: #fafbfd;
+}
+div#oneBody input, div#oneBody select, div#oneBody textarea {
+	font-size: 100%;
+}
+table#twoBody{
+	overflow: auto;
+	font-size:100%;
+	margin: 4px -4px 0px 4px;
+	border-top: 0;
+	width: 523px;
+}
+table#twoBody-1{
+	overflow: auto;
+	font-size:100%;
+	margin: 4px -4px 0px 4px;
+	border-top: 0;
+	width: 100%
+}
+table#twoBody th, td, table#twoBody_wide th, td{
+	margin: 0;
+	padding: 4px 6px 2px 14px;
+}
+table#twoBody th, table#twoBody_wide th{
+	text-align: left;
+	font-weight: normal;
+	width: 29%;
+	background-color: #edece7;
+}
+table#twoBody td.alt, table#twoBody_wide td.alt{
+	background-color: #fafbfd;
+}
+table#twoBody input, table#twoBody select, table#twoBody textarea, table#twoBody-1 input, table#twoBody-1 select, table#twoBody-1 textarea, table#twoBody_wide input, table#twoBody_wide select, table#twoBody_wide textarea, {
+	font-size: 100%;
+}
+ul#adminTree{
+	padding: 7px 5px 5px 1px;
+	list-style: none; 
+}
+ul#adminTree-1{
+	list-style: none;
+}
+
+/* 1024 전체를 사용할 경우 by YJ 06.08.08 */
+
+div.one_wide{
+	margin-top: 5px;
+	float: left;
+	width: 326px;
+}
+div.one-3_wide{
+	margin-top: 0px;
+	margin-left: 0px;
+	float: left;
+	width: 311px;
+}
+div.one99_wide{
+	margin-top: 31px;
+	float: left;
+	width: 326px;
+}
+div.two_wide{
+	margin-top: 5px;
+	width: 652px;
+	position: absolute;
+	left: 335px;
+}
+div.two-1_wide{
+	margin-top: 31px;
+	width: 652px;
+}
+table#twoBody_wide{
+	overflow: auto;
+	font-size:100%;
+	margin: 4px -4px 0px 4px;
+	border-top: 0;
+	width: 652px;
+}

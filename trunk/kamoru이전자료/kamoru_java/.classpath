@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="Util"/>
+	<classpathentry kind="src" path="SystemBackup"/>
+	<classpathentry kind="src" path="Remote"/>
+	<classpathentry kind="src" path="IOTest"/>
+	<classpathentry kind="src" path="SQLUtil"/>
+	<classpathentry kind="src" path="Mail"/>
+	<classpathentry kind="src" path="DB"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Log4j Library"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Servlet Library"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Oracle Library"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javamail Library"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/dbcp Library"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

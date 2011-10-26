@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HandyMap Powered by Daum</title>
+<link rel="stylesheet" type="css/text" href="handymap.css"/>
+<style type="text/css">
+body {margin:0; font-size:9pt;}
+h1,h2,h3,h4,h5,h6 {display:none}
+#selectCustomer {background-color:#ffffee; width:100%;border:1px solid lightblue;scrolling:auto;}
+#selectMember {border:1px solid lightblue;padding:1px;width:350px;}
+
+.overlayBtn_ON  {background-color:blue;border:1;color:white; font-weight:bold;}
+.overlayBtn_OFF {background-color:white;border:1;color:blue; font-weight:normal;}
+
+.memberSelected {background-color:#4AA02C;color:white;border:1px solid blue;cursor:pointer}
+.memberDeSelected {background-color:white;color:#000000;border:1px solid gray;cursor:pointer}
+
+.toggleBtn {border:1px solid gray;padding:3}
+
+.memberSpan {width:100}
+.regInput {width:140px;font-size:9pt;}
+</style>
+<script type="text/javascript" src="http://apis.daum.net/maps/maps2.js?apikey=95bd3ab0ec131554d0f3174f7ab52da950a3f58e" charset="utf-8"></script>
+<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="handymap.js"></script>
+</head>
+<body>
+<h1>상단 검색 영역</h1>
+<div id="schDiv" style="z-index:2; POSITION:absolute; OVERFLOW:visible; LEFT:0px; TOP:0px; width:100%; height:99px; background-color:white;border-bottom:1px solid lightblue;">
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td width="200"><img alt="" src="./img/CI_handysoft.jpg" height="80px"></td>
+			<td>
+				<span style="font:bold 16pt blue;">핸디 지도</span> 
+				<input id="dataInput" type="text" /><input type="button" value="검색" onclick="dataSearch()"/>
+				<span id="dataSearchResult"></span>
+			</td>
+			<td align="right" valign="bottom"><img alt="" src="./img/MDH.gif"></td>
+		</tr>
+	</table>
+</div>
+
+<div id="customerInfoDiv" style="z-index:2; POSITION:absolute; OVERFLOW:visible; LEFT:0px; TOP:80px; width:150px; height:500; background-color:white; ">
+	<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<tr>
+			<td>고객사 목록</td>
+			<td align="right"><span class="toggleBtn" id="customerListToggleBtn"></span></td>
+		</tr>
+	</table>
+	<div id="customerDiv"></div>
+</div>
+
+<div id="memberInfoDiv" style="z-index:2; POSITION:absolute; OVERFLOW:visible; LEFT:200px; TOP:80px; width:330px; height:500;">
+	<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<tr>
+			<td>임직원 목록		
+				<span class="toggleBtn" id="memberModifyToggleBtn"></span>
+				<span class="toggleBtn" id="memberListToggleBtn"></span>
+				<span class="toggleBtn" id="memberAllToggleBtn"></span>
+			</td> 
+		</tr>
+	</table>
+	<div id="memberDiv"></div>
+</div>
+
+<h1>우측 지도 영역</h1>
+<div id="map"  style="POSITION:absolute; LEFT:0px; TOP:100px; width:600px;height:400px;"></div>
+
+<div id="modifyDiv" style="z-index:2;POSITION:absolute; RIGHT:250px; TOP:10px; width:210px;height:160px;background-color:white;border:1px solid lightblue; display:none;">
+	<table>
+		<tr>
+			<td>
+				<span id="regName" style="font-weight:bold;"></span>
+			</td>
+			<td>			
+				<input type="radio" name="regStatus" id="regStatusD" class="regInput"/><label for="regStatusD">본사</label>
+				<input type="radio" name="regStatus" id="regStatusO" class="regInput"/><label for="regStatusO">외근</label>
+				<input type="radio" name="regStatus" id="regStatusB" class="regInput"/><label for="regStatusB">출장</label>
+			</td>
+		</tr>
+		<tr>
+			<td>행선지</td>
+			<td><input type="text" id="regSite" class="regInput" value=""/></td>
+		</tr>
+		<tr>
+			<td>업무</td>
+			<td><input type="text" id="regTask" class="regInput" value=""/></td>
+		</tr>
+		<tr>
+			<td>위치</td>
+			<td><input type="text" id="regAddress" class="regInput"/></td>
+		</tr>
+		<tr>
+			<td>출발시간</td>
+			<td><input type="text" id="regStart" class="regInput"/></td>
+		</tr>
+		<tr>
+			<td>복귀시간</td>
+			<td><input type="text" id="regArrival" class="regInput"/></td>
+		</tr>
+	</table>
+</div>
+
+<div id="debugDiv" style="z-index:2;POSITION:absolute; left:10px; TOP:200px; width:200px;height:500px;background-color:white;border:1px solid lightblue; display:;">
+<textarea id="debug" style="width:100%; height:100%; font-size:9pt;"></textarea>
+</div>
+
+</body>
+</html>

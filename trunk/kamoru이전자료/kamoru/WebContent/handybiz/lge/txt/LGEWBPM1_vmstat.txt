@@ -1,0 +1,7 @@
+
+System configuration: lcpu=8 mem=16384MB
+
+kthr    memory              page              faults        cpu    
+----- ----------- ------------------------ ------------ -----------
+ r  b   avm   fre  re  pi  po  fr   sr  cy  in   sy  cs us sy id wa
+ 4  0 3204102  8078   0   0   0   0    0   0 2776 16906 15148 17 11 73  0

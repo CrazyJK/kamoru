@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title> Board :: Ajax </title>
+<link rel="stylesheet" type="text/css" href="../css/default.css"> 
+<link rel="stylesheet" type="text/css" href="../css/bbs.css"> 
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript" src="CheckButton.js"></script>
+<script type="text/javascript">
+var bbs = {};
+
+bbs.Tag = function(tagid, tagname, rank, size, checked){
+	this.tagid = tagid;
+	this.tagname = tagname;
+	this.rank = rank;
+	this.size = size;
+	this.checked = checked;
+}
+
+bbs.Tag.prototype = {
+	html : function(){
+		return '<span class=TAGNAME id="tagid_' + this.tagid + '" '
+		+ 'style="font-size:' + (10 + this.rank) + 'pt;" '
+		+ 'onclick="jsClick(this)" '
+		+ '>'+ this.tagname + '</span>&nbsp;';
+	},
+	
+};
+
+function jsClick(obj){
+	obj.style.backgroundColor = ""id);
+	
+}
+
+var tagData = [{tagid : "1", tagname : "A", rank : 1,  size : 1},
+               {tagid : "2", tagname : "B", rank : 4,  size : 1},
+               {tagid : "3", tagname : "C", rank : 7,  size : 1},
+               {tagid : "4", tagname : "D", rank : 10, size : 1}];
+
+function jsMakeTag(){
+	var tagCloud = document.getElementById("tagCloud");
+	for(var i=0 ; i<tagData.length ; i++){
+		var tag = new bbs.Tag(tagData[i].tagid, tagData[i].tagname, tagData[i].rank, tagData[i].size);
+		//alert(tag.html());
+		tagCloud.innerHTML += tag.html();
+		
+	}
+	//showHTML();
+}
+
+function showHTML(){
+	alert(document.documentElement.innerHTML);
+}
+
+window.onload = function(){
+	jsMakeTag();
+}
+</script>
+</head>
+<body>
+<div id="tagCloud"></div>
+<input type="button" value="태그만들기" onclick="jsMakeTag()"/>
+</body>
+</html>
