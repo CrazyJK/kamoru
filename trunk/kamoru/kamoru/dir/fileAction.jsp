@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.net.*, java.io.*" %>
 <%
+request.setCharacterEncoding("UTF-8");
+
 long startNanoTime = System.nanoTime();
 
 request.setCharacterEncoding("UTF-8");
