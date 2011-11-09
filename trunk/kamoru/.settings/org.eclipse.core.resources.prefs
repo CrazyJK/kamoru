@@ -1,4 +1,4 @@
-#Wed Oct 26 14:39:20 KST 2011
+#Wed Nov 09 22:44:50 KST 2011
 =\=\=\=\=\=\=
 <<<<<<<=.mine
 >>>>>>>=.r25
@@ -6,3 +6,4 @@ eclipse.preferences.version=1
 encoding//kamoru/handy/addon/common.jsp=UTF-8
 encoding//kamoru/temp/get_receive.jsp=EUC-KR
 encoding//kamoru/temp/get_send.jsp=EUC-KR
+encoding/<project>=UTF-8
