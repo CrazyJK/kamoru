@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/kamoru"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/notepad"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/make_asx"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/manageAV"/>
         <property name="context-root" value="kamoru"/>
         <property name="java-output-path" value="/kamoru/build/classes"/>
     </wb-module>
