@@ -23,7 +23,8 @@ public class FileManager {
 	
 	public void listFile(String dir) { 
 //		ArrayList<String> subDirList = new ArrayList<String>();
-		File[] files = new File(dir).listFiles(new FiletypeFilter(filter));
+		FilenameFilter nameFilter = new FiletypeFilter(filter);
+		File[] files = new File(dir).listFiles(nameFilter);
 		for(File f: files){
 			if(f.isDirectory())	{
 //				subDirList.add(f.getAbsolutePath());
