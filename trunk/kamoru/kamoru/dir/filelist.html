@@ -11,13 +11,20 @@
 
 <header>
 	<hgroup>
-		<h1>Directory list
-		</h1>
+		<h1>Directory list</h1>
 		<h2>
-			Path : <input id="localpath" placeholder="input local path" value="/home/kamoru/Data/ETC"/>
-			Filter : <input id="filter" type="text" value="avi wmv mpg mpeg mkv mp3" size="30"/>
-			Player Uri : <input id="playeruri"type="text" value="C:\\Program Files (x86)\\GRETECH\\GomPlayer\\GOM.exe"/>
+			<li>Path : <input id="localpath" placeholder="input local path" value="/home/kamoru/ETC"/>
+			<li>Filter : <input id="filter" type="text" value="avi wmv mpg mpeg mkv mp3"/>
+			<li>Player Uri : <input id="playeruri" type="text" value="C:\\Program Files (x86)\\GRETECH\\GomPlayer\\GOM.exe"/>
+			<li>Sort : 
+				<input name="sort" type="radio" id="sort_name" value="0"><label for="sort_name">Name</label>
+				<input name="sort" type="radio" id="sort_path" value="1" checked="checked"><label for="sort_path">Path</label>
+				<input name="sort" type="radio" id="sort_size" value="2"><label for="sort_size">Size</label>
+				<input name="sort" type="radio" id="sort_date" value="3"><label for="sort_date">Date</label>
+				<input name="reverse" type="radio" id="reverse_false" value="false" checked="checked"><label for="reverse_false">Ascending</label>
+				<input name="reverse" type="radio" id="reverse_true" value="true"><label for="reverse_true">Descending</label>
 			<input class="getButton" type="button" value="Get file list" onclick="getFileList()"/>
+			<input class="getButton" type="button" value="T E S T" onclick="test()"/>
 		</h2>
 	</hgroup>
 </header>

@@ -104,7 +104,10 @@ footer p {
 }
 input {
 	font-size: 9pt;
-	border-left: 0px; border-right: 0px; border-top: 0px;  
+	border-left: 0px; border-right: 0px; border-top: 0px;
+}
+#localpath, #filter, #playeruri {
+	width:50%;  
 }
 .getButton {
 	height:100%; border:1px solid #EFD3D3;
@@ -120,4 +123,11 @@ input {
 }
 #loadingTbl > tr > td {
 	text-align: center;
+}
+label {
+	font-size: 10pt;
+	margin: 0px;
+	color: #000;
+	font-weight: normal;
+	font-style: normal;
 }

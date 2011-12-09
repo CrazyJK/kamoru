@@ -15,16 +15,24 @@ $(document).ready(function(){
 	});
 });
 
+function test(){
+	alert(
+		$(":input:radio[name=sort]:checked").val() + " - " + $(":input:radio[name=reverse]:checked").val() 
+	);
+}
+
 function getFileList()
 {
 	path = jQuery.trim($("#localpath").val());
 	var filter = jQuery.trim($("#filter").val());
+	var sort = $(":input:radio[name=sort]:checked").val();
+	var reverse = $(":input:radio[name=reverse]:checked").val();
 	if(path != "")
 	{
 		$.ajax({
-			url: "filelistAction.jsp?p=" + path + "&f=" + filter + "&t=" + new Date().getTime(),
+			url: "filelistAction.jsp?p=" + path + "&f=" + filter + "&s=" + sort + "&r=" + reverse + "&t=" + new Date().getTime(),
 			beforeSend: function() {
-	            $('#loadingbar').show().fadeIn('fast'); 
+	            $('#loadingDiv').show().fadeIn('fast'); 
 	        },
 			success: function(data){
 				viewData(jQuery.trim(data));
@@ -33,7 +41,7 @@ function getFileList()
 				alert(error); 
 			},
 			complete: function() { 
-				$("#loadingbar").fadeOut();
+				$("#loadingDiv").fadeOut();
 		    }
 		});
 	}
@@ -58,9 +66,10 @@ function viewData(data)
 		$("#filelist").append(
 				"<li id='file" + i + "'>" 
 				+ "<a href='javascript:void()' onclick='fileAction("+i+", \"PLAY\")'>" 
-				+ 	"<span class='filesize'>" + convertSize(files[i].SIZE) 		+ "</span>"
+				+ 	"<span class='filepath'>" + files[i].PATH.replace(path, "~") + "</span>" 
 				+ 	"<span class='filename'>" + files[i].NAME 			 		+ "</span>"
-				+ 	"<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+				+ 	"<span class='filesize'>" + convertSize(files[i].SIZE) 		+ "</span>"
+				+ 	"<span class='filedate'>" + files[i].MODIFIEDDATE	 		+ "</span>"
 				+ "</a>"
 				+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 				+ "</li>");		
@@ -106,9 +115,10 @@ function sameSizeFile()
 					if(first)
 					{
 						$("#complist").append("<li><a href='javascript:void()' onclick='fileAction("+i+", \"PLAY\")'>" + (i + 1) + ". "
-								+ "<span class='filesize'>" + files[i].SIZE + "</span>"
-								+ "<span class='filename'>" + files[i].NAME + "</span>"
 								+ "<span class='filepath'>" + files[i].PATH.replace(path, "") + "</span>" 
+								+ "<span class='filename'>" + files[i].NAME + "</span>"
+								+ "<span class='filesize'>" + files[i].SIZE + "</span>"
+								+ "<span class='filedate'>" + files[i].MODIFIEDDATE	 		+ "</span>"
 								+ "</a>"
 								+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 								+ "</li>");		
@@ -119,9 +129,10 @@ function sameSizeFile()
 					compArr[idx++] = j;
 					
 					$("#complist").append("<li><a href='javascript:void()' onclick='fileAction("+j+", \"PLAY\")'>" + (j + 1) + ". "
-							+ "<span class='filesize'>" + files[j].SIZE + "</span>"
-							+ "<span class='filename'>" + files[j].NAME + "</span>"
 							+ "<span class='filepath'>" + files[j].PATH.replace(path, "") + "</span>" 
+							+ "<span class='filename'>" + files[j].NAME + "</span>"
+							+ "<span class='filesize'>" + files[j].SIZE + "</span>"
+							+ "<span class='filedate'>" + files[j].MODIFIEDDATE	 		+ "</span>"
 							+ "</a>"
 							+ "<a href='javascript:void()' onclick='fileAction("+i+", \"DEL\")'><span class='filedel'>DEL</span></a>"
 							+ "</li>");		
@@ -180,7 +191,7 @@ function fileAction(idx, mode)
 		type: "POST",
 		data: "uri=" + uri + "&mode=" + mode + "&player=" + player + "&t=" + new Date().getTime(), 
 		beforeSend: function() {
-            $('#loadingbar').show().fadeIn('fast'); 
+            $('#loadingDiv').show().fadeIn('fast'); 
             $("#filelist > li").removeClass("selectfile");
             $("#file"+idx).addClass("selectfile");
         },
@@ -194,7 +205,7 @@ function fileAction(idx, mode)
 			alert(error); 
 		},
 		complete: function() { 
-			$("#loadingbar").fadeOut();
+			$("#loadingDiv").fadeOut();
 	    }
 	});
 }
