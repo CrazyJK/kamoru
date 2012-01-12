@@ -93,8 +93,8 @@ public class FileManager {
 			if(fileSize < tenPerSize) {
 				fileCount++;
 				System.out.println(bean.toString());
-//				System.out.println("\tmove to " + bean.moveTo(dest));
-				System.out.println("\tcopy to " + bean.copyTo(dest));
+				System.out.println("\tmove to " + bean.moveTo(dest));
+//				System.out.println("\tcopy to " + bean.copyTo(dest));
 			}else{
 				break;
 			}
@@ -106,12 +106,12 @@ public class FileManager {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String path   = args != null && args.length > 0 ? args[0] : "/home/kamoru/ETC";
+		String path   = args != null && args.length > 0 ? args[0] : "E:\\av";
 		String filter = args != null && args.length > 1 ? args[1] : "*";
-		String moveToDest = args != null && args.length > 2 ? args[2] : "/home/kamoru/old";
+		String moveToDest = args != null && args.length > 2 ? args[2] : "E:\\old";
 		FileManager mf = new FileManager(path, filter);
-		mf.display();
-		//mf.moveOldFile(moveToDest);
+		//mf.display();
+		mf.moveOldFile(moveToDest);
 	}
 
 }
