@@ -43,6 +43,16 @@
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
+	<!-- Standard Action Servlet Configuration -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/struts-config.xml</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 	<servlet>
 		<description></description>
 		<display-name>WelcomekAmOrU</display-name>
@@ -56,6 +66,11 @@
 		<load-on-startup>99</load-on-startup>
 	</servlet>
 
+	<!-- Standard Action Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>bwquery</servlet-name>
 		<url-pattern>/servlet/bwquery</url-pattern>

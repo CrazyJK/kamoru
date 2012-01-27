@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function dosubmit(){
+	var obj = document.forms[0];
+	obj.target=opener.parent.frames[1].name;
+	alert(opener.location);
+	alert(opener.parent.location);
+	alert(opener.parent.frames[1].location);
+	alert(opener.parent.frames[1].name);
+	obj.submit();
+}
+</script>
+</head>
+<body>
+popup<br/>
+<form method="get" action="action.html">
+	<input type="text" name="txt1" value="txt1"/>
+</form>
+<input type="button" value="submit" onclick="dosubmit()">
+
+</body>
+</html>
