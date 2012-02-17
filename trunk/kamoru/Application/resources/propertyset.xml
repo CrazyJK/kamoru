@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="euc-kr"?>
+
+<property-set>
+
+	<property key="database" type="properties">
+		<properties>
+			<property key="default">sqlmap-config.xml</property>
+			<property key="wise_soft">sqlmap-config-wise-soft.xml</property>
+			<property key="wise_data">sqlmap-config-wise-data.xml</property>
+			<property key="promise">sqlmap-config-promise.xml</property>
+		</properties>
+	</property>
+	
+	<property key="rootPath" type="string">D:/WORK/pms/bizflow/</property>
+	
+	<!-- 페이징 처리 파일 경로 및 기본값 -->
+	<property key="templateRootPath" type="string">D:/WORK/pms/bizflow/WEB-INF/vm/</property>
+	<property key="pagingTemplate" type="string">/inc/commons/commonPaging.html</property>
+	<property key="rowPerPage" type="string">10</property>
+	<property key="pagePerPage" type="string">10</property>
+	
+	
+	<!-- BPM서버 정보 -->
+	<property key="serverIP" type="string">123.212.190.15</property>
+	<property key="serverPort" type="int">7201</property>
+	<property key="con_user" type="string">connection_user</property>
+	<property key="con_user_pwd" type="string">1111</property>	
+		
+    <!-- 파일 업로드 경로 -->
+	<property key="uploadDir" type="string">D:/WORK/pms/bizflow/upload</property>
+
+   	<!-- 발주서 관련 원본 이미지 -->
+	<property key="orderImageDir" type="string">D:/WORK/pms/bizflow/images/order</property>
+
+   	<!-- 발주서 생성 경로 -->
+	<property key="orderPDFDir" type="string">D:/WORK/pms/bizflow/upload/order</property>
+		
+	<!-- 그룹웨어서버 정보 -->
+	<property key="gwUrl" type="string">gw.handysoft.co.kr</property>
+	
+	<!-- 사용자 화면 URL -->
+	<property key="userUrl" type="string">lukas.handysoft.co.kr</property>
+
+	<!-- 
+	   author : J.W Park 
+	   return parameter : Return true or not
+	   description : There is two system - Origin Lukas System or  Lukas and XEP Portal System - If you want using Lukas and XEP Portal System then 
+	                       setting key value true, otherwise set false
+	-->
+	<property key="system-mode" type="string">XEP</property>
+	
+	
+
+	<!-- 엑셀 파일 디폴트 설정값 : 행 -->
+	<!-- property key="excelRowHeight" type="int">20</property-->	
+	<!-- 엑셀 파일 디폴트 설정값 : 컬럼 -->
+	<!-- property key="excelColumnWidth" type="int">20</property-->	
+	<!-- 엑셀 파일 디폴트 설정값 : 폰트 -->
+	<!-- property key="excelFontName" type="string">Arial</property-->	
+	<!-- property key="excelFontItalic" type="boolean">false</property-->	
+	<!-- property key="excelFontStrikeout" type="boolean">false</property-->	
+	<!-- property key="excelFontUnderline" type="int">0</property-->	
+	<!-- property key="excelFontSize" type="int">8</property-->	
+	<!-- property key="excelFontColor" type="int">8</property-->	
+	<!-- property key="excelFontBold" type="int">400</property-->	
+	<!-- 엑셀 파일 디폴트 설정값 : 정렬 -->
+	<!-- property key="excelAlign" type="int">1</property-->	
+	<!-- property key="excelVerticalAlign" type="int">1</property-->	
+	<!-- 엑셀 파일 디폴트 설정값 : 보더 -->
+	<!-- property key="excelBorderLine" type="int">1</property-->	
+	<!-- property key="excelBorderColor" type="int">8</property-->	
+	<!-- 엑셀 파일 디폴트 설정값 : 셀 색상 -->
+	<!-- property key="excelForegroundColor" type="int">9</property-->	
+	<!-- property key="excelBackgroundColor" type="int">9</property-->	
+	<!-- property key="excelPattern" type="int">1</property-->
+		
+</property-set>

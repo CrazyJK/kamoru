@@ -30,7 +30,7 @@ public class WelcomekAmOrU extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		welcome(request, response);
 	}
 
 	void welcome(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

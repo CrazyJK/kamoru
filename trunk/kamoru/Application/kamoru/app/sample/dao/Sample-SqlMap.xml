@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sample">
+
+	<resultMap id="GirlsGenerationResult" class="kamoru.app.sample.bean.GirlsGeneration">
+		<result property="num"  column="NUM" />
+		<result property="name" column="NAME" />
+		<result property="age"  column="AGE" />
+	</resultMap>
+	
+	<select id="getGirlsGeneration" resultMap="GirlsGenerationResult">
+		SELECT	num, name, age
+		FROM	girlsgeneration
+		ORDER BY num DESC
+	</select>
+	
+	<select id="selectGirlsGeneration" parameterClass="java.lang.Integer" resultClass="kamoru.app.sample.bean.GirlsGeneration">
+		SELECT	num, name, age
+		FROM	girlsgeneration
+		WHERE	num = #num#
+	</select>
+	
+	<insert id="insertGirlsGeneration" parameterClass="kamoru.app.sample.bean.GirlsGeneration">
+		INSERT INTO girlsgeneration(num, name, age)
+		VALUES (#num#, #name#, #age#)
+	</insert>
+	
+	<update id="updateGirlsGeneration" parameterClass="java.util.Map">
+		UPDATE 	girlsgeneration
+		SET		name = #name#, age = #age#
+		WHERE	num = #num#
+	</update>
+	
+	<delete id="deleteGirlsGeneration" parameterClass="java.lang.Integer">
+		DELETE FROM girlsgeneration
+		WHERE	num = #num#
+	</delete>
+	
+</sqlMap>

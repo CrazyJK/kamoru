@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+  	<bean name="/sample" class="kamoru.app.sample.action.SampleAction">
+    	<property name="sampleLogic"><ref bean="sampleLogic" /></property>
+  	</bean>
+
+</beans>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+<!-- ================================================ Form Bean Definitions -->
+
+    <form-beans>
+		<form-bean name="sampleForm" type="kamoru.app.sample.form.SampleForm"></form-bean>
+    </form-beans>
+
+<!-- ========================================= Global Exception Definitions -->
+
+    <global-exceptions>
+		<exception 
+        	key="errors.system" 
+        	type="java.lang.Exception" 
+        	path="/WEB-INF/jsp/common/exception.jsp"/>
+    </global-exceptions>
+
+<!-- =========================================== Global Forward Definitions -->
+
+    <global-forwards>
+        <!--forward name="login2Form" path="/login2/loginForm.do" redirect="true"/> -->
+    </global-forwards>
+
+<!-- =========================================== Action Mapping Definitions -->
+
+    <action-mappings>
+		<!-- sample input and input submit actions
+            <action
+                path="/edit*"
+                type="app.Edit{1}Action"
+                name="inputForm"
+                scope="request"
+                validate="true"
+                input="/pages/Edit{1}.jsp"/>		end samples -->
+    	<action path="/sample" 
+    		type="org.springframework.web.struts.DelegatingActionProxy"
+    		name="sampleForm"
+    		parameter="sample"
+    		scope="request">
+    		<forward name="success" path="/WEB-INF/jsp/sample/sample.jsp"></forward>    	
+    	</action>
+    </action-mappings>
+	
+<!-- ======================================== Message Resources Definitions -->
+
+    <message-resources parameter="/resources/MessageResources" />
+
+<!-- =============================================== Plug Ins Configuration -->
+
+	<!-- ================================================= Validator plugin -->
+  	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    	<set-property
+        	property="pathnames"
+        	value="/WEB-INF/struts/validator-rules.xml"/>
+  	</plug-in>
+
+	<!-- ==================================================== Spring plugin -->
+	<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property
+			property="contextConfigLocation" 
+			value="/WEB-INF/spring/applicationContext.xml, /WEB-INF/spring/action-servlet.xml"/>
+	</plug-in>	
+
+</struts-config>
+

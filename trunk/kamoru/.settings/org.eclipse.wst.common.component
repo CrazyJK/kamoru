@@ -6,6 +6,9 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/notepad"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/manageAV"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/udp"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/struts"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/Framework"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/Application"/>
         <property name="context-root" value="kamoru"/>
         <property name="java-output-path" value="/kamoru/build/classes"/>
     </wb-module>
