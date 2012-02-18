@@ -10,14 +10,17 @@
 <title> <bean:message key="sample.title"/> </title>
 </head>
 <body>
-
-<h3>Girl's Generation</h3>
-<logic:iterate id="girl" name="sampleForm" property="sampleList" type="kamoru.app.sample.bean.GirlsGeneration">
-	<li><bean:write name="girl" property="num"/> - <bean:write name="girl" property="name"/> - <bean:write name="girl" property="age"/> 
-</logic:iterate>
-
-<hr>
-
+<article>
+	<header>
+		<h1>Girl's Generation</h1>
+	</header>
+	<section>
+		<logic:iterate id="girl" name="sampleForm" property="sampleList" type="kamoru.app.sample.bean.GirlsGeneration">
+			<bean:write name="girl" property="num"/> - <bean:write name="girl" property="name"/> - <bean:write name="girl" property="age"/> 
+			<br>
+		</logic:iterate>
+	</section>
+</article>
 </body>
 </html>
 <%

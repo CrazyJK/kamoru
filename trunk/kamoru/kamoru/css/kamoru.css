@@ -3,23 +3,23 @@
 	font-family: 맑은 고딕;
 }
 body {
-	margin:0px auto;
+	margin:0px; 
+	background-color: #ede;
+	background:url(/kamoru/img/green3.png);
+	background-repeat: repeat;
 }
 header > h1 {
+	text-align:center;
 	font-size:36pt;
 	margin: 10px;
 	margin-bottom: 30px;
 }
 section {
 	border: 1px solid #888;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;	
-	-moz-box-shadow: 10px 10px 5px #888;
-	-webkit-box-shadow: 10px 10px 5px #888;
-	box-shadow: 10px 10px 5px #888;
 	background-color: #eee;
 	padding: 10px;
+	-moz-border-radius: 10px;	-webkit-border-radius: 10px;	border-radius: 10px;	
+	-moz-box-shadow: 10px 10px 5px #888;	-webkit-box-shadow: 10px 10px 5px #888;	box-shadow: 10px 10px 5px #888;
 }
 section > header > h1 {
 	font-size:18pt;

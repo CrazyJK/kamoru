@@ -2,24 +2,24 @@
 <html>
 <head>
 <title>kAmOrU - <sitemesh:write property='title'>Title goes here</sitemesh:write></title>
-<link rel="stylesheet" href="css/kamoru.css" />
-<style type='text/css'>
-body { font-family: arial, sans-serif; background-color: #ffffcc; }
-h1, h2, h3, h4 { text-align: center; background-color: #ccffcc; border-top: 1px solid #66ff66; }
-.disclaimer { text-align: center; border-top: 1px solid #cccccc; margin-top: 40px; color: #666666; font-size: smaller; }
-</style>
-<sitemesh:write property='head'/>
+<!-- <link rel="stylesheet" href="css/kamoru.css" /> -->
+<sitemesh:write property='head' />
 </head>
 <body>
 
-<h1 class='title'>kamoru - <sitemesh:write property='title'>Title goes here</sitemesh:write></h1>
+	<header style="background-color:green;">
+		<hgroup>
+			<h1 style="text-align:center;"><sitemesh:write property='title'>Title goes here</sitemesh:write></h1>
+		</hgroup>
+	</header>
 
-<sitemesh:write property='body'>Body goes here. Blah blah blah.</sitemesh:write>
+	<section style="text-align:center;background-color:lightblue;">
+		<sitemesh:write property='body'>Body goes here. Blah blah blah.</sitemesh:write>
+	</section>
 
-<div class='disclaimer'>Site disclaimer. This is an example.</div>
-<div class='navigation'>
-	<b>Examples:</b>[<a href="./">Static example</a>][<a href="demo.jsp">Dynamic example</a>]
-</div>
+	<footer style="padding-top:20px; text-align:center;font: 10pt arial;background-color:lightgreen;">
+		Copyright © <time datetime="2012-12-31">2012</time> kAmOrU. All rights reserved.
+	</footer>
 
 </body>
 </html>

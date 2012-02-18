@@ -1,8 +1,10 @@
-#Wed Nov 09 22:44:50 KST 2011
+#Sat Feb 18 18:56:01 KST 2012
 =\=\=\=\=\=\=
 <<<<<<<=.mine
 >>>>>>>=.r25
 eclipse.preferences.version=1
+encoding//kamoru/WEB-INF/sitemesh/decorator.html=UTF-8
+encoding//kamoru/WEB-INF/sitemesh/decorator.jsp=UTF-8
 encoding//kamoru/handy/addon/common.jsp=UTF-8
 encoding//kamoru/temp/get_receive.jsp=EUC-KR
 encoding//kamoru/temp/get_send.jsp=EUC-KR
