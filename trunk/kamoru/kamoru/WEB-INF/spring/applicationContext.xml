@@ -23,6 +23,20 @@
 			<ref bean="sampleDao" />
 		</property>
 	</bean>
-	<bean id="sampleDao" class="kamoru.app.sample.dao.SampleDaoImpl">
-	</bean>	
+	<bean id="sampleDao" class="kamoru.app.sample.dao.SampleDaoImpl"/>	
+
+	<!-- VlistLogic --> 
+	<bean id="vlistLogic" class="kamoru.app.vlist.logic.VlistLogicImpl">
+		<property name="vlistDao">
+			<ref bean="vlistDao" />
+		</property>
+	</bean>
+	<bean id="vlistDao" class="kamoru.app.vlist.dao.VlistDaoImpl"/>	
+
+	<!-- BBS -->
+	<bean id="bbs" class="kamoru.app.bbs.logic.BbsImpl">
+		<property name="bbsDao"><ref bean="bbsDao"/></property>
+	</bean>
+	<bean id="bbsDao" class="kamoru.app.bbs.dao.BbsDaoImpl"/>
+	
 </beans>

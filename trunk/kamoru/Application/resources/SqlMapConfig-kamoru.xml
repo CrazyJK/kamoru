@@ -25,6 +25,6 @@
 		</dataSource>
 	</transactionManager>
 	
-	<sqlMap resource="/kamoru/app/sample/dao/Sample-SqlMap.xml" />
+	<sqlMap resource="/kamoru/app/bbs/dao/Bbs-SqlMap.xml" />
 	
 </sqlMapConfig>

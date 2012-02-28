@@ -5,5 +5,38 @@
   	<bean name="/sample" class="kamoru.app.sample.action.SampleAction">
     	<property name="sampleLogic"><ref bean="sampleLogic" /></property>
   	</bean>
+  	<bean name="/vlist" class="kamoru.app.vlist.action.VlistAction">
+    	<property name="vlistLogic"><ref bean="vlistLogic" /></property>
+  	</bean>
+  	<bean name="/samefile" class="kamoru.app.vlist.action.VlistAction">
+    	<property name="vlistLogic"><ref bean="vlistLogic" /></property>
+  	</bean>
+  	<bean name="/bbs" class="kamoru.app.bbs.action.BbsAction">
+    	<property name="bbs"><ref bean="bbs" /></property>
+  	</bean>
+  	<bean name="/bbsCreateArticle" class="kamoru.app.bbs.action.BbsAction">
+    	<property name="bbs"><ref bean="bbs" /></property>
+  	</bean>
+  	<bean name="/bbsCreateArticleAction" class="kamoru.app.bbs.action.BbsAction">
+    	<property name="bbs"><ref bean="bbs" /></property>
+  	</bean>
+
+  	<!--  Interceptors --> 
+  	<bean name="logger"    class="kamoru.frmwk.springframework.interceptors.LoggingInterceptor"/>
+
+  	<!-- AutoProxies -->
+  	<bean name="loggingAutoProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    	<property name="beanNames">
+    		<list>
+	          	<value>/vlist</value>
+	          	<value>/bbs</value>
+          	</list>
+    	</property>
+    	<property name="interceptorNames">
+        	<list>
+          		<value>logger</value>
+        	</list>
+    	</property>
+   	</bean>
 
 </beans>

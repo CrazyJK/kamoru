@@ -1,20 +1,13 @@
-<%@ page import="kamoru.frmwk.util.DateUtils" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%
-String dateString = DateUtils.getDateString(DateUtils.DEFAULT_DATE_PATTERN);
+String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>kAmOrU - <sitemesh:write property='title'>Title goes here</sitemesh:write></title>
-<!-- <link rel="stylesheet" href="css/kamoru.css" /> -->
-<style type="text/css">
-body#deco_body {background:url(/kamoru/img/green3.png); margin:0px auto; width:950px; font-family:맑은 고딕;}
-body>header#deco_header {text-align:center;}
-body>header>hgroup#deco_hgroup {}
-body>header>hgroup>h1#deco_h1 {}
-body>section#deco_section {text-align:center;background-color:white;}
-body>footer#deco_footer {padding-top:20px; font: 10pt arial; text-align:center;}
-</style>
+<title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
+<link rel="stylesheet" href="/kamoru/css/deco.css" />
 <sitemesh:write property="head" />
 </head>
 <body id="deco_body">
@@ -22,7 +15,8 @@ body>footer#deco_footer {padding-top:20px; font: 10pt arial; text-align:center;}
 	<header id="deco_header">
 		<hgroup id="deco_hgroup">
 			<h1 id="deco_h1">
-				kAmOrU <img alt="kamoru.mail" src="/kamoru/img/kamoru_gmail.png">
+				<a href="/kamoru">kAmOrU</a> 
+				<img alt="kamoru.mail" src="/kamoru/img/kamoru_gmail.png">
 			</h1>
 		</hgroup>
 	</header>

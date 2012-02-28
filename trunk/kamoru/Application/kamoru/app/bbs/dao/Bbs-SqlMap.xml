@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="bbs">
+
+	<resultMap id="GirlsGenerationResult" class="kamoru.app.sample.bean.GirlsGeneration">
+		<result property="num"  column="NUM" />
+		<result property="name" column="NAME" />
+		<result property="age"  column="AGE" />
+	</resultMap>
+	
+	<select id="getArticleList" parameterClass="java.util.Map" resultClass="kamoru.app.bbs.bean.Article">
+		SELECT *
+		  FROM (SELECT t.*,
+		               ceil(rownum/#numberOfArticlesPerPage#) page
+		          FROM (SELECT *
+		                  FROM bbs_article
+		                 WHERE 1=1
+		                   $category$
+		                   $title$
+		                   $writer$
+		                   $tag$ ) t )
+		 WHERE page = #pageNumbers#
+	</select>
+	
+	
+	<select id="getGirlsGeneration" resultMap="GirlsGenerationResult">
+		SELECT	num, name, age
+		FROM	girlsgeneration
+		ORDER BY num DESC
+	</select>
+	
+	<select id="selectMaxArticleid" parameterClass="java.lang.Integer" resultClass="java.lang.Integer">
+		SELECT	nvl(max(articleid), 0)
+		FROM	bbs_article
+		WHERE	categoryid = #categoryid#
+	</select>
+	
+	<insert id="insertArticle" parameterClass="kamoru.app.bbs.bean.Article">
+		INSERT INTO bbs_article(categoryid, title, body, tag, created, writer, writerid, attach, articleid)
+		VALUES (#categoryid#, #title#, #body#, #tag#, #created#, #writer#, #writerid#, #attach#, #articleid#)
+	</insert>
+	
+	<update id="updateGirlsGeneration" parameterClass="java.util.Map">
+		UPDATE 	girlsgeneration
+		SET		name = #name#, age = #age#
+		WHERE	num = #num#
+	</update>
+	
+	<delete id="deleteGirlsGeneration" parameterClass="java.lang.Integer">
+		DELETE FROM girlsgeneration
+		WHERE	num = #num#
+	</delete>
+	
+</sqlMap>

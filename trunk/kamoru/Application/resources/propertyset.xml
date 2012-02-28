@@ -2,6 +2,8 @@
 
 <property-set>
 
+	<property key="file.storage.path" type="string">/home/kamoru/ETC/storage/</property>
+
 	<property key="database" type="properties">
 		<properties>
 			<property key="default">sqlmap-config.xml</property>

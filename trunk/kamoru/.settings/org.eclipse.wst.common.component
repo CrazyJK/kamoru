@@ -3,10 +3,7 @@
     <wb-module deploy-name="kamoru">
         <wb-resource deploy-path="/" source-path="/kamoru"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/notepad"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/manageAV"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/udp"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/struts"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/Framework"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/Application"/>
         <property name="context-root" value="kamoru"/>

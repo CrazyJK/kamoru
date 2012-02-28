@@ -1,12 +1,12 @@
-package kamoru.util.video;
+package kamoru.frmwk.util;
 
-import java.net.URI;
-import java.nio.channels.FileChannel;
-import java.util.Arrays;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.channels.FileChannel;
+import java.util.Arrays;
 
 public class FileBean implements Comparable {
 
@@ -171,4 +171,19 @@ public class FileBean implements Comparable {
 			return false;
 		}
 	}
+	
+	public String jsonText(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("NAME : \"").append(this.getName()).append("\", ");
+		sb.append("SIZE : \"").append(this.getSize()).append("\", ");
+		sb.append("SIZECONVERT : \"").append(this.getSizeConvert()).append("\", ");
+		sb.append("PATH : \"").append(this.getPath()).append("\", ");
+		sb.append("URI  : \"").append(this.getUri()).append("\", ");
+		sb.append("MODIFIED : \"").append(this.getLastModified()).append("\",");
+		sb.append("MODIFIEDDATE : \"").append(this.getLastModifiedDate()).append("\"");
+		sb.append("}");
+		return sb.toString();
+	}
+
 }
