@@ -1,5 +1,6 @@
 package kamoru.app.vlist.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,31 +31,11 @@ public class VlistAction extends MappingDispatchAction {
 		logger.info("Start");
 		try {
 			VlistForm vlistForm = (VlistForm)form;
-			String pathName = vlistForm.getPathName();
-			String extension = vlistForm.getExtension();
-			String delimiter = vlistForm.getDelimiter();
-			String searchName = vlistForm.getSearchName();
-			
-			logger.info("param : pathName=" + pathName);
-			logger.info("param : extension=" + extension);
-			logger.info("param : delimiter=" + delimiter);
-			logger.info("param : searchName=" + searchName);
 
-			
-			if(!StringUtils.isNullOrBlank(pathName)) {
-				List list = this.vlistLogic.getVlist(pathName, extension, delimiter, searchName);
-				logger.info("list size = " + list.size());
-				vlistForm.setVfileList(list);
-			}
-			return mapping.findForward("success");
-		} catch(Exception e) {
-			logger.error("list error", e);
-			throw e;
-		}
-	}
-	public ActionForward samefile(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		logger.info("Start");
-		try {
+			List list = this.vlistLogic.getVlist(vlistForm);
+
+			vlistForm.setVfileList(list);
+
 			return mapping.findForward("success");
 		} catch(Exception e) {
 			logger.error("list error", e);

@@ -8,9 +8,7 @@ import kamoru.app.vlist.bean.Vfile;
 
 public interface VlistDao {
 
-	List getVlist(String pathName, String extension, String delimiter, String searchName) throws IOException;
-
-	List getVlistOfSamesize(List list);
+	List getVlist(String pathName, String extension, String delimiter, String searchName, String method, int sort, boolean reverse) throws IOException;
 
 	Vfile getVfile(URI uri);
 

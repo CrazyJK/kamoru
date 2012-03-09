@@ -12,7 +12,7 @@ import kamoru.frmwk.util.StringUtils;
 public class VlistDaoImpl implements VlistDao {
 
 	@Override
-	public List getVlist(String pathName, String extension, String delimiter, String searchName) throws IOException {
+	public List getVlist(String pathName, String extension, String delimiter, String searchName, String method, int sort, boolean reverse) throws IOException {
 		String[] extensions = null;
 		if(!StringUtils.isNullOrBlank(extension)) {
 			if(StringUtils.isNullOrBlank(delimiter)) {
@@ -22,24 +22,17 @@ public class VlistDaoImpl implements VlistDao {
 				extensions = extension.split(delimiter);
 			}
 		}
-		return FileUtils.getFileList(pathName, extensions, searchName, true, "kamoru.app.vlist.bean.Vfile");
-	}
-
-	@Override
-	public List getVlistOfSamesize(List list) {
+		List list = FileUtils.getFileList(pathName, extensions, searchName, true, "kamoru.app.vlist.bean.Vfile");
 		
-		return null;
+		if("sameSize".equals(method)) {
+			list = FileUtils.getSameSizeFileList(list);
+		}
+		
+		FileUtils.sort(list, sort, reverse);
+		
+		return list;
 	}
 	
-	public static void main(String[] args) throws IOException {
-		VlistDao dao = new VlistDaoImpl();
-		List list = dao.getVlist("/home/kamoru/ETC/Download", "avi mp3", " ", null);
-		for(int i=0; i<list.size(); i++) {
-			FileBean bean = (FileBean)list.get(i);
-			System.out.println(bean.jsonText());
-		}
-	}
-
 	@Override
 	public Vfile getVfile(URI uri) {
 		// TODO Auto-generated method stub

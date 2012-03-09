@@ -8,17 +8,20 @@ String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 <head>
 <title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
 <link rel="stylesheet" href="/kamoru/css/deco.css" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 <sitemesh:write property="head" />
 </head>
 <body id="deco_body">
 
 	<header id="deco_header">
-		<hgroup id="deco_hgroup">
-			<h1 id="deco_h1">
-				<a href="/kamoru">kAmOrU</a> 
-				<img alt="kamoru.mail" src="/kamoru/img/kamoru_gmail.png">
-			</h1>
-		</hgroup>
+		<h1 id="deco_h1">
+			<a href="/kamoru">kAmOrU&hellip;</a> 
+			<span style='float:right;font-size:10px;text-decoration:none'>
+			<img alt="kamoru.mail" src="/kamoru/img/kamoru_gmail.png">
+			</span>
+		</h1>
 	</header>
 
 	<section id="deco_section">

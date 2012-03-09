@@ -1,6 +1,7 @@
 package kamoru.test;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,8 +24,35 @@ public class TEST {
 		return null;
 	}
 
+	public static String getSizeConvert(long size) {
+		DecimalFormat df = new DecimalFormat(".#");
+		if(size < 1000l){
+			return size + "B";
+		}else if(size < 1000000l){
+			return Math.round(size/1000l) + "KB";
+		}else if(size < 1000000000l){
+			return (size/1000000l) + "MB";
+		}else if(size < 1000000000000l){
+			return df.format(size/1000000000f) + "GB";
+		}else if(size < 1000000000000000l){
+			return df.format(size/1000000000000f) + "TB";
+		}else{
+			return String.valueOf(size);
+		}
+	}
+	
 	public static void main(String[] args) {
 		try {
+			System.out.println(getSizeConvert(12345679));
+			System.out.println(getSizeConvert(123456790));
+			System.out.println(getSizeConvert(1234567901));
+			System.out.println(getSizeConvert(12345679012l));
+			System.out.println(1213/123);
+			System.out.println(1213/123l);
+			System.out.println(1213/123f);
+			
+			
+			
 			// "2007-07-22" 이란 문자열로 2007년 7월 22일의 정보를 갖는 Date객체를 만들어보자
 			String textDate = "2007-07-22";
 

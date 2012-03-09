@@ -8,9 +8,6 @@
   	<bean name="/vlist" class="kamoru.app.vlist.action.VlistAction">
     	<property name="vlistLogic"><ref bean="vlistLogic" /></property>
   	</bean>
-  	<bean name="/samefile" class="kamoru.app.vlist.action.VlistAction">
-    	<property name="vlistLogic"><ref bean="vlistLogic" /></property>
-  	</bean>
   	<bean name="/bbs" class="kamoru.app.bbs.action.BbsAction">
     	<property name="bbs"><ref bean="bbs" /></property>
   	</bean>

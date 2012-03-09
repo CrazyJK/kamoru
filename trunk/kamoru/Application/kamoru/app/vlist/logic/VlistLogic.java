@@ -5,10 +5,10 @@ import java.net.URI;
 import java.util.List;
 
 import kamoru.app.vlist.bean.Vfile;
+import kamoru.app.vlist.form.VlistForm;
 
 public interface VlistLogic {
 
-	List getVlist(String pathName, String extension, String delimiter, String searchName) throws IOException;
 	Vfile getVfile(URI uri);
-	List getVlistOfSamesize(List list);
+	List getVlist(VlistForm vlistForm) throws IOException;
 }

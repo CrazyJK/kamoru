@@ -42,10 +42,6 @@
     		type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
     		<forward name="success" path="/WEB-INF/jsp/vlist/vlist.jsp"></forward>    	
     	</action>
-    	<action path="/samefile"     		name="vlistForm"    		parameter="samefile"
-    		type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
-    		<forward name="success" path="/WEB-INF/jsp/vlist/vlist.jsp"></forward>    	
-    	</action>
 <!--     	bbs -->
     	<action path="/bbs"     		name="bbsForm"    		parameter="list"
     		type="org.springframework.web.struts.DelegatingActionProxy" scope="request">

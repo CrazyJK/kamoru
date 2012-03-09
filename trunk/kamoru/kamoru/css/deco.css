@@ -1,17 +1,17 @@
 @CHARSET "UTF-8";
-body#deco_body {background:url(/kamoru/img/green3.png); margin:0px auto; width:950px; font-family:맑은 고딕;}
-body>header#deco_header {text-align:center;}
-body>header>hgroup#deco_hgroup {}
-body>header>hgroup>h1#deco_h1 {}
-body>header>hgroup>h1#deco_h1>a {color:#000;text-decoration:none;}
-body>header>hgroup>h1#deco_h1>a:hover {color:#000;text-decoration:none;}
-body>section#deco_section {background-color:white;padding:10px;}
-body>footer#deco_footer {padding-top:10px; font: 10pt arial; text-align:center;}
+body#deco_body {background:url(/kamoru/img/green3.png); margin:0px auto; width:950px; font-family:'나눔고딕코딩' '맑은 고딕';}
+#deco_header {}
+#deco_h1 {}
+#deco_h1 a {font-family: 'Comic Sans MS' 'Impact' '나눔손글씨 펜' '나눔손글씨 붓' 'URW Chancery L' 'Purisa';}
+#deco_section {background-color:white;padding:10px;}
+#deco_footer {padding-top:10px; font: 10pt arial; text-align:center;}
 
 a {
+	color:#123;
 	text-decoration: none;
 }
 a:hover {
-	text-decoration: underline;
+	color:#123;
+	text-decoration: none;
 	text-shadow: 2px 2px 5px #333;
 }

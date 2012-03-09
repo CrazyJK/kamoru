@@ -9,9 +9,11 @@ public class VlistForm extends ActionForm {
 	private String pathName;
 	private String searchName;
 	private int key;
-	private String method;
+	private String method = "all";
+	private int sort = 1;
 	private String extension;
 	private String delimiter;
+	private boolean reverse;
 	private List vfileList;
 	
 	public List getVfileList() {
@@ -55,6 +57,18 @@ public class VlistForm extends ActionForm {
 	}
 	public void setMethod(String method) {
 		this.method = method;
+	}
+	public int getSort() {
+		return sort;
+	}
+	public void setSort(int sort) {
+		this.sort = sort;
+	}
+	public boolean isReverse() {
+		return reverse;
+	}
+	public void setReverse(boolean reverse) {
+		this.reverse = reverse;
 	}
 	
 }

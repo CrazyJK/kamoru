@@ -9,9 +9,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import kamoru.app.vlist.bean.Vfile;
+
 public class FileUtils {
 	
 	public static List getFileList(String path, String[] extension, String searchName, boolean isSubSearch, String beanClassName) throws IOException {
+		if(path == null) {
+			throw new IOException("input path is null");
+		}
 		File dir = new File(path);
 		if(!dir.exists()) {
 			throw new IOException("The path[" + path + "] does not exist!");
@@ -74,13 +79,41 @@ public class FileUtils {
 		return list;
 	}
 	
-	public static List sort(List list, int sortMethod, boolean reverse){
+	@SuppressWarnings("unchecked")
+	public static List sort(List list, int sortType, boolean reverse){
+		
+		for(int i=0; i<list.size(); i++) {
+			FileBean fb = (FileBean)list.get(i);
+			fb.setSortMethod(sortType);
+		}
+		
 		if(reverse){
 			Collections.sort(list, Collections.reverseOrder());
 		}else{
 			Collections.sort(list);
 		}
 		return list;
+	}
+
+	public static List getSameSizeFileList(List list) {
+		List samelist = new ArrayList();
+		for(int i=0; i<list.size(); i++) {
+			FileBean fb1 = (FileBean)list.get(i);
+			long size1 = fb1.getSize();
+			boolean firstCompare = true;
+			for(int j=i+1; j<list.size(); j++) {
+				FileBean fb2 = (FileBean)list.get(j);
+				long size2 = fb2.getSize(); 
+				if(size1 == size2) {
+					if(firstCompare) {
+						samelist.add(fb1);
+					}
+					samelist.add(fb2);
+					list.remove(fb2);
+				}
+			}
+		}
+		return samelist;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.FileChannel;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class FileBean implements Comparable {
@@ -118,17 +119,23 @@ public class FileBean implements Comparable {
 	}
 	
 	public String getSizeConvert() {
-		if(size < 1000l){
+		DecimalFormat df = new DecimalFormat(".#");
+		if(size < 1000l) {
 			return size + "B";
-		}else if(size < 1000000l){
-			return Math.round(size/1000l) + "KB";
-		}else if(size < 1000000000l){
-			return Math.round(size/1000000l) + "MB";
-		}else if(size < 1000000000000l){
-			return Math.round(size/1000000000l) + "GB";
-		}else if(size < 1000000000000000l){
-			return Math.round(size/1000000000000l) + "TB";
-		}else{
+		}
+		else if(size < 1000000l) {
+			return size/1000l + "KB";
+		}
+		else if(size < 1000000000l) {
+			return size/1000000l + "MB";
+		}
+		else if(size < 1000000000000l) {
+			return df.format(size/1000000000f) + "GB";
+		} 
+		else if(size < 1000000000000000l) {
+			return df.format(size/1000000000000f) + "TB";
+		}
+		else {
 			return String.valueOf(size);
 		}
 	}
