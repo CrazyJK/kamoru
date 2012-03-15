@@ -21,31 +21,32 @@ public class Tunnel_HomeSide {
         String password	= "k@m0rU3806";
         int    port		= 22;
 
+        System.out.println("\nSSH Tunneling is started\n");
         JSch jsch = new JSch();
         Session session = jsch.getSession(user, host, port);
-        System.out.println("getSession");
         session.setPassword(password);
         localUserInfo lui = new localUserInfo();
         session.setUserInfo(lui);
+        System.out.print("\tServer connect");
         session.connect();
-        System.out.println("connect");
+        System.out.println("ed\n");
         
         session.setPortForwardingR(53389, "localhost", 3389);
-        System.out.println("RDP ready. port 5_3389");
+        System.out.println("\tRDP       ready. port 5_3389");
         // ssh
         session.setPortForwardingL(50022, "localhost", 50022);
-        System.out.println("office side ssh, connect 'ssh -P 50022 localhost'");
+        System.out.println("\toffice side ssh, connect 'ssh -P 50022 localhost'");
         // rdp for VirtualBox
         session.setPortForwardingL(54389, "localhost", 54389);
-        System.out.println("office side rdp, connect 'mstsc localhost:54389'");
+        System.out.println("\toffice side rdp, connect 'mstsc localhost:54389'");
         // vnc
         session.setPortForwardingL(5800, "localhost", 55800);
         session.setPortForwardingL(5801, "localhost", 55801);
         session.setPortForwardingL(5900, "localhost", 55900);
         session.setPortForwardingL(5901, "localhost", 55901);
-        System.out.println("office side vnc, connect to vnc viewer");
+        System.out.println("\toffice side vnc, connect to vnc viewer");
 
-        System.out.println("PortForwarding completed");
+        System.out.println("\nSSH Tunneling was constructed\n");
     
     }
 
