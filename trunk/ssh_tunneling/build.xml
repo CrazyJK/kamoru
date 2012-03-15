@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<project name="ssh tunneling" default="compile" basedir=".">
+
+	<description>
+		SSH Tunneling
+  	</description>
+
+	<property name="bin.dir" value="bin" />
+	<property name="lib.dir" value="lib" />
+	<property name="src.dir" value="src" />
+	<property name="source.compatibility" value="1.4" />
+	<property name="encoding.default" value="UTF-8" />
+
+	<path id="project.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="compile" depends="" description="Compiles sources.">
+		<mkdir dir="${bin.dir}" />
+		<javac 
+			srcdir="${src.dir}" 
+			destdir="${bin.dir}" 
+			source="${source.compatibility}" 
+			target="${source.compatibility}" 
+			deprecation="off" 
+			debug="on" 
+			fork="yes" 
+			memoryMaximumSize="256m" 
+			verbose="off" 
+			encoding="${encoding.default}"
+			includeantruntime="false">
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+
+</project>
