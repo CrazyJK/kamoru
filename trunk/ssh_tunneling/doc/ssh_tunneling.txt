@@ -1,0 +1,36 @@
+
+# Office - linux
+
+echo "ssh tunneling - rdp - local 5_3389 by rnddev3"
+ssh -L 53389:localhost:53389 kamoru@123.212.190.111
+
+echo "ssh tunneling - ssh - remote 500_22 by rnddev3"
+ssh -R 50022:localhost:22 kamoru@123.212.190.111
+
+echo "ssh tunneling - vnc - remote 5_5800,5801,5900,5901 by rnddev3"
+ssh -R 55800:localhost:5800 kamoru@123.212.190.111
+ssh -R 55801:localhost:5801 kamoru@123.212.190.111
+ssh -R 55900:localhost:5900 kamoru@123.212.190.111
+ssh -R 55901:localhost:5901 kamoru@123.212.190.111 
+
+
+# Home - windows
+
+@echo off
+d:
+cd "Daum 클라우드\programs"
+
+echo "ssh tunneling - rdp - remote 5_3389 by rnddev3"
+start plink -R 53389:localhost:3389 kamoru@123.212.190.111
+
+echo "ssh tunneling - ssh - local 500_22 by rnddev3"
+start plink -L 50022:localhost:50022 kamoru@123.212.190.111
+
+echo "ssh tunneling - vnc - local 5_5800,5801,5900,5901 by rnddev3"
+
+start plink -L 5800:localhost:55800 kamoru@123.212.190.111
+start plink -L 5801:localhost:55801 kamoru@123.212.190.111
+start plink -L 5900:localhost:55900 kamoru@123.212.190.111
+start plink -L 5901:localhost:55901 kamoru@123.212.190.111
+
+
