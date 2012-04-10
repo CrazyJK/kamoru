@@ -1,0 +1,1 @@
+java -classpath ./classes:./lib/commons-logging-1.0.4.jar:./lib/ibatis-dao-2.jar:./lib/ibatis-src.zip:./lib/ibatis-common-2.jar:./lib/ibatis-sqlmap-2.jar:./lib/ojdbc14.jar kamoru.bg.net.server.BloodGlucoseServer

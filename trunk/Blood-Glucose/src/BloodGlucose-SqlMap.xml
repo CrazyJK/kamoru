@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="bg">
+	
+	<select id="getBloodClucoseByPage" parameterClass="java.util.Map" resultClass="java.util.Map">
+		SELECT *
+		  FROM (SELECT t.*,
+		               ceil(rownum/#numberOfArticlesPerPage#) page
+		          FROM (SELECT *
+		                  FROM bloodclucose
+		                 WHERE 1=1
+		                   $category$
+		                   $title$
+		                   $writer$
+		                   $tag$ ) t )
+		 WHERE page = #pageNumbers#
+	</select>
+	
+	
+	<select id="getBloodClucoseAll" resultClass="java.util.Map">
+		SELECT	*
+		FROM	bloodclucose
+		ORDER BY idx DESC
+	</select>
+                
+	<insert id="insertBloodGlucoseData" parameterClass="java.util.Map">
+		INSERT INTO bloodglucose(hostAddress, hostName, receivedDate, message)
+		VALUES (#hostAddress#, #hostName#, #receivedDate#, #message#)
+	</insert>
+	
+</sqlMap>
