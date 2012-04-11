@@ -1,1 +1,1 @@
-번호|측정수치
+no|name|date|number
