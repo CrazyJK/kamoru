@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 public class BloodGlucoseClient {
 
 	final String iniFile = "blood-glucose.ini";
@@ -82,12 +85,17 @@ public class BloodGlucoseClient {
 	 */
 	public void startSocket() throws IOException {
 
-		Socket socket = null;
+		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+
+//		Socket socket = null;
+		SSLSocket sslsocket = null;
 		OutputStream os = null;
 		OutputStreamWriter writer = null;
 		try {
-			socket = new Socket(ip, port);
-			os = socket.getOutputStream();
+//			socket = new Socket(ip, port);
+			sslsocket = (SSLSocket) sslsocketfactory.createSocket(ip, port);
+//			os = socket.getOutputStream();
+			os = sslsocket.getOutputStream();
 			writer = new OutputStreamWriter(os);
 			writer.write(message, 0, message.length());
 			writer.flush();
@@ -96,9 +104,10 @@ public class BloodGlucoseClient {
 			throw new IOException("메시지 전송에 실패 하였습니다.", e);
 		} finally {
 			try {
-				socket.close();
-				writer.close();
+//				socket.close();
+				sslsocket.close();
 				os.close();
+				writer.close();
 			} catch (IOException e) {
 				throw new IOException("소켓 닫기에 실패했습니다", e);
 			}

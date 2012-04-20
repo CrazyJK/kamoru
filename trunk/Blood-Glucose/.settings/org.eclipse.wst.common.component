@@ -3,6 +3,7 @@
     <wb-module deploy-name="Blood-Glucose">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/TEST"/>
         <property name="context-root" value="blood"/>
         <property name="java-output-path" value="/Blood-Glucose/build/classes"/>
     </wb-module>

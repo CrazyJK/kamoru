@@ -11,6 +11,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -43,20 +47,28 @@ public class BloodGlucoseServer {
 		}
 	}
 
-	
+	/**
+	 * history: SSLServerSocket 적용 
+	 * @throws IOException
+	 */
 	public void start() throws IOException {
-		
-		ServerSocket serverSocket = null;
+
+		SSLServerSocketFactory 	sslserversocketfactory 	= (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+//		ServerSocket serverSocket = null;
+		SSLServerSocket sslserversocket = null;
 		try {
-			serverSocket = new ServerSocket(port);
+//			serverSocket = new ServerSocket(port);
+			sslserversocket	= (SSLServerSocket) sslserversocketfactory.createServerSocket(port);
 			logger.info("Blood Glucose Server start");
 		} catch (IOException e) {
 			throw new IOException("서버 시작에 실패하였습니다.", e);
 		}
 		while(true) {
 			try {
-				Socket socket = serverSocket.accept(); 
-				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(socket);
+//				Socket socket = serverSocket.accept(); 
+				SSLSocket sslsocket = (SSLSocket) sslserversocket.accept();
+//				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(socket);
+				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(sslsocket);
 				bloodGlucoseBiz.start();
 				logger.info("recevied data");
 			} catch (IOException e) {
