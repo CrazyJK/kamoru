@@ -26,8 +26,8 @@
 	</select>
                 
 	<insert id="insertBloodGlucoseData" parameterClass="java.util.Map">
-		INSERT INTO bloodglucose(hostAddress, hostName, receivedDate, message)
-		VALUES (#hostAddress#, #hostName#, #receivedDate#, #message#)
+		INSERT INTO bloodsugar(id, year, month, day, time, minute, second, bloodsugarvalue, regtdate)
+		VALUES (#id#, #year#, #month#, #day#, #time#, #minute#, #second#, #bloodsugarvalue#, #regtdate#)
 	</insert>
 	
 </sqlMap>

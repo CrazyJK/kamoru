@@ -53,22 +53,17 @@ public class BloodGlucoseServer {
 	 */
 	public void start() throws IOException {
 
-		SSLServerSocketFactory 	sslserversocketfactory 	= (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-//		ServerSocket serverSocket = null;
-		SSLServerSocket sslserversocket = null;
+		ServerSocket serverSocket = null;
 		try {
-//			serverSocket = new ServerSocket(port);
-			sslserversocket	= (SSLServerSocket) sslserversocketfactory.createServerSocket(port);
+			serverSocket = new ServerSocket(port);
 			logger.info("Blood Glucose Server start");
 		} catch (IOException e) {
 			throw new IOException("서버 시작에 실패하였습니다.", e);
 		}
 		while(true) {
 			try {
-//				Socket socket = serverSocket.accept(); 
-				SSLSocket sslsocket = (SSLSocket) sslserversocket.accept();
-//				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(socket);
-				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(sslsocket);
+				Socket socket = serverSocket.accept(); 
+				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(socket);
 				bloodGlucoseBiz.start();
 				logger.info("recevied data");
 			} catch (IOException e) {

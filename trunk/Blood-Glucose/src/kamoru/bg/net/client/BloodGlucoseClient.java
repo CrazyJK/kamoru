@@ -31,7 +31,7 @@ public class BloodGlucoseClient {
 	 */
 	public BloodGlucoseClient() throws Exception{
 		setServerInfo();
-		readMessage();
+//		readMessage();
 		encryptMessage();
 	}
 
@@ -51,26 +51,26 @@ public class BloodGlucoseClient {
 		}
 	}
 	
-	private void readMessage() throws IOException { 
-		BufferedReader br = null;
-		try {
-			ClassLoader cl = Thread.currentThread().getContextClassLoader();
-	        if( cl == null ) cl = ClassLoader.getSystemClassLoader();
-
-	        br = new BufferedReader(new InputStreamReader(cl.getResourceAsStream(msgFile)));
-	        //br = new BufferedReader(new FileReader(new File(msgFile)));
-			String line = null;
-			while((line = br.readLine()) != null) {
-				message += line + "\n";
-			}
-			message = message.trim();
-		} catch (IOException e) {
-			throw new IOException(msgFile + " 파일을 읽을 수 없습니다.");
-		} finally {
-			if(br != null)
-				try {br.close();} catch (IOException e) {}
-		}
-	}
+//	private void readMessage() throws IOException { 
+//		BufferedReader br = null;
+//		try {
+//			ClassLoader cl = Thread.currentThread().getContextClassLoader();
+//	        if( cl == null ) cl = ClassLoader.getSystemClassLoader();
+//
+//	        br = new BufferedReader(new InputStreamReader(cl.getResourceAsStream(msgFile)));
+//	        //br = new BufferedReader(new FileReader(new File(msgFile)));
+//			String line = null;
+//			while((line = br.readLine()) != null) {
+//				message += line + "\n";
+//			}
+//			message = message.trim();
+//		} catch (IOException e) {
+//			throw new IOException(msgFile + " 파일을 읽을 수 없습니다.");
+//		} finally {
+//			if(br != null)
+//				try {br.close();} catch (IOException e) {}
+//		}
+//	}
 	
 	/**
 	 *  보낼 메시지를 암호화 한다.
@@ -85,29 +85,45 @@ public class BloodGlucoseClient {
 	 */
 	public void startSocket() throws IOException {
 
-		SSLSocketFactory sslsocketfactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
-//		Socket socket = null;
-		SSLSocket sslsocket = null;
-		OutputStream os = null;
-		OutputStreamWriter writer = null;
+		Socket socket = null;
+		BufferedReader reader = null;
+		BufferedWriter writer = null;
 		try {
-//			socket = new Socket(ip, port);
-			sslsocket = (SSLSocket) sslsocketfactory.createSocket(ip, port);
-//			os = socket.getOutputStream();
-			os = sslsocket.getOutputStream();
-			writer = new OutputStreamWriter(os);
-			writer.write(message, 0, message.length());
+			socket = new Socket(ip, port);
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			System.out.println("start");
+			
+			writer.write("READY?");
 			writer.flush();
+
+			System.out.println("write READY?");
+
+			// READY
+			char[] cbuf = new char[5];
+			int length = reader.read(cbuf);
+			
+			System.out.println(cbuf);
+
+			writer.write("BqkhQDa4oVtRLgPVNBIABrZ757I2j2x1Ii5vsao4IAZC4EZ3O8fwqGtCFPAuHjbtRg20mV+Hi8lYMpNCgeUABgAAAVZCR01U");
+			writer.flush();
+
+			System.out.println("write message");
+			
+			length = reader.read(cbuf);
+			
+			System.out.println(cbuf);
+			
 			System.out.println("[" + ip + ":" + port + "] message[" + message + "] 전송 완료");
 		} catch (IOException e) {
 			throw new IOException("메시지 전송에 실패 하였습니다.", e);
 		} finally {
 			try {
-//				socket.close();
-				sslsocket.close();
-				os.close();
+				socket.close();
 				writer.close();
+				reader.close();
 			} catch (IOException e) {
 				throw new IOException("소켓 닫기에 실패했습니다", e);
 			}

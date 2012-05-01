@@ -25,6 +25,6 @@
 		</dataSource>
 	</transactionManager>
 	
-	<sqlMap resource="BloodGlucose-SqlMap.xml" />
+	<sqlMap resource="./BloodGlucose-SqlMap.xml" />
 	
 </sqlMapConfig>
