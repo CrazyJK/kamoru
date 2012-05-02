@@ -19,10 +19,15 @@
 	</select>
 	
 	
-	<select id="getBloodClucoseAll" resultClass="java.util.Map">
+	<select id="getBloodClucoseList" parameterClass ="java.util.Map" resultClass="java.util.List">
 		SELECT	*
-		FROM	bloodclucose
-		ORDER BY idx DESC
+		FROM	bloodsugar
+		WHERE   id = #id#
+		ORDER BY regtdate DESC
+	</select>
+	<select id="getBloodClucoseId" resultClass="java.util.List">
+		SELECT	distinct id
+		FROM	bloodSugar
 	</select>
                 
 	<insert id="insertBloodGlucoseData" parameterClass="java.util.Map">

@@ -11,6 +11,11 @@ import java.security.Key;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
+
+
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -42,7 +47,9 @@ public class BloodGlucoseBiz extends Thread {
 	private String hostAddress;
 	private String hostName;
 	private Date receivedDate;
-	
+	public BloodGlucoseBiz() {
+		
+	}
 	
 	public BloodGlucoseBiz(Socket socket) {
 		this.socket = socket;
@@ -134,7 +141,7 @@ public class BloodGlucoseBiz extends Thread {
 			// 기기번호, 연도, 월, 일, 시, 분, 초, 혈당값, receivedDate, seq, meter address, message
 			// id, year, month, day, time, minute, second, bloodsugarvalue, regtdate
 			HashMap map = new HashMap();
-			map.put("id", 		IVbyte[0] + IVbyte[1] + IVbyte[2] + IVbyte[3] + IVbyte[4] + IVbyte[5] + IVbyte[6]);
+			map.put("id", 		toHexString(IVbyte[0]) + toHexString(IVbyte[1]) + toHexString(IVbyte[2]) + toHexString(IVbyte[3]) + toHexString(IVbyte[4]) + toHexString(IVbyte[5]) + toHexString(IVbyte[6]));
 			map.put("year",  	data[0]);
 			map.put("month", 	data[1]);
 			map.put("day", 		data[2]);
@@ -142,7 +149,7 @@ public class BloodGlucoseBiz extends Thread {
 			map.put("minute", 	data[4]);
 			map.put("second", 	data[5]);
 			map.put("bloodsugarvalue", data[6] + data[7]);
-			map.put("regdata", receivedDate);
+			map.put("regtdate", receivedDate);
 			
 			sqlMap.insert("bg.insertBloodGlucoseData", map);
 			
@@ -159,7 +166,62 @@ public class BloodGlucoseBiz extends Thread {
 		}
 		
 	}
+	
+    public List getBloodSugarList(String strId){
+    	SqlMapClient sqlMap = null;
+    	List<String> list = new ArrayList<String>();
+    	try {
+    	sqlMap = (SqlMapClient)SqlMapFactory.getSqlMap();
+    	sqlMap.startTransaction();
+      
+		HashMap map = new HashMap();
+		map.put("id", strId);
 
+		list= sqlMap.queryForList("bg.getBloodClucoseList", map);  
+		System.out.println("list size>>"+list.size());
+	
+		sqlMap.commitTransaction();
+
+	} catch (SQLException e) {
+		//logger.error("디비 저장에 실패 하였습니다.", e);
+	} finally {
+		try {
+			sqlMap.endTransaction();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+		return list;
+
+   }
+    
+    public List getBloodSugarIdList(){
+    	SqlMapClient sqlMap = null;
+    	List<String> list = new ArrayList<String>();
+    	try {
+    	sqlMap = (SqlMapClient)SqlMapFactory.getSqlMap();
+    	sqlMap.startTransaction();
+      
+		HashMap map = new HashMap();
+		
+		list= sqlMap.queryForList("bg.getBloodClucoseId", map);  
+		System.out.println("list size>>"+list.size());
+	
+		sqlMap.commitTransaction();
+
+	} catch (SQLException e) {
+		//logger.error("디비 저장에 실패 하였습니다.", e);
+	} finally {
+		try {
+			sqlMap.endTransaction();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+		return list;
+
+    }
+    
 	private byte[] decryptMessage(String message) throws Exception {
 
 		byte[] txtByte = Base64.decode(message);
@@ -182,5 +244,11 @@ public class BloodGlucoseBiz extends Thread {
 	
 		return txtDecrypt;
 	}
-	
+	public static String toHexString(byte b) {
+		StringBuffer result = new StringBuffer(3);
+		result.append(Integer.toString((b & 0xF0) >> 4, 16));
+		result.append(Integer.toString(b & 0x0F, 16));
+		return result.toString();
+	}
+
 }
