@@ -169,7 +169,7 @@ public class BloodGlucoseBiz extends Thread {
 	
     public List getBloodSugarList(String strId){
     	SqlMapClient sqlMap = null;
-    	List<String> list = new ArrayList<String>();
+    	List<String[]> list = new ArrayList<String[]>();
     	try {
     	sqlMap = (SqlMapClient)SqlMapFactory.getSqlMap();
     	sqlMap.startTransaction();
@@ -179,7 +179,11 @@ public class BloodGlucoseBiz extends Thread {
 
 		list= sqlMap.queryForList("bg.getBloodClucoseList", map);  
 		System.out.println("list size>>"+list.size());
-	
+		for(int i=0; i <list.size() ;i++)
+		{
+			
+			
+		}
 		sqlMap.commitTransaction();
 
 	} catch (SQLException e) {
