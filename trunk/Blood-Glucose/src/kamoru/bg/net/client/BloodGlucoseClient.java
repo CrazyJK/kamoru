@@ -112,9 +112,10 @@ public class BloodGlucoseClient {
 
 			System.out.println("write message");
 			
-			length = reader.read(cbuf);
-			
-			System.out.println(cbuf);
+			char[] cbuf1 = new char[3];
+			int length1= reader.read(cbuf1);
+
+			System.out.println(cbuf1);
 			
 			System.out.println("[" + ip + ":" + port + "] message[" + message + "] 전송 완료");
 		} catch (IOException e) {
