@@ -19,13 +19,13 @@
 	</select>
 	
 	
-	<select id="getBloodClucoseList" parameterClass ="java.util.Map" resultClass="java.util.List">
+	<select id="getBloodClucoseList" parameterClass ="java.util.Map" resultClass="java.util.HashMap">
 		SELECT	*
 		FROM	bloodsugar
 		WHERE   id = #id#
 		ORDER BY regtdate DESC
 	</select>
-	<select id="getBloodClucoseId" resultClass="java.util.List">
+	<select id="getBloodClucoseId" resultClass="java.util.HashMap">
 		SELECT	distinct id
 		FROM	bloodSugar
 	</select>

@@ -1,88 +1,104 @@
 package kamoru.bg.net.server;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
-
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLServerSocketFactory;
-import javax.net.ssl.SSLSocket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import kamoru.bg.net.server.biz.BloodGlucoseBiz;
 
-public class BloodGlucoseServer {
+public class BloodGlucoseServer implements Runnable {
 
 	Log logger = LogFactory.getLog(this.getClass());
 
-	final String iniFile = "blood-glucose.ini";
+	protected final String iniFile = "blood-glucose.ini";
 	
-	int port;
-	
-	public BloodGlucoseServer() throws Exception {
-		setServerInfo();
+	protected Properties props;
+	protected int port;
+	protected int nThreads;
+	protected boolean isStopped = false;
+	protected ExecutorService threadPool;
+	protected ServerSocket serverSocket = null;
+	protected Thread runningThread = null;
+
+	public BloodGlucoseServer() {
+		parseProperties();
+		this.port 		= Integer.valueOf(props.getProperty("serverport")).intValue();
+		this.nThreads 	= Integer.valueOf(props.getProperty("nThreads")).intValue();
+		this.threadPool 	= Executors.newFixedThreadPool(nThreads);
 	}
 
-	private void setServerInfo() throws Exception {
-		Properties props = new Properties();
+	private void parseProperties() {
+		this.props = new Properties();
 		try {
 			ClassLoader cl = Thread.currentThread().getContextClassLoader();
 	        if( cl == null ) cl = ClassLoader.getSystemClassLoader();
-
-			props.load(cl.getResourceAsStream(iniFile));
-			port = Integer.valueOf(props.getProperty("serverport")).intValue();
+	        this.props.load(cl.getResourceAsStream(iniFile));
 		} catch (FileNotFoundException e) {
-			throw new FileNotFoundException(iniFile + " 파일을 찾을 수 없습니다.");
+			throw new RuntimeException("Cannot find ini file " + iniFile);
 		} catch (IOException e) {
-			throw new IOException(iniFile + " 파일을 읽을 수 없습니다.");
+			throw new RuntimeException("Error reading ini file " + iniFile);
 		}
 	}
 
-	/**
-	 * history: SSLServerSocket 적용 
-	 * @throws IOException
-	 */
-	public void start() throws IOException {
-
-		ServerSocket serverSocket = null;
-		try {
-			serverSocket = new ServerSocket(port);
-			logger.info("Blood Glucose Server start");
-		} catch (IOException e) {
-			throw new IOException("서버 시작에 실패하였습니다.", e);
+	public void run() {
+		synchronized (this) {
+			this.runningThread = Thread.currentThread();
 		}
-		while(true) {
+		openServerSocket();
+		while (!isStopped()) {
+			Socket socket = null;
 			try {
-				Socket socket = serverSocket.accept(); 
-				BloodGlucoseBiz bloodGlucoseBiz = new BloodGlucoseBiz(socket);
-				bloodGlucoseBiz.start();
-				logger.info("recevied data");
+				logger.info("Waiting for a client connection");
+				socket = this.serverSocket.accept(); 
 			} catch (IOException e) {
-				throw new IOException("서버 구동이 중지 되었습니다.", e);
+				if (isStopped()) {
+					logger.info("Server Stopped.");
+					return;
+				}
+				throw new RuntimeException("Error accepting client connection", e);
 			}
+			logger.info("recevied data");
+			this.threadPool.execute(new BloodGlucoseBiz(socket));
 		}
+		this.threadPool.shutdown();
+		logger.info("Server Stopped.");
 	}
 	
+	private void openServerSocket() {
+		try {
+			this.serverSocket = new ServerSocket(port);
+			logger.info("Server start. port:" + this.port + " threadCount:" + this.nThreads);
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot open port " + port, e);
+		}
+	}
+
+	private synchronized boolean isStopped() {
+		return this.isStopped;
+	}
+
+	public synchronized void stop() {
+		this.isStopped = true;
+		try {
+			this.serverSocket.close();
+		} catch (IOException e) {
+			throw new RuntimeException("Error closing server", e);
+		}
+	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		try {
-			BloodGlucoseServer server = new BloodGlucoseServer();
-			server.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		BloodGlucoseServer server = new BloodGlucoseServer();
+		new Thread(server).start();
 	}
 
 }
