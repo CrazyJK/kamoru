@@ -64,8 +64,9 @@ public class BloodGlucoseServer implements Runnable {
 				}
 				throw new RuntimeException("Error accepting client connection", e);
 			}
-			logger.info("recevied data");
-			this.threadPool.execute(new BloodGlucoseBiz(socket));
+			int hashCode = socket.hashCode();
+			logger.info("Accepted client connection. Assigned to " + hashCode);
+			this.threadPool.execute(new BloodGlucoseBiz(socket, hashCode));
 		}
 		this.threadPool.shutdown();
 		logger.info("Server Stopped.");

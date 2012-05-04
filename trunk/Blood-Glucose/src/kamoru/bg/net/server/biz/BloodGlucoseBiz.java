@@ -49,14 +49,15 @@ public class BloodGlucoseBiz extends Thread {
 	
 	Log logger = LogFactory.getLog(this.getClass());
 
-	private Socket 	socket;
-	private String 	hostAddress;
-	private String 	hostName;
-	private Date 	receivedDate;
+	private Socket 			socket;
+	private String 			hostAddress;
+	private String 			hostName;
+	private Date 			receivedDate;
 	private BufferedReader 	reader;
 	private BufferedWriter 	writer;
-	char[] cbuf;
-	SqlMapClient sqlMap;
+	private char[] 			cbuf;
+	private SqlMapClient 	sqlMap;
+	private int 			hashCode;
 
 	/**
 	 * jsp에서 SELECT 용도로 사용
@@ -69,30 +70,30 @@ public class BloodGlucoseBiz extends Thread {
 	 * Socket서버에서 소켓 처리용으로 사용
 	 * @param socket
 	 */
-	public BloodGlucoseBiz(Socket socket) {
+	public BloodGlucoseBiz(Socket socket, int hashCode) {
 		this.socket = socket;
+		this.hashCode = hashCode;
+		InetAddress inetAddress = socket.getInetAddress();
+		this.hostAddress  = inetAddress.getHostAddress();
+		this.hostName 	 = inetAddress.getHostName();
+		this.receivedDate = new Date();
 	}
 	
 	@Override
 	public void run() {
-		logger.info("START");
 		try {
-			InetAddress inetAddress = socket.getInetAddress();
-			hostAddress  = inetAddress.getHostAddress();
-			hostName 	 = inetAddress.getHostName();
-			receivedDate = new Date();
+			logger.info(hashCode + " START hostAddress:[" + hostAddress + "] hostName:[" + hostName + "] receivedDate:[" + receivedDate + "]");
+
 			reader 		 = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer 		 = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-			logger.info("hostAddress:[" + hostAddress + "] hostName:[" + hostName + "] receivedDate:[" + receivedDate + "]");
 			
 			readREADYQ();
 			sendREADY();
 			readMessage();
 			processAndSendACK();
-
+			logger.info(hashCode + " END");
 		} catch (Exception e) {
-			logger.error("수신된 데이터를 처리하는 도중 에러가 발생했습니다.", e);
+			logger.error(hashCode + " 수신된 데이터를 처리하는 도중 에러가 발생했습니다.", e);
 		} finally {
 			try { reader.close(); } catch (IOException e) {logger.error(e);}
 			try { writer.close(); } catch (IOException e) {logger.error(e);}
@@ -104,7 +105,7 @@ public class BloodGlucoseBiz extends Thread {
 	private void readREADYQ() throws Exception{
 		cbuf = new char[6];
 		int length = reader.read(cbuf);
-		logger.info("1. received message : " + String.valueOf(cbuf) + " - " + length);
+		logger.debug(hashCode + " 1. received message : " + String.valueOf(cbuf) + " - " + length);
 	}
 	
 	private void sendREADY() throws Exception {
@@ -114,7 +115,7 @@ public class BloodGlucoseBiz extends Thread {
 					try {
 						writer.write("READY");
 						writer.flush();
-						logger.info("2. send message : READY");
+						logger.debug(hashCode + " 2. send message : READY");
 						return new Object();
 					} catch (IOException e) {
 						throw new RuntimeException(e);
@@ -136,7 +137,7 @@ public class BloodGlucoseBiz extends Thread {
 	private void readMessage() throws IOException {
 		cbuf = new char[96];
 		int length = reader.read(cbuf);
-		logger.info("3. received message : " + String.valueOf(cbuf));
+		logger.debug(hashCode + " 3. received message : " + String.valueOf(cbuf));
 	}
 	
 	private void processAndSendACK() throws Exception {
@@ -162,8 +163,6 @@ public class BloodGlucoseBiz extends Thread {
 						
 						sqlMap.insert("bg.insertBloodGlucoseData", map);
 						
-//						try {Thread.sleep(60*1000);} catch (InterruptedException e) {}
-						
 						return new Object();
 					} catch (Exception e) {
 						throw new RuntimeException(e);
@@ -180,15 +179,15 @@ public class BloodGlucoseBiz extends Thread {
 			}
 			
 			sqlMap.commitTransaction();
-			logger.info("data inserted");
+			logger.debug(hashCode + " data inserted");
 			
 			writer.write("ACK");
 			writer.flush();
-			logger.info("4. send message : ACK");
+			logger.debug(hashCode + " 4. send message : ACK");
 		} catch (Exception e) {
 			writer.write("ERR");
 			writer.flush();
-			logger.info("4. send message : ERR");
+			logger.error(hashCode + " 4. send message : ERR");
 			throw e;
 		} finally {
 			try {

@@ -11,8 +11,8 @@
 		enhancementEnabled="true"
 		lazyLoadingEnabled="true"
 		maxRequests="32"
-		maxSessions="10"
-		maxTransactions="5"
+		maxSessions="20"
+		maxTransactions="20"
 		useStatementNamespaces="true"
 	/>
 	

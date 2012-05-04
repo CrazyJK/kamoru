@@ -7,7 +7,7 @@ import java.util.*;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-public class BloodGlucoseClient {
+public class BloodGlucoseClient implements Runnable {
 
 	final String iniFile = "blood-glucose.ini";
 	final String msgFile = "blood-glucose.msg";
@@ -83,7 +83,7 @@ public class BloodGlucoseClient {
 	 *  서버에 암호화된 메시지를 전송한다.
 	 * @throws IOException
 	 */
-	public void startSocket() throws IOException {
+	public void run() {
 
 
 		Socket socket = null;
@@ -119,22 +119,25 @@ public class BloodGlucoseClient {
 			
 			System.out.println("[" + ip + ":" + port + "] message[" + message + "] 전송 완료");
 		} catch (IOException e) {
-			throw new IOException("메시지 전송에 실패 하였습니다.", e);
+			throw new RuntimeException("메시지 전송에 실패 하였습니다.", e);
 		} finally {
 			try {
 				socket.close();
 				writer.close();
 				reader.close();
 			} catch (IOException e) {
-				throw new IOException("소켓 닫기에 실패했습니다", e);
+				throw new RuntimeException("소켓 닫기에 실패했습니다", e);
 			}
 		}
 	}
 
 	public static void main(String args[]) throws Exception {
 
-		BloodGlucoseClient c = new BloodGlucoseClient();
-		c.startSocket();
+		for(int i=0; i<100; i++) {
+			BloodGlucoseClient c = new BloodGlucoseClient();
+			new Thread(c).start();
+			Thread.sleep(1000);
+		}
 
 	}
 
