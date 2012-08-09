@@ -9,12 +9,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author  kamoru
+ */
 public class Query {
 
 	org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass()); 
 	
 	private Connection conn;
 	
+	/**
+	 * @uml.property  name="query"
+	 * @uml.associationEnd  
+	 */
 	private static Query query;
 	
 	public static Query getInstance() {

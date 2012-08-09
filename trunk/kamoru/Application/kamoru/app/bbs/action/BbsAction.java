@@ -16,12 +16,23 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.MappingDispatchAction;
 
+/**
+ * @author  kamoru
+ */
 public class BbsAction extends MappingDispatchAction {
 
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	
+	/**
+	 * @uml.property  name="bbs"
+	 * @uml.associationEnd  
+	 */
 	private Bbs bbs;
 	
+	/**
+	 * @param bbs
+	 * @uml.property  name="bbs"
+	 */
 	public void setBbs(Bbs bbs) {
 		this.bbs = bbs;
 	}

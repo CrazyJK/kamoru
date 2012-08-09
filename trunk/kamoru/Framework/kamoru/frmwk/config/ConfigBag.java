@@ -10,11 +10,21 @@ import org.xml.sax.SAXException;
 
 import com.opensymphony.module.propertyset.xml.XMLPropertySet;
 
+/**
+ * @author  kamoru
+ */
 public class ConfigBag {
 
 	protected static final Log logger = LogFactory.getLog(ConfigBag.class);
 
+    /**
+	 * @uml.property  name="instance"
+	 * @uml.associationEnd  
+	 */
     private static ConfigBag instance;
+    /**
+	 * @uml.property  name="config"
+	 */
     private static XMLPropertySet config;
 
 	private ConfigBag() {
@@ -43,12 +53,20 @@ public class ConfigBag {
         }
     }
 
+    /**
+	 * @return
+	 * @uml.property  name="instance"
+	 */
     public static ConfigBag getInstance() {
         if(instance == null)
             instance = new ConfigBag();
         return instance;
     }
 
+    /**
+	 * @return
+	 * @uml.property  name="config"
+	 */
     public XMLPropertySet getConfig() {
         return config;
     }

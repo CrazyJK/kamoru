@@ -1,10 +1,16 @@
 package kamoru.util.video;
 import java.util.*;
 import java.io.*;
+/**
+ * @author  kamoru
+ */
 public class FileManager {
 
 	public String path;
 	public String filter;
+	/**
+	 * @uml.property  name="list"
+	 */
 	public ArrayList<FileBean> list;
 	public long totalSize;
 	public int totalCount;
@@ -17,6 +23,10 @@ public class FileManager {
 		listFile(path);
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="list"
+	 */
 	public ArrayList<FileBean> getList() {
 		return list;
 	}

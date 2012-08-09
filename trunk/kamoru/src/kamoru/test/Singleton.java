@@ -4,8 +4,15 @@ package kamoru.test;
 public final class Singleton { 
 	// static inner class (여기도 final 키워드 사용) 를 사용하여 Singleton 클래스의 
 	// 객체를 생성함 
+	/**
+	 * @author  kamoru
+	 */
 	private static final class SingletonHolder { 
 		// 역시 이 내부에서도 static final 키워드 사용 
+		/**
+		 * @uml.property  name="singleton"
+		 * @uml.associationEnd  
+		 */
 		static final Singleton singleton = new Singleton(); 
 	} 
 	private Singleton() {

@@ -10,8 +10,15 @@ import java.net.*;
 import java.io.*;
 import java.util.Vector;
 
+/**
+ * @author  kamoru
+ */
 class GenericServer {
 	private static final int DEFAULT_PORT = 54321; // 서버가 bind하는 초기 포트 값
+	/**
+	 * @uml.property  name="cm"
+	 * @uml.associationEnd  
+	 */
 	private ConnectionManager cm = null; // 연결을 관리하는 쓰레드
 
 	public GenericServer(int port) {

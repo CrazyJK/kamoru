@@ -18,10 +18,8 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 
 /**
- * iBatis 2 - SqlMapClient pool class<br/>
- * used. SqlMapFactory.getSqlMap([key])
- * @author kamoru
- *
+ * iBatis 2 - SqlMapClient pool class<br/> used. SqlMapFactory.getSqlMap([key])
+ * @author  kamoru
  */
 public final class SqlMapFactory {
 
@@ -32,6 +30,10 @@ public final class SqlMapFactory {
 	
 	private static Map sqlMapClientMap = new HashMap();
 	
+	/**
+	 * @uml.property  name="instance"
+	 * @uml.associationEnd  
+	 */
 	private static final SqlMapFactory instance = new SqlMapFactory();
 
 	private SqlMapFactory() {

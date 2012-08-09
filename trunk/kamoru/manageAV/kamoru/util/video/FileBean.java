@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * @author  kamoru
+ */
 public class FileBean implements Comparable {
 
 	public static final int SORT_NAME = 0;
@@ -15,12 +18,33 @@ public class FileBean implements Comparable {
 	public static final int SORT_SIZE = 2;
 	public static final int SORT_LASTMODIFIED = 3;
 	
+	/**
+	 * @uml.property  name="file"
+	 */
 	private File file;
+	/**
+	 * @uml.property  name="name"
+	 */
 	private String name;
+	/**
+	 * @uml.property  name="path"
+	 */
 	private String path;
+	/**
+	 * @uml.property  name="size"
+	 */
 	private long size;
+	/**
+	 * @uml.property  name="uri"
+	 */
 	private URI uri;
+	/**
+	 * @uml.property  name="lastModified"
+	 */
 	private long lastModified;
+	/**
+	 * @uml.property  name="sortMethod"
+	 */
 	private int sortMethod;
 
 	public FileBean(File f) {
@@ -36,58 +60,114 @@ public class FileBean implements Comparable {
 		return path + File.separator + "==" + name + " (" + getSizeConvert() + ") - " + getLastModifiedDate();
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="file"
+	 */
 	public File getFile() {
 		return file;
 	}
 
+	/**
+	 * @param file
+	 * @uml.property  name="file"
+	 */
 	public void setFile(File file) {
 		this.file = file;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="name"
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 * @uml.property  name="name"
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="path"
+	 */
 	public String getPath() {
 		return path;
 	}
 
+	/**
+	 * @param path
+	 * @uml.property  name="path"
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="size"
+	 */
 	public long getSize() {
 		return size;
 	}
 
+	/**
+	 * @param size
+	 * @uml.property  name="size"
+	 */
 	public void setSize(long size) {
 		this.size = size;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="uri"
+	 */
 	public URI getUri() {
 		return uri;
 	}
 
+	/**
+	 * @param uri
+	 * @uml.property  name="uri"
+	 */
 	public void setUri(URI uri) {
 		this.uri = uri;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="lastModified"
+	 */
 	public long getLastModified() {
 		return lastModified;
 	}
 
+	/**
+	 * @param lastModified
+	 * @uml.property  name="lastModified"
+	 */
 	public void setLastModified(long lastModified) {
 		this.lastModified = lastModified;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="sortMethod"
+	 */
 	public int getSortMethod() {
 		return sortMethod;
 	}
 
+	/**
+	 * @param sortMethod
+	 * @uml.property  name="sortMethod"
+	 */
 	public void setSortMethod(int sortMethod) {
 		this.sortMethod = sortMethod;
 	}

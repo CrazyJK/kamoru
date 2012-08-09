@@ -4,9 +4,16 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * @author  kamoru
+ */
 public class Server5 {
 
 	private ServerSocket server;
+	/**
+	 * @uml.property  name="bMan"
+	 * @uml.associationEnd  
+	 */
 	private BManager bMan = new BManager(); // 메시지 방송자
 
 	public Server5() {

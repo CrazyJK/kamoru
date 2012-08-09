@@ -10,12 +10,23 @@ import kamoru.app.bbs.bean.Article;
 import kamoru.app.bbs.dao.BbsDao;
 import kamoru.app.bbs.form.BbsForm;
 
+/**
+ * @author  kamoru
+ */
 public class BbsImpl implements Bbs {
 
 	Log logger = LogFactory.getLog(this.getClass());
 	
+	/**
+	 * @uml.property  name="bbsDao"
+	 * @uml.associationEnd  
+	 */
 	private BbsDao bbsDao;
 		
+	/**
+	 * @param bbsDao
+	 * @uml.property  name="bbsDao"
+	 */
 	public void setBbsDao(BbsDao bbsDao) {
 		this.bbsDao = bbsDao;
 	}

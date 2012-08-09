@@ -17,12 +17,23 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.MappingDispatchAction;
 
+/**
+ * @author  kamoru
+ */
 public class VlistAction extends MappingDispatchAction {
 
 	protected static final Log logger = LogFactory.getLog(VlistAction.class);
 	
+	/**
+	 * @uml.property  name="vlistLogic"
+	 * @uml.associationEnd  
+	 */
 	private VlistLogic vlistLogic;
 
+	/**
+	 * @param vlistLogic
+	 * @uml.property  name="vlistLogic"
+	 */
 	public void setVlistLogic(VlistLogic vlistLogic) {
 		this.vlistLogic = vlistLogic;
 	}

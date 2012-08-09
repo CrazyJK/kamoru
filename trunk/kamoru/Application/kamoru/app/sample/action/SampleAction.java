@@ -15,12 +15,23 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.MappingDispatchAction;
 
+/**
+ * @author  kamoru
+ */
 public class SampleAction extends MappingDispatchAction {
 
 	protected static final Log logger = LogFactory.getLog(SampleAction.class);
 	
+	/**
+	 * @uml.property  name="sampleLogic"
+	 * @uml.associationEnd  
+	 */
 	private SampleLogic sampleLogic;
 	
+	/**
+	 * @param sampleLogic
+	 * @uml.property  name="sampleLogic"
+	 */
 	public void setSampleLogic(SampleLogic sampleLogic) {
 		this.sampleLogic = sampleLogic;
 	}

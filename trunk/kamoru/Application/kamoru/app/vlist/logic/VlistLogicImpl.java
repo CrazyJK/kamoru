@@ -11,10 +11,21 @@ import kamoru.app.vlist.bean.Vfile;
 import kamoru.app.vlist.dao.VlistDao;
 import kamoru.app.vlist.form.VlistForm;
 
+/**
+ * @author  kamoru
+ */
 public class VlistLogicImpl implements VlistLogic {
 
+	/**
+	 * @uml.property  name="vlistDao"
+	 * @uml.associationEnd  
+	 */
 	private VlistDao vlistDao;
 		
+	/**
+	 * @param vlistDao
+	 * @uml.property  name="vlistDao"
+	 */
 	public void setVlistDao(VlistDao vlistDao) {
 		this.vlistDao = vlistDao;
 	}
