@@ -6,39 +6,70 @@ import java.io.*;
  */
 public class FileManager {
 
-	public String path;
-	public String filter;
-	/**
-	 * @uml.property  name="list"
-	 */
-	public ArrayList<FileBean> list;
-	public long totalSize;
-	public int totalCount;
+	private String path;
+	private ArrayList<FileBean> list;
+	private long totalSize;
+	private int totalCount;
 	
-	public FileManager(String path, String filter){
+	public FileManager(String path, String filterStr){
 		this.path = path;
-		this.filter = filter;
 		this.list = new ArrayList<FileBean>();
 
-		listFile(path);
+		File dir = new File(this.path);
+		if(dir.isDirectory()) {
+			
+			String[] filenames = null;
+			String[] extensions = null;
+			long fromLastModified = 0l;
+			long toLastModified = 0l;
+
+			// name=xxx;extension=avi.mpg.wmv;days=30
+			String[] filters = filterStr.split(":");
+			for (String filterPair : filters) {
+				System.out.println("filterPair : " + filterPair);
+				String[] filter = filterPair.split("=");
+				if(filter.length < 2) {
+					continue;
+				}
+				if("name".equalsIgnoreCase(filter[0])) {
+					filenames = filter[1].split(",");
+					if(filenames != null)
+						for(String s : filenames) {
+							System.out.println("name :" + s);
+						}
+				} else if("extension".equalsIgnoreCase(filter[0])) {
+					extensions = filter[1].split(",");
+					if(extensions != null)
+						for(String s : extensions) {
+							System.out.println("ext : " + s);
+						}
+				} else if("fromDay".equalsIgnoreCase(filter[0])) {
+					fromLastModified = System.currentTimeMillis() - Long.parseLong(filter[1])*24*60*60*1000l;
+					System.out.println(fromLastModified);
+				} else if("toDay".equalsIgnoreCase(filter[0])) {
+					toLastModified = System.currentTimeMillis() - Long.parseLong(filter[1])*24*60*60*1000l;
+					System.out.println(toLastModified);
+				}
+			}
+			
+			FileFilter filter = new FileFilterImpl(filenames, extensions, fromLastModified, toLastModified);
+			
+			listFile(dir, filter);
+		}
+		else {
+			new RuntimeException("Not a directory : " + this.path);
+		}
 	}
 
-	/**
-	 * @return
-	 * @uml.property  name="list"
-	 */
 	public ArrayList<FileBean> getList() {
-		return list;
+		return this.list;
 	}
 	
-	public void listFile(String dir) { 
-//		ArrayList<String> subDirList = new ArrayList<String>();
-		FilenameFilter nameFilter = new FiletypeFilter(filter);
-		File[] files = new File(dir).listFiles(nameFilter);
-		for(File f: files){
+	private void listFile(File dir, FileFilter filter) { 
+		File[] files = dir.listFiles(filter);
+		for(File f: files) {
 			if(f.isDirectory())	{
-//				subDirList.add(f.getAbsolutePath());
-				listFile(f.getAbsolutePath());
+				listFile(f, filter);
 			}else{
 				FileBean bean = new FileBean(f);
 				list.add(bean);
@@ -46,13 +77,10 @@ public class FileManager {
 				totalCount ++;
 			}
 		}
-		
-//		for(String subPath: subDirList){
-//			getFilelist(subPath);
-//		}
 	}
 
-	public void sort(int sortMethod, boolean reverse){
+	@SuppressWarnings("unchecked")
+	private void sort(int sortMethod, boolean reverse){
 		for(FileBean bean : list){
 			bean.setSortMethod(sortMethod);
 		}
@@ -63,13 +91,49 @@ public class FileManager {
 			Collections.sort(list);
 		}
 	}
-	
-	public void display(){
+
+	private void writeFile(String str, String path) {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new FileWriter(new File(path)));
+			writer.print(str);
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(writer != null) writer.close();
+		}
+		
+	}
+
+	public void sysout(){
 		for(FileBean bean : list){
-			System.out.format("%s%n", bean.toString()); 
+			System.out.format("%s %s%n", bean.getLastModified() , bean.toString()); 
 		}
 		System.out.format("Total count : %s, size : %s%n", totalCount, totalSize);
 	}
+	
+	public void makeKPL(String dest) {
+		sort(FileBean.SORT_LASTMODIFIED, false);
+		StringBuilder sb = new StringBuilder();
+		sb.append("[playlist]").append(System.getProperty("line.separator"));
+		int i=0;
+		for(FileBean bean : list) {
+			i++;
+			sb.append("File").append(i).append("=").append(bean.getFullName()).append(System.getProperty("line.separator"));
+			sb.append("Title").append(i).append("=").append(bean.getName()).append(System.getProperty("line.separator"));
+			sb.append("Length").append(i).append("=").append(bean.getSize()).append(System.getProperty("line.separator"));
+			sb.append("Played").append(i).append("=0").append(System.getProperty("line.separator"));
+		}
+		sb.append("NumberOfEntries=").append(i).append(System.getProperty("line.separator"));
+		sb.append("Version=2").append(System.getProperty("line.separator"));
+		sb.append("CurrentIndex=1").append(System.getProperty("line.separator"));
+				
+		System.out.println(sb.toString());
+		
+		writeFile(sb.toString(), dest);
+	}
+	
 	
 	public String jsonText(){
 		StringBuilder sb = new StringBuilder();
@@ -91,37 +155,73 @@ public class FileManager {
 		return sb.toString();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void moveOldFile(String dest) {
-		Collections.sort(list);
-		
-		long tenPerSize = (long) (totalSize * 0.1d);
-		long fileSize = 0;
-		int fileCount = 0;
-		for(FileBean bean : list){
-			fileSize += bean.getSize();
-			if(fileSize < tenPerSize) {
-				fileCount++;
-				System.out.println(bean.toString());
-				System.out.println("\tmove to " + bean.moveTo(dest));
-//				System.out.println("\tcopy to " + bean.copyTo(dest));
-			}else{
-				break;
-			}
+	public void moveFile(String dest) {
+		for(FileBean bean : list) {
+			System.out.println(bean.toString());
+//			System.out.println("\tmove to " + bean.moveTo(dest));
 		}
-		System.out.format("Select count : %s, size : %s - Total count : %s, size : %s%n", fileCount, fileSize, totalCount, totalSize);
+	}
+
+	public void copyFile(String dest) {
+		for(FileBean bean : list) {
+			System.out.println(bean.toString());
+//			System.out.println("\tcopy to " + bean.copyTo(dest));
+		}
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String path   = args != null && args.length > 0 ? args[0] : "E:\\av";
-		String filter = args != null && args.length > 1 ? args[1] : "*";
-		String moveToDest = args != null && args.length > 2 ? args[2] : "E:\\old";
-		FileManager mf = new FileManager(path, filter);
-		//mf.display();
-		mf.moveOldFile(moveToDest);
+
+		try {
+			String src = args[0];
+			String flt = args[1];
+			String cmd = args[2];
+
+			if("out".equalsIgnoreCase(cmd)) {
+				FileManager mf = new FileManager(src, flt);
+				mf.sysout();
+			} 
+			else if("kpl".equalsIgnoreCase(cmd)) {
+				String dst = args[3];
+				FileManager mf = new FileManager(src, flt);
+				mf.makeKPL(dst);
+			} 
+			else if("move".equalsIgnoreCase(cmd)) {
+				String dst = args[3];
+				FileManager mf = new FileManager(src, flt);
+				mf.moveFile(dst);
+			}
+			else if("copy".equalsIgnoreCase(cmd)) {
+				String dst = args[3];
+				FileManager mf = new FileManager(src, flt);
+				mf.copyFile(dst);
+			}
+		} catch(ArrayIndexOutOfBoundsException e) {
+//			showUsage();
+			e.printStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void showUsage() {
+		System.out.println("Usage: ");
+		System.out.println("java FileManager SOURCE CONDITION COMMAND");
+		System.out.println();
+		System.out.println("    SOURCE               - Source folder");
+		System.out.println("    CONDITION");
+		System.out.println("        name=:extension=mpg,wmv,mp4:fromDay=30:toDay=5 ");
+		System.out.println("    COMMAND");
+		System.out.println("        out              - Display list");
+		System.out.println("        kpl  dest-file   - Make kpl file to dest");
+		System.out.println("        move dest-folder - Move file to dest");
+		System.out.println("        copy dest-folder - Copy file to dest");
+		System.out.println("ex.");
+		System.out.println("    java -classpath . kamoru.util.video.FileManager /home/kamoru/ETC/Download/ name=:extension=mpg,wmv,mp4:fromDay=30:toDay=5 out ");
+		System.out.println("    java -classpath . kamoru.util.video.FileManager /home/kamoru/ETC/Download/ name=:extension=mpg,wmv,mp4:fromDay=30:toDay=5 kpl list.kpl ");
+		System.out.println("    java -classpath . kamoru.util.video.FileManager /home/kamoru/ETC/Download/ name=:extension=mpg,wmv,mp4:fromDay=30:toDay=5 move /home/user/back ");
 	}
 
 }

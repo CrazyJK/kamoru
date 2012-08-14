@@ -57,7 +57,7 @@ public class FileBean implements Comparable {
 	}
 	
 	public String toString() {
-		return path + File.separator + "==" + name + " (" + getSizeConvert() + ") - " + getLastModifiedDate();
+		return getLastModifiedDate() + " " + path + File.separator + name + " (" + getSizeConvert() + ")";
 	}
 	
 	/**
@@ -224,6 +224,10 @@ public class FileBean implements Comparable {
 		File dest = new File(path, name);
 		return copy(file, dest);
 	}
+
+	public String getFullName() {
+		return this.path + System.getProperty("file.separator") + this.name;
+	}
 	
 	private boolean copy(File fOrg, File fTarget){
 		try{
@@ -251,4 +255,5 @@ public class FileBean implements Comparable {
 			return false;
 		}
 	}
+
 }

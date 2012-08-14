@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="FileManager4" size="1184,1012" id="kamoru.util.video" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D31303030206B616D6F72752F6B616D6F7275">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.0" name="FiletypeFilter" location="473,888" size="149,104" id="kamoru.util.video/FiletypeFilter">
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="filters" id="kamoru.util.video/FiletypeFilter#filters"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="98,36">
+      <children xsi:type="editmodel:MethodEditModel" name="FiletypeFilter" id="kamoru.util.video/FiletypeFilter#FiletypeFilter(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="accept" id="kamoru.util.video/FiletypeFilter#accept(Ljava.io.File;Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="FileManager" location="247,476" size="176,266" id="kamoru.util.video/FileManager" runTimeClassModel="sort(IZ),main([Ljava.lang.String;),listFile(Ljava.lang.String;),moveOldFile(Ljava.lang.String;),FileManager(Ljava.lang.String;Ljava.lang.String;),totalCount,display(),path,list,jsonText(),totalSize,filter">
+    <children xsi:type="editmodel:CompartmentEditModel" size="153,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="filter" id="kamoru.util.video/FileManager#filter"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="list" id="kamoru.util.video/FileManager#list"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="path" id="kamoru.util.video/FileManager#path"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="totalCount" id="kamoru.util.video/FileManager#totalCount"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="totalSize" id="kamoru.util.video/FileManager#totalSize"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="96,126">
+      <children xsi:type="editmodel:MethodEditModel" name="FileManager" id="kamoru.util.video/FileManager#FileManager(Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="display" id="kamoru.util.video/FileManager#display()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="jsonText" id="kamoru.util.video/FileManager#jsonText()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listFile" id="kamoru.util.video/FileManager#listFile(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="main" id="kamoru.util.video/FileManager#main([Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="moveOldFile" id="kamoru.util.video/FileManager#moveOldFile(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="sort" id="kamoru.util.video/FileManager#sort(IZ)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="kamoru.util.video/FileManager-Standard::Instantiate->kamoru.util.video/FiletypeFilter" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.2" label="//@children.1/@sourceConnections.0/@children.0" sourceEnd="//@children.1/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="73,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="173,266" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="41,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="kamoru.util.video/FileManager-Standard::Call->kamoru.util.video/FileBean*kamoru.util.video/FileManager-Standard::Instantiate->kamoru.util.video/FileBean*kamoru.util.video/FileManager-Soyatec::Import->kamoru.util.video/FileBean" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.1/@children.2" label="//@children.1/@sourceConnections.1/@children.0" sourceEnd="//@children.1/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="140,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="17,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="175,352"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.1" name="FileBean" location="50,50" size="175,374" id="kamoru.util.video/FileBean">
+    <children xsi:type="editmodel:CompartmentEditModel" size="152,198">
+      <children xsi:type="editmodel:AttributeEditModel" name="file" id="kamoru.util.video/FileBean#file"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="lastModified" id="kamoru.util.video/FileBean#lastModified"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="kamoru.util.video/FileBean#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="path" id="kamoru.util.video/FileBean#path"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sORT_LASTMODIFIED" id="kamoru.util.video/FileBean#sORT_LASTMODIFIED"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sORT_NAME" id="kamoru.util.video/FileBean#sORT_NAME"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sORT_PATH" id="kamoru.util.video/FileBean#sORT_PATH"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sORT_SIZE" id="kamoru.util.video/FileBean#sORT_SIZE"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="size" id="kamoru.util.video/FileBean#size"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sortMethod" id="kamoru.util.video/FileBean#sortMethod"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="uri" id="kamoru.util.video/FileBean#uri"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,126">
+      <children xsi:type="editmodel:MethodEditModel" name="FileBean" id="kamoru.util.video/FileBean#FileBean(Ljava.io.File;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="compareTo" id="kamoru.util.video/FileBean#compareTo(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="copyTo" id="kamoru.util.video/FileBean#copyTo(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLastModifiedDate" id="kamoru.util.video/FileBean#getLastModifiedDate()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSizeConvert" id="kamoru.util.video/FileBean#getSizeConvert()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="moveTo" id="kamoru.util.video/FileBean#moveTo(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="kamoru.util.video/FileBean#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" interactive="false" properties="open=kamoru.util.video/FileManager;wireOptions=7;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

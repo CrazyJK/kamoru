@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Properties;
 
 public class TEST {
 
@@ -112,6 +114,22 @@ public class TEST {
 		
 	    String str = "aaaa";
 	    System.out.println(str.split(",").length);
+	    
+	    System.out.println("System property");
+	    Properties prop = System.getProperties();
+	    Enumeration enm =  prop.keys();
+	    while(enm.hasMoreElements()) {
+	    	String key = (String)enm.nextElement();
+	    	System.out.println(key + "\t " + System.getProperty(key));
+	    	
+	    }
+	    
+	    System.out.println();
+	    System.out.println(System.currentTimeMillis());
+	    System.out.println(Long.parseLong("30")*24*60*60*1000);
+	    System.out.println();
+	    
+	    System.out.println("".split(";").length);
 	    
 	}
 
