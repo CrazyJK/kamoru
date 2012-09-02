@@ -32,7 +32,7 @@ public class FileFilterImpl implements FileFilter {
 				a = true;
 			} else {
 				for (String name : filenames) {
-					if (filename.indexOf(name) > -1) {
+					if (filename.toLowerCase().indexOf(name.toLowerCase()) > -1) {
 						a = true;
 					}
 				}
@@ -41,7 +41,7 @@ public class FileFilterImpl implements FileFilter {
 				b = true;
 			} else {
 				for (String ext : extensions) {
-					if(filename.endsWith(ext)) {
+					if(filename.toLowerCase().endsWith(ext.toLowerCase())) {
 						b = true;
 					}
 				}

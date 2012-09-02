@@ -185,9 +185,9 @@ public class FileBean implements Comparable {
 			Arrays.sort(p);
 			return p[0].equals(this.path) ? -1 : 1; 
 		case SORT_SIZE:
-			return (int) (this.size - comparer.size);
+			return this.size - comparer.size < 0 ? -1 : 1;
 		case SORT_LASTMODIFIED:
-			return (int) (this.lastModified - comparer.lastModified);
+			return this.lastModified - comparer.lastModified < 0 ? -1 : 1;
 		default:
 			return 0;
 		}
@@ -217,7 +217,9 @@ public class FileBean implements Comparable {
 		File dir = new File(path);
 		dir.mkdirs();
 		
-		return file.renameTo(new File(path, name));
+		String rename = this.lastModified + "." + name;
+		
+		return file.renameTo(new File(path, rename));
 	}
 	
 	public boolean copyTo(String path) {
