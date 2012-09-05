@@ -6,6 +6,7 @@ String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" type="image/x-icon" href="favicon_kamoru.ico">
 <title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
 <link rel="stylesheet" href="/kamoru/css/deco.css" />
 <!--[if lt IE 9]>
@@ -23,6 +24,10 @@ String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 			</span>
 		</h1>
 	</header>
+
+	<nav id="deco_nav">
+		<jsp:include page="/list.html"></jsp:include>
+	</nav>
 
 	<section id="deco_section">
 		<sitemesh:write property="body">Body goes here. Blah blah blah.</sitemesh:write>
