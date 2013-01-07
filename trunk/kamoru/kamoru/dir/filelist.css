@@ -42,6 +42,7 @@ section {
 	font-size:9pt;
 }
 
+/* 
 nav ul {
 	list-style: none;
 	padding: 0px;
@@ -66,7 +67,7 @@ nav ul li a {
 nav ul li a:hover {
 	color: #fff;
 }
-
+ */
 header h1 {
 	font-size: 36px;
 	margin: 0px;

@@ -9,9 +9,6 @@ String filter 	= request.getParameter("f");
 String sort 	= request.getParameter("s");
 String reverse 	= request.getParameter("r");
 
-FileManager fm = new FileManager(path, filter);
-try{
-	fm.sort(Integer.parseInt(sort), Boolean.parseBoolean(reverse));	
-}catch(Exception e){}
+FileManager fm = new FileManager(path, filter, 3);
 out.println(fm.jsonText());
 %>
