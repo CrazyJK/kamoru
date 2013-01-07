@@ -1,0 +1,1 @@
+java -classpath E:\tools\workspace\kamoru\build\classes kamoru.util.video.FileManager e:/torrent extension=asf,avi,flv,mpg,mkv,mov,mp4,mpg,rmvb,wmv,divx 3 kpl C:\Users\kamoru\Desktop\playlist.kpl

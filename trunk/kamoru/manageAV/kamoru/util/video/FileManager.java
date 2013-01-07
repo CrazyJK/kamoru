@@ -11,6 +11,10 @@ public class FileManager {
 	private long totalSize;
 	private int totalCount;
 	
+	public FileManager(String path, String filterStr){
+		this(path, filterStr, -1);
+	}
+	
 	public FileManager(String path, String filterStr, int sort){
 		this.path = path;
 		this.list = new ArrayList<FileBean>();
@@ -55,7 +59,8 @@ public class FileManager {
 			
 			listFile(dir, filter);
 			
-			sort(sort, false);
+			if(sort > -1)
+				sort(sort, false);
 
 		}
 		else {

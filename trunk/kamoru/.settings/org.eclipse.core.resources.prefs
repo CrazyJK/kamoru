@@ -1,4 +1,4 @@
-#Wed Mar 07 16:30:48 KST 2012
+#Sat Dec 08 19:45:27 KST 2012
 =\=\=\=\=\=\=
 <<<<<<<=.mine
 >>>>>>>=.r25
@@ -8,4 +8,5 @@ encoding//kamoru/WEB-INF/sitemesh/decorator.jsp=UTF-8
 encoding//kamoru/handy/addon/common.jsp=UTF-8
 encoding//kamoru/temp/get_receive.jsp=EUC-KR
 encoding//kamoru/temp/get_send.jsp=EUC-KR
+encoding//kamoru/temp/list.jsp=UTF-8
 encoding/<project>=UTF-8
