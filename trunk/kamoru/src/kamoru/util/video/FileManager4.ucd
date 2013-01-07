@@ -11,7 +11,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="FileManager" location="247,476" size="176,266" id="kamoru.util.video/FileManager" runTimeClassModel="sort(IZ),main([Ljava.lang.String;),listFile(Ljava.lang.String;),moveOldFile(Ljava.lang.String;),FileManager(Ljava.lang.String;Ljava.lang.String;),totalCount,display(),path,list,jsonText(),totalSize,filter">
+  <children xsi:type="editmodel:ClassEditModel" name="FileManager" location="247,476" size="176,266" id="kamoru.util.video/FileManager" runTimeClassModel="main([Ljava.lang.String;),sort(IZ),moveOldFile(Ljava.lang.String;),listFile(Ljava.lang.String;),totalCount,FileManager(Ljava.lang.String;Ljava.lang.String;),path,display(),list,jsonText(),totalSize,filter">
     <children xsi:type="editmodel:CompartmentEditModel" size="153,90">
       <children xsi:type="editmodel:AttributeEditModel" name="filter" id="kamoru.util.video/FileManager#filter"/>
       <children xsi:type="editmodel:AttributeEditModel" name="list" id="kamoru.util.video/FileManager#list"/>
@@ -34,7 +34,7 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="173,266" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="41,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="kamoru.util.video/FileManager-Standard::Call->kamoru.util.video/FileBean*kamoru.util.video/FileManager-Standard::Instantiate->kamoru.util.video/FileBean*kamoru.util.video/FileManager-Soyatec::Import->kamoru.util.video/FileBean" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.1/@children.2" label="//@children.1/@sourceConnections.1/@children.0" sourceEnd="//@children.1/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="kamoru.util.video/FileManager->Standard::Call" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.1/@children.2" label="//@children.1/@sourceConnections.1/@children.0" sourceEnd="//@children.1/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="140,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="17,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="175,352"/>

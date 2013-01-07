@@ -13,6 +13,16 @@ import kamoru.app.vlist.bean.Vfile;
 
 public class FileUtils {
 	
+	/**
+	 * 
+	 * @param path 검색할 폴더
+	 * @param extension 파일 확장자 배열
+	 * @param searchName 검색 파일명
+	 * @param isSubSearch if true, 하위 폴더 검색
+	 * @param beanClassName 파일을 담을 객체 이름. if null, use java.io.File
+	 * @return beanClass List
+	 * @throws IOException
+	 */
 	public static List getFileList(String path, String[] extension, String searchName, boolean isSubSearch, String beanClassName) throws IOException {
 		if(path == null) {
 			throw new IOException("input path is null");
@@ -79,6 +89,13 @@ public class FileUtils {
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @param list getFileList에서 return된 list
+	 * @param sortType 0:name, 1:path, 2:size, 3:last_modified 
+	 * @param reverse if true, reverse order
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static List sort(List list, int sortType, boolean reverse){
 		
@@ -95,6 +112,11 @@ public class FileUtils {
 		return list;
 	}
 
+	/**
+	 * 
+	 * @param list getFileList에서 return된 list
+	 * @return
+	 */
 	public static List getSameSizeFileList(List list) {
 		List samelist = new ArrayList();
 		for(int i=0; i<list.size(); i++) {

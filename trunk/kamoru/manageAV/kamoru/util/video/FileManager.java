@@ -213,33 +213,29 @@ public class FileManager {
 			String srt = args[2];
 			String cmd = args[3];
 
+			FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
+
 			if("out".equalsIgnoreCase(cmd)) {
-				FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
 				mf.sysout();
 			} 
 			else if("asx".equalsIgnoreCase(cmd)) {
 				String dst = args[4];
-				FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
 				mf.makeASX(dst);
 			} 
 			else if("kpl".equalsIgnoreCase(cmd)) {
 				String dst = args[4];
-				FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
 				mf.makeKPL(dst);
 			} 
 			else if("move".equalsIgnoreCase(cmd)) {
 				String dst = args[4];
-				FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
 				mf.moveFile(dst);
 			}
 			else if("copy".equalsIgnoreCase(cmd)) {
 				String dst = args[4];
-				FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
 				mf.copyFile(dst);
 			}
 			else if("prn".equalsIgnoreCase(cmd)) {
 				String dst = args[4];
-				FileManager mf = new FileManager(src, flt, Integer.parseInt(srt));
 				mf.print(dst);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {
