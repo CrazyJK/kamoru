@@ -31,7 +31,7 @@ body#deco_body {
 	font: 10pt arial; 
 	text-align:center;
 	bottom: 0px;
-	position: absolute;
+	position: float;
 	width:100%;
 }
 a {

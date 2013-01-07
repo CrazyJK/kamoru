@@ -11,12 +11,14 @@ import kamoru.frmwk.util.FileUtils;
 
 public class AVCollectionCtrl {
 
-	public String basePath = "/home/kamoru/ETC/collection";
+//	public String basePath = "/home/kamoru/ETC/collection";
+	public String basePath = "E:\\AV_JAP";
 	public String av_extensions = "avi,mpg,wmv,mp4";
 	public String cover_extensions = "jpg,jpeg";
 	public String subtitles_extensions = "smi,srt";
 	public String overview_extensions = "txt,html";
 	
+	private Map labelMap;
 	
 	public AVCollectionCtrl() {
 		
@@ -24,6 +26,7 @@ public class AVCollectionCtrl {
 	
 	public Map getAVData() {
 		Map map = new HashMap();
+		labelMap = new HashMap();
 		try {
 			List list = FileUtils.getFileList(basePath, null, null, true, null);
 			System.out.println("size " + list.size());
@@ -40,7 +43,6 @@ public class AVCollectionCtrl {
 				String title 	= null;
 				String actress 	= null;
 				String ext = filename.substring(filename.lastIndexOf(".")+1);
-				boolean canBeClassified = true;
 //				System.out.println(data.length);
 				switch(data.length) {
 				case 1:
@@ -65,7 +67,7 @@ public class AVCollectionCtrl {
 					actress = removeFirstCharacter(data[3]);
 				}
 				
-//					System.out.format("%s,%4s,%6s,%5s,%s - %s%n", label, opus, actress, ext, data.length, title);
+//				System.out.format("%s,%4s,%6s,%5s,%s - %s%n", label, opus, actress, ext, data.length, title);
 				
 				AVOpus avopus = null;
 				if(map.containsKey(opus)) {
@@ -103,20 +105,46 @@ public class AVCollectionCtrl {
 		return str == null || str.trim().length() == 0 ? "" : (str.startsWith("[") ? str.substring(1) : str);
 	}
 	
+	public List getAV(Map map) {
+		List list = new ArrayList();
+		for(Object key : map.keySet()) {
+			AVOpus av = (AVOpus)map.get(key);
+			list.add(av);
+		}
+		return list;
+	}
+	
 	public List getAV(Map map, String label, String opus, String title, String actress, boolean existSubtitles) {
 		List list = new ArrayList();
 		for(Object key : map.keySet()) {
 			System.out.println("key=" + key);
 			AVOpus av = (AVOpus)map.get(key);
-			if((label != null && label.equalsIgnoreCase(av.getLabel())) 
-					|| (opus != null && opus.equalsIgnoreCase(av.getOpus()))
-					|| (title != null && av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
-					|| (actress != null && av.getActress().toLowerCase().indexOf(actress.toLowerCase()) > -1)
-					|| (existSubtitles && av.getAvSubtutles() != null)) {
+			if((label != null && label.trim().length() > 0 && label.equalsIgnoreCase(av.getLabel())) 
+			|| (opus != null && opus.trim().length() > 0 && opus.equalsIgnoreCase(av.getOpus()))
+			|| (title != null && title.trim().length() > 0 && av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
+			|| (actress != null && actress.trim().length() > 0 && av.getActress().toLowerCase().indexOf(actress.toLowerCase()) > -1)) {
+				list.add(av);
+			}
+			else if((existSubtitles && av.getAvSubtutles() != null)) {
 				list.add(av);
 			}
 		}		
 		return list;
+	}
+	
+	public Map getLabels(Map map) {
+		Map labelMap = new HashMap();
+		for(Object key : map.keySet()) {
+			AVOpus av = (AVOpus)map.get(key);
+			String label = av.getLabel();
+			Integer count = new Integer(0);
+			if(labelMap.containsKey(label)) {
+				count = (Integer)labelMap.get(label);
+			}
+			count += new Integer(1);
+			labelMap.put(label, count);
+		}
+		return labelMap;
 	}
 	
 	/**
@@ -141,70 +169,3 @@ public class AVCollectionCtrl {
 	
 }
 
-class AVOpus {
-	protected String label;
-	protected String opus;
-	protected String actress;
-	protected String title;
-	
-	protected String avFilename;
-	protected String avSubtutles;
-	protected String avCover;
-	protected String avOverview;
-	
-	public AVOpus() {
-		
-	}
-	
-	public String getLabel() {
-		return label;
-	}
-	public void setLabel(String label) {
-		this.label = label;
-	}
-	public String getOpus() {
-		return opus;
-	}
-	public void setOpus(String opus) {
-		this.opus = opus;
-	}
-	public String getActress() {
-		return actress;
-	}
-	public void setActress(String actress) {
-		this.actress = actress;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getAvFilename() {
-		return avFilename;
-	}
-	public void setAvFilename(String avFilename) {
-		this.avFilename = avFilename;
-	}
-	public String getAvSubtutles() {
-		return avSubtutles;
-	}
-	public void setAvSubtutles(String avSubtutles) {
-		this.avSubtutles = avSubtutles;
-	}
-	public String getAvCover() {
-		return avCover;
-	}
-	public void setAvCover(String avCover) {
-		this.avCover = avCover;
-	}
-	public String getAvOverview() {
-		return avOverview;
-	}
-	public void setAvOverview(String avOverview) {
-		this.avOverview = avOverview;
-	}
-	
-	
-	
-}

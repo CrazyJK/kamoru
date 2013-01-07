@@ -1,4 +1,4 @@
-#Sat Dec 08 19:45:27 KST 2012
+#Mon Jan 07 22:10:50 KST 2013
 =\=\=\=\=\=\=
 <<<<<<<=.mine
 >>>>>>>=.r25
@@ -9,4 +9,5 @@ encoding//kamoru/handy/addon/common.jsp=UTF-8
 encoding//kamoru/temp/get_receive.jsp=EUC-KR
 encoding//kamoru/temp/get_send.jsp=EUC-KR
 encoding//kamoru/temp/list.jsp=UTF-8
+encoding//kamoru/video/main.jsp=UTF-8
 encoding/<project>=UTF-8
