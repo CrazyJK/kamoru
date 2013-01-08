@@ -3,6 +3,7 @@ package kamoru.app.video.av;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,26 +11,18 @@ import java.util.Map;
 import kamoru.frmwk.util.FileUtils;
 
 public class AVCollectionCtrl {
-
-//	public String basePath = "/home/kamoru/ETC/collection";
-	public String basePath = "E:\\AV_JAP";
-	public String av_extensions = "avi,mpg,wmv,mp4";
-	public String cover_extensions = "jpg,jpeg";
-	public String subtitles_extensions = "smi,srt";
-	public String overview_extensions = "txt,html";
 	
-	private Map labelMap;
+	private Map<String, AVOpus> avData;
 	
 	public AVCollectionCtrl() {
-		
+		avData = getAVData();
 	}
 	
-	public Map getAVData() {
-		Map map = new HashMap();
-		labelMap = new HashMap();
+	private Map<String, AVOpus> getAVData() {
+		Map<String, AVOpus> map = new HashMap<String, AVOpus>();
 		try {
-			List list = FileUtils.getFileList(basePath, null, null, true, null);
-			System.out.println("size " + list.size());
+			List<?> list = FileUtils.getFileList(AVProp.basePath, null, null, true, null);
+			System.out.println("total file size : " + list.size());
 			
 			int unclassifiedNo = 0;
 			for(Object o : list) {
@@ -55,16 +48,16 @@ public class AVCollectionCtrl {
 					break;
 				case 3:
 				case 4:
-					label 	= removeFirstCharacter(data[0]);
-					opus 	= removeFirstCharacter(data[1]);
-					title 	= removeFirstCharacter(data[2]);
+					label 	= removeUnnecessaryCharacter(data[0]);
+					opus 	= removeUnnecessaryCharacter(data[1]);
+					title 	= removeUnnecessaryCharacter(data[2]);
 					actress = "NoName";
 					break;
 				default:
-					label 	= removeFirstCharacter(data[0]);
-					opus 	= removeFirstCharacter(data[1]);
-					title 	= removeFirstCharacter(data[2]);
-					actress = removeFirstCharacter(data[3]);
+					label 	= removeUnnecessaryCharacter(data[0]);
+					opus 	= removeUnnecessaryCharacter(data[1]);
+					title 	= removeUnnecessaryCharacter(data[2]);
+					actress = removeUnnecessaryCharacter(data[3]);
 				}
 				
 //				System.out.format("%s,%4s,%6s,%5s,%s - %s%n", label, opus, actress, ext, data.length, title);
@@ -80,17 +73,17 @@ public class AVCollectionCtrl {
 					avopus.setTitle(title);
 				}
 				
-				if(av_extensions.indexOf(ext) > -1) {
-					avopus.setAvFilename(f.getAbsolutePath());
+				if(AVProp.av_extensions.indexOf(ext) > -1) {
+					avopus.setVideo(f.getAbsolutePath());
 				} 
-				else if(cover_extensions.indexOf(ext) > -1) {
-					avopus.setAvCover(f.getAbsolutePath());
+				else if(AVProp.cover_extensions.indexOf(ext) > -1) {
+					avopus.setCover(f.getAbsolutePath());
 				}
-				else if(subtitles_extensions.indexOf(ext) > -1) {
-					avopus.setAvSubtutles(f.getAbsolutePath());
+				else if(AVProp.subtitles_extensions.indexOf(ext) > -1) {
+					avopus.setSubtitles(f.getAbsolutePath());
 				}
-				else if(overview_extensions.indexOf(ext) > -1) {
-					avopus.setAvOverview(f.getAbsolutePath());
+				else if(AVProp.overview_extensions.indexOf(ext) > -1) {
+					avopus.setOverview(f.getAbsolutePath());
 				}
 				map.put(opus, avopus);
 				
@@ -101,41 +94,41 @@ public class AVCollectionCtrl {
 		return map;
 	}
 	
-	private String removeFirstCharacter(String str) {
+	private String removeUnnecessaryCharacter(String str) {
 		return str == null || str.trim().length() == 0 ? "" : (str.startsWith("[") ? str.substring(1) : str);
 	}
 	
-	public List getAV(Map map) {
-		List list = new ArrayList();
-		for(Object key : map.keySet()) {
-			AVOpus av = (AVOpus)map.get(key);
+	public List<AVOpus> getAV() {
+		List<AVOpus> list = new ArrayList<AVOpus>();
+		for(Object key : avData.keySet()) {
+			AVOpus av = (AVOpus)avData.get(key);
 			list.add(av);
 		}
+		Collections.sort(list);
 		return list;
 	}
 	
-	public List getAV(Map map, String label, String opus, String title, String actress, boolean existSubtitles) {
-		List list = new ArrayList();
-		for(Object key : map.keySet()) {
-			System.out.println("key=" + key);
-			AVOpus av = (AVOpus)map.get(key);
-			if((label != null && label.trim().length() > 0 && label.equalsIgnoreCase(av.getLabel())) 
-			|| (opus != null && opus.trim().length() > 0 && opus.equalsIgnoreCase(av.getOpus()))
-			|| (title != null && title.trim().length() > 0 && av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
-			|| (actress != null && actress.trim().length() > 0 && av.getActress().toLowerCase().indexOf(actress.toLowerCase()) > -1)) {
-				list.add(av);
-			}
-			else if((existSubtitles && av.getAvSubtutles() != null)) {
+	public List<AVOpus> getAV(String label, String opus, String title, String actress, boolean existSubtitles) {
+		List<AVOpus> list = new ArrayList<AVOpus>();
+		for(Object key : avData.keySet()) {
+//			System.out.println("key=" + key);
+			AVOpus av = (AVOpus)avData.get(key);
+			if((label   == null || label.trim().length()   == 0 || label.equalsIgnoreCase(av.getLabel())) 
+			&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(av.getOpus()))
+			&& (title   == null || title.trim().length()   == 0 || av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
+			&& (actress == null || actress.trim().length() == 0 || av.getActress().toLowerCase().indexOf(actress.toLowerCase()) > -1)
+			&& (existSubtitles ? av.existSubtitles() : true)) {
 				list.add(av);
 			}
 		}		
+		Collections.sort(list);
 		return list;
 	}
 	
-	public Map getLabels(Map map) {
-		Map labelMap = new HashMap();
-		for(Object key : map.keySet()) {
-			AVOpus av = (AVOpus)map.get(key);
+	public Map<String, Integer> getLabels() {
+		Map<String, Integer> labelMap = new HashMap<String, Integer>();
+		for(Object key : avData.keySet()) {
+			AVOpus av = (AVOpus)avData.get(key);
 			String label = av.getLabel();
 			Integer count = new Integer(0);
 			if(labelMap.containsKey(label)) {
@@ -149,23 +142,16 @@ public class AVCollectionCtrl {
 	
 	/**
 	 * @param args
-	 */
 	public static void main(String[] args) {
 		AVCollectionCtrl ctrl = new AVCollectionCtrl();
-		Map map = ctrl.getAVData();
-//		for(Object key : map.keySet()) {
-//			System.out.println("key=" + key);
-//			AVOpus av = (AVOpus)map.get(key);
-//			System.out.format("\t레이블:%s][품번:%s][배우:%s][제목:%s%n",av.getLabel(), av.getOpus(), av.getActress(), av.getTitle());
-//			System.out.format("\t%s%n \t%s%n \t%s%n \t%s%n", av.getAvFilename(), av.getAvCover(), av.getAvSubtutles(), av.getAvOverview());
-//		}
-		List list = ctrl.getAV(map, null, "품번4", null, null, true);
+		List<AVOpus> list = ctrl.getAV(null, "품번4", null, null, true);
 		for(Object o : list) {
 			AVOpus av = (AVOpus)o;
 			System.out.format("\t레이블:%s][품번:%s][배우:%s][제목:%s%n",av.getLabel(), av.getOpus(), av.getActress(), av.getTitle());
-			System.out.format("\t%s%n \t%s%n \t%s%n \t%s%n%n", av.getAvFilename(), av.getAvCover(), av.getAvSubtutles(), av.getAvOverview());
+			System.out.format("\t%s%n \t%s%n \t%s%n \t%s%n%n", av.getVideo(), av.getCover(), av.getSubtitles(), av.getOverview());
 		}
 	}
+	 */
 	
 }
 

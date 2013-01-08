@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+.schTxt {width:80px; border:0;}
+  .labelSpan {color:blue;}
+   .opusSpan {color:green;}
+.actressSpan {color:gray;}
+  .titleSpan {color:black;}
+li {border: 1px solid #888; background-color: #eee; padding: 5px; margin:5px;
+			border-radius: 10px;
+	   -moz-border-radius: 10px;
+	-webkit-border-radius: 10px;}  
+dt {font-size:10pt;}
+dd {display:block; font-size:9pt;}
+.overviewDD {height:60px; overflow:auto;}
+   .existFile {color:blue;}
+.nonExistFile {color:gray;}
+
+.labelSpanBtn {display:inline; font-weight:bold; color:blue; cursor:pointer; margin-left:10px;}
+div#listDiv {height:650px; overflow:auto}
+.boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin:0px;
+			border-radius: 10px;
+	   -moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	        box-shadow: 10px 10px 5px #588;
+	   -moz-box-shadow: 10px 10px 5px #588;	
+	-webkit-box-shadow: 10px 10px 5px #588;}
