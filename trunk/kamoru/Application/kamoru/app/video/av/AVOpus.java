@@ -76,6 +76,7 @@ public class AVOpus implements Comparable {
 			if(videoList.size() > 0)
 				Runtime.getRuntime().exec(
 					AVProp.player + " " + getVideoPathForPlay());
+			System.out.println(AVProp.player + " " + getVideoPathForPlay());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

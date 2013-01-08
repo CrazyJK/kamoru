@@ -8,7 +8,7 @@ String selectedOpus = ServletUtils.getParameter(request, "selectedOpus");
 List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");
 
 for(AVOpus av : list) {
-	if(selectedOpus.equals(av.getOpus()));
+	if(selectedOpus.equals(av.getOpus()))
 		av.playVideo();
 }
 %>

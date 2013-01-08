@@ -76,15 +76,16 @@ function fnPlay(selectedOpus) {
 	for(Object o : list) {
 		AVOpus av = (AVOpus)o;
 	%>	
-		<li>
-			<table style="width:100%;height:100px">
+		<li><span class="titleSpan"><%=av.getTitle() %></span>
+			<table style="height:100px">
 				<tr valign="top">
 					<td width="110px">
-						<img src="image.jsp?opus=<%=av.getOpus() %>" width="100px"/>
+						<img src="image.jsp?opus=<%=av.getOpus() %>" height="120px"/>
 					</td>
 					<td>
 						<dl>
-							<dt>[<span class="labelSpan"><%=av.getLabel() %></span>][<span class="opusSpan"><%=av.getOpus() %></span>][<span class="actressSpan"><%=av.getActress() %></span>][<span class="titleSpan"><%=av.getTitle() %></span>]</dt>
+							<dt>[<span class="labelSpan"><%=av.getLabel() %></span>][<span class="opusSpan"><%=av.getOpus() %></span>][<span class="actressSpan"><%=av.getActress() %></span>]
+							</dt>
 							<dd> 
 								<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>
 								<span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>">Cover</span>
