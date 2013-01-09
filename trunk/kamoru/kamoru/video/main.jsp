@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
 <%
+response.setHeader("Cache-Control","no-store");   
+response.setHeader("Pragma","no-cache");   
+response.setDateHeader("Expires",0);   
+if (request.getProtocol().equals("HTTP/1.1")) 
+	response.setHeader("Cache-Control", "no-cache"); 
+
 request.setCharacterEncoding("UTF-8");
 // parameter
 String label 	 = ServletUtils.getParameter(request, "label", "");
@@ -35,10 +41,16 @@ $(document).ready(function(){
 	});
 });
 function fnLabelSearch(label) {
+	$("input:text").each(function(){
+		$(this).val("");
+	});
 	$("#label").val(label);
 	fnDetailSearch();
 }
 function fnActressSearch(actress) {
+	$("input:text").each(function(){
+		$(this).val("");
+	});
 	$("#actress").val(actress);
 	fnDetailSearch();
 }
@@ -107,7 +119,7 @@ function fnEditOverview(opus) {
 	</form>
 </div>
 <br/>
-<div id="listDiv" class="boxDiv">
+<div id="listDiv" class="boxDiv" style="background-image:url('listImg.jpg?<%=System.currentTimeMillis() %>')">
 	<span>Total <%=list.size() %></span>
 	<ul>
 	<%

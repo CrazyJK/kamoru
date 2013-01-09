@@ -15,7 +15,8 @@ public class AVProp {
 	public static String cover_extensions = "jpg,jpeg,gif";
 	public static String subtitles_extensions = "smi,srt";
 	public static String overview_extensions = "txt,html";
-
+	public static String backgroundImagePath = "E:\\DaumCloud\\MyPictures\\Girls";
+	
 	static {
 		Properties prop = new Properties();
 		File f = new File("av.properties");
@@ -28,7 +29,8 @@ public class AVProp {
 			av_extensions = prop.getProperty("av_extensions", av_extensions); 
 			cover_extensions = prop.getProperty("", cover_extensions); 
 			subtitles_extensions = prop.getProperty("subtitles_extensions", subtitles_extensions); 
-			overview_extensions = prop.getProperty("overview_extensions", overview_extensions); 
+			overview_extensions = prop.getProperty("overview_extensions", overview_extensions);
+			backgroundImagePath = prop.getProperty("backgroundImagePath", backgroundImagePath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

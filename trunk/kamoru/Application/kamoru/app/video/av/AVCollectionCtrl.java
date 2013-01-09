@@ -1,12 +1,16 @@
 package kamoru.app.video.av;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import kamoru.frmwk.util.FileUtils;
 
@@ -86,8 +90,8 @@ public class AVCollectionCtrl {
 					avopus.setOverview(f.getAbsolutePath());
 				}
 				map.put(opus, avopus);
-				
 			}
+			setBackgroundImage();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -158,6 +162,43 @@ public class AVCollectionCtrl {
 			actressMap.put(actress, count);
 		}
 		return actressMap;
+	}
+	
+	private void setBackgroundImage() {
+		try {
+			List<?> list = FileUtils.getFileList(AVProp.backgroundImagePath, null, null, true, null);
+			// random select
+			Random oRandom = new Random();
+		    int index = oRandom.nextInt(list.size());
+		    File fOrg = (File)list.get(index);
+		    File fTarget = new File(AVProp.basePath + "/listImg.jpg");
+		    
+			try{
+				FileInputStream inputStream = new FileInputStream(fOrg);
+				if (!fTarget.isFile())
+				{
+					File fParent = new File (fTarget.getParent());
+					if (!fParent.exists())
+					{
+						fParent.mkdir();
+					}
+					fTarget.createNewFile();
+				}
+				FileOutputStream outputStream = new FileOutputStream(fTarget);
+				FileChannel fcin =  inputStream.getChannel();
+				FileChannel fcout = outputStream.getChannel();
+				long size = fcin.size();
+				fcin.transferTo(0, size, fcout);
+				fcout.close();
+				fcin.close();
+				outputStream.close();
+				inputStream.close();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * @param args
