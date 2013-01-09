@@ -46,6 +46,18 @@ function fnPlay(selectedOpus) {
 	var frm = document.forms["playFrm"];
 	frm.submit();
 }
+function fnImageView(opus) {
+	var vUrl    = "image.jsp?opus="+opus;
+    var vName   = "imageview-"+opus;
+    var vWidth  = 800;
+    var vHeight = 536;
+    var vLeft  = (window.screen.width- vWidth)/2;
+    var vTop = (window.screen.height - vHeight)/2;
+    var vFeature = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
+    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
+          		   "status=0,menubar=0,scrollbars=0,resizable=1";
+    window.open(vUrl,vName,vFeature);	
+}
 </script>
 </head>
 <body>
@@ -59,8 +71,8 @@ function fnPlay(selectedOpus) {
 		<input type="button" value="Search" onclick="fnDetailSearch()">
 	<hr/>
 	<%
-	for(Object key : labelMap.keySet()) {
-		Integer count = (Integer)labelMap.get(key);
+	for(String key : labelMap.keySet()) {
+		Integer count = labelMap.get(key);
 	%>
 	<span onclick="fnLabelSearch('<%=key %>')" class="labelSpanBtn"><%=key %>(<%=count %>)</span>
 	<%
@@ -71,39 +83,41 @@ function fnPlay(selectedOpus) {
 <br/>
 <div id="listDiv" class="boxDiv">
 	<span>Total <%=list.size() %></span>
-	<ol>
+	<ul>
 	<%
-	for(Object o : list) {
-		AVOpus av = (AVOpus)o;
+	for(AVOpus av : list) {
 	%>	
-		<li><span class="titleSpan"><%=av.getTitle() %></span>
-			<table style="height:100px">
-				<tr valign="top">
-					<td width="110px">
-						<img src="image.jsp?opus=<%=av.getOpus() %>" height="120px"/>
-					</td>
-					<td>
-						<dl>
-							<dt>[<span class="labelSpan"><%=av.getLabel() %></span>][<span class="opusSpan"><%=av.getOpus() %></span>][<span class="actressSpan"><%=av.getActress() %></span>]
-							</dt>
-							<dd> 
-								<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>
-								<span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>">Cover</span>
-								<span class="<%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">smi</span>
-								<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>">Overview</span>
-							</dd>
-							<dd class="overviewDD">
-								<%=av.getOverviewTxt() %>
-							</dd>
-						</dl>
-					
-					</td>
-			</table>
+		<li>
+			<div class="opusDiv">
+	 			<span class="titleSpan"><%=av.getTitle() %></span>
+				<table>
+					<tr valign="top">
+						<td width="110px">
+							<img src="image.jsp?opus=<%=av.getOpus() %>" height="120px" onclick="fnImageView('<%=av.getOpus() %>')"/>
+						</td>
+						<td>
+							<dl>
+								<dt>[<span class="labelSpan"><%=av.getLabel() %></span>][<span class="opusSpan"><%=av.getOpus() %></span>][<span class="actressSpan"><%=av.getActress() %></span>]
+								</dt>
+								<dd> 
+									<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>
+									<span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>">Cover</span>
+									<span class="<%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">smi</span>
+									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>">Overview</span>
+								</dd>
+								<dd class="overviewDD">
+									<%=av.getOverviewTxt() %>
+								</dd>
+							</dl>
+						
+						</td>
+				</table>
+			</div>
 		</li>
 	<%
 	}
 	%>
-	</ol>
+	</ul>
 </div>
 
 <form name="playFrm" target="ifrm" action="execProc.jsp" method="post">

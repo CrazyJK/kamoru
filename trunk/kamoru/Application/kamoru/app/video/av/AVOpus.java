@@ -2,7 +2,6 @@ package kamoru.app.video.av;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 
-public class AVOpus implements Comparable {
+public class AVOpus implements Comparable<Object> {
 	protected String label;
 	protected String opus;
 	protected String actress;
@@ -44,7 +43,7 @@ public class AVOpus implements Comparable {
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 	}
-	private byte[] getCoverImageByte(String img) {
+	public byte[] getCoverImageByte(String img) {
 		File imageFile = new File(img);
 		byte[] b = new byte[(int)imageFile.length()];
 		FileInputStream fis = null;

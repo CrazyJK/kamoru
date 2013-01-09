@@ -1,22 +1,29 @@
 @CHARSET "UTF-8";
-.schTxt {width:80px; border:0;}
-  .labelSpan {color:blue;}
-   .opusSpan {color:green;}
-.actressSpan {color:gray;}
-  .titleSpan {color:black;}
-li {border: 1px solid #888; background-color: #eee; padding: 5px; margin:5px;
-			border-radius: 10px;
-	   -moz-border-radius: 10px;
-	-webkit-border-radius: 10px;}  
-dl {margin:0px;}
-dt {font-size:10pt;}
-dd {display:block; font-size:9pt;}
-.overviewDD {height:60px; overflow:auto;}
+div#searchDiv {text-align:center;}
+.schTxt       {width:80px; border:0;}
+.labelSpanBtn {display:inline; font-weight:bold; color:blue; cursor:pointer; margin-left:10px;}
+
+  div#listDiv {height:700px; overflow:auto; text-align:center;}
+           ul {padding:0px;}
+           li {display:inline-block;}
+     .opusDiv {width:300px;
+						background-color: #eee; padding: 5px; margin:5px;
+						border: 1px solid orange; 
+						border-radius: 10px;
+				   -moz-border-radius: 10px;
+				-webkit-border-radius: 10px;}
+   .labelSpan {color:blue;}
+    .opusSpan {color:green;}
+ .actressSpan {color:gray;}
+   .titleSpan {color:black;}
+  
+           dt {font-size:10pt;}
+           dd {font-size:9pt;margin:5px 0px 0px 0px;}
    .existFile {color:blue;}
 .nonExistFile {color:gray;}
+  .overviewDD {height:60px; overflow:auto;}
 
-.labelSpanBtn {display:inline; font-weight:bold; color:blue; cursor:pointer; margin-left:10px;}
-div#listDiv {height:600px; overflow:auto}
+
 .boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin:0px;
 			border-radius: 10px;
 	   -moz-border-radius: 10px;

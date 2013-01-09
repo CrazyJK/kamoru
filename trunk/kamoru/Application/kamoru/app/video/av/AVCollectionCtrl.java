@@ -95,7 +95,12 @@ public class AVCollectionCtrl {
 	}
 	
 	private String removeUnnecessaryCharacter(String str) {
-		return str == null || str.trim().length() == 0 ? "" : (str.startsWith("[") ? str.substring(1) : str);
+		// [ 빼고, 확장자 빼기
+		str = str.startsWith("[") ? str.substring(1) : str;
+		int lastIndex = str.lastIndexOf(".");
+		str = lastIndex > 0 ? (str.substring(lastIndex).length() < 5 ? str.substring(0, lastIndex) : str) : str;
+		return str;
+//		return str == null || str.trim().length() == 0 ? "" : (str.startsWith("[") ? str.substring(1) : str);
 	}
 	
 	public List<AVOpus> getAV() {
