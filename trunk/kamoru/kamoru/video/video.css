@@ -1,7 +1,8 @@
 @CHARSET "UTF-8";
-div#searchDiv {text-align:center;}
-.schTxt       {width:80px; border:0;}
-.labelSpanBtn {display:inline; font-weight:bold; color:blue; cursor:pointer; margin-left:10px;}
+  div#searchDiv {text-align:center;}
+  .schTxt       {width:80px; border:0;}
+  .labelSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
+.actressSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
 
   div#listDiv {height:700px; overflow:auto; text-align:center;}
            ul {padding:0px;}
@@ -12,10 +13,10 @@ div#searchDiv {text-align:center;}
 						border-radius: 10px;
 				   -moz-border-radius: 10px;
 				-webkit-border-radius: 10px;}
-   .labelSpan {color:blue;}
-    .opusSpan {color:green;}
- .actressSpan {color:gray;}
-   .titleSpan {color:black;}
+   .labelSpan {display:inline-block; margin-left:5px; color:blue;}
+    .opusSpan {display:inline-block; margin-left:5px; color:green;}
+ .actressSpan {display:inline-block; margin-left:5px; color:gray;}
+   .titleSpan {display:inline-block; margin-left:5px; color:black;}
   
            dt {font-size:10pt;}
            dd {font-size:9pt;margin:5px 0px 0px 0px;}

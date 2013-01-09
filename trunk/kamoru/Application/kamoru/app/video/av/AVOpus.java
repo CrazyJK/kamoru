@@ -1,7 +1,9 @@
 package kamoru.app.video.av;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,33 @@ public class AVOpus implements Comparable<Object> {
 		this.opus = opus;
 		this.actress = actress;
 		this.title = title;
+	}
+	
+	public void saveOverViewTxt(String newOverviewTxt) {
+		String overviewPath = getOverviewPath();
+		System.out.println(opus + " overview write at " + overviewPath);
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(overviewPath)));
+			writer.write(newOverviewTxt);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private String getOverviewPath() {
+		if(existOverview()) {
+			return getOverview();
+		} else if(existVideo()) {
+			String videoPath = getVideo().get(0);
+			return videoPath.substring(0, videoPath.lastIndexOf(".")) + ".txt";
+		} else if(existCover()) {
+			return getCover().substring(0, getCover().lastIndexOf(".")) + ".txt";
+		} else {
+			return null;
+		}
 	}
 	
 	public void viewImage(HttpServletResponse response) throws IOException {

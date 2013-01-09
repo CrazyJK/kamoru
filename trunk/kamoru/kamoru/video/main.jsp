@@ -13,6 +13,7 @@ String subtitles = ServletUtils.getParameter(request, "subtitles", "");
 AVCollectionCtrl ctrl = new AVCollectionCtrl();
 List<AVOpus> list = ctrl.getAV(label, opus, title, actress, new Boolean("on".equals(subtitles)).booleanValue());
 Map<String, Integer> labelMap = ctrl.getLabels();
+Map<String, Integer> actressMap = ctrl.getActress();
 
 session.setAttribute("avlist", list);
 %>
@@ -37,6 +38,10 @@ function fnLabelSearch(label) {
 	$("#label").val(label);
 	fnDetailSearch();
 }
+function fnActressSearch(actress) {
+	$("#actress").val(actress);
+	fnDetailSearch();
+}
 function fnDetailSearch() {
 	var frm = document.forms["frm"];
 	frm.submit();
@@ -53,6 +58,18 @@ function fnImageView(opus) {
     var vHeight = 536;
     var vLeft  = (window.screen.width- vWidth)/2;
     var vTop = (window.screen.height - vHeight)/2;
+    var vFeature = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
+    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
+          		   "status=0,menubar=0,scrollbars=0,resizable=1";
+    window.open(vUrl,vName,vFeature);	
+}
+function fnEditOverview(opus) {
+	var vUrl    = "overview.jsp?opus="+opus;
+    var vName   = "overview-"+opus;
+    var vWidth  = 400;
+    var vHeight = 300;
+    var vLeft   = window.event.x; //(window.screen.width- vWidth)/2;
+    var vTop    = window.event.y; //(window.screen.height - vHeight)/2;
     var vFeature = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
     			 + "toolbar=0,location=0,directories=0,titlebar=0"+
           		   "status=0,menubar=0,scrollbars=0,resizable=1";
@@ -78,6 +95,15 @@ function fnImageView(opus) {
 	<%
 	}
 	%>
+	<hr/>
+	<%
+	for(String key : actressMap.keySet()) {
+		Integer count = actressMap.get(key);
+	%>
+	<span onclick="fnActressSearch('<%=key %>')" class="actressSpanBtn"><%=key %>(<%=count %>)</span>
+	<%
+	}
+	%>
 	</form>
 </div>
 <br/>
@@ -97,17 +123,17 @@ function fnImageView(opus) {
 						</td>
 						<td>
 							<dl>
-								<dt>[<span class="labelSpan"><%=av.getLabel() %></span>][<span class="opusSpan"><%=av.getOpus() %></span>][<span class="actressSpan"><%=av.getActress() %></span>]
+								<dt><span class="labelSpan"><%=av.getLabel() %></span><span class="opusSpan"><%=av.getOpus() %></span><span class="actressSpan"><%=av.getActress() %></span>
 								</dt>
 								<dd> 
 									<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>
-									<span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>">Cover</span>
+									<%-- <span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>">Cover</span> --%>
 									<span class="<%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">smi</span>
-									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>">Overview</span>
+									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>" onclick="fnEditOverview('<%=av.getOpus() %>')">Overview</span>
 								</dd>
-								<dd class="overviewDD">
+								<%-- <dd class="overviewDD">
 									<%=av.getOverviewTxt() %>
-								</dd>
+								</dd> --%>
 							</dl>
 						
 						</td>

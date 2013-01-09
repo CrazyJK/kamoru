@@ -133,7 +133,7 @@ public class AVCollectionCtrl {
 	public Map<String, Integer> getLabels() {
 		Map<String, Integer> labelMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
-			AVOpus av = (AVOpus)avData.get(key);
+			AVOpus av = avData.get(key);
 			String label = av.getLabel();
 			Integer count = new Integer(0);
 			if(labelMap.containsKey(label)) {
@@ -145,6 +145,20 @@ public class AVCollectionCtrl {
 		return labelMap;
 	}
 	
+	public Map<String, Integer> getActress() {
+		Map<String, Integer> actressMap = new HashMap<String, Integer>();
+		for(Object key : avData.keySet()) {
+			AVOpus av = avData.get(key);
+			String actress = av.getActress();
+			Integer count = new Integer(0);
+			if(actressMap.containsKey(actress)) {
+				count = (Integer)actressMap.get(actress);
+			}
+			count += new Integer(1);
+			actressMap.put(actress, count);
+		}
+		return actressMap;
+	}
 	/**
 	 * @param args
 	public static void main(String[] args) {
