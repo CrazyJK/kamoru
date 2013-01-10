@@ -1,19 +1,20 @@
 package kamoru.app.video.av;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class AVOpus implements Comparable<Object> {
+	protected static final Log logger = LogFactory.getLog(AVOpus.class);
+	private static AVProp prop = new AVProp();
+
 	protected String label;
 	protected String opus;
 	protected String actress;
@@ -40,16 +41,12 @@ public class AVOpus implements Comparable<Object> {
 	
 	public void saveOverViewTxt(String newOverviewTxt) {
 		String overviewPath = getOverviewPath();
-		System.out.println(opus + " overview write at " + overviewPath);
+		logger.debug(opus + " overview write at " + overviewPath);
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(overviewPath)));
-			writer.write(newOverviewTxt);
-			writer.flush();
-			writer.close();
+			FileUtils.writeStringToFile(new File(overviewPath), newOverviewTxt, System.getProperty("file.encoding"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private String getOverviewPath() {
@@ -64,9 +61,20 @@ public class AVOpus implements Comparable<Object> {
 			return null;
 		}
 	}
-	
+	public String getOverviewTxt() {
+		if(overview == null) {
+			return "";
+		} else {
+			try {
+				return FileUtils.readFileToString(new File(overview), System.getProperty("file.encoding"));
+			}catch(IOException ioe){
+				return "Error:" + ioe.getMessage();
+			}
+		}
+	}
+	/*
 	public void viewImage(HttpServletResponse response) throws IOException {
-		String img = getCover() == null ? AVProp.noImagePath : getCover();
+		String img = getCover() == null ? prop.noImagePath : getCover();
 		response.setContentType("image/" + img.substring(img.lastIndexOf(".")+1));
 		response.getOutputStream().write(getCoverImageByte(img));
 		response.getOutputStream().flush();
@@ -86,25 +94,15 @@ public class AVOpus implements Comparable<Object> {
 		}
 		return b;
 	}
-	
-	public String getOverviewTxt() {
-		if(overview == null) {
-			return "";
-		} else {
-			try {
-				return FileUtils.readFileToString(new File(overview), System.getProperty("file.encoding"));
-			}catch(IOException ioe){
-				return "Error:" + ioe.getMessage();
-			}
-		}
-	}
+	*/
 	
 	public void playVideo() {
 		try {
-			if(videoList.size() > 0)
-				Runtime.getRuntime().exec(
-					AVProp.player + " " + getVideoPathForPlay());
-			System.out.println(AVProp.player + " " + getVideoPathForPlay());
+			if(videoList.size() > 0) {
+				String[] cmdArray = ArrayUtils.addAll(new String[]{prop.player}, getVideoPathArray());
+				Runtime.getRuntime().exec(cmdArray);
+				logger.debug("play video [" + ArrayUtils.toString(cmdArray) + "]");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -116,12 +114,8 @@ public class AVOpus implements Comparable<Object> {
 		}
 		return videopaths;
 	}
-	private String getVideoPathForPlay() {
-		String videopaths = new String();
-		for(String videopath : videoList) {
-			videopaths += "\"" + videopath + "\" ";
-		}
-		return videopaths;
+	private String[] getVideoPathArray() {
+		return (String[]) videoList.toArray(new String[0]);
 	}
 	
 	public boolean existVideo() {

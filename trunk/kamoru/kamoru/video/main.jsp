@@ -119,7 +119,7 @@ function fnEditOverview(opus) {
 	</form>
 </div>
 <br/>
-<div id="listDiv" class="boxDiv" style="background-image:url('listImg.jpg?<%=System.currentTimeMillis() %>')">
+<div id="listDiv" class="boxDiv" style="background-image:url('image.jsp?opus=listImg&<%=System.currentTimeMillis() %>')">
 	<span>Total <%=list.size() %></span>
 	<ul>
 	<%

@@ -1,10 +1,7 @@
 package kamoru.app.video.av;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,10 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import kamoru.frmwk.util.FileUtils;
 
 public class AVCollectionCtrl {
-	
+	protected static final Log logger = LogFactory.getLog(AVCollectionCtrl.class);
+
+	private static AVProp prop = new AVProp();
 	private Map<String, AVOpus> avData;
 	
 	public AVCollectionCtrl() {
@@ -25,13 +27,17 @@ public class AVCollectionCtrl {
 	private Map<String, AVOpus> getAVData() {
 		Map<String, AVOpus> map = new HashMap<String, AVOpus>();
 		try {
-			List<?> list = FileUtils.getFileList(AVProp.basePath, null, null, true, null);
-			System.out.println("total file size : " + list.size());
+			List<?> list = FileUtils.getFileList(prop.basePath, null, null, true, null);
+			logger.debug("total file size : " + list.size());
 			
 			int unclassifiedNo = 0;
 			for(Object o : list) {
 				File f = (File)o;
 				String filename = f.getName();
+				
+				if("listImg.jpg".equals(filename)) {
+					continue;
+				}
 				
 				// parsing name. [레이블][품번][제목][배우]
 				String[] data = filename.split("]");
@@ -77,16 +83,16 @@ public class AVCollectionCtrl {
 					avopus.setTitle(title);
 				}
 				
-				if(AVProp.av_extensions.indexOf(ext) > -1) {
+				if(prop.av_extensions.indexOf(ext) > -1) {
 					avopus.setVideo(f.getAbsolutePath());
 				} 
-				else if(AVProp.cover_extensions.indexOf(ext) > -1) {
+				else if(prop.cover_extensions.indexOf(ext) > -1) {
 					avopus.setCover(f.getAbsolutePath());
 				}
-				else if(AVProp.subtitles_extensions.indexOf(ext) > -1) {
+				else if(prop.subtitles_extensions.indexOf(ext) > -1) {
 					avopus.setSubtitles(f.getAbsolutePath());
 				}
-				else if(AVProp.overview_extensions.indexOf(ext) > -1) {
+				else if(prop.overview_extensions.indexOf(ext) > -1) {
 					avopus.setOverview(f.getAbsolutePath());
 				}
 				map.put(opus, avopus);
@@ -166,36 +172,13 @@ public class AVCollectionCtrl {
 	
 	private void setBackgroundImage() {
 		try {
-			List<?> list = FileUtils.getFileList(AVProp.backgroundImagePath, null, null, true, null);
+			List<?> list = FileUtils.getFileList(prop.backgroundImagePoolPath, new String[]{"jpg"}, null, true, null);
 			// random select
 			Random oRandom = new Random();
 		    int index = oRandom.nextInt(list.size());
-		    File fOrg = (File)list.get(index);
-		    File fTarget = new File(AVProp.basePath + "/listImg.jpg");
-		    
-			try{
-				FileInputStream inputStream = new FileInputStream(fOrg);
-				if (!fTarget.isFile())
-				{
-					File fParent = new File (fTarget.getParent());
-					if (!fParent.exists())
-					{
-						fParent.mkdir();
-					}
-					fTarget.createNewFile();
-				}
-				FileOutputStream outputStream = new FileOutputStream(fTarget);
-				FileChannel fcin =  inputStream.getChannel();
-				FileChannel fcout = outputStream.getChannel();
-				long size = fcin.size();
-				fcin.transferTo(0, size, fcout);
-				fcout.close();
-				fcin.close();
-				outputStream.close();
-				inputStream.close();
-			}catch(IOException e){
-				e.printStackTrace();
-			}
+		    File src  = (File)list.get(index);
+		    File dest = new File(prop.basePath + "/listImg.jpg");
+		    FileUtils.copy(src, dest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

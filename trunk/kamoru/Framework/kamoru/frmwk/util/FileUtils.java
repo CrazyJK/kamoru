@@ -1,10 +1,13 @@
 package kamoru.frmwk.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -138,4 +141,28 @@ public class FileUtils {
 		return samelist;
 	}
 
+	public static boolean copy(File src, File dest) {
+		FileChannel fcin = null;
+		FileChannel fcout = null;
+		try {
+			if(dest.isDirectory()) {
+				File fParent = new File(dest.getParent());
+				if(!fParent.exists()) {
+					fParent.mkdir();
+				}
+				dest.createNewFile();
+			}
+			fcin =  new FileInputStream(src).getChannel();
+			fcout = new FileOutputStream(dest).getChannel();
+			fcin.transferTo(0, fcin.size(), fcout);
+			return true;
+		} catch(IOException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if(fcout != null) try{fcout.close();}catch(Exception e){}
+			if(fcin  != null) try{fcin.close();}catch(Exception e){}
+		}
+
+	}
 }
