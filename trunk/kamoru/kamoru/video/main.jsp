@@ -135,7 +135,7 @@ function fnEditOverview(opus) {
 						</td>
 						<td>
 							<dl>
-								<dt><span class="labelSpan"><%=av.getLabel() %></span><span class="opusSpan"><%=av.getOpus() %></span><span class="actressSpan"><%=av.getActress() %></span>
+								<dt><span class="labelSpan"><%=av.getLabel() %></span><span class="opusSpan"><%=av.getOpus() %></span><span class="actressSpan" onclick="fnActressSearch('<%=av.getActress() %>')"><%=av.getActress() %></span>
 								</dt>
 								<dd> 
 									<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>

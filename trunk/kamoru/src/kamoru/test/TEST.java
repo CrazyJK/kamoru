@@ -130,7 +130,8 @@ public class TEST {
 	    System.out.println();
 	    
 	    System.out.println("".split(";").length);
-	    
+	 
+	    System.out.println(System.getProperty("os.name"));
 	}
 
 }
