@@ -4,7 +4,9 @@
   .labelSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
 .actressSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
 
-  div#listDiv {height:700px; overflow:auto; text-align:center;}
+  div#listDiv {overflow:auto; text-align:center;}
+  #totalCount {text-shadow:2px 2px 2px white;}
+       #debug {text-shadow:2px 2px 2px yellow; margin-left:10px;}
            ul {padding:0px;}
            li {display:inline-block;}
      .opusDiv {width:300px;
@@ -17,7 +19,8 @@
     .opusSpan {display:inline-block; margin-left:5px; color:green;}
  .actressSpan {display:inline-block; margin-left:5px; color:gray;}
    .titleSpan {display:inline-block; margin-left:5px; color:black;}
-  
+   .selectBtn {color:Red;}
+   
            dt {font-size:10pt;}
            dd {font-size:9pt;margin:5px 0px 0px 0px;}
    .existFile {color:blue;}
@@ -25,7 +28,7 @@
   .overviewDD {height:60px; overflow:auto;}
 
 
-.boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin:0px;
+.boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin: 10px;
 			border-radius: 10px;
 	   -moz-border-radius: 10px;
 	-webkit-border-radius: 10px;

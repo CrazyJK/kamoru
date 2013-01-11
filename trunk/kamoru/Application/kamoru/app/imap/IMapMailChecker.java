@@ -71,7 +71,7 @@ public class IMapMailChecker extends Thread{
         //System.out.println("Connecting to server " + server + " on " + imap.getDefaultPort());
 
     	File imap_log_file = new File("IMAMP-UNSEEN");
-    	System.out.println(imap_log_file.getAbsolutePath());
+    	System.out.println(imap_log_file.getAbsolutePath() + " " + new Date().toString());
     	PrintStream ps = new PrintStream(imap_log_file);
         // suppress login details
         imap.addProtocolCommandListener(new PrintCommandListener(ps, true));

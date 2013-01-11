@@ -21,6 +21,7 @@ body#deco_body {
 	padding:10px;
 	margin:0 auto;
 	width:800px;
+	overflow:auto;
 /* 	display: block; */
 /* 	float: right; */
 /* 	background-color:green; */

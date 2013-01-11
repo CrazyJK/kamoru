@@ -2,12 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
 <%
-response.setHeader("Cache-Control","no-store");   
-response.setHeader("Pragma","no-cache");   
-response.setDateHeader("Expires",0);   
-if (request.getProtocol().equals("HTTP/1.1")) 
-	response.setHeader("Cache-Control", "no-cache"); 
-
 request.setCharacterEncoding("UTF-8");
 // parameter
 String label 	 = ServletUtils.getParameter(request, "label", "");
@@ -20,6 +14,14 @@ AVCollectionCtrl ctrl = new AVCollectionCtrl();
 List<AVOpus> list = ctrl.getAV(label, opus, title, actress, new Boolean("on".equals(subtitles)).booleanValue());
 Map<String, Integer> labelMap = ctrl.getLabels();
 Map<String, Integer> actressMap = ctrl.getActress();
+
+//Map<String, String> history = (Map<String, String>)session.getAttribute("randomHistory");
+Map<String, String> history = null;
+if(history == null) {
+	history = new HashMap<String, String>();
+	history.put("dummy", "dummy");
+	session.setAttribute("randomHistory", history);
+}
 
 session.setAttribute("avlist", list);
 %>
@@ -39,7 +41,70 @@ $(document).ready(function(){
 		var id = $(this).attr("for");
 		$("#" + id).val("");
 	});
+	$("li").toggle(
+		function() {
+			$("#debug").html("toggle 1");
+			$(this).animate({
+				opacity: 0.75
+				}, 1000, function(){
+					$(this).css("background-color", "green");
+				});
+		}, function(){
+			$("#debug").html("toggle 2");
+			$(this).animate({
+				opacity: 1
+				}, 500, function(){
+					$(this).css("background-color", "");
+				});
+		});
+
+	$("*[onclick]").css("cursor", "pointer");
+	$(window).bind("resize", resizeDivHeight);
+	resizeDivHeight();
 });
+function resizeDivHeight() {
+	var windowHeight = $(window).height();
+	//var documentHeight = $(document).outerHeight();
+	var searchDivHeight = $("#searchDiv").outerHeight();
+	var resizeListDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
+	//alert(resizeListDivHeight);
+	$("#listDiv").height(resizeListDivHeight);
+	resizeBackgroundImage();
+}
+function resizeBackgroundImage() {
+	var url = $('#listDiv').css('background-image').replace(/url\(|\)$/ig, "");
+	var img = $("<img />");
+	img.hide();
+	img.bind('load', function(){
+		var imgWidth  = $(this).width();
+		var imgHeight = $(this).height();
+		var divWidth  = $("#listDiv").width();
+		var divHeight = $("#listDiv").height();
+		var width  = 0;
+		var height = 0;
+		
+		if(imgWidth < divWidth && imgHeight < divHeight) { // 1. x:- y:-
+			width  = imgWidth;
+			height = imgHeight;
+		}else if(imgWidth < divWidth && imgHeight > divHeight) { // 2. x:- y:+
+			width  = ratioSize(divHeight, imgWidth, imgHeight);
+			height = divHeight;
+		}else if(imgWidth > divWidth && imgHeight < divHeight) { // 3. x:+ y:-
+			width  = divWidth;
+			height = ratioSize(divWidth, imgHeight, imgWidth);
+		}else if(imgWidth > divWidth && imgHeight > divHeight) { // 4. x:+ y:+
+			width  = ratioSize(divHeight, imgWidth, imgHeight);
+			height = divHeight;
+		}
+		$("#debug").html("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
+		$("#listDiv").css("background-size", width + "px " + height + "px");
+	});
+	$("body").append(img);
+	img.attr("src", url);
+}
+function ratioSize(numerator1, numerator2, denominator) {
+	return parseInt(numerator1 * numerator2 / denominator);
+}
 function fnLabelSearch(label) {
 	$("input:text").each(function(){
 		$(this).val("");
@@ -59,33 +124,50 @@ function fnDetailSearch() {
 	frm.submit();
 }
 function fnPlay(selectedOpus) {
+	$("#debug").html("Video play " + selectedOpus);
 	$("#selectedOpus").val(selectedOpus);
 	var frm = document.forms["playFrm"];
 	frm.submit();
 }
+function fnRandomPlay() {
+	$("#debug").html("Random play start");
+	$("#selectedOpus").val("random");
+	var frm = document.forms["playFrm"];
+	frm.submit();
+}
+function fnOpusFocus(opus) {
+	//alert("fnOpusFocus " + opus);
+	$("#" + opus).animate({
+		opacity: 0.75,
+	}, 1000, function(){
+		$(this).css("background-color", "green");
+	});
+}
 function fnImageView(opus) {
+	$("#debug").html("Cover image view : " + opus);
 	var vUrl    = "image.jsp?opus="+opus;
     var vName   = "imageview-"+opus;
     var vWidth  = 800;
     var vHeight = 536;
-    var vLeft  = (window.screen.width- vWidth)/2;
-    var vTop = (window.screen.height - vHeight)/2;
-    var vFeature = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
+    var vLeft   = (window.screen.width  - vWidth)/2;
+    var vTop    = (window.screen.height - vHeight)/2;
+    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
     			 + "toolbar=0,location=0,directories=0,titlebar=0"+
           		   "status=0,menubar=0,scrollbars=0,resizable=1";
-    window.open(vUrl,vName,vFeature);	
+    window.open(vUrl, vName, vSpecs);	
 }
 function fnEditOverview(opus) {
+	$("#debug").html("Overview Popup : " + opus);
 	var vUrl    = "overview.jsp?opus="+opus;
     var vName   = "overview-"+opus;
     var vWidth  = 400;
     var vHeight = 300;
-    var vLeft   = window.event.x; //(window.screen.width- vWidth)/2;
-    var vTop    = window.event.y; //(window.screen.height - vHeight)/2;
-    var vFeature = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
+    var vLeft   = window.event.x;
+    var vTop    = window.event.y;
+    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
     			 + "toolbar=0,location=0,directories=0,titlebar=0"+
           		   "status=0,menubar=0,scrollbars=0,resizable=1";
-    window.open(vUrl,vName,vFeature);	
+    window.open(vUrl, vName, vSpecs);	
 }
 </script>
 </head>
@@ -98,6 +180,7 @@ function fnEditOverview(opus) {
 		<label for="actress">  Actress 	 </label><input type="text"     name="actress"   id="actress"   value="<%=actress %>" class="schTxt">
 		<label for="subtitles">Subtitles </label><input type="checkbox" name="subtitles" id="subtitles" <%="on".equals(subtitles) ? "checked" : "" %>>
 		<input type="button" value="Search" onclick="fnDetailSearch()">
+		<input type="button" value="Random" onclick="fnRandomPlay()">
 	<hr/>
 	<%
 	for(String key : labelMap.keySet()) {
@@ -118,16 +201,15 @@ function fnEditOverview(opus) {
 	%>
 	</form>
 </div>
-<br/>
-<div id="listDiv" class="boxDiv" style="background-image:url('image.jsp?opus=listImg&<%=System.currentTimeMillis() %>')">
-	<span>Total <%=list.size() %></span>
+<div id="listDiv" class="boxDiv" style="background-image:url('image.jsp?opus=listImg')">
+	<span id="totalCount">Total <%=list.size() %></span><span id="debug"></span>
 	<ul>
 	<%
 	for(AVOpus av : list) {
 	%>	
-		<li>
+		<li id="<%=av.getOpus() %>">
 			<div class="opusDiv">
-	 			<span class="titleSpan"><%=av.getTitle() %></span>
+	 			<span class="titleSpan"><%=av.getTitle() %></span><span class="selectBtn" for="<%=av.getOpus() %>">SEl■</span>
 				<table>
 					<tr valign="top">
 						<td width="110px">
@@ -135,7 +217,10 @@ function fnEditOverview(opus) {
 						</td>
 						<td>
 							<dl>
-								<dt><span class="labelSpan"><%=av.getLabel() %></span><span class="opusSpan"><%=av.getOpus() %></span><span class="actressSpan" onclick="fnActressSearch('<%=av.getActress() %>')"><%=av.getActress() %></span>
+								<dt><span class="labelSpan"><%=av.getLabel() %></span><span class="opusSpan"><%=av.getOpus() %></span>
+								<% for(String actressName : av.getActressList()) { %>
+								<span class="actressSpan" onclick="fnActressSearch('<%=actressName %>')"><%=actressName %></span>
+								<% } %>
 								</dt>
 								<dd> 
 									<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>

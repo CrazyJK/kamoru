@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -17,7 +18,7 @@ public class AVOpus implements Comparable<Object> {
 
 	protected String label;
 	protected String opus;
-	protected String actress;
+	protected List<String> actressList;
 	protected String title;
 	
 	protected List<String> videoList;
@@ -31,11 +32,11 @@ public class AVOpus implements Comparable<Object> {
 		this.subtitlesList = new ArrayList<String>();
 	}
 	
-	public AVOpus(String label, String opus, String actress, String title) {
+	public AVOpus(String label, String opus, List<String> actressList, String title) {
 		this();
 		this.label = label;
 		this.opus = opus;
-		this.actress = actress;
+		this.actressList = actressList;
 		this.title = title;
 	}
 	
@@ -148,13 +149,52 @@ public class AVOpus implements Comparable<Object> {
 	}
 
 	public String getActress() {
-		return actress;
+		return actressList == null ? "" : actressList.toString();
+	}
+	public List<String> getActressList() {
+		Collections.sort(actressList);
+		return actressList;
 	}
 
-	public void setActress(String actress) {
-		this.actress = actress;
+	public void setActressList(List<String> actressList) {
+		this.actressList = actressList;
 	}
-
+	
+	public void setActress(String name) {
+		if(actressList == null) actressList = new ArrayList<String>();
+//		logger.debug(opus + " setActress name:" + name);
+		String[] nameArr = name.split(",");
+		for(String _name : nameArr) {
+//			logger.debug(opus + " setActress _name:" + _name);
+			boolean bFindSameName = false;
+			for(String actress : actressList) {
+//				logger.debug(opus + " setActress actress:" + actress);
+				if(equalsName(actress, _name)) {
+					bFindSameName = true;
+				}
+			}
+			if(!bFindSameName) {
+				actressList.add(_name.trim());
+//				logger.debug(opus + " setActress add:" + _name);
+			}
+		}
+	}
+	private boolean equalsName(String name1, String name2) {
+//		logger.debug("equalsName #1: " + name1 + " - " + name2);
+		if(name1 == null || name2 == null) return false;
+		String[] name1Arr = name1.toLowerCase().trim().split(" ");
+		String[] name2Arr = name2.toLowerCase().trim().split(" ");
+		ArrayUtils.reverse(name1Arr);
+		ArrayUtils.reverse(name2Arr);
+		name1 = ArrayUtils.toString(name1Arr);
+		name2 = ArrayUtils.toString(name2Arr);
+//		logger.debug("equalsName #2: " + name1 + " - " + name2);
+		if(name1.equals(name2))
+			return true;
+		else 
+			return false;
+	}
+	
 	public String getTitle() {
 		return title;
 	}

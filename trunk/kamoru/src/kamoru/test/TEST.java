@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 public class TEST {
@@ -132,6 +134,11 @@ public class TEST {
 	    System.out.println("".split(";").length);
 	 
 	    System.out.println(System.getProperty("os.name"));
+	    
+	    List<String> list = new ArrayList<String>();
+	    list.add("111");
+	    list.add("222");
+	    System.out.println(list.toString());
 	}
 
 }

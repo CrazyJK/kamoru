@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="org.apache.commons.lang.time.DateFormatUtils" %>
+<%@ page import="org.apache.commons.lang3.time.DateFormatUtils" %>
 <%
 String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 %>
@@ -12,6 +12,21 @@ String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(window).bind("resize", resizeSectionHeight);
+	resizeSectionHeight();
+});
+function resizeSectionHeight() {
+	var windowHeight = $(window).height();
+	var headerHeight = $("#deco_header").outerHeight();
+	var navHeight    = $("#deco_nav").outerHeight();
+	var footerHeight = $("#deco_footer").outerHeight();
+	var resizeSectionHeight = windowHeight - headerHeight - navHeight - footerHeight - 16 - 20 - 20; 
+	$("#deco_section").height(resizeSectionHeight);
+}
+</script>
 <sitemesh:write property="head" />
 </head>
 <body id="deco_body">

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -152,22 +153,26 @@ public class AVCollectionCtrl {
 			count += new Integer(1);
 			labelMap.put(label, count);
 		}
-		return labelMap;
+		Map<String, Integer> retMap = new TreeMap<String, Integer>(labelMap);
+		return retMap;
 	}
 	
 	public Map<String, Integer> getActress() {
 		Map<String, Integer> actressMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
 			AVOpus av = avData.get(key);
-			String actress = av.getActress();
-			Integer count = new Integer(0);
-			if(actressMap.containsKey(actress)) {
-				count = (Integer)actressMap.get(actress);
+			List<String> actressList = av.getActressList();
+			for(String actress : actressList) {
+				Integer count = new Integer(0);
+				if(actressMap.containsKey(actress)) {
+					count = (Integer)actressMap.get(actress);
+				}
+				count += new Integer(1);
+				actressMap.put(actress, count);
 			}
-			count += new Integer(1);
-			actressMap.put(actress, count);
 		}
-		return actressMap;
+		Map<String, Integer> retMap = new TreeMap<String, Integer>(actressMap);
+		return retMap;
 	}
 	
 	private void setBackgroundImage() {
