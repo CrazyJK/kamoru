@@ -124,7 +124,8 @@ public class AVCollectionCtrl {
 		return list;
 	}
 	
-	public List<AVOpus> getAV(String label, String opus, String title, String actress, boolean existSubtitles) {
+	public List<AVOpus> getAV(String label, String opus, String title, String actress, boolean addCond, boolean existVideo, boolean existSubtitles) {
+		logger.debug("label[" + label + "] opus[" + label + "] title[" + title + "] actress[" + " existVideo[" + existVideo + "] existSubtitles[" + existSubtitles + "]");
 		List<AVOpus> list = new ArrayList<AVOpus>();
 		for(Object key : avData.keySet()) {
 //			System.out.println("key=" + key);
@@ -133,7 +134,8 @@ public class AVCollectionCtrl {
 			&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(av.getOpus()))
 			&& (title   == null || title.trim().length()   == 0 || av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
 			&& (actress == null || actress.trim().length() == 0 || av.getActress().toLowerCase().indexOf(actress.toLowerCase()) > -1)
-			&& (existSubtitles ? av.existSubtitles() : true)) {
+			&& (addCond ? (existVideo     ? av.existVideo()     : !av.existVideo()) && (existSubtitles ? av.existSubtitles() : !av.existSubtitles()) : true)
+			) {
 				list.add(av);
 			}
 		}		
@@ -145,7 +147,7 @@ public class AVCollectionCtrl {
 		Map<String, Integer> labelMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
 			AVOpus av = avData.get(key);
-			String label = av.getLabel();
+			String label = av.getLabel().toUpperCase();
 			Integer count = new Integer(0);
 			if(labelMap.containsKey(label)) {
 				count = (Integer)labelMap.get(label);
