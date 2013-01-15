@@ -1,13 +1,16 @@
 package kamoru.app.imap;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.SocketException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.imap.IMAPClient;
 
-public class IMapMailChecker extends Thread{
+public class IMapMailChecker extends Thread {
 
 	private static int prevCount = 0;
 	
@@ -27,12 +30,14 @@ public class IMapMailChecker extends Thread{
 		while(true) {
 			try {
 				int count = getUnseenCount();
+				System.out.format("%tT : %d -> %d - frame:%b%n", Calendar.getInstance(), prevCount, count, frame.isVisible());
 				if(prevCount < count) {
 					notifyWindow(count);
 					prevCount = count;
 				}
 				Thread.sleep(60000);
 			} catch (Exception e) {
+				e.printStackTrace();
 				break;
 			}
 		}
@@ -52,11 +57,22 @@ public class IMapMailChecker extends Thread{
 	}
 	
 	private void notifyWindow(int cnt) {
+		init();
+		
 		Container contentPane = frame.getContentPane();
 		contentPane.removeAll();
 		JPanel panel = new JPanel();
-		panel.add(new JLabel(cnt + " unseen mail!"));
-		panel.add(new JLabel(new Date().toString()));
+		panel.setBackground(new Color(71, 70, 65));
+	
+		JLabel mailLabel = new JLabel(cnt + " unseen mail!");
+		mailLabel.setFont(new Font("", Font.BOLD, 20));
+		mailLabel.setForeground(Color.WHITE);
+		
+		JLabel dateLabel = new JLabel(new Date().toString());
+		dateLabel.setForeground(Color.LIGHT_GRAY);
+		
+		panel.add(mailLabel);
+		panel.add(dateLabel);
 		contentPane.add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
@@ -71,7 +87,7 @@ public class IMapMailChecker extends Thread{
         //System.out.println("Connecting to server " + server + " on " + imap.getDefaultPort());
 
     	File imap_log_file = new File("IMAMP-UNSEEN");
-    	System.out.println(imap_log_file.getAbsolutePath() + " " + new Date().toString());
+//    	System.out.println(imap_log_file.getAbsolutePath() + " " + new Date().toString());
     	PrintStream ps = new PrintStream(imap_log_file);
         // suppress login details
         imap.addProtocolCommandListener(new PrintCommandListener(ps, true));
@@ -91,7 +107,7 @@ public class IMapMailChecker extends Thread{
         unseenText = unseenText.substring(unseenText.indexOf('(')+1,unseenText.indexOf(')'));
         int unseenCount = Integer.parseInt(unseenText.split(" ")[1]);
         		
-        System.out.println(unseenCount);
+//        System.out.println(unseenCount);
         return unseenCount;
 	}
 	

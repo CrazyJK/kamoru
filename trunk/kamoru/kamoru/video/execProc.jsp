@@ -25,7 +25,7 @@ if("random".equals(selectedOpus)) {
     }
 	AVOpus av = list.get(index);
     System.out.println("selected Opus : " + av.getOpus());
-	//av.playVideo();
+	av.playVideo();
 	out.println("<script>parent.fnOpusFocus('" + av.getOpus() + "');</script>");
 	history.put(String.valueOf(index), "play");
 	System.out.println(history.size() + " " + history.toString());

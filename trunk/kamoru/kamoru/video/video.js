@@ -5,6 +5,40 @@ $(document).ready(function(){
 		var id = $(this).attr("for");
 		$("#" + id).val("");
 	});
+	$('span[id^="checkbox"]').bind("click", function(){
+		var idArr = $(this).attr("id").split("-");
+		if($("#" + idArr[1]).val() == "on") {
+			$("#" + idArr[1]).val("off");
+			$(this).removeClass("checkbox-on");
+			$(this).addClass("checkbox-off");
+		} else {
+			$("#" + idArr[1]).val("on");
+			$(this).removeClass("checkbox-off");
+			$(this).addClass("checkbox-on");
+		}
+	}).each(function(){
+		var idArr = $(this).attr("id").split("-");
+		if($("#" + idArr[1]).val() == "on") {
+			$(this).removeClass("checkbox-off");
+			$(this).addClass("checkbox-on");
+		} else {
+			$(this).removeClass("checkbox-on");
+			$(this).addClass("checkbox-off");
+		}
+	});
+	$('span[id^="radio"]').bind("click", function(){
+		var idArr = $(this).attr("id").split("-");
+		$("#" + idArr[1]).val(idArr[2]);
+		$('span[id^="radio-' + idArr[1] + '"]').removeClass("radio-on");
+		$(this).addClass("radio-on");
+	}).each(function(){
+		var idArr = $(this).attr("id").split("-");
+		if($("#" + idArr[1]).val() == idArr[2]) {
+			$(this).addClass("radio-on");
+		} else {
+			$(this).removeClass("radio-on");
+		}
+	});
 	$("li").toggle(
 		function() {
 			//$("#debug").html("toggle 1");
@@ -21,9 +55,9 @@ $(document).ready(function(){
 					$(this).css("background-color", "");
 				});
 		});
- 	$('input[name^="exist"]').bind("click", function(){
- 		if(!$("#addCond").is(':checked')) {
- 			$("#addCond").click();
+ 	$('span[id^="checkbox-exist"]').bind("click", function(){
+ 		if($("#addCond").val() == "off") {
+ 			$("#checkbox-addCond").click();
  			$("#debug").html("addCond click");
  		}
 	});
@@ -33,20 +67,20 @@ function resizeDivHeight() {
 	var windowHeight = $(window).height();
 	//var documentHeight = $(document).outerHeight();
 	var searchDivHeight = $("#headerDiv").outerHeight();
-	var resizeListDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
-	//alert(resizeListDivHeight);
-	$("#listDiv").height(resizeListDivHeight);
+	var resizeContentDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
+	//alert(resizeContentDivHeight);
+	$("#contentDiv").height(resizeContentDivHeight);
 	resizeBackgroundImage();
 }
 function resizeBackgroundImage() {
-	var url = $('#listDiv').css('background-image').replace(/url\(|\)$/ig, "");
+	var url = $('#contentDiv').css('background-image').replace(/url\(|\)$/ig, "");
 	var img = $("<img />");
 	img.hide();
 	img.bind('load', function(){
 		var imgWidth  = $(this).width();
 		var imgHeight = $(this).height();
-		var divWidth  = $("#listDiv").width();
-		var divHeight = $("#listDiv").height();
+		var divWidth  = $("#contentDiv").width();
+		var divHeight = $("#contentDiv").height();
 		var width  = 0;
 		var height = 0;
 		
@@ -64,7 +98,7 @@ function resizeBackgroundImage() {
 			height = divHeight;
 		}
 		//$("#debug").html("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
-		$("#listDiv").css("background-size", width + "px " + height + "px");
+		$("#contentDiv").css("background-size", width + "px " + height + "px");
 	});
 	$("body").append(img);
 	img.attr("src", url);
@@ -72,10 +106,10 @@ function resizeBackgroundImage() {
 function ratioSize(numerator1, numerator2, denominator) {
 	return parseInt(numerator1 * numerator2 / denominator);
 }
-function fnLabelDivToggle() {
-	$("#labelDiv").toggle();
-	$("#viewLabelDiv").val($("#labelDiv").css("display"));	
-	$("#debug").html("fnLabelDivToggle");
+function fnStudioDivToggle() {
+	$("#studioDiv").toggle();
+	$("#viewStudioDiv").val($("#studioDiv").css("display"));	
+	$("#debug").html("fnStudioDivToggle");
 	resizeDivHeight();
 }
 function fnActressDivToggle() {
@@ -84,11 +118,11 @@ function fnActressDivToggle() {
 	$("#debug").html("fnActressDivToggle");
 	resizeDivHeight();
 }
-function fnLabelSearch(label) {
+function fnStudioSearch(studio) {
 	$("input:text").each(function(){
 		$(this).val("");
 	});
-	$("#label").val(label);
+	$("#studio").val(studio);
 	fnDetailSearch();
 }
 function fnActressSearch(actress) {

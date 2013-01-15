@@ -16,7 +16,7 @@ public class AVOpus implements Comparable<Object> {
 	protected static final Log logger = LogFactory.getLog(AVOpus.class);
 	private static AVProp prop = new AVProp();
 
-	protected String label;
+	protected String studio;
 	protected String opus;
 	protected List<String> actressList;
 	protected String title;
@@ -26,15 +26,16 @@ public class AVOpus implements Comparable<Object> {
 	protected String cover;
 	protected String overview;
 	
+	private String sortMethod;
 	
 	public AVOpus() {
 		this.videoList = new ArrayList<String>();
 		this.subtitlesList = new ArrayList<String>();
 	}
 	
-	public AVOpus(String label, String opus, List<String> actressList, String title) {
+	public AVOpus(String studio, String opus, List<String> actressList, String title) {
 		this();
-		this.label = label;
+		this.studio = studio;
 		this.opus = opus;
 		this.actressList = actressList;
 		this.title = title;
@@ -132,12 +133,12 @@ public class AVOpus implements Comparable<Object> {
 		return overview == null ? false : true;
 	}
 
-	public String getLabel() {
-		return label;
+	public String getStudio() {
+		return studio;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	public void setStudio(String studio) {
+		this.studio = studio;
 	}
 
 	public String getOpus() {
@@ -235,12 +236,33 @@ public class AVOpus implements Comparable<Object> {
 		this.overview = overview;
 	}
 
+	public void setSortMethod(String sortMethod) {
+		this.sortMethod = sortMethod;
+	}
 	@Override
 	public int compareTo(Object o) {
 		AVOpus comp = (AVOpus)o;
-		String[] s = {this.getOpus(), comp.getOpus()};
+		String thisStr = null;
+		String compStr = null;
+		if("S".equals(sortMethod)) {
+			thisStr = this.getStudio();
+			compStr = comp.getStudio();
+		} else if("O".equals(sortMethod)) {
+			thisStr = this.getOpus();
+			compStr = comp.getOpus();
+		} else if("T".equals(sortMethod)) {
+			thisStr = this.getTitle();
+			compStr = comp.getTitle();
+		} else if("A".equals(sortMethod)) {
+			thisStr = this.getActress();
+			compStr = comp.getActress();
+		} else if("L".equals(sortMethod)) {
+			thisStr = String.valueOf(this.existVideo() ? new File(this.getVideoPathArray()[0]).lastModified() : 0);
+			compStr = String.valueOf(comp.existVideo() ? new File(comp.getVideoPathArray()[0]).lastModified() : 0);
+		}
+		String[] s = {thisStr, compStr};
 		Arrays.sort(s);
-		return s[0].equals(this.getOpus()) ? -1 : 1;
+		return s[0].equals(thisStr) ? -1 : 1;
 	}
 	
 	

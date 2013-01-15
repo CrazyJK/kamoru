@@ -1,26 +1,43 @@
 @CHARSET "UTF-8";
   div#searchDiv {text-align:center;}
   .schTxt       {width:80px; border:0;color:blue;}
-  .searchGroupSpan  {background-color:lightgreen; padding:5px; margin:0 5px 0 0;
+  .searchGroupSpan  {display:inline-block;
+					  background-color:; padding:3px; margin:2px;
   						border: 1px solid orange; 
 						border-radius: 5px;
 				   -moz-border-radius: 5px;
 				-webkit-border-radius: 5px;}
-  .labelSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
+ .studioSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
 .actressSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
+    .checkbox {cursor:pointer;}
+ .checkbox-on {color:red;}
+.checkbox-off {color:gray;}
+       .radio {cursor:pointer;}
+    .radio-on {color:red;}
+   .radio-off {color:gray;}
 
-  div#listDiv {overflow:auto; text-align:center;}
+
+div#contentDiv {overflow:auto; text-align:center;}
   #totalCount {text-shadow:2px 2px 2px white;}
        #debug {text-shadow:2px 2px 2px yellow; margin-left:10px;}
            ul {padding:0px; margin:0px;}
-           li {display:inline-block;}
-     .opusDiv {width:300px;
+           li {}
+       .boxLI {display:inline-block;}
+      .sboxLI {display:inline-block;}
+   .listTable {width:100%; background-color:lightgray; opacity: 0.75;}
+  .opusBoxDiv {width:300px;
 						background-color: #eee; padding: 5px; margin:5px;
 						border: 1px solid orange; 
 						border-radius: 10px;
 				   -moz-border-radius: 10px;
 				-webkit-border-radius: 10px;}
-   
+ .opusSBoxDiv {
+						background-color: #eee; padding: 5px; margin:5px;
+						border: 1px solid orange; 
+						border-radius: 10px;
+				   -moz-border-radius: 10px;
+				-webkit-border-radius: 10px;}
+
    		   dl {margin:0px;}
            dt {font-size:10pt; height:30px; vertical-align:middle;}
            dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
@@ -31,7 +48,7 @@
 				-webkit-border-radius: 5px;}
 				
    #titleSpan {color:black; opacity:1;}
-   #labelSpan {color:blue;  opacity:1;}
+  #studioSpan {color:blue;  opacity:1;}
     #opusSpan {color:green; opacity:1;}
  #actressSpan {color:black; opacity:1;}
    .existFile {color:blue;  opacity:1;}

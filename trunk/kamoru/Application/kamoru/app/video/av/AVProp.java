@@ -33,14 +33,14 @@ public class AVProp {
 		try {
 			InputStream in = getClass().getResourceAsStream(propertiesPath);
 			prop.load(in);
-			                 player = prop.getProperty("player", 					player);
-			            noImagePath = prop.getProperty("noImagePath", 				noImagePath); 
-			               basePath = prop.getProperty("basePath", 					basePath); 
-			          av_extensions = prop.getProperty("av_extensions", 			av_extensions); 
-			       cover_extensions = prop.getProperty("cover_extensions", 			cover_extensions); 
-			   subtitles_extensions = prop.getProperty("subtitles_extensions", 		subtitles_extensions); 
-				overview_extensions = prop.getProperty("overview_extensions",  		overview_extensions);
-			backgroundImagePoolPath = prop.getProperty("backgroundImagePoolPath",  	backgroundImagePoolPath);
+			                 player = prop.getProperty("player", 					player).trim();
+			            noImagePath = prop.getProperty("noImagePath", 				noImagePath).trim(); 
+			               basePath = prop.getProperty("basePath", 					basePath).trim(); 
+			          av_extensions = prop.getProperty("av_extensions", 			av_extensions).trim().toLowerCase(); 
+			       cover_extensions = prop.getProperty("cover_extensions", 			cover_extensions).trim().toLowerCase(); 
+			   subtitles_extensions = prop.getProperty("subtitles_extensions", 		subtitles_extensions).trim().toLowerCase(); 
+				overview_extensions = prop.getProperty("overview_extensions",  		overview_extensions).trim().toLowerCase();
+			backgroundImagePoolPath = prop.getProperty("backgroundImagePoolPath",  	backgroundImagePoolPath).trim();
 			in.close();
 			
 			logger.debug("\tplayer : " + player);
