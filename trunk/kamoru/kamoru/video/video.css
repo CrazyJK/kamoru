@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
   div#searchDiv {text-align:center;}
-  .schTxt       {width:80px; border:0;color:blue;}
+  .schTxt       {width:80px; border:0; color:blue; margin:0px; padding:0px;}
   .searchGroupSpan  {display:inline-block;
 					  background-color:; padding:3px; margin:2px;
   						border: 1px solid orange; 

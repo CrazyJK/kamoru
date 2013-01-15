@@ -13,7 +13,7 @@ String existVideo 		= ServletUtils.getParameter(request, "existVideo", "off");
 String existSubtitles 	= ServletUtils.getParameter(request, "existSubtitles", "off");
 String viewStudioDiv    = ServletUtils.getParameter(request, "viewStudioDiv", "block");
 String viewActressDiv   = ServletUtils.getParameter(request, "viewActressDiv", "block");
-String listViewType		= ServletUtils.getParameter(request, "listViewType", "table"); //box, sbox or list
+String listViewType		= ServletUtils.getParameter(request, "listViewType", "box"); //box, sbox or list
 String sortMethod		= ServletUtils.getParameter(request, "sortMethod", "O");
 String sortReverse		= ServletUtils.getParameter(request, "sortReverse", "off");
 System.out.format("studio[%s] opus[%s] title[%s] actress[%s] addCond[%s] existVideo[%s] existSubtitles[%s] viewStudioDiv[%s] viewActressDiv[%s] listViewType[%s] sortMethod[%s] sortReverse[%s]%n", 
