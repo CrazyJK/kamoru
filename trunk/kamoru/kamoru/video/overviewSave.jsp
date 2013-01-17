@@ -5,7 +5,7 @@
 request.setCharacterEncoding("UTF-8");
 
 String selectedOpus = ServletUtils.getParameter(request, "opus");
-String overViewTxt = ServletUtils.getParameter(request, "overViewTxt");
+String overViewTxt  = ServletUtils.getParameter(request, "overViewTxt");
 
 List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");
 
@@ -13,12 +13,10 @@ for(AVOpus av : list) {
 	if(selectedOpus.equals(av.getOpus())) {
 		// overview save
 		if(overViewTxt != null) {
-			System.out.println("try save");
 			av.saveOverViewTxt(overViewTxt);	
 		}
 	}
 }
-
 %>
 <!DOCTYPE html>
 <html>
@@ -35,6 +33,8 @@ for(AVOpus av : list) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	//var reload = parent.opener.document.getElementById("reloadData");
+	//reload = "on";
 	parent.opener.document.forms[0].submit();
 	self.close();
 });

@@ -13,25 +13,22 @@ String existVideo 		= ServletUtils.getParameter(request, "existVideo", "off");
 String existSubtitles 	= ServletUtils.getParameter(request, "existSubtitles", "off");
 String viewStudioDiv    = ServletUtils.getParameter(request, "viewStudioDiv", "block");
 String viewActressDiv   = ServletUtils.getParameter(request, "viewActressDiv", "block");
-String listViewType		= ServletUtils.getParameter(request, "listViewType", "box"); //box, sbox or list
+String listViewType		= ServletUtils.getParameter(request, "listViewType", "box"); //card, box, sbox or list
 String sortMethod		= ServletUtils.getParameter(request, "sortMethod", "O");
 String sortReverse		= ServletUtils.getParameter(request, "sortReverse", "off");
-System.out.format("studio[%s] opus[%s] title[%s] actress[%s] addCond[%s] existVideo[%s] existSubtitles[%s] viewStudioDiv[%s] viewActressDiv[%s] listViewType[%s] sortMethod[%s] sortReverse[%s]%n", 
-		studio, opus, title, actress, addCond, existVideo, existSubtitles, viewStudioDiv, viewActressDiv, listViewType, sortMethod, sortReverse);
-/* 
-addCond    		= "".equals(addCond)    ? "on" : addCond;
-existVideo 		= "".equals(existVideo) ? "on" : existVideo;
-existSubtitles  = "".equals(existSubtitles)  ? "on" : existSubtitles;
-sortReverse     = "".equals(sortReverse)  ? "on" : sortReverse;
- */
+String useCacheData		= ServletUtils.getParameter(request, "useCacheData", "off");
+//System.out.format("studio[%s] opus[%s] title[%s] actress[%s] addCond[%s] existVideo[%s] existSubtitles[%s] viewStudioDiv[%s] viewActressDiv[%s] listViewType[%s] sortMethod[%s] sortReverse[%s] useCacheData[%s]%n", 
+//		studio, opus, title, actress, addCond, existVideo, existSubtitles, viewStudioDiv, viewActressDiv, listViewType, sortMethod, sortReverse, useCacheData);
 
 AVCollectionCtrl ctrl = new AVCollectionCtrl();
+
 List<AVOpus> list = ctrl.getAV(studio, opus, title, actress, 
-		new Boolean("on".equals(addCond)).booleanValue(), 
-		new Boolean("on".equals(existVideo)).booleanValue(), 
-		new Boolean("on".equals(existSubtitles)).booleanValue(),
+		"on".equals(addCond), 
+		"on".equals(existVideo), 
+		"on".equals(existSubtitles),
 		sortMethod,
-		new Boolean("on".equals(sortReverse)).booleanValue());
+		"on".equals(sortReverse),
+		"on".equals(useCacheData));
 Map<String, Integer> studioMap = ctrl.getStudios();
 Map<String, Integer> actressMap = ctrl.getActress();
 
@@ -40,10 +37,11 @@ Map<String, String> history = null;
 if(history == null) {
 	history = new HashMap<String, String>();
 	history.put("dummy", "dummy");
-	session.setAttribute("randomHistory", history);
 }
 
+session.setAttribute("AVCollectionCtrl", ctrl);
 session.setAttribute("avlist", list);
+session.setAttribute("randomHistory", history);
 %>
 <!DOCTYPE html>
 <html>
@@ -60,92 +58,59 @@ session.setAttribute("avlist", list);
 <body>
 <div id="headerDiv">
 	<div id="searchDiv" class="boxDiv">
-<%-- 	<form name="frm" method="post">
+	<form name="frm" method="get">
 		<span class="searchGroupSpan">
-		<label for="studio"> Studio	 </label><input type="text" name="studio"  id="studio"  value="<%=studio %>"  class="schTxt">
-		<label for="opus">   Opus  	 </label><input type="text" name="opus"    id="opus"    value="<%=opus %>"    class="schTxt">
-		<label for="title">  Title 	 </label><input type="text" name="title"   id="title"   value="<%=title %>"   class="schTxt">
-		<label for="actress">Actress </label><input type="text" name="actress" id="actress" value="<%=actress %>" class="schTxt">
+			<label for="studio"> Studio	 </label><input type="text" name="studio"  id="studio"  value="<%=studio %>"  class="schTxt">
+			<label for="opus">   Opus  	 </label><input type="text" name="opus"    id="opus"    value="<%=opus %>"    class="schTxt">
+			<label for="title">  Title 	 </label><input type="text" name="title"   id="title"   value="<%=title %>"   class="schTxt">
+			<label for="actress">Actress </label><input type="text" name="actress" id="actress" value="<%=actress %>" class="schTxt">
+			<span class="checkbox" id="checkbox-addCond"        title="Add additional conditions">Add</span><input type="hidden" name="addCond"    	   id="addCond"    	   value="<%=addCond %>">
+			<span class="checkbox" id="checkbox-existVideo"     title="exist Video?">V</span>			    <input type="hidden" name="existVideo" 	   id="existVideo" 	   value="<%=existVideo %>">
+			<span class="checkbox" id="checkbox-existSubtitles" title="exist Subtitles?">S</span>			<input type="hidden" name="existSubtitles" id="existSubtitles" value="<%=existSubtitles %>">
+			<span class="separatorSpan">|</span>
+			<span class="button" onclick="fnDetailSearch()">Search</span>
+			<span class="separatorSpan">|</span>
+			<span class="button" onclick="fnRandomPlay()">Random</span>
 		</span>
-		<span class="searchGroupSpan">
-		<label for="addCond">       Add cond  </label><input type="checkbox" name="addCond"    	   id="addCond"    	   <%="on".equals(addCond)    	  ? "checked" : "" %>>
-		<label for="existVideo">    Video     </label><input type="checkbox" name="existVideo" 	   id="existVideo" 	   <%="on".equals(existVideo) 	  ? "checked" : "" %>>
-		<label for="existSubtitles">Subtitles </label><input type="checkbox" name="existSubtitles" id="existSubtitles" <%="on".equals(existSubtitles) ? "checked" : "" %>>
-		</span>
-		<span class="searchGroupSpan">
-		B <input type="radio" name="listViewType" value="box"   <%="box".equals(listViewType) ? "checked" : "" %>>
-		SB<input type="radio" name="listViewType" value="sbox"  <%="sbox".equals(listViewType) ? "checked" : "" %>>
-		T <input type="radio" name="listViewType" value="table" <%="table".equals(listViewType) ? "checked" : "" %>>
-		</span>
-		<span class="searchGroupSpan">
-		Sort <select name="sortMethod">
-				<option value="S" <%="S".equals(sortMethod) ? "selected" : "" %>>Studio</option>
-				<option value="O" <%="O".equals(sortMethod) ? "selected" : "" %>>Opus</option>
-				<option value="T" <%="T".equals(sortMethod) ? "selected" : "" %>>Title</option>
-				<option value="A" <%="A".equals(sortMethod) ? "selected" : "" %>>Actress</option>
-				<option value="L" <%="L".equals(sortMethod) ? "selected" : "" %>>Modified</option>
-			</select>
-		R	<input type="checkbox" name="sortReverse" <%="on".equals(sortReverse) ? "checked" : "" %>>
-		</span>
-		<input type="button" value="Search" onclick="fnDetailSearch()">
-		<input type="button" value="Random"   onclick="fnRandomPlay()">
-		<input type="button" value="L"    onclick="fnStudioDivToggle()">
-		<input type="button" value="A"  onclick="fnActressDivToggle()">
-		<input type="hidden" name="viewStudioDiv"   id="viewStudioDiv"   value="<%=viewStudioDiv %>">
-		<input type="hidden" name="viewActressDiv" id="viewActressDiv" value="<%=viewActressDiv %>">
-	</form> --%>
-	<form name="frm" method="post">
-		<span class="searchGroupSpan">
-		<label for="studio"> Studio	 </label><input type="text" name="studio"  id="studio"  value="<%=studio %>"  class="schTxt">
-		<label for="opus">   Opus  	 </label><input type="text" name="opus"    id="opus"    value="<%=opus %>"    class="schTxt">
-		<label for="title">  Title 	 </label><input type="text" name="title"   id="title"   value="<%=title %>"   class="schTxt">
-		<label for="actress">Actress </label><input type="text" name="actress" id="actress" value="<%=actress %>" class="schTxt">
-		</span>
-		<span class="searchGroupSpan">
-			<span class="checkbox" id="checkbox-addCond" title="Add additional conditions">Add</span><input type="hidden" name="addCond"    	   id="addCond"    	   value="<%=addCond %>">
-			<span class="checkbox" id="checkbox-existVideo" title="exist Video?">V</span>			<input type="hidden" name="existVideo" 	   id="existVideo" 	   value="<%=existVideo %>">
-			<span class="checkbox" id="checkbox-existSubtitles" title="exist Subtitles?">S</span>	<input type="hidden" name="existSubtitles" id="existSubtitles" value="<%=existSubtitles %>">
-		</span>
-		<span class="searchGroupSpan">
-			<span class="radio" id="radio-listViewType-box" title="show box type list">B</span> 
-			<span class="radio" id="radio-listViewType-sbox" title="show small box type list">SB</span>
-			<span class="radio" id="radio-listViewType-table" title="show table type list">T</span>	<input type="hidden" name="listViewType" id="listViewType" value="<%=listViewType %>">
-		</span>
-		<span class="searchGroupSpan">
+		<span class="viewGroupSpan">
+			<span class="radio" id="radio-listViewType-card"  title="show card type list">C</span> 
+			<span class="radio" id="radio-listViewType-box"   title="show box type list">B</span> 
+			<span class="radio" id="radio-listViewType-sbox"  title="show small box type list">SB</span>
+			<span class="radio" id="radio-listViewType-table" title="show table type list">T</span>			<input type="hidden" name="listViewType" id="listViewType" value="<%=listViewType %>">
+			<span class="separatorSpan">|</span>
 			<span class="radio" id="radio-sortMethod-S" title="sort by studio">S</span>
 			<span class="radio" id="radio-sortMethod-O" title="sort by opus">O</span>
 			<span class="radio" id="radio-sortMethod-T" title="sort by title">T</span>
 			<span class="radio" id="radio-sortMethod-A" title="sort by actress">A</span>
-			<span class="radio" id="radio-sortMethod-L" title="sort by lastmodified">M</span>		<input type="hidden" name="sortMethod" id="sortMethod" value="<%=sortMethod %>">
-			<span class="checkbox" id="checkbox-sortReverse" title="reverse sort">R</span>		<input type="hidden" name="sortReverse" id="sortReverse" value="<%=sortReverse %>">
+			<span class="radio" id="radio-sortMethod-L" title="sort by lastmodified">M</span>				<input type="hidden" name="sortMethod"  id="sortMethod"  value="<%=sortMethod %>">
+			<span class="checkbox" id="checkbox-sortReverse" title="reverse sort">R</span>					<input type="hidden" name="sortReverse" id="sortReverse" value="<%=sortReverse %>">
+			<span class="separatorSpan">|</span>
+			<span class="checkbox" id="checkbox-viewStudioDiv"  title="view Studio panel"  onclick="fnStudioDivToggle()">S</span>	<input type="hidden" name="viewStudioDiv"  id="viewStudioDiv"  value="<%=viewStudioDiv %>"> 
+			<span class="checkbox" id="checkbox-viewActressDiv" title="view Actress panel" onclick="fnActressDivToggle()">A</span>	<input type="hidden" name="viewActressDiv" id="viewActressDiv" value="<%=viewActressDiv %>">
+			<span class="separatorSpan">|</span>
+			<span class="checkbox" id="checkbox-useCacheData" title="use cache data">C</span>				<input type="hidden" name="useCacheData" id="useCacheData" value="<%=useCacheData %>">
 		</span>
-		<input type="button" value="Search" onclick="fnDetailSearch()">
-		<input type="button" value="Random"   onclick="fnRandomPlay()">
-		<input type="button" value="L"    onclick="fnStudioDivToggle()">
-		<input type="button" value="A"  onclick="fnActressDivToggle()">
-		<input type="hidden" name="viewStudioDiv"   id="viewStudioDiv"   value="<%=viewStudioDiv %>">
-		<input type="hidden" name="viewActressDiv" id="viewActressDiv" value="<%=viewActressDiv %>">
 	</form>
 	</div>
-	<div id="studioDiv" class="boxDiv" style="display:<%=viewStudioDiv %>">
+	<div id="studioDiv" class="boxDiv" style="display:<%="on".equals(viewStudioDiv) ? "" : "none" %>">
 	<% for(String key : studioMap.keySet()) { %>
 		<span onclick="fnStudioSearch('<%=key %>')" class="studioSpanBtn"><%=key %>(<%=studioMap.get(key) %>)</span>
 	<% } %>
 	</div>
-	<div id="actressDiv" class="boxDiv" style="display:<%=viewActressDiv %>">
+	<div id="actressDiv" class="boxDiv" style="display:<%="on".equals(viewActressDiv) ? "" : "none" %>">
 	<% for(String key : actressMap.keySet()) { %>
 		<span onclick="fnActressSearch('<%=key %>')" class="actressSpanBtn"><%=key %>(<%=actressMap.get(key) %>)</span>
 	<% } %>
 	</div>
 </div>
-<div id="contentDiv" class="boxDiv" style="background-image:url('image.jsp?opus=listImg')">
+<div id="contentDiv" class="boxDiv" style="background-image:url('image.jsp?opus=<%=ctrl.listImageName %>')">
 	<span id="totalCount">Total <%=list.size() %></span><span id="debug"></span>
-	<% if("box".equals(listViewType)) { %>
+	<% if("card".equals(listViewType)) { %>
 	<ul>
 		<% for(AVOpus av : list) { %>	
 		<li id="<%=av.getOpus() %>" class="boxLI">
 			<div class="opusBoxDiv">
-				<%-- <table>
+				<table>
 					<tr>
 						<td  colspan="2"><span class="titleSpan"><%=av.getTitle() %></span></td>
 					</tr>
@@ -155,7 +120,8 @@ session.setAttribute("avlist", list);
 						</td>
 						<td>
 							<dl>
-								<dt><span class="studioSpan"><%=av.getStudio() %></span><span class="opusSpan"><%=av.getOpus() %></span>
+								<dt><span class="studioSpan"><%=av.getStudio() %></span>&nbsp;<span class="opusSpan"><%=av.getOpus() %></span></dt>
+								<dt>
 								<% for(String actressName : av.getActressList()) { %>
 								<span class="actressSpan" onclick="fnActressSearch('<%=actressName %>')"><%=actressName %></span>
 								<% } %>
@@ -169,7 +135,16 @@ session.setAttribute("avlist", list);
 							</dl>
 						</td>
 					</tr>
-				</table> --%>
+				</table>
+			</div>
+		</li>
+		<% } %>
+	</ul>
+	<% } else if("box".equals(listViewType)) { %>
+	<ul>
+		<% for(AVOpus av : list) { %>	
+		<li id="<%=av.getOpus() %>" class="boxLI">
+			<div class="opusBoxDiv">
 				<dl style="background-image:url('image.jsp?opus=<%=av.getOpus() %>'); background-size:300px 200px; height:200px;">
 					<dt><span class="bgSpan" id="titleSpan"><%=av.getTitle() %></span></dt>
 					<dd><span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<%=av.getStudio() %>')"><%=av.getStudio() %></span></dd>

@@ -9,25 +9,28 @@ import org.apache.commons.logging.LogFactory;
 public class AVProp {
 	protected static final Log logger = LogFactory.getLog(AVProp.class);
 
-	public static String                  player = "\"C:\\Program Files (x86)\\The KMPlayer\\KMPlayer.exe\" ";
-	public static String             noImagePath = "/home/kamoru/DaumCloud/MyPictures/삽질금지.jpg";
-	public static String                basePath = "/home/kamoru/ETC/collection";
-	public static String           av_extensions = "avi,mpg,wmv,mp4";
-	public static String        cover_extensions = "jpg,jpeg,gif";
-	public static String    subtitles_extensions = "smi,srt";
-	public static String     overview_extensions = "txt,html";
-	public static String backgroundImagePoolPath = "/home/kamoru/DaumCloud/MyPictures";
+	public String                  player = "\"C:\\Program Files (x86)\\The KMPlayer\\KMPlayer.exe\" ";
+	public String             noImagePath = "/home/kamoru/DaumCloud/MyPictures/삽질금지.jpg";
+	public String                basePath = "/home/kamoru/ETC/collection";
+	public String           av_extensions = "avi,mpg,wmv,mp4";
+	public String        cover_extensions = "jpg,jpeg,gif";
+	public String    subtitles_extensions = "smi,srt";
+	public String     overview_extensions = "txt,html";
+	public String backgroundImagePoolPath = "/home/kamoru/DaumCloud/MyPictures";
 	
-	private static boolean isLoad = false;
-	private static final String propertiesPath = "/resources/av." + System.getProperty("os.name") + ".properties";
+	private final String propertiesPath = "/resources/av." + System.getProperty("os.name") + ".properties";
 
+	private static AVProp prop = new AVProp();
+	
 	public AVProp() {
-		if(!isLoad) {
-			isLoad = loadProperties();
-		}
+		loadProperties();
 	}
 	
-	private boolean loadProperties() {
+	public static AVProp getInstance() {
+		return prop;
+	}
+	
+	private void loadProperties() {
 		logger.debug("AV properties load... " + propertiesPath);
 		Properties prop = new Properties();
 		try {
@@ -51,11 +54,8 @@ public class AVProp {
 			logger.debug("\tsubtitles_extensions : " + subtitles_extensions);
 			logger.debug("\toverview_extensions : " + overview_extensions);
 			logger.debug("\tbackgroundImagePoolPath : " + backgroundImagePoolPath);
-			
-			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
 }

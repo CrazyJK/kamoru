@@ -33,8 +33,8 @@ public class IMapMailChecker extends Thread {
 				System.out.format("%tT : %d -> %d - frame:%b%n", Calendar.getInstance(), prevCount, count, frame.isVisible());
 				if(prevCount < count) {
 					notifyWindow(count);
-					prevCount = count;
 				}
+				prevCount = count;
 				Thread.sleep(60000);
 			} catch (Exception e) {
 				e.printStackTrace();

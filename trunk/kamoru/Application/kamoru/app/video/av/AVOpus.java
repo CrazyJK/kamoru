@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class AVOpus implements Comparable<Object> {
 	protected static final Log logger = LogFactory.getLog(AVOpus.class);
-	private static AVProp prop = new AVProp();
+	private AVProp prop = AVProp.getInstance();
 
 	protected String studio;
 	protected String opus;
@@ -43,9 +43,10 @@ public class AVOpus implements Comparable<Object> {
 	
 	public void saveOverViewTxt(String newOverviewTxt) {
 		String overviewPath = getOverviewPath();
-		logger.debug(opus + " overview write at " + overviewPath);
+		logger.debug("saveOverViewTxt : " + opus + " [" + overviewPath + "]");
 		try {
 			FileUtils.writeStringToFile(new File(overviewPath), newOverviewTxt, System.getProperty("file.encoding"));
+			this.setOverview(overviewPath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +104,7 @@ public class AVOpus implements Comparable<Object> {
 			if(videoList.size() > 0) {
 				String[] cmdArray = ArrayUtils.addAll(new String[]{prop.player}, getVideoPathArray());
 				Runtime.getRuntime().exec(cmdArray);
-				logger.debug("play video [" + ArrayUtils.toString(cmdArray) + "]");
+				logger.debug("playvideo : [" + ArrayUtils.toString(cmdArray) + "]");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

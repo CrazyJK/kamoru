@@ -1,4 +1,5 @@
 @CHARSET "UTF-8";
+* {font-family: 'Comic Sans MS' '나눔고딕코딩' '맑은 고딕';}
   div#searchDiv {text-align:center;}
   .schTxt       {width:80px; border:0; color:blue; margin:0px; padding:0px;}
   .searchGroupSpan  {display:inline-block;
@@ -7,14 +8,29 @@
 						border-radius: 5px;
 				   -moz-border-radius: 5px;
 				-webkit-border-radius: 5px;}
- .studioSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
+    .viewGroupSpan  {display:inline-block;
+					  background-color:; padding:3px; margin:2px;
+  						border: 1px solid orange; 
+						border-radius: 5px;
+				   -moz-border-radius: 5px;
+				-webkit-border-radius: 5px;}
+.separatorSpan {font-weight:bold; color:blue;}				
+.studioSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
 .actressSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
-    .checkbox {cursor:pointer;}
- .checkbox-on {color:red;}
-.checkbox-off {color:gray;}
-       .radio {cursor:pointer;}
-    .radio-on {color:red;}
-   .radio-off {color:gray;}
+    .checkbox {cursor:pointer; padding:0px; margin:0px;
+  						border: 0px solid orange; 
+						border-radius: 3px;
+				   -moz-border-radius: 3px;
+				-webkit-border-radius: 3px;}
+ .checkbox-on {background-color:lightblue;}
+       .radio {cursor:pointer; padding:0px; margin:0px;
+  						border: 0px solid #bbb; 
+						border-radius: 3px;
+				   -moz-border-radius: 3px;
+				-webkit-border-radius: 3px;}
+    .radio-on {background-color:lightblue;}
+      .button {background-color:;}
+      .button:hover {background-color:lightblue;}
 
 
 div#contentDiv {overflow:auto; text-align:center;}

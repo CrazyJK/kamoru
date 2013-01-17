@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 %><%@ page import="java.util.*, java.io.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" 
-%><%! public static AVProp prop = new AVProp(); %><%
+%><%! public AVProp prop = AVProp.getInstance(); %><%
 String selectedOpus = ServletUtils.getParameter(request, "opus");
+AVCollectionCtrl ctrl = new AVCollectionCtrl();
 
 String img = null;
-if("listImg".equals(selectedOpus)) {
-	img = prop.basePath + "/listImg.jpg"; 
+if(ctrl.listImageName.equals(selectedOpus)) {
+	img = prop.basePath.split(";")[0] + "/" + ctrl.listImageName; 
 }
 else {
 	List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");

@@ -10,20 +10,16 @@ $(document).ready(function(){
 		if($("#" + idArr[1]).val() == "on") {
 			$("#" + idArr[1]).val("off");
 			$(this).removeClass("checkbox-on");
-			$(this).addClass("checkbox-off");
 		} else {
 			$("#" + idArr[1]).val("on");
-			$(this).removeClass("checkbox-off");
 			$(this).addClass("checkbox-on");
 		}
 	}).each(function(){
 		var idArr = $(this).attr("id").split("-");
 		if($("#" + idArr[1]).val() == "on") {
-			$(this).removeClass("checkbox-off");
 			$(this).addClass("checkbox-on");
 		} else {
 			$(this).removeClass("checkbox-on");
-			$(this).addClass("checkbox-off");
 		}
 	});
 	$('span[id^="radio"]').bind("click", function(){
@@ -41,14 +37,12 @@ $(document).ready(function(){
 	});
 	$("li").toggle(
 		function() {
-			//$("#debug").html("toggle 1");
 			$(this).animate({
 				opacity: 0.75
 				}, 1000, function(){
 					$(this).css("background-color", "green");
 				});
 		}, function(){
-			//$("#debug").html("toggle 2");
 			$(this).animate({
 				opacity: 1
 				}, 500, function(){
@@ -108,13 +102,13 @@ function ratioSize(numerator1, numerator2, denominator) {
 }
 function fnStudioDivToggle() {
 	$("#studioDiv").toggle();
-	$("#viewStudioDiv").val($("#studioDiv").css("display"));	
+//	$("#viewStudioDiv").val($("#studioDiv").css("display"));	
 	$("#debug").html("fnStudioDivToggle");
 	resizeDivHeight();
 }
 function fnActressDivToggle() {
 	$("#actressDiv").toggle();
-	$("#viewActressDiv").val($("#actressDiv").css("display"));	
+//	$("#viewActressDiv").val($("#actressDiv").css("display"));	
 	$("#debug").html("fnActressDivToggle");
 	resizeDivHeight();
 }

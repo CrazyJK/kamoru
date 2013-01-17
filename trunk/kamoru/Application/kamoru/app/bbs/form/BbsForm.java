@@ -7,8 +7,8 @@ import java.util.List;
 import kamoru.app.bbs.bean.Article;
 import kamoru.frmwk.util.ArrayUtils;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.upload.FormFile;
 

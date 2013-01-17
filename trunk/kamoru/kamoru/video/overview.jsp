@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
 <%
+
 String selectedOpus = ServletUtils.getParameter(request, "opus");
 
 List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");
@@ -18,7 +19,7 @@ for(AVOpus av : list) {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Overview - AV World</title>
+<title>Overview[<%=selectedOpus %>] - AV World</title>
 <link rel="stylesheet" href="/kamoru/video/video.css" />
 <style type="text/css">
 .overviewTxt {width:100%; height:275px;}
