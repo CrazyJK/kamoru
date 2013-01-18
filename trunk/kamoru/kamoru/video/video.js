@@ -41,12 +41,14 @@ $(document).ready(function(){
 				opacity: 0.75
 				}, 1000, function(){
 					$(this).css("background-color", "green");
+					$("#DEL-"+$(this).attr("id")).css("display", "");
 				});
 		}, function(){
 			$(this).animate({
 				opacity: 1
 				}, 500, function(){
 					$(this).css("background-color", "");
+					$("#DEL-"+$(this).attr("id")).css("display", "none");
 				});
 		});
  	$('span[id^="checkbox-exist"]').bind("click", function(){
@@ -130,15 +132,35 @@ function fnDetailSearch() {
 	var frm = document.forms["frm"];
 	frm.submit();
 }
+function fnDeleteOpus(selectedOpus) {
+	if(confirm("Really? Are you sure to delete this opus?")) {
+		if(confirm("Are you kidding? D.E.L.E.T.E [" + selectedOpus + "]?")) {
+			$("#debug").html("delete " + selectedOpus);
+			$("#selectedOpus").val(selectedOpus);
+			$("#selectedMode").val("delete");
+			var frm = document.forms["playFrm"];
+			frm.submit();
+		}
+	}
+}
+function fnEditSubtitles(selectedOpus) {
+	$("#debug").html("edit subtitles " + selectedOpus);
+	$("#selectedOpus").val(selectedOpus);
+	$("#selectedMode").val("subtitles");
+	var frm = document.forms["playFrm"];
+	frm.submit();
+}
 function fnPlay(selectedOpus) {
 	$("#debug").html("Video play " + selectedOpus);
 	$("#selectedOpus").val(selectedOpus);
+	$("#selectedMode").val("play");
 	var frm = document.forms["playFrm"];
 	frm.submit();
 }
 function fnRandomPlay() {
 	$("#debug").html("Random play start");
 	$("#selectedOpus").val("random");
+	$("#selectedMode").val("random");
 	var frm = document.forms["playFrm"];
 	frm.submit();
 }

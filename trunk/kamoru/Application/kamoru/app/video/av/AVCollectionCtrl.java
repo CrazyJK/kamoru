@@ -24,6 +24,7 @@ public class AVCollectionCtrl {
 	private String[] basePathArray;
 	
 	public final String listImageName = "listImg.jpg";
+	public final String historyName   = "history.log";
 	public final String unclassifiedStudio  = "_unclassified";
 	public final String unclassifiedOpus    = "_unclassified";
 	public final String unclassifiedActress = "_unclassified";
@@ -46,8 +47,8 @@ public class AVCollectionCtrl {
 		for(Object o : list) {
 			File f = (File)o;
 			String filename = f.getName();
-			
-			if(listImageName.equals(filename)) {
+			String absolutePath = f.getAbsolutePath();
+			if(listImageName.equals(filename) || historyName.equals(filename)) {
 				continue;
 			}
 			
@@ -95,17 +96,23 @@ public class AVCollectionCtrl {
 				avopus.setTitle(title);
 			}
 			
-			if(prop.av_extensions.indexOf(ext) > -1) {
-				avopus.setVideo(f.getAbsolutePath());
+			if(prop.video_extensions.indexOf(ext) > -1) {
+				avopus.setVideo(absolutePath);
 			} 
 			else if(prop.cover_extensions.indexOf(ext) > -1) {
-				avopus.setCover(f.getAbsolutePath());
+				avopus.setCover(absolutePath);
 			}
 			else if(prop.subtitles_extensions.indexOf(ext) > -1) {
-				avopus.setSubtitles(f.getAbsolutePath());
+				avopus.setSubtitles(absolutePath);
 			}
 			else if(prop.overview_extensions.indexOf(ext) > -1) {
-				avopus.setOverview(f.getAbsolutePath());
+				avopus.setOverview(absolutePath);
+			}
+			else if("log".indexOf(ext) > -1) {
+				avopus.setHistory(absolutePath);
+			} 
+			else {
+				avopus.setEtc(absolutePath);
 			}
 			avData.put(opus, avopus);
 		}
@@ -211,6 +218,9 @@ public class AVCollectionCtrl {
 		}
 	}
 	
+	public File getListImageFile() {
+		return new File(basePathArray[0], this.listImageName);
+	}
 	/**
 	 * @param args
 	public static void main(String[] args) {

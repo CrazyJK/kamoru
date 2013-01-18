@@ -127,10 +127,13 @@ session.setAttribute("randomHistory", history);
 								<% } %>
 								</dt>
 								<dd> 
-									<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span>
-									<span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>">Cover</span>
-									<span class="<%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">smi</span>
-									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>" onclick="fnEditOverview('<%=av.getOpus() %>')">Overview</span>
+									<span class="<%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')"          title="<%=av.getVideoPath() %>">Video</span>
+									<span class="<%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>">Cover</span>
+									<span class="<%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">smi</span>
+									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span>
+								</dd>
+								<dd id="DEL-<%=av.getOpus() %>" style="display:none;">
+									<span class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
 								</dd>
 							</dl>
 						</td>
@@ -152,10 +155,10 @@ session.setAttribute("randomHistory", history);
 					<dd><% for(String actressName : av.getActressList()) { %>
 						<span class="bgSpan" id="actressSpan" onclick="fnActressSearch('<%=actressName %>')"><%=actressName %></span>
 						<% } %></dd>
-					<dd><span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">Video</span></dd>
-					<dd><span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>" onclick="fnImageView('<%=av.getOpus() %>')">Cover</span></dd>
-					<dd><span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">smi</span></dd>
-					<dd><span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>" onclick="fnEditOverview('<%=av.getOpus() %>')">Overview</span></dd>
+					<dd><span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')"          title="<%=av.getVideoPath() %>">Video</span></dd>
+					<dd><span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>">Cover</span></dd>
+					<dd><span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">smi</span></dd>
+					<dd><span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span></dd>
 				</dl>
 			</div>
 		</li>
@@ -172,10 +175,10 @@ session.setAttribute("randomHistory", history);
 				<% for(String actressName : av.getActressList()) { %>
 				<span class="bgSpan" id="actressSpan" onclick="fnActressSearch('<%=actressName %>')"><%=actressName %></span>
 				<% } %>
-				<span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">V</span>
-				<span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>" onclick="fnImageView('<%=av.getOpus() %>')">C</span>
-				<span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">s</span>
-				<span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>" onclick="fnEditOverview('<%=av.getOpus() %>')">O</span>
+				<span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')"          title="<%=av.getVideoPath() %>">V</span>
+				<span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>" >C</span>
+				<span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">s</span>
+				<span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">O</span>
 			</div>
 		</li>
 		<% } %>
@@ -197,10 +200,10 @@ session.setAttribute("randomHistory", history);
 				<td><% for(String actressName : av.getActressList()) { %>
 					<span class="" id="actressSpan" onclick="fnActressSearch('<%=actressName %>')"><%=actressName %></span>
 				<% } %></td>	
-				<td><span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')" title="<%=av.getVideoPath() %>">V</span>
-					<span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" title="<%=av.getCover()%>" onclick="fnImageView('<%=av.getOpus() %>')">C</span>
-					<span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>">s</span>
-					<span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" title="<%=av.getOverviewTxt() %>" onclick="fnEditOverview('<%=av.getOpus() %>')">O</span></td>		
+				<td><span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')"          title="<%=av.getVideoPath() %>">V</span>
+					<span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>">C</span>
+					<span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">s</span>
+					<span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">O</span></td>		
 			</tr>
 		<% } %>
 		</table>
@@ -209,6 +212,7 @@ session.setAttribute("randomHistory", history);
 
 <form name="playFrm" target="ifrm" action="execProc.jsp" method="post">
 	<input type="hidden" name="selectedOpus" id="selectedOpus">
+	<input type="hidden" name="selectedMode" id="selectedMode">
 </form>
 <iframe name="ifrm" style="display:none; width:100%;"></iframe>
 

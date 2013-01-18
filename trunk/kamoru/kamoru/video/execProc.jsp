@@ -4,10 +4,21 @@
 request.setCharacterEncoding("UTF-8");
 //parameter
 String selectedOpus = ServletUtils.getParameter(request, "selectedOpus");
+String selectedMode = ServletUtils.getParameter(request, "selectedMode");
 
 List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");
 
-if("random".equals(selectedOpus)) {
+if("subtitles".equals(selectedMode)) {
+	for(AVOpus av : list) {
+		if(selectedOpus.equals(av.getOpus()))
+			av.editSubtitles();
+	}
+} else if("play".equals(selectedMode)) {
+	for(AVOpus av : list) {
+		if(selectedOpus.equals(av.getOpus()))
+			av.playVideo();
+	}
+} else if("random".equals(selectedMode)) {
 	Map<String, String> history = (Map<String, String>)session.getAttribute("randomHistory");
 	Random oRandom = new Random();
     int index = oRandom.nextInt(list.size());
@@ -17,24 +28,22 @@ if("random".equals(selectedOpus)) {
     	if(loopCount++ > 100) {
     		// 100번 뽑아도 안나온다.
     	    // 다 봤음.. 뭐하지...
-    	    System.out.println("All video played");
+    	    //System.out.println("All video played");
     		out.println("<script>alert('100번 뽑아도 안나온다. 다음 기회에');</script>");
     		return;
     	}
     	index = oRandom.nextInt(list.size());
     }
 	AVOpus av = list.get(index);
-    System.out.println("selected Opus : " + av.getOpus());
+    //System.out.println("selected Opus : " + av.getOpus());
 	av.playVideo();
 	out.println("<script>parent.fnOpusFocus('" + av.getOpus() + "');</script>");
 	history.put(String.valueOf(index), "play");
-	System.out.println(history.size() + " " + history.toString());
+	//System.out.println(history.size() + " " + history.toString());
 	session.setAttribute("randomHistory", history);
-}
-else {
-	for(AVOpus av : list) {
+} else if("delete".equals(selectedMode)) {
+	for(AVOpus av : list)
 		if(selectedOpus.equals(av.getOpus()))
-			av.playVideo();
-	}
+			av.deleteOpus();
 }
 %>

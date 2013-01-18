@@ -2,9 +2,12 @@ package kamoru.app.video.av;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -25,14 +28,45 @@ public class AVOpus implements Comparable<Object> {
 	protected List<String> subtitlesList;
 	protected String cover;
 	protected String overview;
+	protected String history;
+	protected List<String> etcList;
 	
 	private String sortMethod;
+
+	private final String PLAY = "play";
+	private final String OVERVIEW = "overview";
+	private final String COVER = "cover";
+	private final String SUBTITLES = "subtitles";
+	private final String DELETE = "delete";
 	
 	public AVOpus() {
 		this.videoList = new ArrayList<String>();
 		this.subtitlesList = new ArrayList<String>();
+		this.etcList = new ArrayList<String>();
 	}
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("video : ").append(this.getVideoPath()).append(",");
+		sb.append("subtitles : ").append(this.getSubtitlesPath()).append(",");
+		sb.append("cover : ").append(this.getCover()).append(",");
+		sb.append("overview : ").append(this.getOverview()).append(",");
+		sb.append("history : ").append(this.getHistory()).append(",");
+		sb.append("etc : ").append(this.getEtcPath());
+		return sb.toString();
+	}
+	
+	public String getHistory() {
+		return history;
+	}
+
+	public void setHistory(String history) {
+		this.history = history;
+	}
+	
+	public boolean existHistory() {
+		return history != null;
+	}
 	public AVOpus(String studio, String opus, List<String> actressList, String title) {
 		this();
 		this.studio = studio;
@@ -41,25 +75,80 @@ public class AVOpus implements Comparable<Object> {
 		this.title = title;
 	}
 	
+	private void saveHistory(String historyMode) {
+		history = existHistory() ? getHistory() : getOpusFileName() + ".log";
+		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String msg = null; 
+		if(historyMode.equals(PLAY)) {
+			msg = "play video : " + this.getVideoPath();
+		} else if(historyMode.equals(OVERVIEW)) {
+			msg = "write overview : " + this.getOverview();
+		} else if(historyMode.equals(COVER)) {
+			msg = "view cover : " + this.getCover();
+		} else if(historyMode.equals(SUBTITLES)) {
+			msg = "edit subtitles : " + this.getSubtitlesPath();
+		} else if(historyMode.equals(DELETE)) {
+			msg = "delete all : " + this.toString();
+		} else {
+			msg = "unknown action ";
+		}
+		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", currDate, getOpus(), historyMode, msg, System.getProperty("line.separator"));
+		
+		try {
+			FileUtils.writeStringToFile(new File(history), historymsg, true);
+			FileUtils.writeStringToFile(new File(prop.basePath.split(";")[0], "history.log"), historymsg, true);
+			logger.debug("save history - " + historymsg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void deleteOpus() {
+		this.saveHistory(this.DELETE);
+		// video list
+		if(this.existVideo())
+			for(String video : this.videoList)
+				FileUtils.deleteQuietly(new File(video));
+		// cover
+		if(this.existCover())
+			FileUtils.deleteQuietly(new File(this.cover));
+		// subtitles list
+		if(this.existSubtitles())
+		for(String subtitles : this.subtitlesList)
+			FileUtils.deleteQuietly(new File(subtitles));
+		// overview
+		if(this.existOverview())
+			FileUtils.deleteQuietly(new File(this.overview));
+		// history
+		if(this.existHistory())
+			FileUtils.deleteQuietly(new File(this.history));
+		// etc
+		if(this.existEtc())
+			for(String etc : this.etcList)
+				FileUtils.deleteQuietly(new File(etc));
+	}
 	public void saveOverViewTxt(String newOverviewTxt) {
-		String overviewPath = getOverviewPath();
+		String overviewPath = existOverview() ? getOverview() : getOpusFileName() + ".txt";
 		logger.debug("saveOverViewTxt : " + opus + " [" + overviewPath + "]");
 		try {
 			FileUtils.writeStringToFile(new File(overviewPath), newOverviewTxt, System.getProperty("file.encoding"));
 			this.setOverview(overviewPath);
+			saveHistory(OVERVIEW);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private String getOverviewPath() {
-		if(existOverview()) {
-			return getOverview();
-		} else if(existVideo()) {
+	private String getOpusFileName() {
+		if(existVideo()) {
 			String videoPath = getVideo().get(0);
-			return videoPath.substring(0, videoPath.lastIndexOf(".")) + ".txt";
+			return videoPath.substring(0, videoPath.lastIndexOf("."));
 		} else if(existCover()) {
-			return getCover().substring(0, getCover().lastIndexOf(".")) + ".txt";
+			return getCover().substring(0, getCover().lastIndexOf("."));
+		} else if(existOverview()) {
+			return getOverview().substring(0, getOverview().lastIndexOf("."));
+		} else if(existSubtitles()) {
+			String subtitlesPath = getSubtitles().get(0);
+			return subtitlesPath.substring(0, subtitlesPath.lastIndexOf("."));
 		} else {
 			return null;
 		}
@@ -99,12 +188,26 @@ public class AVOpus implements Comparable<Object> {
 	}
 	*/
 	
+	public void editSubtitles() {
+		try {
+			if(subtitlesList.size() > 0) {
+				String[] cmdArray = ArrayUtils.addAll(new String[]{prop.editor}, getSubtitlesPathArray());
+				Runtime.getRuntime().exec(cmdArray);
+				logger.debug("edit subtitles : [" + ArrayUtils.toString(cmdArray) + "]");
+				saveHistory(this.SUBTITLES);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void playVideo() {
 		try {
 			if(videoList.size() > 0) {
 				String[] cmdArray = ArrayUtils.addAll(new String[]{prop.player}, getVideoPathArray());
 				Runtime.getRuntime().exec(cmdArray);
-				logger.debug("playvideo : [" + ArrayUtils.toString(cmdArray) + "]");
+				logger.debug("play video : [" + ArrayUtils.toString(cmdArray) + "]");
+				this.saveHistory(this.PLAY);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -120,7 +223,15 @@ public class AVOpus implements Comparable<Object> {
 	private String[] getVideoPathArray() {
 		return (String[]) videoList.toArray(new String[0]);
 	}
-	
+	private String getSubtitlesPath() {
+		return ArrayUtils.toString(subtitlesList);
+	}
+	private String getEtcPath() {
+		return ArrayUtils.toString(this.etcList);
+	}
+	private String[] getSubtitlesPathArray() {
+		return (String[]) subtitlesList.toArray(new String[0]);
+	}
 	public boolean existVideo() {
 		return videoList.size() == 0 ? false : true;
 	}
@@ -133,7 +244,9 @@ public class AVOpus implements Comparable<Object> {
 	public boolean existOverview() {
 		return overview == null ? false : true;
 	}
-
+	public boolean existEtc() {
+		return etcList.size() == 0 ? false : true;
+	}
 	public String getStudio() {
 		return studio;
 	}
@@ -213,6 +326,10 @@ public class AVOpus implements Comparable<Object> {
 		this.videoList.add(videofile);
 	}
 
+	public void setEtc(String etcfile) {
+		this.etcList.add(etcfile);
+	}
+
 	public List<String> getSubtitles() {
 		return subtitlesList;
 	}
@@ -224,7 +341,9 @@ public class AVOpus implements Comparable<Object> {
 	public String getCover() {
 		return cover;
 	}
-
+	public File getCoverImageFile() {
+		return new File(cover == null ? prop.noImagePath : cover);
+	}
 	public void setCover(String cover) {
 		this.cover = cover;
 	}

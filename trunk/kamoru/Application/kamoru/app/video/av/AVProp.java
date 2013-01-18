@@ -10,9 +10,10 @@ public class AVProp {
 	protected static final Log logger = LogFactory.getLog(AVProp.class);
 
 	public String                  player = "\"C:\\Program Files (x86)\\The KMPlayer\\KMPlayer.exe\" ";
+	public String                  editor = "\"C:\\Program Files (x86)\\The KMPlayer\\KMPlayer.exe\" ";
 	public String             noImagePath = "/home/kamoru/DaumCloud/MyPictures/삽질금지.jpg";
 	public String                basePath = "/home/kamoru/ETC/collection";
-	public String           av_extensions = "avi,mpg,wmv,mp4";
+	public String        video_extensions = "avi,mpg,wmv,mp4";
 	public String        cover_extensions = "jpg,jpeg,gif";
 	public String    subtitles_extensions = "smi,srt";
 	public String     overview_extensions = "txt,html";
@@ -22,7 +23,7 @@ public class AVProp {
 
 	private static AVProp prop = new AVProp();
 	
-	public AVProp() {
+	private AVProp() {
 		loadProperties();
 	}
 	
@@ -37,9 +38,10 @@ public class AVProp {
 			InputStream in = getClass().getResourceAsStream(propertiesPath);
 			prop.load(in);
 			                 player = prop.getProperty("player", 					player).trim();
+			                 editor = prop.getProperty("editor", 					editor).trim();
 			            noImagePath = prop.getProperty("noImagePath", 				noImagePath).trim(); 
 			               basePath = prop.getProperty("basePath", 					basePath).trim(); 
-			          av_extensions = prop.getProperty("av_extensions", 			av_extensions).trim().toLowerCase(); 
+			       video_extensions = prop.getProperty("av_extensions", 			video_extensions).trim().toLowerCase(); 
 			       cover_extensions = prop.getProperty("cover_extensions", 			cover_extensions).trim().toLowerCase(); 
 			   subtitles_extensions = prop.getProperty("subtitles_extensions", 		subtitles_extensions).trim().toLowerCase(); 
 				overview_extensions = prop.getProperty("overview_extensions",  		overview_extensions).trim().toLowerCase();
@@ -47,9 +49,10 @@ public class AVProp {
 			in.close();
 			
 			logger.debug("\tplayer : " + player);
+			logger.debug("\teditor : " + editor);
 			logger.debug("\tnoImagePath : " + noImagePath);
 			logger.debug("\tbasePath : " + basePath);
-			logger.debug("\tav_extensions : " + av_extensions);
+			logger.debug("\tvideo_extensions : " + video_extensions);
 			logger.debug("\tcover_extensions : " + cover_extensions);
 			logger.debug("\tsubtitles_extensions : " + subtitles_extensions);
 			logger.debug("\toverview_extensions : " + overview_extensions);
