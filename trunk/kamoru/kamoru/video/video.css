@@ -36,6 +36,7 @@
 div#contentDiv {overflow:auto; text-align:center;}
   #totalCount {text-shadow:2px 2px 2px white;}
        #debug {text-shadow:2px 2px 2px yellow; margin-left:10px;}
+       #bgimg {text-shadow:2px 2px 2px yellow; float:right;}
            ul {padding:0px; margin:0px;}
            li {}
        .boxLI {display:inline-block;}

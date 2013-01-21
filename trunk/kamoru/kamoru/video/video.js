@@ -177,7 +177,7 @@ function fnImageView(opus) {
 	var vUrl    = "image.jsp?opus="+opus;
     var vName   = "imageview-"+opus;
     var vWidth  = 800;
-    var vHeight = 536;
+    var vHeight = 539;
     var vLeft   = (window.screen.width  - vWidth)/2;
     var vTop    = (window.screen.height - vHeight)/2;
     var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft

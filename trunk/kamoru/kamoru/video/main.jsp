@@ -32,12 +32,13 @@ List<AVOpus> list = ctrl.getAV(studio, opus, title, actress,
 Map<String, Integer> studioMap = ctrl.getStudios();
 Map<String, Integer> actressMap = ctrl.getActress();
 
-//Map<String, String> history = (Map<String, String>)session.getAttribute("randomHistory");
-Map<String, String> history = null;
+Map<String, String> history = (Map<String, String>)session.getAttribute("randomHistory");
+//Map<String, String> history = null;
 if(history == null) {
 	history = new HashMap<String, String>();
 	history.put("dummy", "dummy");
 }
+System.out.println(history.toString());
 
 session.setAttribute("AVCollectionCtrl", ctrl);
 session.setAttribute("avlist", list);
@@ -104,7 +105,7 @@ session.setAttribute("randomHistory", history);
 	</div>
 </div>
 <div id="contentDiv" class="boxDiv" style="background-image:url('image.jsp?opus=<%=ctrl.listImageName %>')">
-	<span id="totalCount">Total <%=list.size() %></span><span id="debug"></span>
+	<span id="totalCount">Total <%=list.size() %></span><span id="debug"></span><span id="bgimg" onclick="fnImageView('<%=ctrl.listImageName %>');">BG</span>
 	<% if("card".equals(listViewType)) { %>
 	<ul>
 		<% for(AVOpus av : list) { %>	

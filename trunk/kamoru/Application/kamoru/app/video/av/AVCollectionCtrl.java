@@ -23,7 +23,7 @@ public class AVCollectionCtrl {
 	public static Map<String, AVOpus> avData;
 	private String[] basePathArray;
 	
-	public final String listImageName = "listImg.jpg";
+	public final String listImageName = "listBGImg.jpg";
 	public final String historyName   = "history.log";
 	public final String unclassifiedStudio  = "_unclassified";
 	public final String unclassifiedOpus    = "_unclassified";
