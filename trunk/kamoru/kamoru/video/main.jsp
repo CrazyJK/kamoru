@@ -132,8 +132,8 @@ session.setAttribute("randomHistory", history);
 									<span class="<%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">smi</span>
 									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span>
 								</dd>
-								<dd id="DEL-<%=av.getOpus() %>" style="display:none;">
-									<span class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
+								<dd>
+									<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
 								</dd>
 							</dl>
 						</td>
@@ -158,7 +158,9 @@ session.setAttribute("randomHistory", history);
 					<dd><span class="bgSpan <%=av.existVideo()     ? "existFile" : "nonExistFile" %>" onclick="fnPlay('<%=av.getOpus() %>')"          title="<%=av.getVideoPath() %>">Video</span></dd>
 					<dd><span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>">Cover</span></dd>
 					<dd><span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">smi</span></dd>
-					<dd><span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span></dd>
+					<dd><span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span>
+						<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
+					</dd>
 				</dl>
 			</div>
 		</li>
@@ -179,6 +181,7 @@ session.setAttribute("randomHistory", history);
 				<span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>" >C</span>
 				<span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">s</span>
 				<span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">O</span>
+				<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
 			</div>
 		</li>
 		<% } %>

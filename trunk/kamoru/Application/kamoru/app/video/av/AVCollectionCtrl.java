@@ -20,7 +20,7 @@ public class AVCollectionCtrl {
 	protected static final Log logger = LogFactory.getLog(AVCollectionCtrl.class);
 
 	private AVProp prop = AVProp.getInstance();
-	private static Map<String, AVOpus> avData;
+	public static Map<String, AVOpus> avData;
 	private String[] basePathArray;
 	
 	public final String listImageName = "listImg.jpg";

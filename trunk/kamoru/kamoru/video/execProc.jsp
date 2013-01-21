@@ -6,6 +6,7 @@ request.setCharacterEncoding("UTF-8");
 String selectedOpus = ServletUtils.getParameter(request, "selectedOpus");
 String selectedMode = ServletUtils.getParameter(request, "selectedMode");
 
+AVCollectionCtrl ctrl = new AVCollectionCtrl();
 List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");
 
 if("subtitles".equals(selectedMode)) {
@@ -42,8 +43,12 @@ if("subtitles".equals(selectedMode)) {
 	//System.out.println(history.size() + " " + history.toString());
 	session.setAttribute("randomHistory", history);
 } else if("delete".equals(selectedMode)) {
-	for(AVOpus av : list)
-		if(selectedOpus.equals(av.getOpus()))
+	for(AVOpus av : list) {
+		if(selectedOpus.equals(av.getOpus())) {
 			av.deleteOpus();
+			ctrl.avData.remove(selectedOpus);
+		}
+	}
+	out.println("<script>parent.opener.document.forms[0].submit();</script>");
 }
 %>

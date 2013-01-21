@@ -41,7 +41,7 @@ public class AVProp {
 			                 editor = prop.getProperty("editor", 					editor).trim();
 			            noImagePath = prop.getProperty("noImagePath", 				noImagePath).trim(); 
 			               basePath = prop.getProperty("basePath", 					basePath).trim(); 
-			       video_extensions = prop.getProperty("av_extensions", 			video_extensions).trim().toLowerCase(); 
+			       video_extensions = prop.getProperty("video_extensions", 			video_extensions).trim().toLowerCase(); 
 			       cover_extensions = prop.getProperty("cover_extensions", 			cover_extensions).trim().toLowerCase(); 
 			   subtitles_extensions = prop.getProperty("subtitles_extensions", 		subtitles_extensions).trim().toLowerCase(); 
 				overview_extensions = prop.getProperty("overview_extensions",  		overview_extensions).trim().toLowerCase();
