@@ -1,5 +1,7 @@
 package kamoru.test;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -45,7 +47,7 @@ public class TEST {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException {
 		try {
 			System.out.println(getSizeConvert(12345679));
 			System.out.println(getSizeConvert(123456790));
@@ -139,6 +141,10 @@ public class TEST {
 	    list.add("111");
 	    list.add("222");
 	    System.out.println(list.toString());
+	    
+	    System.out.println(
+	    		InetAddress.getLocalHost().getHostName()
+	    		);
 	}
 
 }

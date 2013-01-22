@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
 <%
-	request.setCharacterEncoding("UTF-8");
+//	request.setCharacterEncoding("UTF-8");
 // parameter
 String studio 	  		= ServletUtils.getParameter(request, "studio", "");
 String opus 	  		= ServletUtils.getParameter(request, "opus", "");
@@ -29,20 +29,17 @@ List<AVOpus> list = ctrl.getAV(studio, opus, title, actress,
 		sortMethod,
 		"on".equals(sortReverse),
 		"on".equals(useCacheData));
-Map<String, Integer> studioMap = ctrl.getStudios();
-Map<String, Integer> actressMap = ctrl.getActress();
+Map<String, Integer>  studioMap = ctrl.getStudioMap();
+Map<String, Integer> actressMap = ctrl.getActressMap();
 
 Map<String, String> history = (Map<String, String>)session.getAttribute("randomHistory");
-//Map<String, String> history = null;
 if(history == null) {
 	history = new HashMap<String, String>();
 	history.put("dummy", "dummy");
 }
-System.out.println(history.toString());
 
-session.setAttribute("AVCollectionCtrl", ctrl);
 session.setAttribute("avlist", list);
-session.setAttribute("randomHistory", history);
+session.setAttribute("playHistory", history);
 %>
 <!DOCTYPE html>
 <html>
@@ -59,7 +56,7 @@ session.setAttribute("randomHistory", history);
 <body>
 <div id="headerDiv">
 	<div id="searchDiv" class="boxDiv">
-	<form name="frm" method="get">
+	<form name="frm" method="post">
 		<span class="searchGroupSpan">
 			<label for="studio"> Studio	 </label><input type="text" name="studio"  id="studio"  value="<%=studio %>"  class="schTxt">
 			<label for="opus">   Opus  	 </label><input type="text" name="opus"    id="opus"    value="<%=opus %>"    class="schTxt">
@@ -104,8 +101,8 @@ session.setAttribute("randomHistory", history);
 	<% } %>
 	</div>
 </div>
-<div id="contentDiv" class="boxDiv" style="background-image:url('image.jsp?opus=<%=ctrl.listImageName %>')">
-	<span id="totalCount">Total <%=list.size() %></span><span id="debug"></span><span id="bgimg" onclick="fnImageView('<%=ctrl.listImageName %>');">BG</span>
+<div id="contentDiv" class="boxDiv" style="background-image:url('image.jsp?opus=<%=ctrl.listBGImageName%>')">
+	<span id="totalCount">Total <%=list.size()%></span><span id="debug"></span><span id="bgimg" onclick="fnImageView('<%=ctrl.listBGImageName%>');">BG</span>
 	<% if("card".equals(listViewType)) { %>
 	<ul>
 		<% for(AVOpus av : list) { %>	

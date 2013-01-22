@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 %><%@ page import="java.util.*, java.io.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils,org.apache.commons.io.FileUtils" 
-%><%! public AVProp prop = AVProp.getInstance(); %><%
-String selectedOpus = ServletUtils.getParameter(request, "opus");
+%><%
 AVCollectionCtrl ctrl = new AVCollectionCtrl();
 
+String selectedOpus = ServletUtils.getParameter(request, "opus");
+
 File imageFile = null;
-if(ctrl.listImageName.equals(selectedOpus)) {
-	imageFile = ctrl.getListImageFile();
+if(ctrl.listBGImageName.equals(selectedOpus)) {
+	imageFile = ctrl.getListBGImageFile();
 }
 else {
 	List<AVOpus> list = (List<AVOpus>)session.getAttribute("avlist");
@@ -34,12 +35,10 @@ try {
 out = pageContext.pushBody();
 //response.setContentType("image/" + img.substring(img.lastIndexOf(".")+1));
 response.setContentType(getServletContext().getMimeType(imageFile.getName()));
-if(!ctrl.listImageName.equals(selectedOpus)) {
+if(!ctrl.listBGImageName.equals(selectedOpus)) {
 	response.setDateHeader("Expires", new Date().getTime() + 86400*1000l);
 	response.setHeader("Cache-Control", "max-age=" + 86400);
 }
 response.getOutputStream().write(b);
 response.getOutputStream().flush();
-response.getOutputStream().close();
-
-%>
+response.getOutputStream().close();%>

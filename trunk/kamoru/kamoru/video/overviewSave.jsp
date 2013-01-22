@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
 <%
-request.setCharacterEncoding("UTF-8");
-
 String selectedOpus = ServletUtils.getParameter(request, "opus");
 String overViewTxt  = ServletUtils.getParameter(request, "overViewTxt");
 

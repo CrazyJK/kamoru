@@ -15,6 +15,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * AV Bean class<br>
+ * include studio, opus, title, overview info and video, cover, subtitles, log file<br>
+ * action play, random play, editing subtitles and overview  
+ * @author kamoru
+ *
+ */
 public class AVOpus implements Comparable<Object> {
 	protected static final Log logger = LogFactory.getLog(AVOpus.class);
 	private AVProp prop = AVProp.getInstance();

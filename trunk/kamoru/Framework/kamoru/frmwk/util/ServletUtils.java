@@ -8,19 +8,31 @@ import javax.servlet.http.HttpSession;
 
 public class ServletUtils {
 
+	private static final String UTF8 = "UTF-8";
+	private static final String Latin1 = "8859_1";
+	private static final String POST = "POST";
+	private static final String GET  = "GET";
+	
 	public static String getParameter(HttpServletRequest req, String name) {
 		return getParameter(req, name, null);
 	}
 	
 	public static String getParameter(HttpServletRequest req, String name, String defaultValue) {
-		String ret = req.getParameter(name) == null ? defaultValue : req.getParameter(name);
-		if("get".equalsIgnoreCase(req.getMethod())) {
-			try {
-				ret = new String(ret.getBytes("8859_1"), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+		String value = null;
+		String method = req.getMethod();
+		try {
+			if(POST.equalsIgnoreCase(method)) {
+				req.setCharacterEncoding(UTF8);
 			}
+			value = req.getParameter(name);
+			if(value == null)
+				value = defaultValue;
+			else if(GET.equalsIgnoreCase(method))
+				value = new String(value.getBytes(Latin1), UTF8);
+			return value;
+		} catch (UnsupportedEncodingException e) {
+			// Do nothing
+			return null;
 		}
-		return ret; 
 	}
 }

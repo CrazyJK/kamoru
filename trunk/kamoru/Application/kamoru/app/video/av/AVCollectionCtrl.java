@@ -11,11 +11,16 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import kamoru.frmwk.util.FileUtils;
-
+/**
+ * AV Collection controller<br>
+ * data loading, searching, background-image setting
+ * @author kamoru
+ *
+ */
 public class AVCollectionCtrl {
 	protected static final Log logger = LogFactory.getLog(AVCollectionCtrl.class);
 
@@ -23,32 +28,41 @@ public class AVCollectionCtrl {
 	public static Map<String, AVOpus> avData;
 	private String[] basePathArray;
 	
-	public final String listImageName = "listBGImg.jpg";
-	public final String historyName   = "history.log";
+	public final String listBGImageName = "listBGImg.jpg";
+	public final String historyName   	= "history.log";
 	public final String unclassifiedStudio  = "_unclassified";
 	public final String unclassifiedOpus    = "_unclassified";
 	public final String unclassifiedActress = "_unclassified";
 	public final String unknownActress		= "_unknownActress";
+	public final String noTitle				= "NoTitle";
 	
+	/**
+	 * AV Control Unit
+	 */
 	public AVCollectionCtrl() {
 		basePathArray = prop.basePath.split(";");
 	}
 	
+	/**
+	 * load all av in basePath(av.PCname.properties)
+	 */
 	private void loadAVData() {
 		avData = new HashMap<String, AVOpus>();
 		List<File> list = new ArrayList<File>();
 		for(String basePath : basePathArray) {
-			Collection<File> found = org.apache.commons.io.FileUtils.listFiles(new File(basePath), null, true);
+			Collection<File> found = FileUtils.listFiles(new File(basePath), null, true);
 			list.addAll(found);
 		}
 		logger.debug("loadAVData : total file size : " + list.size());
 		
 		int unclassifiedNo = 0;
-		for(Object o : list) {
-			File f = (File)o;
-			String filename = f.getName();
-			String absolutePath = f.getAbsolutePath();
-			if(listImageName.equals(filename) || historyName.equals(filename)) {
+		for(File file : list) {
+			String name 		= file.getName();
+			String filename 	= AVUtils.getFileName(file);
+			String extname 		= AVUtils.getFileExtension(file);
+			String absolutePath = file.getAbsolutePath();
+
+			if(listBGImageName.equals(name) || historyName.equals(name)) {
 				continue;
 			}
 			
@@ -56,31 +70,34 @@ public class AVCollectionCtrl {
 			String[] data = filename.split("]");
 			String studio 	= null;
 			String opus 	= null;
-			String title 	= null;
-			String actress 	= null;
-			String ext 		= filename.substring(filename.lastIndexOf(".")+1).trim().toLowerCase();
+			String title 	= noTitle;
+			String actress 	= unknownActress;
 //				System.out.println(data.length);
 			switch(data.length) {
-			case 1:
+			case 4:
+				actress = AVUtils.removeUnnecessaryCharacter(data[3]);
+			case 3:
+				title 	= AVUtils.removeUnnecessaryCharacter(data[2]);
 			case 2:
+				opus 	= AVUtils.removeUnnecessaryCharacter(data[1]);
+				studio 	= AVUtils.removeUnnecessaryCharacter(data[0]);
+				break;
+			case 1:
 				// 분류되지 않는 파일
 				studio 	= unclassifiedStudio;
 				opus 	= unclassifiedOpus + unclassifiedNo++;
 				title 	= filename;
 				actress = unclassifiedActress;
 				break;
-			case 3:
-			case 4:
-				studio 	= removeUnnecessaryCharacter(data[0]);
-				opus 	= removeUnnecessaryCharacter(data[1]);
-				title 	= removeUnnecessaryCharacter(data[2]);
-				actress = unknownActress;
-				break;
 			default:
-				studio 	= removeUnnecessaryCharacter(data[0]);
-				opus 	= removeUnnecessaryCharacter(data[1]);
-				title 	= removeUnnecessaryCharacter(data[2]);
-				actress = removeUnnecessaryCharacter(data[3]);
+				studio 	= AVUtils.removeUnnecessaryCharacter(data[0]);
+				opus 	= AVUtils.removeUnnecessaryCharacter(data[1]);
+				title 	= AVUtils.removeUnnecessaryCharacter(data[2]);
+				for(int i=4; i<data.length; i++) {
+					title += " " + AVUtils.removeUnnecessaryCharacter(data[i]);
+				}
+				title	= AVUtils.removeUnnecessaryCharacter(title);
+				actress = AVUtils.removeUnnecessaryCharacter(data[3]);
 			}
 			
 //				System.out.format("%s,%4s,%6s,%5s,%s - %s%n", studio, opus, actress, ext, data.length, title);
@@ -92,23 +109,23 @@ public class AVCollectionCtrl {
 				avopus = new AVOpus();
 				avopus.setStudio(studio);
 				avopus.setOpus(opus);
-				avopus.setActress(actress);
 				avopus.setTitle(title);
+				avopus.setActress(actress);
 			}
 			
-			if(prop.video_extensions.indexOf(ext) > -1) {
+			if(prop.video_extensions.indexOf(extname) > -1) {
 				avopus.setVideo(absolutePath);
 			} 
-			else if(prop.cover_extensions.indexOf(ext) > -1) {
+			else if(prop.cover_extensions.indexOf(extname) > -1) {
 				avopus.setCover(absolutePath);
 			}
-			else if(prop.subtitles_extensions.indexOf(ext) > -1) {
+			else if(prop.subtitles_extensions.indexOf(extname) > -1) {
 				avopus.setSubtitles(absolutePath);
 			}
-			else if(prop.overview_extensions.indexOf(ext) > -1) {
+			else if(prop.overview_extensions.indexOf(extname) > -1) {
 				avopus.setOverview(absolutePath);
 			}
-			else if("log".indexOf(ext) > -1) {
+			else if("log".indexOf(extname) > -1) {
 				avopus.setHistory(absolutePath);
 			} 
 			else {
@@ -119,25 +136,20 @@ public class AVCollectionCtrl {
 		logger.debug("loadAVData : total opus size " + avData.size());
 	}
 	
-	private String removeUnnecessaryCharacter(String str) {
-		// 공백 제거, [ 빼고, 확장자 빼기
-		str = str.trim();
-		str = str.startsWith("[") ? str.substring(1) : str;
-		int lastIndex = str.lastIndexOf(".");
-		str = lastIndex > 0 ? (str.substring(lastIndex).length() < 5 ? str.substring(0, lastIndex) : str) : str;
-		return str;
-	}
-	
-	public List<AVOpus> getAV() {
-		List<AVOpus> list = new ArrayList<AVOpus>();
-		for(Object key : avData.keySet()) {
-			AVOpus av = (AVOpus)avData.get(key);
-			list.add(av);
-		}
-		Collections.sort(list);
-		return list;
-	}
-	
+	/**
+	 * returns a list that match the given conditions
+	 * @param studio
+	 * @param opus
+	 * @param title
+	 * @param actress
+	 * @param addCond if true, existVideo and existSubtitles are activated
+	 * @param existVideo
+	 * @param existSubtitles
+	 * @param sortMethod S:studio, O:opus, T:title, A:actress, M:modified
+	 * @param sortReverse if true, reverse sort
+	 * @param useCache if true, use cache data
+	 * @return
+	 */
 	public List<AVOpus> getAV(String studio, String opus, String title, String actress, 
 			boolean addCond, boolean existVideo, boolean existSubtitles, String sortMethod, boolean sortReverse, boolean useCache) {
 		logger.debug("getAV : params{studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + ", useCache:" + useCache + "}");
@@ -170,7 +182,11 @@ public class AVCollectionCtrl {
 		return list;
 	}
 	
-	public Map<String, Integer> getStudios() {
+	/**
+	 * Map generic means &lt;Studio-name, opus-count&gt;
+	 * @return studio map
+	 */
+	public Map<String, Integer> getStudioMap() {
 		Map<String, Integer> studioMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
 			AVOpus av = avData.get(key);
@@ -186,7 +202,11 @@ public class AVCollectionCtrl {
 		return retMap;
 	}
 	
-	public Map<String, Integer> getActress() {
+	/**
+	 * Map generic means &lt;actress-name, opus-count&gt;
+	 * @return actress map
+	 */
+	public Map<String, Integer> getActressMap() {
 		Map<String, Integer> actressMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
 			AVOpus av = avData.get(key);
@@ -204,35 +224,33 @@ public class AVCollectionCtrl {
 		return retMap;
 	}
 	
+	/**
+	 * background-image file copy from backgroundImagePoolPath to basePath 'listBGImg.jpg' 
+	 */
 	private void setBackgroundImage() {
 		try {
-			List<?> list = FileUtils.getFileList(prop.backgroundImagePoolPath, new String[]{"jpg"}, null, true, null);
+			String[] bgImgPoolPath = prop.backgroundImagePoolPath.split(";");
+			List<File> list = new ArrayList<File>();
+			for(String bgImgPath : bgImgPoolPath) {
+				list.addAll(FileUtils.listFiles(new File(bgImgPath), new String[]{"jpg"}, true));
+			}
 			// random select
 			Random oRandom = new Random();
 		    int index = oRandom.nextInt(list.size());
 		    File src  = (File)list.get(index);
-		    File dest = new File(basePathArray[0], listImageName);
-		    FileUtils.copy(src, dest);
+		    File dest = new File(basePathArray[0], listBGImageName);
+		    FileUtils.copyFile(src, dest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public File getListImageFile() {
-		return new File(basePathArray[0], this.listImageName);
-	}
 	/**
-	 * @param args
-	public static void main(String[] args) {
-		AVCollectionCtrl ctrl = new AVCollectionCtrl();
-		List<AVOpus> list = ctrl.getAV(null, "품번4", null, null, true);
-		for(Object o : list) {
-			AVOpus av = (AVOpus)o;
-			System.out.format("\t레이블:%s][품번:%s][배우:%s][제목:%s%n",av.getStudio(), av.getOpus(), av.getActress(), av.getTitle());
-			System.out.format("\t%s%n \t%s%n \t%s%n \t%s%n%n", av.getVideo(), av.getCover(), av.getSubtitles(), av.getOverview());
-		}
-	}
+	 * 
+	 * @return background-image file
 	 */
-	
+	public File getListBGImageFile() {
+		return new File(basePathArray[0], this.listBGImageName);
+	}
 }
 

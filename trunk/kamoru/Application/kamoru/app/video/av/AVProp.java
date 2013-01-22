@@ -1,11 +1,19 @@
 package kamoru.app.video.av;
 
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * AV properties<br>
+ * usage) private AVProp prop = AVProp.getInstance();<br>
+ * properties file location is /resource/av.[hostname].properties
+ * @author kamoru
+ *
+ */
 public class AVProp {
 	protected static final Log logger = LogFactory.getLog(AVProp.class);
 
@@ -19,15 +27,17 @@ public class AVProp {
 	public String     overview_extensions = "txt,html";
 	public String backgroundImagePoolPath = "/home/kamoru/DaumCloud/MyPictures";
 	
-	private final String propertiesPath = "/resources/av." + System.getProperty("os.name") + ".properties";
+	private String propertiesPath;
 
-	private static AVProp prop = new AVProp();
+	private static AVProp prop;
 	
 	private AVProp() {
 		loadProperties();
 	}
 	
 	public static AVProp getInstance() {
+		if(prop == null)
+			prop = new AVProp();
 		return prop;
 	}
 	
@@ -35,6 +45,8 @@ public class AVProp {
 		logger.debug("AV properties load... " + propertiesPath);
 		Properties prop = new Properties();
 		try {
+			propertiesPath = "/resources/av." + InetAddress.getLocalHost().getHostName() + ".properties";
+			
 			InputStream in = getClass().getResourceAsStream(propertiesPath);
 			prop.load(in);
 			                 player = prop.getProperty("player", 					player).trim();
