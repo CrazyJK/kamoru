@@ -27,8 +27,10 @@ public class AVUtils {
 			String[] filenamepart = StringUtils.split(filename, ']');
 //			System.out.format("%s%n", ArrayUtils.toString(filenamepart));
 			int partCount = filenamepart.length;
-			String studio = "", opus = "", title = "NoTitle", actress = "UnKnown";
+			String studio = "", opus = "", title = "NoTitle", actress = "UnKnown", date = "";
 			switch(partCount) {
+			case 5:
+				date = removeUnnecessaryCharacter(filenamepart[4]);
 			case 4:
 				actress = removeUnnecessaryCharacter(filenamepart[3]);
 			case 3:
@@ -49,9 +51,20 @@ public class AVUtils {
 				classified = 2;
 				break;
 			}
+			studio = "IDEAPOCKET".equals(studio) ? "IdeaPocket" : studio;
+			if(title.startsWith("20")) {
+				date = title.substring(0, 10);
+				title = title.substring(10);
+			}
+			title = title.replaceAll(opus, "").trim();
+			String uniqueName = "Unknown";
+			if(title.startsWith(uniqueName)) {
+				title = title.replaceAll(uniqueName, "").trim();
+				actress = uniqueName;
+			}
 			if(classified == 0) {
-				System.out.format("정리됨 : %s -> [%s][%s][%s][%s].%s%n", name, studio, opus, title, actress, extname);
-				String newName = MessageFormat.format("[{0}][{1}][{2}][{3}].{4}", studio, opus, title, actress, extname);
+				System.out.format("정리됨 : %s -> [%s][%s][%s][%s][%s].%s%n", name, studio, opus, title, actress, extname, date);
+				String newName = MessageFormat.format("[{0}][{1}][{2}][{3}][{5}].{4}", studio, opus, title, actress, extname, date);
 				try {
 					if(!name.equals(newName)) {
 						FileUtils.moveFile(file, new File(path, newName));
@@ -97,6 +110,6 @@ public class AVUtils {
 
 	
 	public static void main(String[] g) {
-		AVUtils.changeOldNameStyle("/home/kamoru/ETC/collection", "/home/kamoru/ETC/unclassified");
+		AVUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
 	}
 }

@@ -42,10 +42,10 @@ public class AVProp {
 	}
 	
 	private void loadProperties() {
-		logger.debug("AV properties load... " + propertiesPath);
 		Properties prop = new Properties();
 		try {
 			propertiesPath = "/resources/av." + InetAddress.getLocalHost().getHostName() + ".properties";
+			logger.debug("AV properties load... " + propertiesPath);
 			
 			InputStream in = getClass().getResourceAsStream(propertiesPath);
 			prop.load(in);

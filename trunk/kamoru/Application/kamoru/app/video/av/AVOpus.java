@@ -287,7 +287,13 @@ public class AVOpus implements Comparable<Object> {
 //		logger.debug(opus + " setActress name:" + name);
 		String[] nameArr = name.split(",");
 		for(String _name : nameArr) {
-//			logger.debug(opus + " setActress _name:" + _name);
+			String[] _nameArr = _name.trim().split(" ");
+			Arrays.sort(_nameArr);
+			_name = "";
+			for(String _namePart: _nameArr)
+				_name += _namePart + " ";
+			_name = _name.trim();
+			logger.debug(opus + " setActress _name:" + _name);
 			boolean bFindSameName = false;
 			for(String actress : actressList) {
 //				logger.debug(opus + " setActress actress:" + actress);
@@ -302,15 +308,15 @@ public class AVOpus implements Comparable<Object> {
 		}
 	}
 	private boolean equalsName(String name1, String name2) {
-//		logger.debug("equalsName #1: " + name1 + " - " + name2);
+		logger.debug("equalsName #1: " + name1 + " - " + name2);
 		if(name1 == null || name2 == null) return false;
 		String[] name1Arr = name1.toLowerCase().trim().split(" ");
 		String[] name2Arr = name2.toLowerCase().trim().split(" ");
-		ArrayUtils.reverse(name1Arr);
-		ArrayUtils.reverse(name2Arr);
+		Arrays.sort(name1Arr);
+		Arrays.sort(name2Arr);
 		name1 = ArrayUtils.toString(name1Arr);
 		name2 = ArrayUtils.toString(name2Arr);
-//		logger.debug("equalsName #2: " + name1 + " - " + name2);
+		logger.debug("equalsName #2: " + name1 + " - " + name2);
 		if(name1.equals(name2))
 			return true;
 		else 
