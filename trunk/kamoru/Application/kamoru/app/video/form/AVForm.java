@@ -18,16 +18,21 @@ public class AVForm extends ActionForm {
 	private boolean existSubtitles;
 	private boolean viewStudioDiv;
 	private boolean viewActressDiv;
-	private String listViewType;
-	private String sortMethod;
+	private String listViewType = "card";
+	private String sortMethod = "O";
 	private boolean sortReverse;
 	private boolean useCacheData;
-
+	
+	private String listBGImageName = "listBGImg.jpg";
+	
 	private List<AVOpus> avlist;
 	private Map<String, Integer> studioMap;
 	private Map<String, Integer> actressMap;
 
 	// getter & setter
+	public String getListBGImageName() {
+		return listBGImageName;
+	}
 	public String getStudio() {
 		return studio;
 	}

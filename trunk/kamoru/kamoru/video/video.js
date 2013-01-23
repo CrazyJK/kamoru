@@ -129,7 +129,7 @@ function fnActressSearch(actress) {
 	fnDetailSearch();
 }
 function fnDetailSearch() {
-	var frm = document.forms["frm"];
+	var frm = document.forms[0];
 	frm.submit();
 }
 function fnDeleteOpus(selectedOpus) {
