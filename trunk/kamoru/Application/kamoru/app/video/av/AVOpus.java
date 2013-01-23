@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -282,45 +283,45 @@ public class AVOpus implements Comparable<Object> {
 		this.actressList = actressList;
 	}
 	
-	public void setActress(String name) {
+	public void setActress(String names) {
 		if(actressList == null) actressList = new ArrayList<String>();
-//		logger.debug(opus + " setActress name:" + name);
-		String[] nameArr = name.split(",");
-		for(String _name : nameArr) {
-			String[] _nameArr = _name.trim().split(" ");
-			Arrays.sort(_nameArr);
-			_name = "";
-			for(String _namePart: _nameArr)
-				_name += _namePart + " ";
-			_name = _name.trim();
-			logger.debug(opus + " setActress _name:" + _name);
+		String[] namesArr = names.split(",");
+		for(String name : namesArr) {
+			name = StringUtils.join(StringUtils.split(name), " ");
 			boolean bFindSameName = false;
 			for(String actress : actressList) {
-//				logger.debug(opus + " setActress actress:" + actress);
-				if(equalsName(actress, _name)) {
+				if(equalsName(actress, name)) {
 					bFindSameName = true;
+					break;
 				}
 			}
 			if(!bFindSameName) {
-				actressList.add(_name.trim());
-//				logger.debug(opus + " setActress add:" + _name);
+				actressList.add(name.trim());
 			}
 		}
 	}
+	private String forwardNameSort(String name) {
+		if(name == null) return null;
+		String[] nameArr = StringUtils.split(name);
+		Arrays.sort(nameArr);
+		String retName = "";
+		for(String part : nameArr) {
+			retName += part + " ";
+		}
+		return retName.trim();
+	}
 	private boolean equalsName(String name1, String name2) {
-		logger.debug("equalsName #1: " + name1 + " - " + name2);
 		if(name1 == null || name2 == null) return false;
-		String[] name1Arr = name1.toLowerCase().trim().split(" ");
-		String[] name2Arr = name2.toLowerCase().trim().split(" ");
-		Arrays.sort(name1Arr);
-		Arrays.sort(name2Arr);
-		name1 = ArrayUtils.toString(name1Arr);
-		name2 = ArrayUtils.toString(name2Arr);
-		logger.debug("equalsName #2: " + name1 + " - " + name2);
-		if(name1.equals(name2))
-			return true;
-		else 
-			return false;
+		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2));
+	}
+	
+	public boolean containsActress(String name) {
+		for(String actress : actressList) {
+			if(equalsName(actress, name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String getTitle() {

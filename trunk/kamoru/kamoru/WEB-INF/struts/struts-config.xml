@@ -9,6 +9,7 @@
 		<form-bean name="sampleForm" type="kamoru.app.sample.form.SampleForm"></form-bean>
 		<form-bean name="vlistForm" type="kamoru.app.vlist.form.VlistForm"></form-bean>
 		<form-bean name="bbsForm" type="kamoru.app.bbs.form.BbsForm"></form-bean>
+		<form-bean name="avForm" type="kamoru.app.video.form.AVForm"></form-bean>
     </form-beans>
 
 <!-- ========================================= Global Exception Definitions -->
@@ -54,6 +55,11 @@
     	<action path="/bbsCreateArticleAction"     		name="bbsForm"    		parameter="createArticleAction" input="/WEB-INF/jsp/bbs/createArticle.jsp"
     		type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
     		<forward name="success" path="/bbs.do"></forward>
+    	</action>
+<!-- av -->
+    	<action path="/av"     		name="avForm"    		parameter="list"
+    		type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
+    		<forward name="success" path="/WEB-INF/jsp/video/avlist.jsp"></forward>    	
     	</action>
     	
     </action-mappings>

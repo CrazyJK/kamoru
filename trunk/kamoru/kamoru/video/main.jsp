@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
+<%@ page import="java.util.*, java.net.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
 <%
 //	request.setCharacterEncoding("UTF-8");
 // parameter
@@ -40,11 +40,17 @@ if(history == null) {
 
 session.setAttribute("avlist", list);
 session.setAttribute("playHistory", history);
+
+boolean localAccess = request.getLocalAddr().equals(request.getRemoteAddr());
+if(!localAccess) {
+	return;
+}
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 <title>AV World</title>
 <link rel="stylesheet" href="/kamoru/video/video.css" />
 <!--[if lt IE 9]>
@@ -131,7 +137,7 @@ session.setAttribute("playHistory", history);
 									<span class="<%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span>
 								</dd>
 								<dd>
-									<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
+									<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')" title="<%=av.toString() %>">Del</span>
 								</dd>
 							</dl>
 						</td>
@@ -157,7 +163,7 @@ session.setAttribute("playHistory", history);
 					<dd><span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>">Cover</span></dd>
 					<dd><span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">smi</span></dd>
 					<dd><span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">Overview</span>
-						<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
+						<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')" title="<%=av.toString() %>">Del</span>
 					</dd>
 				</dl>
 			</div>
@@ -179,7 +185,7 @@ session.setAttribute("playHistory", history);
 				<span class="bgSpan <%=av.existCover()     ? "existFile" : "nonExistFile" %>" onclick="fnImageView('<%=av.getOpus() %>')"     title="<%=av.getCover()%>" >C</span>
 				<span class="bgSpan <%=av.existSubtitles() ? "existFile" : "nonExistFile" %>" onclick="fnEditSubtitles('<%=av.getOpus() %>')" title="<%=av.getSubtitles() %>">s</span>
 				<span class="bgSpan <%=av.existOverview()  ? "existFile" : "nonExistFile" %>" onclick="fnEditOverview('<%=av.getOpus() %>')"  title="<%=av.getOverviewTxt() %>">O</span>
-				<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')">Del</span>
+				<span id="DEL-<%=av.getOpus() %>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<%=av.getOpus() %>')" title="<%=av.toString() %>">Del</span>
 			</div>
 		</li>
 		<% } %>

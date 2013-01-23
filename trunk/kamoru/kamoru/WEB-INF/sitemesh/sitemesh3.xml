@@ -1,4 +1,4 @@
 <sitemesh>
   <mapping path="/*" decorator="/WEB-INF/sitemesh/decorator.jsp"/>
-  <mapping path="/video/*" exclue="true"/>
+  <mapping path="/video/*" exclue="false"/>
 </sitemesh>

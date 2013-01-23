@@ -38,5 +38,13 @@
 		<property name="bbsDao"><ref bean="bbsDao"/></property>
 	</bean>
 	<bean id="bbsDao" class="kamoru.app.bbs.dao.BbsDaoImpl"/>
+
+	<!-- VlistLogic --> 
+	<bean id="avLogic" class="kamoru.app.video.logic.AVLogicImpl">
+		<property name="avDao">
+			<ref bean="avDao" />
+		</property>
+	</bean>
+	<bean id="avDao" class="kamoru.app.video.dao.AVDaoImpl"/>	
 	
 </beans>

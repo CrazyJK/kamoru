@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -166,7 +167,7 @@ public class AVCollectionCtrl {
 			if((studio  == null || studio.trim().length()  == 0 || studio.equalsIgnoreCase(av.getStudio())) 
 			&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(av.getOpus()))
 			&& (title   == null || title.trim().length()   == 0 || av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
-			&& (actress == null || actress.trim().length() == 0 || av.getActress().toLowerCase().indexOf(actress.toLowerCase()) > -1)
+			&& (actress == null || actress.trim().length() == 0 || av.containsActress(actress))
 			&& (addCond ? (existVideo ? av.existVideo() : !av.existVideo()) && (existSubtitles ? av.existSubtitles() : !av.existSubtitles()) : true)
 			) {
 				av.setSortMethod(sortMethod);
@@ -213,8 +214,13 @@ public class AVCollectionCtrl {
 			List<String> actressList = av.getActressList();
 			for(String actress : actressList) {
 				Integer count = new Integer(0);
+				String reverseName = reverseName(actress);
 				if(actressMap.containsKey(actress)) {
 					count = (Integer)actressMap.get(actress);
+				} 
+				else if(actressMap.containsKey(reverseName)) {
+					count = (Integer)actressMap.get(reverseName);
+					actress = reverseName;
 				}
 				count += new Integer(1);
 				actressMap.put(actress, count);
@@ -223,7 +229,16 @@ public class AVCollectionCtrl {
 		Map<String, Integer> retMap = new TreeMap<String, Integer>(actressMap);
 		return retMap;
 	}
-	
+	private String reverseName(String name) {
+		if(name == null) return null;
+		String[] nameArr = StringUtils.split(name);
+		String retName = "";
+		for(int i=nameArr.length; i>0; i--) {
+			retName += nameArr[i-1] + " ";
+		}
+		return retName.trim();
+	}
+
 	/**
 	 * background-image file copy from backgroundImagePoolPath to basePath 'listBGImg.jpg' 
 	 */

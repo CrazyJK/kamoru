@@ -17,6 +17,9 @@
   	<bean name="/bbsCreateArticleAction" class="kamoru.app.bbs.action.BbsAction">
     	<property name="bbs"><ref bean="bbs" /></property>
   	</bean>
+  	<bean name="/av" class="kamoru.app.video.action.AVAction">
+    	<property name="avLogic"><ref bean="avLogic" /></property>
+  	</bean>
 
   	<!--  Interceptors --> 
   	<bean name="logger"    class="kamoru.frmwk.springframework.interceptors.LoggingInterceptor"/>
