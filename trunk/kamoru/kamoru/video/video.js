@@ -7,7 +7,7 @@ $(document).ready(function(){
 	});
 	$('span[id^="checkbox"]').bind("click", function(){
 		var idArr = $(this).attr("id").split("-");
-		if($("#" + idArr[1]).val() == "on") {
+		if($("#" + idArr[1]).val() == "on" || $("#" + idArr[1]).val() == "true") {
 			$("#" + idArr[1]).val("off");
 			$(this).removeClass("checkbox-on");
 		} else {
@@ -16,7 +16,7 @@ $(document).ready(function(){
 		}
 	}).each(function(){
 		var idArr = $(this).attr("id").split("-");
-		if($("#" + idArr[1]).val() == "on") {
+		if($("#" + idArr[1]).val() == "on" || $("#" + idArr[1]).val() == "true") {
 			$(this).addClass("checkbox-on");
 		} else {
 			$(this).removeClass("checkbox-on");
@@ -174,7 +174,7 @@ function fnOpusFocus(opus) {
 }
 function fnImageView(opus) {
 	$("#debug").html("Cover image view : " + opus);
-	var vUrl    = "image.jsp?opus="+opus;
+	var vUrl    = "/kamoru/video/image.jsp?opus="+opus;
     var vName   = "imageview-"+opus;
     var vWidth  = 800;
     var vHeight = 539;
@@ -187,7 +187,7 @@ function fnImageView(opus) {
 }
 function fnEditOverview(opus) {
 	$("#debug").html("Overview Popup : " + opus);
-	var vUrl    = "overview.jsp?opus="+opus;
+	var vUrl    = "/kamoru/video/overview.jsp?opus="+opus;
     var vName   = "overview-"+opus;
     var vWidth  = 400;
     var vHeight = 300;

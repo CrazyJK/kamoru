@@ -54,7 +54,7 @@ public class AVCollectionCtrl {
 			Collection<File> found = FileUtils.listFiles(new File(basePath), null, true);
 			list.addAll(found);
 		}
-		logger.debug("loadAVData : total file size : " + list.size());
+		logger.info("loadAVData : total file size : " + list.size());
 		
 		int unclassifiedNo = 0;
 		for(File file : list) {
@@ -134,7 +134,7 @@ public class AVCollectionCtrl {
 			}
 			avData.put(opus, avopus);
 		}
-		logger.debug("loadAVData : total opus size " + avData.size());
+		logger.info("loadAVData : total opus size " + avData.size());
 	}
 	
 	/**
@@ -153,9 +153,9 @@ public class AVCollectionCtrl {
 	 */
 	public List<AVOpus> getAV(String studio, String opus, String title, String actress, 
 			boolean addCond, boolean existVideo, boolean existSubtitles, String sortMethod, boolean sortReverse, boolean useCache) {
-		logger.debug("getAV : params{studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + ", useCache:" + useCache + "}");
+		logger.info("getAV : params{studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + ", useCache:" + useCache + "}");
 		if(!useCache || avData == null) {
-			logger.debug("getAV : loadAVData()");
+			logger.info("getAV : loadAVData()");
 			loadAVData();
 		}
 		setBackgroundImage();
@@ -174,7 +174,7 @@ public class AVCollectionCtrl {
 				list.add(av);
 			}
 		}
-		logger.debug("getAV : found opus size " + list.size());
+		logger.info("getAV : found opus size " + list.size());
 		if(sortReverse){
 			Collections.sort(list, Collections.reverseOrder());
 		} else {

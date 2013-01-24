@@ -1,6 +1,6 @@
 # logging level : DEBUG - INFO - WARN - ERROR - FATAL 
 log4j.debug=false
-log4j.rootLogger=DEBUG, A0, A1, A2, A3, A4
+log4j.rootLogger=INFO, A0, A1, A2, A3, A4
 log4j.appender.A0=org.apache.log4j.ConsoleAppender
 log4j.appender.A0.layout=org.apache.log4j.PatternLayout
 #log4j.appender.A0.layout.ConversionPattern=%d [%5p] [%t] %l - %m%n

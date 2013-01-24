@@ -1,6 +1,7 @@
 package kamoru.app.video.action;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,10 +27,14 @@ public class AVAction extends MappingDispatchAction {
 	}
 	
 	public ActionForward list(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		logger.debug("i am here!");
 		AVForm avForm = (AVForm)form;
-		List<AVOpus> list = avLogic.getList(avForm);
+		List<AVOpus> list 				= avLogic.getList(avForm);
+		Map<String, Integer>  studioMap = avLogic.getStudioMap();
+		Map<String, Integer> actressMap = avLogic.getActressMap();
+		
 		avForm.setAvlist(list);
+		avForm.setStudioMap(studioMap);
+		avForm.setActressMap(actressMap);
 		return mapping.findForward("success");
 	}
 }

@@ -9,6 +9,7 @@ import org.apache.struts.action.ActionForm;
 
 public class AVForm extends ActionForm {
 
+	private static final long serialVersionUID = 1L;
 	private String studio;
 	private String opus;
 	private String title;
@@ -18,7 +19,7 @@ public class AVForm extends ActionForm {
 	private boolean existSubtitles;
 	private boolean viewStudioDiv;
 	private boolean viewActressDiv;
-	private String listViewType = "card";
+	private String listViewType = "box";
 	private String sortMethod = "O";
 	private boolean sortReverse;
 	private boolean useCacheData;
