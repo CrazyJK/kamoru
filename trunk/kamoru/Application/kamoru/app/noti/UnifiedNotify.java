@@ -30,7 +30,7 @@ import org.apache.commons.net.imap.IMAPClient;
 
 public class UnifiedNotify {
 
-	protected static final Log logger = LogFactory.getLog(UnifiedNotify.class);
+	protected final Log logger = LogFactory.getLog(UnifiedNotify.class);
 
 	public UnifiedNotify() {
 	}
@@ -58,7 +58,7 @@ public class UnifiedNotify {
 }
 
 class BPMnotiReceiver extends Thread {
-	protected static final Log logger = LogFactory.getLog(BPMnotiReceiver.class);
+	protected final Log logger = LogFactory.getLog(BPMnotiReceiver.class);
 	
     public void run() {
     	DatagramSocket socket = null;
@@ -69,13 +69,13 @@ class BPMnotiReceiver extends Thread {
     		socket = new DatagramSocket(port);
             do
             {
-                logger.debug("BPMnotiReceiver : Waiting to receive by port " + port);
+                logger.debug("Waiting to receive by port " + port);
                 socket.receive(packet);
                 String message = new String(packet.getData(), 0, packet.getLength());
                 InetAddress from = packet.getAddress();
                 String currDate = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new Date());
                 String stdout = "From[" + from.getHostAddress() + ":" + packet.getPort() + "]" + "[" + message + "]";
-                logger.debug("BPMnotiReceiver : received " + stdout);
+                logger.debug("received " + stdout);
                 
                 FileUtils.writeStringToFile(new File(NotiConst.notiFileDir, NotiConst.bpmnotiPrefixTXT + "_" + System.currentTimeMillis() + ".noti"), stdout, "UTF-8");
                 
@@ -89,7 +89,7 @@ class BPMnotiReceiver extends Thread {
 
 }
 class GWmailChecker extends Thread {
-	protected static final Log logger = LogFactory.getLog(GWmailChecker.class);
+	protected final Log logger = LogFactory.getLog(GWmailChecker.class);
 
 	private static int prevCount = 0;
 	
@@ -97,7 +97,7 @@ class GWmailChecker extends Thread {
 		while(true) {
 			try {
 				int count = getUnseenCount();
-				logger.debug("GWmailChecker : " + prevCount + " -> " + count);
+				logger.debug(prevCount + " -> " + count);
 				if(prevCount < count) {
 					saveNotifyFile(count);
 				}
@@ -148,7 +148,7 @@ class GWmailChecker extends Thread {
 	}
 }
 class NotiWatchdog extends Thread {
-	protected static final Log logger = LogFactory.getLog(NotiWatchdog.class);
+	protected final Log logger = LogFactory.getLog(NotiWatchdog.class);
 	
 	public NotiWatchdog() {
 		clearNotiDir();
@@ -158,7 +158,7 @@ class NotiWatchdog extends Thread {
 		while(true) {
 			try {
 				Collection<File> files = FileUtils.listFiles(new File(NotiConst.notiFileDir), new String[]{"noti"}, false);
-				logger.debug("NotiWatchdog : found file size " + files.size());
+				logger.debug("found file size " + files.size());
 				for(File file : files) {
 					NotiWindow noti = new NotiWindow(file);
 					noti.start();
@@ -174,14 +174,14 @@ class NotiWatchdog extends Thread {
 		try {
 			FileUtils.forceMkdir(new File(NotiConst.notiFileDir));
 			FileUtils.cleanDirectory(new File(NotiConst.notiFileDir));
-			logger.debug("NotiWatchdog " + NotiConst.notiFileDir + " clean");
+			logger.debug(NotiConst.notiFileDir + " clean");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 }
 class NotiWindow extends Thread {
-	protected static final Log logger = LogFactory.getLog(NotiWindow.class);
+	protected final Log logger = LogFactory.getLog(NotiWindow.class);
 
 	private File file;
 	private JFrame frame;
@@ -195,7 +195,7 @@ class NotiWindow extends Thread {
 		try {
 			String str = FileUtils.readFileToString(file, "UTF-8");
 			String[] filenames = file.getName().split("_");
-			notifyWindow(filenames[0], str);
+			popupNotifyWindow(filenames[0], str);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,7 +209,7 @@ class NotiWindow extends Thread {
 		frame.setLocation(screenSize.width/2 - 125, screenSize.height/2 - 50);
 	}
 	
-	private void notifyWindow(String title, String str) {
+	private void popupNotifyWindow(String title, String str) {
 		init();
 		frame.setTitle(title);
 		Container contentPane = frame.getContentPane();
@@ -228,7 +228,7 @@ class NotiWindow extends Thread {
 		panel.add(dateLabel);
 		contentPane.add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
-		logger.debug("NotiWindow popup ");
+		logger.debug("popup");
 		FileUtils.deleteQuietly(file);
 	}
 	
@@ -239,5 +239,5 @@ class NotiConst {
 	protected final static int bpmUDPport = 7213;
 	protected final static String gwmailPrefixTXT = "New-GW-Mail";
 	protected final static String bpmnotiPrefixTXT = "CS-RnD-Request";
-	public final static String log4jpath = "/home/kamoru/workspace/kamoru/kamoru/WEB-INF/log4j/log4j.lcf";
+	public final static String log4jpath = "/home/kamoru/bin/log4j.lcf";
 }

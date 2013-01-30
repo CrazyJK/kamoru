@@ -1,7 +1,12 @@
 # logging level : DEBUG - INFO - WARN - ERROR - FATAL 
 log4j.debug=false
-log4j.rootLogger=INFO, A0, A1, A2, A3, A4
-log4j.appender.A0=org.apache.log4j.ConsoleAppender
+log4j.rootLogger=INFO, A0
+#log4j.appender.A0=org.apache.log4j.ConsoleAppender
+log4j.appender.A0=org.apache.log4j.RollingFileAppender
+log4j.appender.A0.File=/home/kamoru/ETC/log/kamoruroot.log
+log4j.appender.A0.maxBackupIndex=10
+log4j.appender.A0.maxFileSize=10MB
+log4j.appender.A0.Append=true
 log4j.appender.A0.layout=org.apache.log4j.PatternLayout
 #log4j.appender.A0.layout.ConversionPattern=%d [%5p] [%t] %l - %m%n
 log4j.appender.A0.layout.ConversionPattern=%d [%5p] [%t] (%F) - %m%n
@@ -12,7 +17,7 @@ log4j.appender.A0.layout.ConversionPattern=%d [%5p] [%t] (%F) - %m%n
 log4j.logger.JSP=INFO, A1
 
 log4j.appender.A1=org.apache.log4j.RollingFileAppender
-log4j.appender.A1.File=kamoruweb.log
+log4j.appender.A1.File=/home/kamoru/ETC/log/kamoruweb.log
 log4j.appender.A1.maxBackupIndex=10
 log4j.appender.A1.maxFileSize=10MB
 log4j.appender.A1.Append=true
@@ -25,7 +30,7 @@ log4j.appender.A1.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
 log4j.logger.kamoru.util=WARN, A2
 
 log4j.appender.A2=org.apache.log4j.RollingFileAppender
-log4j.appender.A2.File=kamoruutil.log
+log4j.appender.A2.File=/home/kamoru/ETC/log/kamoruutil.log
 log4j.appender.A2.maxBackupIndex=10
 log4j.appender.A2.maxFileSize=10MB
 log4j.appender.A2.Append=true
@@ -38,7 +43,7 @@ log4j.appender.A2.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
 log4j.logger.kamoru.bbs=WARN, A3
 
 log4j.appender.A3=org.apache.log4j.RollingFileAppender
-log4j.appender.A3.File=kamorubbs.log
+log4j.appender.A3.File=/home/kamoru/ETC/log/kamorubbs.log
 log4j.appender.A3.maxBackupIndex=10
 log4j.appender.A3.maxFileSize=10MB
 log4j.appender.A3.Append=true
@@ -51,10 +56,17 @@ log4j.appender.A3.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
 log4j.logger.com.hs.frmwk.db=WARN, A4
 
 log4j.appender.A4=org.apache.log4j.RollingFileAppender
-log4j.appender.A4.File=bdk.log
+log4j.appender.A4.File=/home/kamoru/ETC/log/bdk.log
 log4j.appender.A4.maxBackupIndex=10
 log4j.appender.A4.maxFileSize=10MB
 log4j.appender.A4.Append=true
 log4j.appender.A4.layout=org.apache.log4j.PatternLayout
 log4j.appender.A4.layout.ConversionPattern=%5p [%t] [%d] (%F:%L) - %m%n
 
+###########################################################
+# video
+###########################################################
+log4j.logger.kamoru.app.video=DEBUG, video
+log4j.appender.video=org.apache.log4j.ConsoleAppender
+log4j.appender.video.layout=org.apache.log4j.PatternLayout
+log4j.appender.video.layout.ConversionPattern=%d [%5p] [%t] %C{1}.%M - %m%n

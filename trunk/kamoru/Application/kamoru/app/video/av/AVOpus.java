@@ -2,6 +2,7 @@ package kamoru.app.video.av;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +24,11 @@ import org.apache.commons.logging.LogFactory;
  * @author kamoru
  *
  */
-public class AVOpus implements Comparable<Object> {
+public class AVOpus implements Comparable<Object>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected static final Log logger = LogFactory.getLog(AVOpus.class);
 	private AVProp prop = AVProp.getInstance();
 

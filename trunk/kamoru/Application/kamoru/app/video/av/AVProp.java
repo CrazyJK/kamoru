@@ -1,6 +1,7 @@
 package kamoru.app.video.av;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Properties;
 
@@ -14,7 +15,10 @@ import org.apache.commons.logging.LogFactory;
  * @author kamoru
  *
  */
-public class AVProp {
+public class AVProp implements Serializable {
+
+	private static final long serialVersionUID = -4595380642230830517L;
+
 	protected static final Log logger = LogFactory.getLog(AVProp.class);
 
 	public String                  player = "\"C:\\Program Files (x86)\\The KMPlayer\\KMPlayer.exe\" ";

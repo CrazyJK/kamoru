@@ -30,6 +30,7 @@
     		<list>
 	          	<value>/vlist</value>
 	          	<value>/bbs</value>
+	          	<value>/av</value>
           	</list>
     	</property>
     	<property name="interceptorNames">
