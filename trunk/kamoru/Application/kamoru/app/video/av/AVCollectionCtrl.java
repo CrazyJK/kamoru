@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +29,7 @@ public class AVCollectionCtrl {
 	private AVProp prop = AVProp.getInstance();
 	public static Map<String, AVOpus> avData;
 	private String[] basePathArray;
+	private String[] selectedBasePathArray;
 	
 	public final String listBGImageName = "listBGImg.jpg";
 	public final String historyName   	= "history.log";
@@ -44,13 +46,24 @@ public class AVCollectionCtrl {
 		basePathArray = prop.basePath.split(";");
 	}
 	
+	
+	public String[] getBasePathArray() {
+		return basePathArray;
+	}
+
+
+	public void setBasePathArray(String[] basePathArray) {
+		this.basePathArray = basePathArray;
+	}
+
+
 	/**
 	 * load all av in basePath(av.PCname.properties)
 	 */
 	private void loadAVData() {
 		avData = new HashMap<String, AVOpus>();
 		List<File> list = new ArrayList<File>();
-		for(String basePath : basePathArray) {
+		for(String basePath : selectedBasePathArray) {
 			Collection<File> found = FileUtils.listFiles(new File(basePath), null, true);
 			list.addAll(found);
 		}
@@ -151,9 +164,21 @@ public class AVCollectionCtrl {
 	 * @param useCache if true, use cache data
 	 * @return
 	 */
-	public List<AVOpus> getAV(String studio, String opus, String title, String actress, 
+	public List<AVOpus> getAV(String[] selectedBasePathId, String studio, String opus, String title, String actress, 
 			boolean addCond, boolean existVideo, boolean existSubtitles, String sortMethod, boolean sortReverse, boolean useCache) {
-		logger.info("getAV : params{studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + ", useCache:" + useCache + "}");
+		logger.info("getAV : params[selectedBasePathId:" + ArrayUtils.toString(selectedBasePathId) + "studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + ", useCache:" + useCache + "]");
+		
+		if(selectedBasePathId != null && selectedBasePathId.length > 0) {
+			useCache = false;
+			selectedBasePathArray = new String[selectedBasePathId.length];
+			for(int i=0; i<selectedBasePathId.length; i++) {
+				selectedBasePathArray[i] = this.basePathArray[Integer.parseInt(selectedBasePathId[i])];
+			}
+		}
+		else {
+			selectedBasePathArray = basePathArray;
+		}
+		
 		if(!useCache || avData == null) {
 			logger.info("getAV : loadAVData()");
 			loadAVData();

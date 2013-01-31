@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.net.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils" %>
+<%@ page import="java.util.*, java.net.*, kamoru.app.video.av.*, kamoru.frmwk.util.ServletUtils, org.apache.commons.lang3.ArrayUtils" %>
 <%
 //	request.setCharacterEncoding("UTF-8");
 // parameter
@@ -17,12 +17,13 @@ String listViewType		= ServletUtils.getParameter(request, "listViewType", "box")
 String sortMethod		= ServletUtils.getParameter(request, "sortMethod", "O");
 String sortReverse		= ServletUtils.getParameter(request, "sortReverse", "off");
 String useCacheData		= ServletUtils.getParameter(request, "useCacheData", "off");
+String[] basePathArray  = request.getParameterValues("basePathArray");
 //System.out.format("studio[%s] opus[%s] title[%s] actress[%s] addCond[%s] existVideo[%s] existSubtitles[%s] viewStudioDiv[%s] viewActressDiv[%s] listViewType[%s] sortMethod[%s] sortReverse[%s] useCacheData[%s]%n", 
 //		studio, opus, title, actress, addCond, existVideo, existSubtitles, viewStudioDiv, viewActressDiv, listViewType, sortMethod, sortReverse, useCacheData);
-
+System.out.println(ArrayUtils.toString(basePathArray));
 AVCollectionCtrl ctrl = new AVCollectionCtrl();
 
-List<AVOpus> list = ctrl.getAV(studio, opus, title, actress, 
+List<AVOpus> list = ctrl.getAV(basePathArray, studio, opus, title, actress, 
 		"on".equals(addCond), 
 		"on".equals(existVideo), 
 		"on".equals(existSubtitles),
@@ -62,8 +63,11 @@ if(!localAccess) {
 <body>
 <div id="headerDiv">
 	<div id="searchDiv" class="boxDiv">
-	<form name="frm" method="post">
+	<form name="frm" method="get">
 		<span class="searchGroupSpan">
+			<% for(int i=0; i < ctrl.getBasePathArray().length; i++) { String basepath = ctrl.getBasePathArray()[i]; %>
+			<input type="checkbox" name="basePathArray" value="<%=i %>" <%=ArrayUtils.contains(basePathArray, String.valueOf(i)) ? "checked" : "" %> title="<%=basepath %>"/>
+			<% } %>
 			<label for="studio"> Studio	 </label><input type="text" name="studio"  id="studio"  value="<%=studio %>"  class="schTxt">
 			<label for="opus">   Opus  	 </label><input type="text" name="opus"    id="opus"    value="<%=opus %>"    class="schTxt">
 			<label for="title">  Title 	 </label><input type="text" name="title"   id="title"   value="<%=title %>"   class="schTxt">

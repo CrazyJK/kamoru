@@ -317,7 +317,7 @@ public class AVOpus implements Comparable<Object>, Serializable {
 	}
 	private boolean equalsName(String name1, String name2) {
 		if(name1 == null || name2 == null) return false;
-		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2));
+		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2)) || name1.toLowerCase().indexOf(name2.toLowerCase()) > -1;
 	}
 	
 	public boolean containsActress(String name) {
