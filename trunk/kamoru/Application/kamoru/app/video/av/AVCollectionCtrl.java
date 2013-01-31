@@ -64,6 +64,10 @@ public class AVCollectionCtrl {
 		avData = new HashMap<String, AVOpus>();
 		List<File> list = new ArrayList<File>();
 		for(String basePath : selectedBasePathArray) {
+			File baseDir = new File(basePath);
+			if(!baseDir.isDirectory()) {
+				continue;
+			}
 			Collection<File> found = FileUtils.listFiles(new File(basePath), null, true);
 			list.addAll(found);
 		}

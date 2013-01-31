@@ -17,7 +17,7 @@ public class AVDaoImpl implements AVDao {
 			boolean sortReverse, boolean useCacheData) {
 		ctrl = new AVCollectionCtrl();
 		sortMethod = sortMethod == null ? "O" : sortMethod;
-		List<AVOpus> list = ctrl.getAV(studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse, useCacheData);
+		List<AVOpus> list = ctrl.getAV(null, studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse, useCacheData);
 		return list;
 	}
 
