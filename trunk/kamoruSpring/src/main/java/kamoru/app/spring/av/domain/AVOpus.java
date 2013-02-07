@@ -1,4 +1,4 @@
-package kamoru.app.spring.av;
+package kamoru.app.spring.av.domain;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
  * @author kamoru
  *
  */
-@Component
 public class AVOpus implements Comparable<Object>, Serializable {
 	/**
 	 * 

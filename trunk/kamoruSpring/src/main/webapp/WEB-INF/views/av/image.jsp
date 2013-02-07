@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-%><%@ page import="java.util.*, java.io.*, 
-	kamoru.app.spring.av.*, kamoru.frmwk.util.ServletUtils,
-	org.apache.commons.io.FileUtils, org.apache.commons.lang3.ArrayUtils,
-	org.springframework.web.context.support.WebApplicationContextUtils, org.springframework.web.context.WebApplicationContext" 
+%><%@ page import="java.util.*, java.io.*, org.apache.commons.io.FileUtils" 
 %><%
 
 File imageFile = (File)request.getAttribute("imageFile");

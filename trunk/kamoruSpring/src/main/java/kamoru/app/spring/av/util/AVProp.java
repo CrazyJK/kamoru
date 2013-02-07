@@ -1,4 +1,4 @@
-package kamoru.app.spring.av;
+package kamoru.app.spring.av.util;
 
 import java.io.InputStream;
 import java.io.Serializable;
