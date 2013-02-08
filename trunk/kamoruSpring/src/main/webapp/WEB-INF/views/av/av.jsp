@@ -65,7 +65,7 @@
 	</div>
 </div>
 
-<div id="contentDiv" class="boxDiv" style="background-image:url('<c:url value="/av/image" />')">
+<div id="contentDiv" class="boxDiv" style="background-image:url('<c:url value="/av/image/bg" />')">
 	<span id="totalCount">Total <c:out value="${fn:length(list)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnImageView();">BG</span>
 	<c:choose>
 		<c:when test="${params['listViewType'] eq 'card' }">
@@ -112,7 +112,7 @@
 			<c:forEach items="${list}" var="av">
 			<li id="<c:out value="${av.opus}"/>" class="boxLI">
 				<div class="opusBoxDiv">                   
-					<dl style="background-image:url('<c:url value="/av/image"><c:param name="opus" value="${av.opus}"/></c:url>'); background-size:300px 200px; height:200px;">
+					<dl style="background-image:url('<c:url value="/av/image/${av.opus}"/>'); background-size:300px 200px; height:200px;">
 						<dt><span class="bgSpan" id="titleSpan"><c:out value="${av.title}"/></span></dt>
 						<dd><span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${av.studio}"/>')"><c:out value="${av.studio}"/></span></dd>
 						<dd><span class="bgSpan" id="opusSpan"><c:out value="${av.opus}"/></span></dd>

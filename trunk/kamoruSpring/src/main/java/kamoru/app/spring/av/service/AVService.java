@@ -16,4 +16,8 @@ public interface AVService {
 	String action(String mode, String opus);
 	String getOverview(String opus);
 	void getOverviewSave(String opus, String overViewTxt);
+	File getImageFile(String opus);
+	AVOpus getAVOpus(String opus);
+	void playAV(String opus);
+	void callEditorForSmi(String opus);
 }

@@ -352,14 +352,16 @@ public class AVCollectionCtrl implements AVService {
 		File imageFile = null;
 		if(listBGImageName.equals(selectedOpus) || selectedOpus.trim().length() == 0) {
 			imageFile = getListBGImageFile();
-			model.addAttribute("isBGImage", true);
+			if(model != null)
+				model.addAttribute("isBGImage", true);
 		}
 		else {
 			for(Object key : avData.keySet()) {
 				if(selectedOpus.equals(key)) {
 					AVOpus av = avData.get(key);
 					imageFile = av.getCoverImageFile();
-					model.addAttribute("isBGImage", false);
+					if(model != null)
+						model.addAttribute("isBGImage", false);
 				}
 			}
 		}		
@@ -440,6 +442,21 @@ public class AVCollectionCtrl implements AVService {
 				av.saveOverViewTxt(newOverviewTxt);
 			}
 		}
+	}
+
+	@Override
+	public File getImageFile(String opus) {
+		return getImageFile(opus, null);
+	}
+
+	@Override
+	public AVOpus getAVOpus(String opus) {
+		for(Object key : avData.keySet()) {
+			if(opus.equals(key)) {
+				return avData.get(key);
+			}
+		}
+		return null;
 	}
 
 

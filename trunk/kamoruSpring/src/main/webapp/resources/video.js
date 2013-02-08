@@ -194,7 +194,7 @@ function fnImageView(opus) {
 }
 function fnEditOverview(opus) {
 	$("#debug").html("Overview Popup : " + opus);
-	var vUrl    = "/spring/av/overview?opus="+opus;
+	var vUrl    = "/kamoru/av/" + opus + "/overview";
     var vName   = "overview-"+opus;
     var vWidth  = 400;
     var vHeight = 300;

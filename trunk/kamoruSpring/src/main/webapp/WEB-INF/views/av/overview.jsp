@@ -22,7 +22,7 @@ function overviewSave()
 </script>
 </head>
 <body>
-<form method="post" name="overviewFrm" action="<c:url value="/av/overviewSave" />">
+<form method="post" name="overviewFrm" action="<c:url value="/av/${opus}/overview" />">
 <input type="hidden" name="opus" value="${opus }">
 <textarea class="overviewTxt" name="overViewTxt">${overview }</textarea>
 </form>
