@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix='form'   uri='http://www.springframework.org/tags/form'%>
-<%-- <c:set var="list" value="${list}" scope="session"/> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,12 +64,12 @@
 	</div>
 </div>
 
-<div id="contentDiv" class="boxDiv" style="background-image:url('<c:url value="/av/image/bg" />')">
-	<span id="totalCount">Total <c:out value="${fn:length(list)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnImageView();">BG</span>
+<div id="contentDiv" class="boxDiv" style="background-image:url('<c:url value="/video/bgimage" />')">
+	<span id="totalCount">Total <c:out value="${fn:length(videoList)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnBGImageView();">BG</span>
 	<c:choose>
 		<c:when test="${params['listViewType'] eq 'card' }">
 		<ul>
-			<c:forEach items="${list}" var="av">
+			<c:forEach items="${videoList}" var="av">
 			<li id="${av.opus}" class="boxLI">
 				<div class="opusBoxDiv">
 					<table>
@@ -79,7 +78,7 @@
 						</tr>
 						<tr valign="top">
 							<td width="110px">
-								<img src="<c:url value="/av/image"><c:param name="opus" value="${av.opus}"/></c:url>" height="120px" onclick="fnImageView('${av.opus}')"/>
+								<img src="<c:url value="/video/${av.opus}/cover" />" height="120px" onclick="fnImageView('${av.opus}')"/>
 							</td>
 							<td>
 								<dl>
@@ -109,11 +108,11 @@
 		</c:when>
 		<c:when test="${params['listViewType'] eq 'box'}">
 		<ul>
-			<c:forEach items="${list}" var="av">
+			<c:forEach items="${videoList}" var="av">
 			<li id="<c:out value="${av.opus}"/>" class="boxLI">
 				<div class="opusBoxDiv">                   
-					<dl style="background-image:url('<c:url value="/av/image/${av.opus}"/>'); background-size:300px 200px; height:200px;">
-						<dt><span class="bgSpan" id="titleSpan"><c:out value="${av.title}"/></span></dt>
+					<dl style="background-image:url('<c:url value="/video/${av.opus}/cover" />'); background-size:300px 200px; height:200px;">
+						<dt><span class="bgSpan" id="titleSpan" onclick="fnVideoDetail('${av.opus}')"><c:out value="${av.title}"/></span></dt>
 						<dd><span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${av.studio}"/>')"><c:out value="${av.studio}"/></span></dd>
 						<dd><span class="bgSpan" id="opusSpan"><c:out value="${av.opus}"/></span></dd>
 						<dd>
@@ -135,7 +134,7 @@
 		</c:when>
 		<c:when test="${params['listViewType'] eq 'sbox'}">
 		<ul>
-			<c:forEach items="${list}" var="av">
+			<c:forEach items="${videoList}" var="av">
 			<li id="<c:out value="${av.opus}"/>" class="sboxLI">
 				<div class="opusSBoxDiv">
 					<span class="bgSpan" id="titleSpan"><c:out value="${av.title}"/></span>
@@ -163,7 +162,7 @@
 				<th>Actress</th>
 				<th>Info</th>
 			</tr>
-			<c:forEach items="${list}" var="av">
+			<c:forEach items="${videoList}" var="av">
 			<tr>
 				<td><span class="" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${av.studio}"/>')"><c:out value="${av.studio}"/></span></td>		
 				<td><span class="" id="opusSpan"><c:out value="${av.opus}"/></span></td>		
@@ -181,14 +180,14 @@
 		</table>
 		</c:when>
 		<c:otherwise>
-			<c:forEach items="${list}" var="av">
+			<c:forEach items="${videoList}" var="av">
 				<c:out value="${av.studio}"/> <c:out value="${av.opus}"/> <c:out value="${av.title}"/> 
 			</c:forEach>		
 		</c:otherwise>
 	</c:choose>
 </div>
 
-<form name="actionFrm" target="ifrm" action="<c:url value="/av/action"/>" method="post">
+<form name="actionFrm" target="ifrm">
 	<input type="hidden" name="opus" id="selectedOpus">
 	<input type="hidden" name="mode" id="selectedMode">
 </form>

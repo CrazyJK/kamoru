@@ -1,4 +1,4 @@
-package kamoru.app.spring.av.domain;
+package kamoru.app.spring.video.domain;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +27,12 @@ import org.springframework.stereotype.Component;
  * @author kamoru
  *
  */
-public class AVOpus implements Comparable<Object>, Serializable {
+public class Video implements Comparable<Object>, Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected static final Log logger = LogFactory.getLog(AVOpus.class);
+	protected static final Log logger = LogFactory.getLog(Video.class);
 
 	String basePath;
 	String editor;
@@ -59,12 +59,12 @@ public class AVOpus implements Comparable<Object>, Serializable {
 	private final String SUBTITLES = "subtitles";
 	private final String DELETE = "delete";
 	
-	public AVOpus() {
+	public Video() {
 		this.videoList = new ArrayList<String>();
 		this.subtitlesList = new ArrayList<String>();
 		this.etcList = new ArrayList<String>();
 	}
-	public AVOpus(String studio, String opus, List<String> actressList, String title) {
+	public Video(String studio, String opus, List<String> actressList, String title) {
 		this();
 		this.studio = studio;
 		this.opus = opus;
@@ -72,7 +72,7 @@ public class AVOpus implements Comparable<Object>, Serializable {
 		this.title = title;
 	}
 	
-	public AVOpus(String basePath, String editor, String player, String noImagePath) {
+	public Video(String basePath, String editor, String player, String noImagePath) {
 		this();
 		this.basePath = basePath;
 		this.editor = editor;
@@ -395,7 +395,7 @@ public class AVOpus implements Comparable<Object>, Serializable {
 	}
 	@Override
 	public int compareTo(Object o) {
-		AVOpus comp = (AVOpus)o;
+		Video comp = (Video)o;
 		String thisStr = null;
 		String compStr = null;
 		if("S".equals(sortMethod)) {

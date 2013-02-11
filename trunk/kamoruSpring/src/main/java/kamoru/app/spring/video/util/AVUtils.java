@@ -1,11 +1,11 @@
-package kamoru.app.spring.av.util;
+package kamoru.app.spring.video.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Collection;
 
-import kamoru.app.spring.av.service.AVCollectionCtrl;
+import kamoru.app.spring.video.dao.VideoFileDaoImpl;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class AVUtils {
 
-	static AVCollectionCtrl ctrl = new AVCollectionCtrl();
+	static VideoFileDaoImpl ctrl = new VideoFileDaoImpl();
 	
 	public static void changeOldNameStyle(String path, String unclassifiedPath) {
 		Collection<File> found = FileUtils.listFiles(new File(path), null, true);

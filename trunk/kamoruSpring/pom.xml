@@ -195,6 +195,11 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-app</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>

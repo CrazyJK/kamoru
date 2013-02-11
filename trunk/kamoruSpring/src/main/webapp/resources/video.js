@@ -152,23 +152,20 @@ function fnDeleteOpus(selectedOpus) {
 }
 function fnEditSubtitles(selectedOpus) {
 	$("#debug").html("edit subtitles " + selectedOpus);
-	$("#selectedOpus").val(selectedOpus);
-	$("#selectedMode").val("subtitles");
 	var frm = document.forms["actionFrm"];
+	frm.action = "/spring/video/" + selectedOpus + "/subtitles";
 	frm.submit();
 }
 function fnPlay(selectedOpus) {
 	$("#debug").html("Video play " + selectedOpus);
-	$("#selectedOpus").val(selectedOpus);
-	$("#selectedMode").val("play");
 	var frm = document.forms["actionFrm"];
+	frm.action = "/spring/video/" + selectedOpus + "/play";
 	frm.submit();
 }
 function fnRandomPlay() {
 	$("#debug").html("Random play start");
-	$("#selectedOpus").val("random");
-	$("#selectedMode").val("random");
 	var frm = document.forms["actionFrm"];
+	frm.action = "/spring/video/randomplay";
 	frm.submit();
 }
 function fnOpusFocus(opus) {
@@ -179,9 +176,21 @@ function fnOpusFocus(opus) {
 		$(this).css("background-color", "green");
 	});
 }
+function fnBGImageView() {
+	var vUrl    = "/spring/video/bgimage?curr=y";
+    var vName   = "imageview-"+opus;
+    var vWidth  = 800;
+    var vHeight = 539;
+    var vLeft   = (window.screen.width  - vWidth)/2;
+    var vTop    = (window.screen.height - vHeight)/2;
+    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
+    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
+          		   "status=0,menubar=0,scrollbars=0,resizable=1";
+    window.open(vUrl, vName, vSpecs);	
+}
 function fnImageView(opus) {
 	$("#debug").html("Cover image view : " + opus);
-	var vUrl    = "/spring/av/image?opus=" + (opus ? opus : "") ;
+	var vUrl    = "/spring/video/" + opus + "/cover";
     var vName   = "imageview-"+opus;
     var vWidth  = 800;
     var vHeight = 539;
@@ -194,12 +203,24 @@ function fnImageView(opus) {
 }
 function fnEditOverview(opus) {
 	$("#debug").html("Overview Popup : " + opus);
-	var vUrl    = "/kamoru/av/" + opus + "/overview";
+	var vUrl    = "/spring/video/" + opus + "/overview";
     var vName   = "overview-"+opus;
     var vWidth  = 400;
     var vHeight = 300;
     var vLeft   = window.event.x;
     var vTop    = window.event.y;
+    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
+    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
+          		   "status=0,menubar=0,scrollbars=0,resizable=1";
+    window.open(vUrl, vName, vSpecs);	
+}
+function fnVideoDetail(opus) {
+	var vUrl    = "/spring/video/" + opus;
+    var vName   = "overview-"+opus;
+    var vWidth  = 850;
+    var vHeight = 800;
+    var vLeft   = (window.screen.width  - vWidth)/2;
+    var vTop    = (window.screen.height - vHeight)/2;
     var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
     			 + "toolbar=0,location=0,directories=0,titlebar=0"+
           		   "status=0,menubar=0,scrollbars=0,resizable=1";

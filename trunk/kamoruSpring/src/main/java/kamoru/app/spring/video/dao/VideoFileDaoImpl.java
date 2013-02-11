@@ -1,4 +1,4 @@
-package kamoru.app.spring.av.service;
+package kamoru.app.spring.video.dao;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
-import kamoru.app.spring.av.domain.AVOpus;
-import kamoru.app.spring.av.util.AVUtils;
+import kamoru.app.spring.video.domain.Video;
+import kamoru.app.spring.video.util.AVUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,12 +33,11 @@ import org.springframework.ui.Model;
  *
  */
 @Component
-public class AVCollectionCtrl implements AVService {
-	protected static final Log logger = LogFactory.getLog(AVCollectionCtrl.class);
+public class VideoFileDaoImpl implements VideoDao {
+	protected static final Log logger = LogFactory.getLog(VideoFileDaoImpl.class);
 
-//	private AVProp prop = AVProp.getInstance();
-	public Map<String, AVOpus> avData;
-	private List<AVOpus> list; 
+	public Map<String, Video> avData;
+	private List<Video> list; 
 	private static String[] basePathArray;
 	private String[] selectedBasePathArray;
 	Map<String, String> history;
@@ -51,6 +50,7 @@ public class AVCollectionCtrl implements AVService {
 	public final String unknownActress		= "_unknownActress";
 	public final String noTitle				= "NoTitle";
 	private final String DEFAULT_SORTMETHOD = "O";
+	private File currBGImageFile;
 	
 	@Value("#{avConfig['basePath']}") String basePath;
 	@Value("#{avConfig['video_extensions']}") String video_extensions;
@@ -66,7 +66,7 @@ public class AVCollectionCtrl implements AVService {
 	/**
 	 * AV Control Unit
 	 */
-	public AVCollectionCtrl() {
+	public VideoFileDaoImpl() {
 //		basePathArray = basePath.split(";");
 		logger.debug("AVCollectionCtrl create!");
 	}
@@ -92,7 +92,7 @@ public class AVCollectionCtrl implements AVService {
 	 * load all av in basePath(av.PCname.properties)
 	 */
 	private void loadAVData() {
-		avData = new HashMap<String, AVOpus>();
+		avData = new HashMap<String, Video>();
 		List<File> list = new ArrayList<File>();
 		for(String basePath : selectedBasePathArray) {
 			File baseDir = new File(basePath);
@@ -151,11 +151,11 @@ public class AVCollectionCtrl implements AVService {
 			
 //				System.out.format("%s,%4s,%6s,%5s,%s - %s%n", studio, opus, actress, ext, data.length, title);
 			
-			AVOpus avopus = null;
+			Video avopus = null;
 			if(avData.containsKey(opus)) {
-				avopus = (AVOpus)avData.get(opus);
+				avopus = (Video)avData.get(opus);
 			} else {
-				avopus = new AVOpus(this.basePath, this.editor, this.player, this.noImagePath);
+				avopus = new Video(this.basePath, this.editor, this.player, this.noImagePath);
 				avopus.setStudio(studio);
 				avopus.setOpus(opus);
 				avopus.setTitle(title);
@@ -185,21 +185,6 @@ public class AVCollectionCtrl implements AVService {
 		logger.info("loadAVData : total opus size " + avData.size());
 	}
 	
-	public List<AVOpus> getAV(Map<String, String> params) {
-		String[] selectedBasePathId = null; 
-		String studio = params.get("studio"); 
-		String opus = params.get("opus");
-		String title = params.get("title");
-		String actress = params.get("actress");
-		boolean addCond = BooleanUtils.toBoolean(params.get("addCond"));
-		boolean existVideo = BooleanUtils.toBoolean(params.get("existVideo")); 
-		boolean existSubtitles = BooleanUtils.toBoolean(params.get("existSubtitles")); 
-		String sortMethod = params.get("sortMethod"); 
-		boolean sortReverse = BooleanUtils.toBoolean(params.get("sortReverse")); 
-		boolean useCacheData = BooleanUtils.toBoolean(params.get("useCacheData"));
-		return getAV(selectedBasePathId, studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse, useCacheData);
-	}
-
 	/**
 	 * returns a list that match the given conditions
 	 * @param studio
@@ -214,7 +199,7 @@ public class AVCollectionCtrl implements AVService {
 	 * @param useCache if true, use cache data
 	 * @return
 	 */
-	public List<AVOpus> getAV(String[] selectedBasePathId, String studio, String opus, String title, String actress, 
+	public List<Video> getAV(String[] selectedBasePathId, String studio, String opus, String title, String actress, 
 			boolean addCond, boolean existVideo, boolean existSubtitles, String sortMethod, boolean sortReverse, boolean useCache) {
 		logger.info("getAV : params[selectedBasePathId:" + ArrayUtils.toString(selectedBasePathId) + ", studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + ", useCache:" + useCache + "]");
 		
@@ -235,13 +220,13 @@ public class AVCollectionCtrl implements AVService {
 			logger.info("getAV : loadAVData()");
 			loadAVData();
 		}
-		sortMethod = StringUtils.isEmpty(sortMethod) ? DEFAULT_SORTMETHOD : sortMethod;
+
 		setBackgroundImage();
 		
-		List<AVOpus> list = new ArrayList<AVOpus>();
+		List<Video> list = new ArrayList<Video>();
 		for(Object key : avData.keySet()) {
 //			System.out.println("key=" + key);
-			AVOpus av = (AVOpus)avData.get(key);
+			Video av = (Video)avData.get(key);
 			if((studio  == null || studio.trim().length()  == 0 || studio.equalsIgnoreCase(av.getStudio())) 
 			&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(av.getOpus()))
 			&& (title   == null || title.trim().length()   == 0 || av.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
@@ -269,7 +254,7 @@ public class AVCollectionCtrl implements AVService {
 	public Map<String, Integer> getStudioMap() {
 		Map<String, Integer> studioMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
-			AVOpus av = avData.get(key);
+			Video av = avData.get(key);
 			String studio = av.getStudio().toUpperCase();
 			Integer count = new Integer(0);
 			if(studioMap.containsKey(studio)) {
@@ -289,7 +274,7 @@ public class AVCollectionCtrl implements AVService {
 	public Map<String, Integer> getActressMap() {
 		Map<String, Integer> actressMap = new HashMap<String, Integer>();
 		for(Object key : avData.keySet()) {
-			AVOpus av = avData.get(key);
+			Video av = avData.get(key);
 			List<String> actressList = av.getActressList();
 			for(String actress : actressList) {
 				Integer count = new Integer(0);
@@ -331,9 +316,9 @@ public class AVCollectionCtrl implements AVService {
 			// random select
 			Random oRandom = new Random();
 		    int index = oRandom.nextInt(list.size());
-		    File src  = (File)list.get(index);
-		    File dest = new File(basePathArray[0], listBGImageName);
-		    FileUtils.copyFile(src, dest);
+		    File src  = list.get(index);
+		    currBGImageFile = new File(basePathArray[0], listBGImageName);
+		    FileUtils.copyFile(src, currBGImageFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -347,7 +332,6 @@ public class AVCollectionCtrl implements AVService {
 		return new File(basePathArray[0], this.listBGImageName);
 	}
 
-	@Override
 	public File getImageFile(String selectedOpus, Model model) {
 		File imageFile = null;
 		if(listBGImageName.equals(selectedOpus) || selectedOpus.trim().length() == 0) {
@@ -358,7 +342,7 @@ public class AVCollectionCtrl implements AVService {
 		else {
 			for(Object key : avData.keySet()) {
 				if(selectedOpus.equals(key)) {
-					AVOpus av = avData.get(key);
+					Video av = avData.get(key);
 					imageFile = av.getCoverImageFile();
 					if(model != null)
 						model.addAttribute("isBGImage", false);
@@ -368,95 +352,105 @@ public class AVCollectionCtrl implements AVService {
 		return imageFile;
 	}
 
-	@Override
-	public String action(String selectedMode, String selectedOpus) {
-		String result = new String();
-//		AVCollectionCtrl ctrl 		= new AVCollectionCtrl();
-//		List<AVOpus> list 			= (List<AVOpus>)session.getAttribute("avlist");
-//		Map<String, String> history = (Map<String, String>)session.getAttribute("playHistory");
-
-		if("subtitles".equals(selectedMode)) {
-			for(Object key : avData.keySet()) {
-				if(selectedOpus.equals(key)) {
-					AVOpus av = avData.get(key);
-					av.editSubtitles();
-				}
-			}
-		} 
-		else if("play".equals(selectedMode)) {
-			for(Object key : avData.keySet()) {
-				if(selectedOpus.equals(key)) {
-					AVOpus av = avData.get(key);
-					av.playVideo();
-					history.put(av.getOpus(), "play");
-				}
-			}
-		} 
-		else if("random".equals(selectedMode)) {
-			int listSize = list.size();
-			int loopCount = 0;    
-			Random random = new Random();
-			AVOpus av = list.get(random.nextInt(listSize));
-
-		    while(history.containsKey(av.getOpus())) {
-		    	if(loopCount++ > 100) {
-		    		result = "<script>alert('100번 뽑아도 안나온다. 다음 기회에');</script>";
-		    		break;
-		    	}
-		    	av = list.get(random.nextInt(listSize));
-		    }
-			av.playVideo();
-			history.put(av.getOpus(), "play");
-			result += "<script>parent.fnOpusFocus('" + av.getOpus() + "');</script>";
-		} 
-		else if("delete".equals(selectedMode)) {
-			for(Object key : avData.keySet()) {
-				if(selectedOpus.equals(key)) {
-					AVOpus av = avData.get(key);
-					av.deleteOpus();
-					avData.remove(selectedOpus);
-				}
-			}
-			result = "<script>parent.document.forms[0].submit();</script>";
-		}
-		System.out.println(history.toString());
-		return result;
-	}
-
-	@Override
-	public String getOverview(String selectedOpus) {
-		for(Object key : avData.keySet()) {
-			if(selectedOpus.equals(key)) {
-				AVOpus av = avData.get(key);
-				return av.getOverviewTxt();
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public void getOverviewSave(String selectedOpus, String newOverviewTxt) {
-		for(Object key : avData.keySet()) {
-			if(selectedOpus.equals(key)) {
-				AVOpus av = avData.get(key);
-				av.saveOverViewTxt(newOverviewTxt);
-			}
-		}
-	}
-
-	@Override
 	public File getImageFile(String opus) {
 		return getImageFile(opus, null);
 	}
 
 	@Override
-	public AVOpus getAVOpus(String opus) {
-		for(Object key : avData.keySet()) {
-			if(opus.equals(key)) {
-				return avData.get(key);
-			}
+	public List<Video> getVideoListByParams(Map<String, String> params) {
+		String[] selectedBasePathId = null; 
+		String studio = params.get("studio"); 
+		String opus = params.get("opus");
+		String title = params.get("title");
+		String actress = params.get("actress");
+		boolean addCond = BooleanUtils.toBoolean(params.get("addCond"));
+		boolean existVideo = BooleanUtils.toBoolean(params.get("existVideo")); 
+		boolean existSubtitles = BooleanUtils.toBoolean(params.get("existSubtitles"));
+		String listViewType = params.get("listViewType");
+		if(listViewType == null) {
+			listViewType = "box";
+			params.put("listViewType ", listViewType); 
 		}
-		return null;
+		String sortMethod = params.get("sortMethod");
+		if(sortMethod == null) {
+			sortMethod = DEFAULT_SORTMETHOD;
+			params.put("sortMethod", sortMethod);
+		}
+		boolean sortReverse = BooleanUtils.toBoolean(params.get("sortReverse")); 
+		boolean useCacheData = BooleanUtils.toBoolean(params.get("useCacheData"));
+		return getAV(selectedBasePathId, studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse, useCacheData);
+	}
+
+	@Override
+	public List<Video> getVideoListByActress(String actress) {
+		return this.getAV(null, null, null, null, actress, false, false, false, null, false, false);
+	}
+
+	@Override
+	public List<Video> getVideoListByStudio(String studio) {
+		return this.getAV(null, studio, null, null, null, false, false, false, null, false, false);
+	}
+
+	@Override
+	public List<Video> getVideoListByTitle(String title) {
+		return this.getAV(null, null, null, title, null, false, false, false, null, false, false);
+	}
+
+	@Override
+	public Video getVideo(String opus) {
+		if(avData == null) {
+			loadAVData();
+		}
+		return avData.get(opus);
+	}
+
+	@Override
+	public void saveOverview(String opus, String overViewTxt) {
+		getVideo(opus).saveOverViewTxt(overViewTxt);
+	}
+
+	@Override
+	public void deleteVideo(String opus) {
+		getVideo(opus).deleteOpus();
+		avData.remove(opus);
+	}
+
+	@Override
+	public void playVideo(String opus) {
+		getVideo(opus).playVideo();
+		history.put(opus, "play");
+	}
+
+	@Override
+	public void editSubtitles(String opus) {
+		getVideo(opus).editSubtitles();
+	}
+
+	@Override
+	public void playRandomVideo() {
+		int listSize = list.size();
+		int loopCount = 0;    
+		Random random = new Random();
+		Video av = list.get(random.nextInt(listSize));
+
+	    while(history.containsKey(av.getOpus())) {
+	    	if(loopCount++ > 100) {
+	    		logger.warn("100번 뽑아도 안나온다. 다음 기회에");
+	    		break;
+	    	}
+	    	av = list.get(random.nextInt(listSize));
+	    }
+		av.playVideo();
+		history.put(av.getOpus(), "play");
+	}
+
+	@Override
+	public File getBGImageFile(String curr) {
+		if(curr == null || curr.trim().length() == 0) {
+			this.setBackgroundImage();
+		}
+		logger.debug(currBGImageFile.getAbsolutePath());
+		return currBGImageFile;
 	}
 
 
