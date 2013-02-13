@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="http://localhost:8080/kamoru/favicon_kamoru.ico" />">
 <title>av collection</title>
 <link rel="stylesheet" href="<c:url value="/resources/video.css" />" />
 <!--[if lt IE 9]>
