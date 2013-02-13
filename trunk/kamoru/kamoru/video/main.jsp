@@ -51,6 +51,7 @@ if(!localAccess) {
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image/x-icon" href="/kamoru/favicon_kamoru.ico">
 <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 <title>AV World</title>
 <link rel="stylesheet" href="/kamoru/video/video.css" />
