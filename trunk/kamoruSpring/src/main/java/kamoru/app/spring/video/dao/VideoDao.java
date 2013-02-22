@@ -1,6 +1,5 @@
 package kamoru.app.spring.video.dao;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +21,6 @@ public interface VideoDao {
 
 	Video getVideo(String opus);
 
-	void saveOverview(String opus, String overViewTxt);
-
 	void deleteVideo(String opus);
-
-	void playVideo(String opus);
-
-	void editSubtitles(String opus);
-
-	void playRandomVideo();
-
-	File getBGImageFile(String curr);
 
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import kamoru.app.spring.video.domain.Video;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.CookieGenerator;
 
 @Controller
 public class VideoController {
@@ -34,23 +36,23 @@ public class VideoController {
 	private VideoService videoService;
 	
 	@RequestMapping(value="/video")
-	public String av(Model model, @RequestParam Map<String, String> params ) {
-		logger.info("start");
-		List<Video> videoList = videoService.getVideoListByParams(params);
-		Map<String, Integer> actressMap = videoService.getActressMap();
-		Map<String, Integer> studioMap  = videoService.getStudioMap();
-		model.addAttribute(videoList);
-		model.addAttribute("actressMap", actressMap);
-		model.addAttribute("studioMap", studioMap);
+	public String av(Model model, @RequestParam Map<String, String> params, HttpServletResponse response) {
+		model.addAttribute("videoList", videoService.getVideoListByParams(params));
+		model.addAttribute("actressMap", videoService.getActressMap());
+		model.addAttribute("studioMap", videoService.getStudioMap());
 		model.addAttribute("params", params);
 		return "video/video";
 	}
 
 	@RequestMapping(value="/video/{opus}", method=RequestMethod.GET)
 	public String showAVOpus(Model model, @PathVariable String opus) {
-		Video video = videoService.getVideo(opus);
-		model.addAttribute(video);
+		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/opus";
+	}
+
+	@RequestMapping(value="/video/{opus}", method=RequestMethod.DELETE)
+	public void doDeleteVideo(@PathVariable("opus") String opus) {
+		videoService.deleteVideo(opus);
 	}
 
 /*	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
@@ -69,8 +71,7 @@ public class VideoController {
 */
 	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
 	public void image(@PathVariable String opus, HttpServletResponse response) throws IOException {
-		Video video = videoService.getVideo(opus);
-		File imageFile = video.getCoverImageFile();
+		File imageFile = videoService.getVideoCoverFile(opus);
 		Tika tika = new Tika();
 	    String mimeType = tika.detect(imageFile);
 		response.setContentType(mimeType);
@@ -84,21 +85,14 @@ public class VideoController {
 	//	/video/{opus}/overview	- GET : 품평 보기, POST : 품평 수정
 	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.GET)
 	public String showOverview(Model model, @PathVariable("opus") String opus) {
-		Video video = videoService.getVideo(opus);
-		model.addAttribute("video", video);
+		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/overview";
 	}
-	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.POST)
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.POST) //	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String doSaveOverview(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
-		videoService.saveOverview(opus, overViewTxt);
+		videoService.saveVideoOverview(opus, overViewTxt);
 		return "video/overviewSave";
 	}
-	@RequestMapping(value="/video/{opus}", method=RequestMethod.DELETE)
-	public void doDeleteVideo(@PathVariable("opus") String opus) {
-		videoService.deleteVideo(opus);
-	}
-
 	@RequestMapping(value="/video/{opus}/play", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void doPlayVideo(@PathVariable String opus) {
@@ -108,13 +102,7 @@ public class VideoController {
 	@RequestMapping(value="/video/{opus}/subtitles", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void doEditSubtitles(@PathVariable String opus) {
-		videoService.editSubtitles(opus);
-	}
-
-	@RequestMapping(value="/video/randomplay", method=RequestMethod.GET)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void doPlayRandomVideo() {
-		videoService.playRandomVideo();
+		videoService.editVideoSubtitles(opus);
 	}
 	
 	@RequestMapping(value="/video/actress", method=RequestMethod.GET)

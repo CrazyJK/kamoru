@@ -18,7 +18,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
-	<util:properties id="avConfig" location="classpath:/av.kamoru-home.properties" />
+	<!-- <util:properties id="avConfig" location="classpath:/av.kamoru-home.properties" /> -->
 	
 	<!-- <jee:jndi-lookup id="dataSource2" jndi-name="/jdbc/kamoruDB" resource-ref="true" /> -->
 	

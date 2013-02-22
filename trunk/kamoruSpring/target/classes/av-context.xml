@@ -2,10 +2,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
-	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- Video Context -->
+	<!-- @Autowired -->
+	<context:annotation-config/>
+	
+	<!-- @Scheduled, @Async -->
+	<task:annotation-driven/>
 		
-	<util:properties id="avConfig" location="classpath:/av.#{T(java.net.InetAddress).getLocalHost().getHostName()}.properties" />
+	<util:properties id="videoProp" location="classpath:/av.#{T(java.net.InetAddress).getLocalHost().getHostName()}.properties" />
+	
+	<bean id="videoSource" class="kamoru.app.spring.video.dao.FileBasedVideoSource"	>
+		<property name="paths" value="#{videoProp['basePath']}" />
+		<property name="video_extensions" value="#{videoProp['video_extensions']}" />
+		<property name="cover_extensions" value="#{videoProp['cover_extensions']}" />
+		<property name="subtitles_extensions" value="#{videoProp['subtitles_extensions']}" />
+		<property name="overview_extensions" value="#{videoProp['overview_extensions']}" />
+		<property name="editor" value="#{videoProp['editor']}" />
+		<property name="player" value="#{videoProp['player']}" />
+	</bean>
 </beans>

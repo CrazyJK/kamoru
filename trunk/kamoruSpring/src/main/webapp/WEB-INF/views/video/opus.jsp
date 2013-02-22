@@ -25,13 +25,13 @@ Actress -
 	<span class="actressSpan" onclick="fnActressSearch('${actress}')">${actress}</span>
 </c:forEach>
 <br/>
-<span class="" onclick="fnPlay('${video.opus}')"          >Video - ${video.videoPath}</span>
+<span class="" onclick="fnPlay('${video.opus}')"          >Video - ${video.videoFileListPath}</span>
 <br/>
-<span class="" onclick="fnImageView('${video.opus}')"     >Cover - ${video.cover}</span>
+<span class="" onclick="fnImageView('${video.opus}')"     >Cover - ${video.coverFilePath}</span>
 <br/>
-<span class="" onclick="fnEditSubtitles('${video.opus}')" >smi -${video.subtitles}</span>
+<span class="" onclick="fnEditSubtitles('${video.opus}')" >smi -${video.subtitlesFileListPath}</span>
 <br/>
-<span class="" onclick="fnEditOverview('${video.opus}')"  >Overview - ${video.overviewTxt}</span>
+<span class="" onclick="fnEditOverview('${video.opus}')"  >Overview - ${video.overviewText}</span>
 
 <form name="actionFrm" target="ifrm">
 	<input type="hidden" name="opus" id="selectedOpus">

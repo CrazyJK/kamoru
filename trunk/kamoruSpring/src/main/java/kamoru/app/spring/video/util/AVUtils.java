@@ -23,8 +23,8 @@ public class AVUtils {
 			String filename = getFileName(file);
 			String extname  = getFileExtension(file);
 			
-			if(ctrl.listBGImageName.equals(name) || ctrl.historyName.equals(name))
-				continue;
+//			if(ctrl.listBGImageName.equals(name) || ctrl.historyName.equals(name))
+//				continue;
 			
 			String[] filenamepart = StringUtils.split(filename, ']');
 //			System.out.format("%s%n", ArrayUtils.toString(filenamepart));

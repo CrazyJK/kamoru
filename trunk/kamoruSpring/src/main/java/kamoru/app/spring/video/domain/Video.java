@@ -3,6 +3,7 @@ package kamoru.app.spring.video.domain;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,22 +35,22 @@ public class Video implements Comparable<Object>, Serializable {
 	private static final long serialVersionUID = 1L;
 	protected static final Log logger = LogFactory.getLog(Video.class);
 
-	String basePath;
-	String editor;
-	String player;
-	String noImagePath;
+	private String mainBasePath;
+	private String editor;
+	private String player;
 	
-	protected String studio;
-	protected String opus;
-	protected List<String> actressList;
-	protected String title;
+	private String studio;
+	private String opus;
+	private String title;
+	private List<String> actressList;
+	private String etcInfo;
 	
-	protected List<String> videoList;
-	protected List<String> subtitlesList;
-	protected String cover;
-	protected String overview;
-	protected String history;
-	protected List<String> etcList;
+	private List<File> videoFileList;
+	private List<File> subtitlesFileList;
+	private File coverFile;
+	private File overviewFile;
+	private File historyFile;
+	private List<File> etcFileList;
 	
 	private String sortMethod;
 
@@ -58,138 +59,116 @@ public class Video implements Comparable<Object>, Serializable {
 	private final String COVER = "cover";
 	private final String SUBTITLES = "subtitles";
 	private final String DELETE = "delete";
+	private final String FileEncoding = "UTF-8";
 	
 	public Video() {
-		this.videoList = new ArrayList<String>();
-		this.subtitlesList = new ArrayList<String>();
-		this.etcList = new ArrayList<String>();
-	}
-	public Video(String studio, String opus, List<String> actressList, String title) {
-		this();
-		this.studio = studio;
-		this.opus = opus;
-		this.actressList = actressList;
-		this.title = title;
+		videoFileList = new ArrayList<File>();
+		subtitlesFileList = new ArrayList<File>();
+		etcFileList = new ArrayList<File>();
+		actressList = new ArrayList<String>();
 	}
 	
-	public Video(String basePath, String editor, String player, String noImagePath) {
+	public Video(String mainBasePath, String player, String editor) {
 		this();
-		this.basePath = basePath;
+		this.mainBasePath = mainBasePath;
 		this.editor = editor;
 		this.player = player;
-		this.noImagePath = noImagePath;
 	}
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("video : ").append(this.getVideoPath()).append(",");
-		sb.append("subtitles : ").append(this.getSubtitlesPath()).append(",");
-		sb.append("cover : ").append(this.getCover()).append(",");
-		sb.append("overview : ").append(this.getOverview()).append(",");
-		sb.append("history : ").append(this.getHistory()).append(",");
-		sb.append("etc : ").append(this.getEtcPath());
+		sb.append("video : ").append(this.getVideoFileListPath()).append(",");
+		sb.append("subtitles : ").append(this.getSubtitlesFileListPath()).append(",");
+		sb.append("cover : ").append(this.getCoverFilePath()).append(",");
+		sb.append("overview : ").append(this.getOverviewFilePath()).append(",");
+		sb.append("history : ").append(this.getHistoryFilePath()).append(",");
+		sb.append("etc : ").append(this.getEtcFileListPath());
 		return sb.toString();
 	}
-	
-	public String getHistory() {
-		return history;
-	}
 
-	public void setHistory(String history) {
-		this.history = history;
-	}
-	
-	public boolean existHistory() {
-		return history != null;
-	}
 
+	// action method
 	private void saveHistory(String historyMode) {
-		history = existHistory() ? getHistory() : getOpusFileName() + ".log";
-		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		String msg = null; 
+		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		if(historyMode.equals(PLAY)) {
-			msg = "play video : " + this.getVideoPath();
+			msg = "play video : " + getVideoFileListPath();
 		} else if(historyMode.equals(OVERVIEW)) {
-			msg = "write overview : " + this.getOverview();
+			msg = "write overview : " + getOverviewFilePath();
 		} else if(historyMode.equals(COVER)) {
-			msg = "view cover : " + this.getCover();
+			msg = "view cover : " + getCoverFilePath();
 		} else if(historyMode.equals(SUBTITLES)) {
-			msg = "edit subtitles : " + this.getSubtitlesPath();
+			msg = "edit subtitles : " + getSubtitlesFileListPath();
 		} else if(historyMode.equals(DELETE)) {
 			msg = "delete all : " + this.toString();
 		} else {
 			msg = "unknown action ";
 		}
-		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", currDate, getOpus(), historyMode, msg, System.getProperty("line.separator"));
+		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", 
+				currDate, getOpus(), historyMode, msg, System.getProperty("line.separator"));
 		
+		logger.debug("save history - " + historymsg);
 		try {
-			FileUtils.writeStringToFile(new File(history), historymsg, true);
-			FileUtils.writeStringToFile(new File(basePath.split(";")[0], "history.log"), historymsg, true);
-			logger.debug("save history - " + historymsg);
+			FileUtils.writeStringToFile(getHistoryFile(), historymsg, FileEncoding, true);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(historymsg, e);
+		}
+		try {
+			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, FileEncoding, true);
+		} catch (IOException e) {
+			logger.error(historymsg, e);
 		}
 	}
-	public void deleteOpus() {
+	public void deleteVideo() {
 		this.saveHistory(this.DELETE);
-		// video list
-		if(this.existVideo())
-			for(String video : this.videoList)
-				FileUtils.deleteQuietly(new File(video));
-		// cover
-		if(this.existCover())
-			FileUtils.deleteQuietly(new File(this.cover));
-		// subtitles list
-		if(this.existSubtitles())
-		for(String subtitles : this.subtitlesList)
-			FileUtils.deleteQuietly(new File(subtitles));
-		// overview
-		if(this.existOverview())
-			FileUtils.deleteQuietly(new File(this.overview));
-		// history
-		if(this.existHistory())
-			FileUtils.deleteQuietly(new File(this.history));
-		// etc
-		if(this.existEtc())
-			for(String etc : this.etcList)
-				FileUtils.deleteQuietly(new File(etc));
+
+		for(File videoFile : getVideoFileList())
+			FileUtils.deleteQuietly(videoFile);
+		FileUtils.deleteQuietly(getCoverFile());
+		for(File subtitlesFile : getSubtitlesFileList())
+			FileUtils.deleteQuietly(subtitlesFile);
+		FileUtils.deleteQuietly(getOverviewFile());
+		FileUtils.deleteQuietly(getHistoryFile());
+		for(File etcFile : getEtcFileList())
+			FileUtils.deleteQuietly(etcFile);
 	}
-	public void saveOverViewTxt(String newOverviewTxt) {
-		String overviewPath = existOverview() ? getOverview() : getOpusFileName() + ".txt";
-		logger.debug("saveOverViewTxt : " + opus + " [" + overviewPath + "]");
+	public void saveOverViewText(String newOverviewTxt) {
+		if(!isExistOverviewFile()) makeOverviewFile();
+		logger.debug("saveOverViewTxt : " + getOpus() + " [" + getOverviewFile() + "]");
 		try {
-			FileUtils.writeStringToFile(new File(overviewPath), newOverviewTxt, System.getProperty("file.encoding"));
-			this.setOverview(overviewPath);
+			FileUtils.writeStringToFile(getOverviewFile(), newOverviewTxt, FileEncoding);
 			saveHistory(OVERVIEW);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(newOverviewTxt, e);
 		}
 	}
-	
-	private String getOpusFileName() {
-		if(existVideo()) {
-			String videoPath = getVideo().get(0);
+	private void makeOverviewFile() {
+		setOverviewFile(new File(getVideoPathWithoutExtension() + ".txt"));
+	}
+	private String getVideoPathWithoutExtension() {
+		if(isExistVideoFileList()) {
+			String videoPath = getVideoFileList().get(0).getAbsolutePath();
 			return videoPath.substring(0, videoPath.lastIndexOf("."));
-		} else if(existCover()) {
-			return getCover().substring(0, getCover().lastIndexOf("."));
-		} else if(existOverview()) {
-			return getOverview().substring(0, getOverview().lastIndexOf("."));
-		} else if(existSubtitles()) {
-			String subtitlesPath = getSubtitles().get(0);
+		} else if(isExistCoverFile()) {
+			return getCoverFilePath().substring(0, getCoverFilePath().lastIndexOf("."));
+		} else if(isExistOverviewFile()) {
+			return getOverviewFilePath().substring(0, getOverviewFilePath().lastIndexOf("."));
+		} else if(isExistSubtitlesFileList()) {
+			String subtitlesPath = getSubtitlesFileList().get(0).getAbsolutePath();
 			return subtitlesPath.substring(0, subtitlesPath.lastIndexOf("."));
 		} else {
 			return null;
 		}
 	}
-	public String getOverviewTxt() {
-		if(overview == null) {
-			return "";
-		} else {
+	public String getOverviewText() {
+		if(isExistOverviewFile()) {
 			try {
-				return FileUtils.readFileToString(new File(overview), System.getProperty("file.encoding"));
+				return FileUtils.readFileToString(getOverviewFile(), FileEncoding );
 			}catch(IOException ioe){
 				return "Error:" + ioe.getMessage();
 			}
+		} else {
+			return "";
 		}
 	}
 	/*
@@ -218,93 +197,34 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	public void editSubtitles() {
 		try {
-			if(subtitlesList.size() > 0) {
-				String[] cmdArray = ArrayUtils.addAll(new String[]{editor}, getSubtitlesPathArray());
+			if(isExistSubtitlesFileList()) {
+				String[] cmdArray = ArrayUtils.addAll(new String[]{editor}, getSubtitlesFileListPathArray());
 				Runtime.getRuntime().exec(cmdArray);
 				logger.debug("edit subtitles : [" + ArrayUtils.toString(cmdArray) + "]");
-				saveHistory(this.SUBTITLES);
+				saveHistory(SUBTITLES);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error : edit subtitles", e);
 		}
 	}
 	
 	public void playVideo() {
 		try {
-			if(videoList.size() > 0) {
-				String[] cmdArray = ArrayUtils.addAll(new String[]{player.toString()}, getVideoPathArray());
+			if(isExistVideoFileList()) {
+				String[] cmdArray = ArrayUtils.addAll(new String[]{player.toString()}, getVideoFileListPathArray());
 				logger.debug("play video : [" + ArrayUtils.toString(cmdArray) + "]");
 				Runtime.getRuntime().exec(cmdArray);
-				this.saveHistory(this.PLAY);
+				saveHistory(PLAY);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error : play video", e);
 		}
-	}
-	public String getVideoPath() {
-		String videopaths = new String();
-		for(String videopath : videoList) {
-			videopaths += videopath + " ";
-		}
-		return videopaths;
-	}
-	private String[] getVideoPathArray() {
-		return (String[]) videoList.toArray(new String[0]);
-	}
-	private String getSubtitlesPath() {
-		return ArrayUtils.toString(subtitlesList);
-	}
-	private String getEtcPath() {
-		return ArrayUtils.toString(this.etcList);
-	}
-	private String[] getSubtitlesPathArray() {
-		return (String[]) subtitlesList.toArray(new String[0]);
-	}
-	public boolean existVideo() {
-		return videoList.size() == 0 ? false : true;
-	}
-	public boolean existSubtitles() {
-		return subtitlesList.size() == 0 ? false : true;
-	}
-	public boolean existCover() {
-		return cover == null ? false : true;
-	}
-	public boolean existOverview() {
-		return overview == null ? false : true;
-	}
-	public boolean existEtc() {
-		return etcList.size() == 0 ? false : true;
-	}
-	public String getStudio() {
-		return studio;
-	}
-
-	public void setStudio(String studio) {
-		this.studio = studio;
-	}
-
-	public String getOpus() {
-		return opus;
-	}
-
-	public void setOpus(String opus) {
-		this.opus = opus;
 	}
 
 	public String getActress() {
-		return actressList == null ? "" : actressList.toString();
+		return ArrayUtils.toString(actressList);
 	}
-	public List<String> getActressList() {
-		Collections.sort(actressList);
-		return actressList;
-	}
-
-	public void setActressList(List<String> actressList) {
-		this.actressList = actressList;
-	}
-	
 	public void setActress(String names) {
-		if(actressList == null) actressList = new ArrayList<String>();
 		String[] namesArr = names.split(",");
 		for(String name : namesArr) {
 			name = StringUtils.join(StringUtils.split(name), " ");
@@ -319,6 +239,13 @@ public class Video implements Comparable<Object>, Serializable {
 				actressList.add(name.trim());
 			}
 		}
+	}
+	public List<String> getActressList() {
+		Collections.sort(actressList);
+		return actressList;
+	}
+	public void setActressList(List<String> actressList) {
+		this.actressList = actressList;
 	}
 	private String forwardNameSort(String name) {
 		if(name == null) return null;
@@ -344,55 +271,6 @@ public class Video implements Comparable<Object>, Serializable {
 		return false;
 	}
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public List<String> getVideo() {
-		return videoList;
-	}
-
-	public void setVideo(String videofile) {
-		this.videoList.add(videofile);
-	}
-
-	public void setEtc(String etcfile) {
-		this.etcList.add(etcfile);
-	}
-
-	public List<String> getSubtitles() {
-		return subtitlesList;
-	}
-
-	public void setSubtitles(String subtitles) {
-		this.subtitlesList.add(subtitles);
-	}
-
-	public String getCover() {
-		return cover;
-	}
-	public File getCoverImageFile() {
-		return new File(cover == null ? noImagePath : cover);
-	}
-	public void setCover(String cover) {
-		this.cover = cover;
-	}
-
-	public String getOverview() {
-		return overview;
-	}
-
-	public void setOverview(String overview) {
-		this.overview = overview;
-	}
-
-	public void setSortMethod(String sortMethod) {
-		this.sortMethod = sortMethod;
-	}
 	@Override
 	public int compareTo(Object o) {
 		Video comp = (Video)o;
@@ -411,13 +289,176 @@ public class Video implements Comparable<Object>, Serializable {
 			thisStr = this.getActress();
 			compStr = comp.getActress();
 		} else if("L".equals(sortMethod)) {
-			thisStr = String.valueOf(this.existVideo() ? new File(this.getVideoPathArray()[0]).lastModified() : 0);
-			compStr = String.valueOf(comp.existVideo() ? new File(comp.getVideoPathArray()[0]).lastModified() : 0);
+			thisStr = String.valueOf(this.isExistVideoFileList() ? this.getVideoFileList().get(0).lastModified() : 0);
+			compStr = String.valueOf(comp.isExistVideoFileList() ? comp.getVideoFileList().get(0).lastModified() : 0);
 		}
 		String[] s = {thisStr, compStr};
 		Arrays.sort(s);
 		return s[0].equals(thisStr) ? -1 : 1;
 	}
 	
+	// isExist file method
+	public boolean isExistVideoFileList() {
+		return getVideoFileList() != null && getVideoFileList().size() > 0;  
+	}
+	public boolean isExistSubtitlesFileList() {
+		return getSubtitlesFileList() != null && getSubtitlesFileList().size() > 0;
+	}
+	public boolean isExistCoverFile() {
+		return getCoverFile() != null;
+	}
+	public boolean isExistOverviewFile() {
+		return getOverviewFile() != null; 
+	}
+	public boolean isExistHistoryFile() {
+		return getHistoryFile() != null;
+	}
+	public boolean isExistEtcFileList() {
+		return getEtcFileList() != null && getEtcFileList().size() > 0;
+	}
+	// file path method
+	public String getVideoFileListPath() {
+		if(isExistVideoFileList()) 
+			return ArrayUtils.toString(getVideoFileList()); 
+		return null;
+	}
+	public String[] getVideoFileListPathArray() {
+		if(isExistVideoFileList()) {
+			String[] filePathes = new String[getVideoFileList().size()];
+			for(int i=0; i<filePathes.length; i++)
+				filePathes[i] = getVideoFileList().get(i).getAbsolutePath();
+			return filePathes;
+		}
+		return null;
+	}
+	public String getSubtitlesFileListPath() {
+		if(isExistSubtitlesFileList())
+			return ArrayUtils.toString(getSubtitlesFileList());
+		return null;
+	}
+	public String[] getSubtitlesFileListPathArray() {
+		if(isExistSubtitlesFileList()) {
+			String[] filePathes = new String[getSubtitlesFileList().size()];
+			for(int i=0; i<filePathes.length; i++)
+				filePathes[i] = getSubtitlesFileList().get(i).getAbsolutePath();
+			return filePathes;
+		}
+		return null;
+	}
+	public String getCoverFilePath() {
+		if(isExistCoverFile())
+			return getCoverFile().getAbsolutePath();
+		return null;
+	}
+	public String getOverviewFilePath() {
+		if(isExistOverviewFile())
+			return getOverviewFile().getAbsolutePath();
+		return null;
+	}
+	public String getHistoryFilePath() {
+		if(isExistHistoryFile())
+			return getHistoryFile().getAbsolutePath();
+		return null;
+	}
+	public String getEtcFileListPath() {
+		if(isExistEtcFileList())
+			return ArrayUtils.toString(getEtcFileList());
+		return null;
+	}
+	// getter & setter method end
+	public List<File> getVideoFileList() {
+		return videoFileList;
+	}
+
+	public void setVideoFileList(List<File> videoFileList) {
+		this.videoFileList = videoFileList;
+	}
+
+	public List<File> getSubtitlesFileList() {
+		return subtitlesFileList;
+	}
+
+	public void setSubtitlesFileList(List<File> subtitlesFileList) {
+		this.subtitlesFileList = subtitlesFileList;
+	}
+
+	public File getCoverFile() {
+		return coverFile;
+	}
+
+	public void setCoverFile(File coverFile) {
+		this.coverFile = coverFile;
+	}
+
+	public File getOverviewFile() {
+		return overviewFile;
+	}
+
+	public void setOverviewFile(File overviewFile) {
+		this.overviewFile = overviewFile;
+	}
+
+	public File getHistoryFile() {
+		return historyFile;
+	}
+
+	public void setHistoryFile(File historyFile) {
+		this.historyFile = historyFile;
+	}
+
+	public List<File> getEtcFileList() {
+		return etcFileList;
+	}
+
+	public void setEtcFileList(List<File> etcFileList) {
+		this.etcFileList = etcFileList;
+	}
+	public String getStudio() {
+		return studio;
+	}
+
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}
+
+	public String getOpus() {
+		return opus;
+	}
+
+	public void setOpus(String opus) {
+		this.opus = opus;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getEtcInfo() {
+		return etcInfo;
+	}
+
+	public void setEtcInfo(String etcInfo) {
+		this.etcInfo = etcInfo;
+	}
+
+	public void setVideoFile(File file) {
+		this.videoFileList.add(file);
+	}
+
+	public void setSubtitlesFile(File file) {
+		this.subtitlesFileList.add(file);		
+	}
+
+	public void setEtcFile(File file) {
+		this.etcFileList.add(file);		
+	}
+
+	public void setSortMethod(String sortMethod) {
+		this.sortMethod = sortMethod;
+	}
 	
 }

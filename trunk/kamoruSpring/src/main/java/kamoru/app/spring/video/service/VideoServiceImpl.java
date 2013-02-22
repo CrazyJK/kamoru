@@ -1,20 +1,47 @@
 package kamoru.app.spring.video.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.inject.Inject;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import kamoru.app.spring.video.dao.VideoDao;
+import kamoru.app.spring.video.dao.VideoFileDaoImpl;
 import kamoru.app.spring.video.domain.Video;
 
-@Component
+@Service
 public class VideoServiceImpl implements VideoService {
-
+	protected static final Log logger = LogFactory.getLog(VideoServiceImpl.class);
+	
 	private VideoDao videoDao;
+	private Map<String, String> history;
+	
+	private final String listBGImageName = "listBGImg.jpg";
+	
+	@Value("#{videoProp['defaultCoverFilePath']}") 
+	private String defaultCoverFilePath;
+	@Value("#{videoProp['backgroundImagePoolPath']}") 
+	private String backgroundImagePoolPath;
+	@Value("#{videoProp['tempDirectory']}") 
+	private String tempDirectory;
+
+	public VideoServiceImpl() {
+		history = new HashMap<String, String>();
+	}
 	
 	@Inject
 	public void setVideoDao(VideoDao videoDao) {
@@ -57,8 +84,8 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public void saveOverview(String opus, String overViewTxt) {
-		videoDao.saveOverview(opus, overViewTxt);
+	public void saveVideoOverview(String opus, String overViewTxt) {
+		getVideo(opus).saveOverViewText(overViewTxt);
 	}
 
 	@Override
@@ -68,22 +95,43 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void playVideo(String opus) {
-		videoDao.playVideo(opus);
+		getVideo(opus).playVideo();
+		history.put(opus, "play");
 	}
 
 	@Override
-	public void editSubtitles(String opus) {
-		videoDao.editSubtitles(opus);
+	public void editVideoSubtitles(String opus) {
+		getVideo(opus).editSubtitles();
 	}
-
-	@Override
-	public void playRandomVideo() {
-		videoDao.playRandomVideo();
-	}
-
+	
 	@Override
 	public File getBGImageFile(String curr) {
-		return videoDao.getBGImageFile(curr);
+	    File bgImageFile = new File(tempDirectory, listBGImageName);
+	    if(!BooleanUtils.toBoolean(curr))
+			try {
+				String[] bgImgPoolPath = StringUtils.split(backgroundImagePoolPath, ";");
+				List<File> list = new ArrayList<File>();
+				for(String bgImgPath : bgImgPoolPath) {
+					list.addAll(FileUtils.listFiles(new File(bgImgPath), new String[]{"jpg"}, true));
+				}
+			    File src = list.get(new Random().nextInt(list.size()));
+			    FileUtils.copyFile(src, bgImageFile);
+			} catch (IOException e) {
+				logger.error("Background Image copy error", e);
+			}
+	    return bgImageFile;
+	}
+
+	@Override
+	public File getVideoCoverFile(String opus) {
+		File coverFile = videoDao.getVideo(opus).getCoverFile();
+		if(coverFile == null)
+			coverFile = getDefaultCoverFile();
+		return coverFile;
+	}
+
+	private File getDefaultCoverFile() {
+		return new File(defaultCoverFilePath);
 	}
 
 }

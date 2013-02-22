@@ -57,6 +57,7 @@ $(document).ready(function(){
  			$("#debug").html("addCond click");
  		}
 	});
+
  	if($("#viewStudioDiv").val() != "on") {
  		$("#studioDiv").css("display", "none");
  	}
@@ -111,13 +112,11 @@ function ratioSize(numerator1, numerator2, denominator) {
 }
 function fnStudioDivToggle() {
 	$("#studioDiv").toggle();
-//	$("#viewStudioDiv").val($("#studioDiv").css("display"));	
 	$("#debug").html("fnStudioDivToggle");
 	resizeDivHeight();
 }
 function fnActressDivToggle() {
 	$("#actressDiv").toggle();
-//	$("#viewActressDiv").val($("#actressDiv").css("display"));	
 	$("#debug").html("fnActressDivToggle");
 	resizeDivHeight();
 }
@@ -143,9 +142,9 @@ function fnDeleteOpus(selectedOpus) {
 	if(confirm("Really? Are you sure to delete this opus?")) {
 		if(confirm("Are you kidding? D.E.L.E.T.E [" + selectedOpus + "]?")) {
 			$("#debug").html("delete " + selectedOpus);
-			$("#selectedOpus").val(selectedOpus);
-			$("#selectedMode").val("delete");
+			$("#hiddenHttpMethod").val("delete");
 			var frm = document.forms["actionFrm"];
+			frm.action = context + "video/" + selectedOpus;
 			frm.submit();
 		}
 	}
@@ -153,19 +152,19 @@ function fnDeleteOpus(selectedOpus) {
 function fnEditSubtitles(selectedOpus) {
 	$("#debug").html("edit subtitles " + selectedOpus);
 	var frm = document.forms["actionFrm"];
-	frm.action = "/spring/video/" + selectedOpus + "/subtitles";
+	frm.action = context + "video/" + selectedOpus + "/subtitles";
 	frm.submit();
 }
 function fnPlay(selectedOpus) {
 	$("#debug").html("Video play " + selectedOpus);
 	var frm = document.forms["actionFrm"];
-	frm.action = "/spring/video/" + selectedOpus + "/play";
+	frm.action = context + "video/" + selectedOpus + "/play";
 	frm.submit();
 }
 function fnRandomPlay() {
 	$("#debug").html("Random play start");
 	var frm = document.forms["actionFrm"];
-	frm.action = "/spring/video/randomplay";
+	frm.action = context + "video/randomplay";
 	frm.submit();
 }
 function fnOpusFocus(opus) {
@@ -177,7 +176,7 @@ function fnOpusFocus(opus) {
 	});
 }
 function fnBGImageView() {
-	var vUrl    = "/spring/video/bgimage?curr=y";
+	var vUrl    = context + "video/bgimage?curr=y";
     var vName   = "imageview-"+opus;
     var vWidth  = 800;
     var vHeight = 539;
@@ -190,7 +189,7 @@ function fnBGImageView() {
 }
 function fnImageView(opus) {
 	$("#debug").html("Cover image view : " + opus);
-	var vUrl    = "/spring/video/" + opus + "/cover";
+	var vUrl    = context + "video/" + opus + "/cover";
     var vName   = "imageview-"+opus;
     var vWidth  = 800;
     var vHeight = 539;
@@ -203,7 +202,7 @@ function fnImageView(opus) {
 }
 function fnEditOverview(opus) {
 	$("#debug").html("Overview Popup : " + opus);
-	var vUrl    = "/spring/video/" + opus + "/overview";
+	var vUrl    = context + "video/" + opus + "/overview";
     var vName   = "overview-"+opus;
     var vWidth  = 400;
     var vHeight = 300;
@@ -215,7 +214,7 @@ function fnEditOverview(opus) {
     window.open(vUrl, vName, vSpecs);	
 }
 function fnVideoDetail(opus) {
-	var vUrl    = "/spring/video/" + opus;
+	var vUrl    = context + "video/" + opus;
     var vName   = "overview-"+opus;
     var vWidth  = 850;
     var vHeight = 800;

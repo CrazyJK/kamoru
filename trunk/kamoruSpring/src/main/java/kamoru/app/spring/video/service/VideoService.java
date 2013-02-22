@@ -22,16 +22,16 @@ public interface VideoService {
 
 	Video getVideo(String opus);
 
-	void saveOverview(String opus, String overViewTxt);
-
 	void deleteVideo(String opus);
 
 	void playVideo(String opus);
 
-	void editSubtitles(String opus);
-
-	void playRandomVideo();
-
 	File getBGImageFile(String curr);
+
+	File getVideoCoverFile(String opus);
+
+	void saveVideoOverview(String opus, String overViewTxt);
+
+	void editVideoSubtitles(String opus);
 
 }
