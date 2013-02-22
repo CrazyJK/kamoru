@@ -1,7 +1,6 @@
 package kamoru.app.spring.video.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import kamoru.app.spring.video.dao.VideoDao;
-import kamoru.app.spring.video.dao.VideoFileDaoImpl;
 import kamoru.app.spring.video.domain.Video;
 
 @Service
@@ -33,8 +32,6 @@ public class VideoServiceImpl implements VideoService {
 	private String defaultCoverFilePath;
 	@Value("#{videoProp['backgroundImagePoolPath']}") 
 	private String backgroundImagePoolPath;
-	@Value("#{videoProp['tempDirectory']}") 
-	private String tempDirectory;
 	private List<File> list;
 	private File currentBackgroundImageFile;
 
@@ -47,7 +44,9 @@ public class VideoServiceImpl implements VideoService {
 		this.videoDao = videoDao;
 	}
 
+	@Scheduled(fixedRate=3600000)
 	private void listBackgroundImages() {
+		logger.info("start");
 		String[] bgImgPoolPath = StringUtils.split(backgroundImagePoolPath, ";");
 		list = new ArrayList<File>();
 		for(String bgImgPath : bgImgPoolPath) {
