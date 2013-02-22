@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/favicon_video.ico" />">
 <title>Video collection</title>
 <link rel="stylesheet" href="<c:url value="/resources/video.css" />" />
 <!--[if lt IE 9]>
@@ -15,6 +16,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
+var opusArray = ${opusArray};
 </script>
 <script src="<c:url value="/resources/video.js" />" type="text/javascript"></script>
 </head>
@@ -56,7 +58,7 @@ var context = '<spring:url value="/"/>';
 	</form>
 	</div>
 	<div id="studioDiv" class="boxDiv">
-	<c:forEach var="studio" items="${studioMap }">
+	<c:forEach var="studio" items="${studioMap}">
 		<span onclick="fnStudioSearch('<c:out value="${studio.key}"/>')" class="studioSpanBtn"><c:out value="${studio.key}"/>(<c:out value="${studio.value}"/>)</span>
 	</c:forEach>
 	</div>
@@ -191,7 +193,7 @@ var context = '<spring:url value="/"/>';
 </div>
 
 <form name="actionFrm" target="ifrm" method="post"><input type="hidden" name="_method" id="hiddenHttpMethod"/></form>
-<iframe name="ifrm" style="display:none; width:100%;"></iframe>
+<iframe id="actionIframe" name="ifrm" style="display:none; width:100%;"></iframe>
 
 </body>
 </html>

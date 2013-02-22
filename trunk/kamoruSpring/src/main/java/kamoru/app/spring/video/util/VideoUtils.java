@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.List;
 
 import kamoru.app.spring.video.dao.VideoFileDaoImpl;
+import kamoru.app.spring.video.domain.Video;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class AVUtils {
+public class VideoUtils {
 
 	static VideoFileDaoImpl ctrl = new VideoFileDaoImpl();
 	
@@ -110,8 +112,24 @@ public class AVUtils {
 		return str.trim();
 	}
 
+	public static String arrayToString(Object array) {
+		String toString = ArrayUtils.toString(array);
+		return toString.substring(1, toString.length() - 1);
+	}
 	
 	public static void main(String[] g) {
-		AVUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
+		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
+	}
+
+	public static String getOpusArrayStyleString(List<Video> videoList) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for(int i=0, iEnd=videoList.size(); i<iEnd; i++) {
+			if(i > 0)
+				sb.append(",");
+			sb.append("\"" + videoList.get(i).getOpus() + "\"");
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 }

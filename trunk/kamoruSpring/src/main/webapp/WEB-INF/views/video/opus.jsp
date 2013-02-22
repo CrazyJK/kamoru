@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Detail view [${video.opus}] - AV Worlde</title>
+<title>Detail view [${video.opus}] ${video.title} - AV Worlde</title>
 <link rel="stylesheet" href="<c:url value="/resources/video.css" />" />
 <style type="text/css">
 .overviewTxt {width:100%; height:275px;}
@@ -16,28 +17,20 @@
 <script src="<c:url value="/resources/video.js" />" type="text/javascript"></script>
 </head>
 <body>
-${video.title}
-<br/>
-<img src="<c:url value="/video/${video.opus}/cover" />" />
-<br/>
-Actress - 
-<c:forEach items="${video.actressList}" var="actress">
-	<span class="actressSpan" onclick="fnActressSearch('${actress}')">${actress}</span>
-</c:forEach>
-<br/>
-<span class="" onclick="fnPlay('${video.opus}')"          >Video - ${video.videoFileListPath}</span>
-<br/>
-<span class="" onclick="fnImageView('${video.opus}')"     >Cover - ${video.coverFilePath}</span>
-<br/>
-<span class="" onclick="fnEditSubtitles('${video.opus}')" >smi -${video.subtitlesFileListPath}</span>
-<br/>
-<span class="" onclick="fnEditOverview('${video.opus}')"  >Overview - ${video.overviewText}</span>
-
-<form name="actionFrm" target="ifrm">
-	<input type="hidden" name="opus" id="selectedOpus">
-	<input type="hidden" name="mode" id="selectedMode">
-</form>
-<iframe name="ifrm" style="display:none; width:100%;"></iframe>
-
+	<img src="<c:url value="/video/${video.opus}/cover" />" />
+<dl>
+	<dt>${video.title}
+		<c:forEach items="${video.actressList}" var="actress">
+			<span class="actressSpan" onclick="opener.fnActressSearch('${actress}')">${actress}</span>
+		</c:forEach></dt>
+	<dd><span>${video.etcInfo}</span></dd>
+	<dd><span onclick="opener.fnPlay('${video.opus}')"          >${video.videoFileListPath}</span></dd>
+	<dd><span onclick="opener.fnImageView('${video.opus}')"     >${video.coverFilePath}</span></dd>
+	<dd><span onclick="opener.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span></dd>
+	<dd><span>${video.etcFileListPath}</span></dd>
+	<dd><span title='${video.historyText}'>${video.historyFile}</span></dd>
+	<dd><span>${video.overviewFile}</span></dd>
+	<dd><pre  onclick="opener.fnEditOverview('${video.opus}')"  >${video.overviewText}</pre></dd>
+</dl>
 </body>
 </html>

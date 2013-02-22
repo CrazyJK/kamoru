@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
-	$("*[onclick]").css("cursor", "pointer");
+	$("*[onclick]").addClass("onclick");
 	$("label").bind("click", function(){
 		var id = $(this).attr("for");
 		$("#" + id).val("");
@@ -151,33 +151,35 @@ function fnDeleteOpus(selectedOpus) {
 }
 function fnEditSubtitles(selectedOpus) {
 	$("#debug").html("edit subtitles " + selectedOpus);
-	var frm = document.forms["actionFrm"];
-	frm.action = context + "video/" + selectedOpus + "/subtitles";
-	frm.submit();
+	$("#actionIframe").attr("src", context + "video/" + selectedOpus + "/subtitles");
 }
 function fnPlay(selectedOpus) {
 	$("#debug").html("Video play " + selectedOpus);
-	var frm = document.forms["actionFrm"];
-	frm.action = context + "video/" + selectedOpus + "/play";
-	frm.submit();
+	$("#actionIframe").attr("src", context + "video/" + selectedOpus + "/play");
 }
 function fnRandomPlay() {
 	$("#debug").html("Random play start");
-	var frm = document.forms["actionFrm"];
-	frm.action = context + "video/randomplay";
-	frm.submit();
+	if(opusArray.length == 0) {
+		alert("다 봤슴당");
+		return;
+	}
+	var selectedNumber = Math.floor(Math.random() * opusArray.length);
+	var selectedOpus = opusArray[selectedNumber];
+	opusArray.splice(selectedNumber, 1);
+	fnOpusFocus(selectedOpus);
+	fnPlay(selectedOpus);
 }
 function fnOpusFocus(opus) {
 	//alert("fnOpusFocus " + opus);
 	$("#" + opus).animate({
 		opacity: 0.75,
 	}, 1000, function(){
-		$(this).css("background-color", "green");
+		$(this).css("background-color", "cyan");
 	});
 }
 function fnBGImageView() {
 	var vUrl    = context + "video/bgimage?curr=y";
-    var vName   = "imageview-"+opus;
+    var vName   = "BGimageview";
     var vWidth  = 800;
     var vHeight = 539;
     var vLeft   = (window.screen.width  - vWidth)/2;
@@ -215,7 +217,7 @@ function fnEditOverview(opus) {
 }
 function fnVideoDetail(opus) {
 	var vUrl    = context + "video/" + opus;
-    var vName   = "overview-"+opus;
+    var vName   = "detailview-"+opus;
     var vWidth  = 850;
     var vHeight = 800;
     var vLeft   = (window.screen.width  - vWidth)/2;

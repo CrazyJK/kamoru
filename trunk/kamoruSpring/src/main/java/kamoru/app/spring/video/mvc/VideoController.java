@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kamoru.app.spring.video.domain.Video;
 import kamoru.app.spring.video.service.VideoService;
+import kamoru.app.spring.video.util.VideoUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
@@ -37,7 +38,10 @@ public class VideoController {
 	
 	@RequestMapping(value="/video")
 	public String av(Model model, @RequestParam Map<String, String> params, HttpServletResponse response) {
-		model.addAttribute("videoList", videoService.getVideoListByParams(params));
+		List<Video> videoList =  videoService.getVideoListByParams(params);
+		String opusArrayStyleString = VideoUtils.getOpusArrayStyleString(videoList);
+		model.addAttribute("videoList", videoList);
+		model.addAttribute("opusArray", opusArrayStyleString);
 		model.addAttribute("actressMap", videoService.getActressMap());
 		model.addAttribute("studioMap", videoService.getStudioMap());
 		model.addAttribute("params", params);

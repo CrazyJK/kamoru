@@ -21,31 +21,8 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	<beans:bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<beans:property name="mediaTypes">
-			<beans:map>
-				<beans:entry key="json" value="application/json" />
-				<beans:entry key="xml" value="text/xml" />
-				<beans:entry key="htm" value="text/html" />
-			</beans:map>
-		</beans:property>
-		<beans:property name="defaultContentType" value="text/html" />
-	</beans:bean>
+
 	<!-- <context:component-scan base-package="kamoru.app.spring" /> -->
-	<context:component-scan base-package="com.springinaction.spitter.mvc kamoru.app.spring" />
+	<context:component-scan base-package="kamoru.app.spring" />
 	
-	<!-- Apache Tiles -->
-	<beans:bean class="org.springframework.web.servlet.view.tiles2.TilesViewResolver" />
-	<beans:bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" >
-		<beans:property name="definitions">
-			<beans:list>
-				<beans:value>/WEB-INF/views/**/views.xml</beans:value>
-			</beans:list>
-		</beans:property>
-	</beans:bean>
-	
-	<!-- Multipart resolver -->
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="500000" />
-	</beans:bean>
 </beans:beans>

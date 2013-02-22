@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import kamoru.app.spring.video.util.VideoUtils;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -109,6 +111,8 @@ public class Video implements Comparable<Object>, Serializable {
 		
 		logger.debug("save history - " + historymsg);
 		try {
+			if(getHistoryFile() != null)
+				setHistoryFile(new File(getVideoPathWithoutExtension() + ".log"));
 			FileUtils.writeStringToFile(getHistoryFile(), historymsg, FileEncoding, true);
 		} catch (IOException e) {
 			logger.error(historymsg, e);
@@ -171,6 +175,17 @@ public class Video implements Comparable<Object>, Serializable {
 			return "";
 		}
 	}
+	public String getHistoryText() {
+		if(isExistHistoryFile()) {
+			try {
+				return FileUtils.readFileToString(getHistoryFile(), FileEncoding );
+			}catch(IOException ioe){
+				return "Error:" + ioe.getMessage();
+			}
+		} else {
+			return "";
+		}
+	}
 	/*
 	public void viewImage(HttpServletResponse response) throws IOException {
 		String img = getCover() == null ? prop.noImagePath : getCover();
@@ -200,7 +215,7 @@ public class Video implements Comparable<Object>, Serializable {
 			if(isExistSubtitlesFileList()) {
 				String[] cmdArray = ArrayUtils.addAll(new String[]{editor}, getSubtitlesFileListPathArray());
 				Runtime.getRuntime().exec(cmdArray);
-				logger.debug("edit subtitles : [" + ArrayUtils.toString(cmdArray) + "]");
+				logger.debug("edit subtitles : [" + VideoUtils.arrayToString(cmdArray) + "]");
 				saveHistory(SUBTITLES);
 			}
 		} catch (IOException e) {
@@ -212,7 +227,7 @@ public class Video implements Comparable<Object>, Serializable {
 		try {
 			if(isExistVideoFileList()) {
 				String[] cmdArray = ArrayUtils.addAll(new String[]{player.toString()}, getVideoFileListPathArray());
-				logger.debug("play video : [" + ArrayUtils.toString(cmdArray) + "]");
+				logger.debug("play video : [" + VideoUtils.arrayToString(cmdArray) + "]");
 				Runtime.getRuntime().exec(cmdArray);
 				saveHistory(PLAY);
 			}
@@ -222,7 +237,7 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 
 	public String getActress() {
-		return ArrayUtils.toString(actressList);
+		return VideoUtils.arrayToString(actressList);
 	}
 	public void setActress(String names) {
 		String[] namesArr = names.split(",");
@@ -319,7 +334,7 @@ public class Video implements Comparable<Object>, Serializable {
 	// file path method
 	public String getVideoFileListPath() {
 		if(isExistVideoFileList()) 
-			return ArrayUtils.toString(getVideoFileList()); 
+			return VideoUtils.arrayToString(getVideoFileList()); 
 		return null;
 	}
 	public String[] getVideoFileListPathArray() {
@@ -333,7 +348,7 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 	public String getSubtitlesFileListPath() {
 		if(isExistSubtitlesFileList())
-			return ArrayUtils.toString(getSubtitlesFileList());
+			return VideoUtils.arrayToString(getSubtitlesFileList());
 		return null;
 	}
 	public String[] getSubtitlesFileListPathArray() {
@@ -362,7 +377,7 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 	public String getEtcFileListPath() {
 		if(isExistEtcFileList())
-			return ArrayUtils.toString(getEtcFileList());
+			return VideoUtils.arrayToString(getEtcFileList());
 		return null;
 	}
 	// getter & setter method end

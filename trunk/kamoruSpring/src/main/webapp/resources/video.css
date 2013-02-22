@@ -81,3 +81,5 @@ div#contentDiv {overflow:auto; text-align:center;}
 	        box-shadow: 10px 10px 5px #588;
 	   -moz-box-shadow: 10px 10px 5px #588;	
 	-webkit-box-shadow: 10px 10px 5px #588;}
+.onclick {cursor:pointer;}
+.onclick:hover {color:green;}
