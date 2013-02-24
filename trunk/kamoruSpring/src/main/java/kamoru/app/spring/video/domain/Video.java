@@ -111,7 +111,7 @@ public class Video implements Comparable<Object>, Serializable {
 		
 		logger.debug("save history - " + historymsg);
 		try {
-			if(getHistoryFile() != null)
+			if(getHistoryFile() == null)
 				setHistoryFile(new File(getVideoPathWithoutExtension() + ".log"));
 			FileUtils.writeStringToFile(getHistoryFile(), historymsg, FileEncoding, true);
 		} catch (IOException e) {
