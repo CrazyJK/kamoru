@@ -45,12 +45,14 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Scheduled(fixedRate=3600000)
-	private void listBackgroundImages() {
+	public void listBackgroundImages() {
 		logger.info("start");
-		String[] bgImgPoolPath = StringUtils.split(backgroundImagePoolPath, ";");
+		String[] bgImgPoolPath = StringUtils.split(backgroundImagePoolPath, ",");
 		list = new ArrayList<File>();
 		for(String bgImgPath : bgImgPoolPath) {
-			list.addAll(FileUtils.listFiles(new File(bgImgPath), new String[]{"jpg"}, true));
+			File dir = new File(bgImgPath);
+			if(dir.isDirectory())
+				list.addAll(FileUtils.listFiles(dir, new String[]{"jpg"}, true));
 		}
 	}
 
