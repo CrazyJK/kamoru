@@ -6,7 +6,7 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 
-import kamoru.app.spring.video.dao.VideoFileDaoImpl;
+import kamoru.app.spring.video.dao.VideoDaoFile;
 import kamoru.app.spring.video.domain.Video;
 
 import org.apache.commons.io.FileUtils;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class VideoUtils {
 
-	static VideoFileDaoImpl ctrl = new VideoFileDaoImpl();
+	static VideoDaoFile ctrl = new VideoDaoFile();
 	
 	public static void changeOldNameStyle(String path, String unclassifiedPath) {
 		Collection<File> found = FileUtils.listFiles(new File(path), null, true);

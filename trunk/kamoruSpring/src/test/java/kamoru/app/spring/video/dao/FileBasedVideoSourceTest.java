@@ -1,6 +1,7 @@
 package kamoru.app.spring.video.dao;
 
 import static org.junit.Assert.*;
+import kamoru.app.spring.video.source.FileBasedVideoSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ public class FileBasedVideoSourceTest {
 	
 	@Test
 	public void testInstance() {
-		assertTrue((videoSource instanceof kamoru.app.spring.video.dao.FileBasedVideoSource));
+		assertTrue((videoSource instanceof kamoru.app.spring.video.source.FileBasedVideoSource));
 	}
 	@Test
 	public void testGet() {		

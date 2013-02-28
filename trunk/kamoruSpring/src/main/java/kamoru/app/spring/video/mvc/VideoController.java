@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.CookieGenerator;
 
@@ -66,14 +67,13 @@ public class VideoController {
 		return "video/image";
 	}
 */
-/*	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
+	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
 	public @ResponseBody byte[] image(@PathVariable String opus) throws IOException {
-		Video video = videoService.getVideo(opus);
-		File imageFile = video.getCoverImageFile();
+		File imageFile = videoService.getVideoCoverFile(opus);
 		return FileUtils.readFileToByteArray(imageFile);
 	}
-*/
-	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
+
+/*	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
 	public void image(@PathVariable String opus, HttpServletResponse response) throws IOException {
 		File imageFile = videoService.getVideoCoverFile(opus);
 		Tika tika = new Tika();
@@ -85,7 +85,7 @@ public class VideoController {
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 	}
-
+*/
 	//	/video/{opus}/overview	- GET : 품평 보기, POST : 품평 수정
 	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.GET)
 	public String showOverview(Model model, @PathVariable("opus") String opus) {
@@ -142,6 +142,7 @@ public class VideoController {
 	@RequestMapping(value="/video/bgimage", method=RequestMethod.GET)
 	public void showBGImage(@RequestParam(value="curr", required=false) String curr,
 			HttpServletResponse response) throws IOException {
+		logger.info("start");
 		File imageFile = videoService.getBGImageFile(curr);
 		Tika tika = new Tika();
 	    String mimeType = tika.detect(imageFile);
@@ -151,4 +152,9 @@ public class VideoController {
 		response.getOutputStream().close();
 	}
 	
+	@RequestMapping(value="/image/slide")
+	public String showBGImageSlide() {
+		
+		return "image/slide";
+	}
 }

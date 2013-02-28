@@ -1,4 +1,4 @@
-package kamoru.app.spring.video.dao;
+package kamoru.app.spring.video.source;
 
 import java.io.File;
 import java.util.ArrayList;

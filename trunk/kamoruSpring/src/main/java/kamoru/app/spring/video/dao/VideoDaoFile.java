@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import kamoru.app.spring.video.domain.Video;
+import kamoru.app.spring.video.source.VideoSource;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -23,8 +24,8 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class VideoFileDaoImpl implements VideoDao {
-	protected static final Log logger = LogFactory.getLog(VideoFileDaoImpl.class);
+public class VideoDaoFile implements VideoDao {
+	protected static final Log logger = LogFactory.getLog(VideoDaoFile.class);
 
 	private final String DEFAULT_SORTMETHOD = "O";
 

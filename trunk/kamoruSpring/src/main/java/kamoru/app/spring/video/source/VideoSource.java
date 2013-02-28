@@ -1,4 +1,4 @@
-package kamoru.app.spring.video.dao;
+package kamoru.app.spring.video.source;
 
 import java.util.List;
 import java.util.Map;

@@ -1,16 +1,20 @@
 package kamoru.app.spring;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.tika.Tika;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -49,8 +53,34 @@ public class TestController {
 		response.getOutputStream().close();
 	}
 
+	@RequestMapping(value="/test/image3", method=RequestMethod.GET)
+	public byte[] image3(HttpServletResponse response) throws IOException {
+		return imageBytes();
+	}
+	
+	@RequestMapping(value="/test/image4", method=RequestMethod.GET)
+	@ResponseBody
+	public byte[] image4(HttpServletResponse response) throws IOException {
+		return imageBytes();
+	}
+	
+	@RequestMapping(value="/test/image5", method=RequestMethod.GET)
+	public BufferedImage image5(HttpServletResponse response) throws IOException {
+		return ImageIO.read(new ByteArrayInputStream(imageBytes()));
+	}
+	
+	@RequestMapping(value="/test/image6", method=RequestMethod.GET)
+	@ResponseBody 
+	public BufferedImage image6(HttpServletResponse response) throws IOException {
+		return ImageIO.read(new ByteArrayInputStream(imageBytes()));
+	}
+	
+	
+	@Value("#{videoProp['backgroundImagePoolPath']}") 
+	private String[] backgroundImagePoolPath;
+
 	private byte[] imageBytes() throws IOException {
-		File directory = new File("E:\\Girls");
+		File directory = new File(backgroundImagePoolPath[0]);
 		Collection<File> found = FileUtils.listFiles(directory, new String[]{"jpg"}, true);
 		File[] files = found.toArray(new File[0]);
 		int random = new Random().nextInt(files.length);

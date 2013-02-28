@@ -56,11 +56,6 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private String sortMethod;
 
-	private final String PLAY = "play";
-	private final String OVERVIEW = "overview";
-	private final String COVER = "cover";
-	private final String SUBTITLES = "subtitles";
-	private final String DELETE = "delete";
 	private final String FileEncoding = "UTF-8";
 	
 	public Video() {
@@ -90,24 +85,25 @@ public class Video implements Comparable<Object>, Serializable {
 
 
 	// action method
-	private void saveHistory(String historyMode) {
+	private void saveHistory(Action action) {
 		String msg = null; 
 		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		if(historyMode.equals(PLAY)) {
+	
+		if(action.equals(Action.PLAY)) {
 			msg = "play video : " + getVideoFileListPath();
-		} else if(historyMode.equals(OVERVIEW)) {
+		} else if(action.equals(Action.OVERVIEW)) {
 			msg = "write overview : " + getOverviewFilePath();
-		} else if(historyMode.equals(COVER)) {
+		} else if(action.equals(Action.COVER)) {
 			msg = "view cover : " + getCoverFilePath();
-		} else if(historyMode.equals(SUBTITLES)) {
+		} else if(action.equals(Action.SUBTITLES)) {
 			msg = "edit subtitles : " + getSubtitlesFileListPath();
-		} else if(historyMode.equals(DELETE)) {
+		} else if(action.equals(Action.DELETE)) {
 			msg = "delete all : " + this.toString();
 		} else {
-			msg = "unknown action ";
+			throw new IllegalStateException("Undefined Action : " + action.toString());
 		}
 		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", 
-				currDate, getOpus(), historyMode, msg, System.getProperty("line.separator"));
+				currDate, getOpus(), action, msg, System.getProperty("line.separator"));
 		
 		logger.debug("save history - " + historymsg);
 		try {
@@ -124,7 +120,7 @@ public class Video implements Comparable<Object>, Serializable {
 		}
 	}
 	public void deleteVideo() {
-		this.saveHistory(this.DELETE);
+		this.saveHistory(Action.DELETE);
 
 		for(File videoFile : getVideoFileList())
 			FileUtils.deleteQuietly(videoFile);
@@ -141,7 +137,7 @@ public class Video implements Comparable<Object>, Serializable {
 		logger.debug("saveOverViewTxt : " + getOpus() + " [" + getOverviewFile() + "]");
 		try {
 			FileUtils.writeStringToFile(getOverviewFile(), newOverviewTxt, FileEncoding);
-			saveHistory(OVERVIEW);
+			saveHistory(Action.OVERVIEW);
 		} catch (IOException e) {
 			logger.error(newOverviewTxt, e);
 		}
@@ -216,7 +212,7 @@ public class Video implements Comparable<Object>, Serializable {
 				String[] cmdArray = ArrayUtils.addAll(new String[]{editor}, getSubtitlesFileListPathArray());
 				Runtime.getRuntime().exec(cmdArray);
 				logger.debug("edit subtitles : [" + VideoUtils.arrayToString(cmdArray) + "]");
-				saveHistory(SUBTITLES);
+				saveHistory(Action.SUBTITLES);
 			}
 		} catch (IOException e) {
 			logger.error("Error : edit subtitles", e);
@@ -229,7 +225,7 @@ public class Video implements Comparable<Object>, Serializable {
 				String[] cmdArray = ArrayUtils.addAll(new String[]{player.toString()}, getVideoFileListPathArray());
 				logger.debug("play video : [" + VideoUtils.arrayToString(cmdArray) + "]");
 				Runtime.getRuntime().exec(cmdArray);
-				saveHistory(PLAY);
+				saveHistory(Action.PLAY);
 			}
 		} catch (IOException e) {
 			logger.error("Error : play video", e);
