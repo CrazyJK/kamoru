@@ -10,6 +10,8 @@ public interface ImageSource {
 	
 	List<Image> getImageList();
 
-	int getImageSize();
+	int getImageSourceSize();
+	
+	void reload();
 	
 }

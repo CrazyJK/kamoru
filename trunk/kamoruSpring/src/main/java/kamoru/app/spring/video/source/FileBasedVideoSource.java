@@ -31,41 +31,25 @@ public class FileBasedVideoSource implements VideoSource {
 	private String cover_extensions;
 	private String subtitles_extensions;
 	private String overview_extensions;
-	private String editor;
-	private String player;
 		
 	// setter
 	public void setPaths(String[] paths) {
-		logger.debug(ArrayUtils.toString(paths) + " - " + paths.length);
 		this.paths = paths;
 	}
-
-	public void setPlayer(String player) {
-		this.player = player;
-	}
-
-	public void setEditor(String editor) {
-		this.editor = editor;
-	}
-	
 	public void setVideo_extensions(String video_extensions) {
 		this.video_extensions = video_extensions;
 	}
-
 	public void setCover_extensions(String cover_extensions) {
 		this.cover_extensions = cover_extensions;
 	}
-
 	public void setSubtitles_extensions(String subtitles_extensions) {
 		this.subtitles_extensions = subtitles_extensions;
 	}
-
 	public void setOverview_extensions(String overview_extensions) {
 		this.overview_extensions = overview_extensions;
 	}
 
 	private Map<String, Video> createVideoSource() {
-		logger.debug("call createVideoSource");
 		if(dataMap != null)
 			return dataMap;
 		
@@ -125,7 +109,7 @@ public class FileBasedVideoSource implements VideoSource {
 			}
 			Video video = null;
 			if((video = dataMap.get(opus)) == null) {
-				video = new Video(paths[0], player, editor);
+				video = new Video();
 				video.setStudio(studio);
 				video.setOpus(opus);
 				video.setTitle(title);
@@ -172,7 +156,10 @@ public class FileBasedVideoSource implements VideoSource {
 	
 	@Override
 	public Video get(Object opus) {
-		return createVideoSource().get(opus);
+		Video video = createVideoSource().get(opus);
+		if(video == null)
+			throw new RuntimeException("Not found video");
+		return video;
 	}
 
 	@Override
@@ -182,13 +169,9 @@ public class FileBasedVideoSource implements VideoSource {
 
 	@Override
 	public void remove(Object opus) {
+		for(File file : createVideoSource().get(opus).getFileAll())
+			FileUtils.deleteQuietly(file);
 		createVideoSource().remove(opus);
-	}
-
-	@Override
-	public void delete(String opus) {
-		get(opus).deleteVideo();
-		remove(opus);		
 	}
 
 	@Override
@@ -211,10 +194,8 @@ public class FileBasedVideoSource implements VideoSource {
 		return createVideoSource().containsKey(opus);
 	}
 
-	@Scheduled(fixedRate=60000)
 	@Override
 	public void reload() {
-		logger.info("start");
 		load();
 	}
 }

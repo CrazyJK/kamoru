@@ -166,7 +166,7 @@ public class VideoDaoFile implements VideoDao {
 
 	@Override
 	public void deleteVideo(String opus) {
-		getVideo(opus).deleteVideo();
+		videoSource.remove(opus);
 	}
 
 }

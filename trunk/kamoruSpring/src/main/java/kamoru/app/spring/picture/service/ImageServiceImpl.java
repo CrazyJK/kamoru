@@ -18,8 +18,8 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public int getImageSize() {
-		return imageSource.getImageSize();
+	public int getImageSourceSize() {
+		return imageSource.getImageSourceSize();
 	}
 
 }

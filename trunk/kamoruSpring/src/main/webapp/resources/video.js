@@ -83,23 +83,27 @@ function resizeBackgroundImage() {
 	img.bind('load', function(){
 		var imgWidth  = $(this).width();
 		var imgHeight = $(this).height();
-		var divWidth  = $("#contentDiv").width();
-		var divHeight = $("#contentDiv").height();
+		var divWidth  = $("#contentDiv").width() + 30;
+		var divHeight = $("#contentDiv").height() + 20;
 		var width  = 0;
 		var height = 0;
 		
-		if(imgWidth < divWidth && imgHeight < divHeight) { // 1. x:- y:-
+		if(imgWidth <= divWidth && imgHeight <= divHeight) { // 1. x:- y:-
 			width  = imgWidth;
 			height = imgHeight;
-		}else if(imgWidth < divWidth && imgHeight > divHeight) { // 2. x:- y:+
+		}else if(imgWidth <= divWidth && imgHeight > divHeight) { // 2. x:- y:+
 			width  = ratioSize(divHeight, imgWidth, imgHeight);
 			height = divHeight;
-		}else if(imgWidth > divWidth && imgHeight < divHeight) { // 3. x:+ y:-
+		}else if(imgWidth > divWidth && imgHeight <= divHeight) { // 3. x:+ y:-
 			width  = divWidth;
 			height = ratioSize(divWidth, imgHeight, imgWidth);
 		}else if(imgWidth > divWidth && imgHeight > divHeight) { // 4. x:+ y:+
-			width  = ratioSize(divHeight, imgWidth, imgHeight);
-			height = divHeight;
+			width  = divWidth;
+			height = ratioSize(width, imgHeight, imgWidth);
+			if(height > divHeight) {
+				width  = ratioSize(divHeight, imgWidth, imgHeight);
+				height = divHeight;
+			}
 		}
 		//$("#debug").html("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
 		$("#contentDiv").css("background-size", width + "px " + height + "px");
@@ -112,13 +116,13 @@ function ratioSize(numerator1, numerator2, denominator) {
 }
 function fnStudioDivToggle() {
 	$("#studioDiv").toggle();
-	$("#debug").html("fnStudioDivToggle");
 	resizeDivHeight();
+	$("#debug").html("fnStudioDivToggle");
 }
 function fnActressDivToggle() {
 	$("#actressDiv").toggle();
-	$("#debug").html("fnActressDivToggle");
 	resizeDivHeight();
+	$("#debug").html("fnActressDivToggle");
 }
 function fnStudioSearch(studio) {
 	$("input:text").each(function(){

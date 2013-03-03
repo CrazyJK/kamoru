@@ -14,7 +14,10 @@
 	<context:annotation-config/>
 	
 	<!-- @Scheduled, @Async -->
-	<task:annotation-driven/>
+	<task:annotation-driven scheduler="scheduler" executor="executor"/>
+	<task:scheduler id="scheduler" pool-size="10"/>
+	<task:executor id="executor" pool-size="4" queue-capacity="4" rejection-policy="ABORT"/>	
+		
 		
 	<util:properties id="videoProp" location="classpath:/av.#{T(java.net.InetAddress).getLocalHost().getHostName()}.properties" />
 	
@@ -24,7 +27,5 @@
 		<property name="cover_extensions" value="#{videoProp['cover_extensions']}" />
 		<property name="subtitles_extensions" value="#{videoProp['subtitles_extensions']}" />
 		<property name="overview_extensions" value="#{videoProp['overview_extensions']}" />
-		<property name="editor" value="#{videoProp['editor']}" />
-		<property name="player" value="#{videoProp['player']}" />
 	</bean>
 </beans>

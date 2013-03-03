@@ -6,6 +6,6 @@ public interface ImageService {
 
 	Image getImage(int idx);
 
-	int getImageSize();
+	int getImageSourceSize();
 
 }

@@ -65,12 +65,12 @@ div#contentDiv {overflow:auto; text-align:center;}
 				   -moz-border-radius: 5px;
 				-webkit-border-radius: 5px;}
 				
-   #titleSpan {color:black; opacity:1;}
-  #studioSpan {color:blue;  opacity:1;}
-    #opusSpan {color:green; opacity:1;}
- #actressSpan {color:black; opacity:1;}
-   .existFile {color:blue;  opacity:1;}
-.nonExistFile {color:gray;  opacity:1;}
+   #titleSpan {color:black; opacity:0.7;}
+  #studioSpan {color:blue;  opacity:0.7;}
+    #opusSpan {color:green; opacity:0.7;}
+ #actressSpan {color:black; opacity:0.7;}
+   .existFile {color:blue;  opacity:0.7;}
+.nonExistFile {color:gray;  opacity:0.7;}
   /* .overviewDD {height:60px; overflow:auto;} */
 
 

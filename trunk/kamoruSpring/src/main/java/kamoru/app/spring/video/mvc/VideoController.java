@@ -18,7 +18,10 @@ import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +41,7 @@ public class VideoController {
 	private VideoService videoService;
 	
 	@RequestMapping(value="/video")
-	public String av(Model model, @RequestParam Map<String, String> params, HttpServletResponse response) {
+	public String av(Model model, @RequestParam Map<String, String> params) {
 		List<Video> videoList =  videoService.getVideoListByParams(params);
 		String opusArrayStyleString = VideoUtils.getOpusArrayStyleString(videoList);
 		model.addAttribute("videoList", videoList);
@@ -60,33 +63,20 @@ public class VideoController {
 		videoService.deleteVideo(opus);
 	}
 
-/*	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
-	public String showCover(Model model, @PathVariable String opus) {
-		Video video = videoService.getVideo(opus);
-		model.addAttribute(video);
-		return "video/image";
-	}
-*/
 	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
-	public @ResponseBody byte[] image(@PathVariable String opus) throws IOException {
+	public HttpEntity<byte[]> image(@PathVariable String opus) throws IOException {
 		File imageFile = videoService.getVideoCoverFile(opus);
-		return FileUtils.readFileToByteArray(imageFile);
+		byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType(new Tika().detect(imageFile)));
+		headers.setContentLength(imageBytes.length);
+		headers.setCacheControl("max-age=" + 86400);
+		headers.setDate(new Date().getTime() + 86400*1000l);
+		headers.setExpires(new Date().getTime() + 86400*1000l);
+		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
 
-/*	@RequestMapping(value="/video/{opus}/cover", method=RequestMethod.GET)
-	public void image(@PathVariable String opus, HttpServletResponse response) throws IOException {
-		File imageFile = videoService.getVideoCoverFile(opus);
-		Tika tika = new Tika();
-	    String mimeType = tika.detect(imageFile);
-		response.setContentType(mimeType);
-		response.setDateHeader("Expires", new Date().getTime() + 86400*1000l);
-		response.setHeader("Cache-Control", "max-age=" + 86400);
-		response.getOutputStream().write(FileUtils.readFileToByteArray(imageFile));
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
-	}
-*/
-	//	/video/{opus}/overview	- GET : 품평 보기, POST : 품평 수정
 	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.GET)
 	public String showOverview(Model model, @PathVariable("opus") String opus) {
 		model.addAttribute("video", videoService.getVideo(opus));

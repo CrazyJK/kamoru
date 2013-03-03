@@ -29,7 +29,7 @@ public class PictureController {
 	
 	@RequestMapping(value="/image/list")
 	public String viewImageList(Model model) {
-		int count = imageService.getImageSize();
+		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		return "/picture/slide";
 	}
@@ -38,30 +38,32 @@ public class PictureController {
 	public HttpEntity<byte[]> viewImageThumbnail(@PathVariable int idx) {
 		byte[] imageBytes = imageService.getImage(idx).getImageBytes(PictureType.THUMBNAIL);
 		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_GIF);
-		headers.setContentLength(imageBytes.length);
-		headers.setCacheControl("max-age=" + 86400);
-		headers.setDate(new Date().getTime() + 86400*1000l);
-		headers.setExpires(new Date().getTime() + 86400*1000l);
-
-		return new HttpEntity<byte[]>(imageBytes, headers);
+		return getImageEntity(imageBytes, MediaType.IMAGE_GIF);
+	}
+	
+	@RequestMapping(value="/image/{idx}/WEB")
+	public HttpEntity<byte[]> viewImageWEB(@PathVariable int idx) {
+		byte[] imageBytes = imageService.getImage(idx).getImageBytes(PictureType.WEB);
+		
+		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
 	}
 	
 	@RequestMapping(value="/image/{idx}")
 	public HttpEntity<byte[]> viewImage(@PathVariable int idx) {
 		byte[] imageBytes = imageService.getImage(idx).getImageBytes(PictureType.MASTER);
 		
+		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
+	}
+	
+	private HttpEntity<byte[]> getImageEntity(byte[] imageBytes, MediaType type) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_JPEG);
+		headers.setContentType(type);
 		headers.setContentLength(imageBytes.length);
 		headers.setCacheControl("max-age=" + 86400);
 		headers.setDate(new Date().getTime() + 86400*1000l);
 		headers.setExpires(new Date().getTime() + 86400*1000l);
 
-		return new HttpEntity<byte[]>(imageBytes, headers);
+		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}
-	
-	
 	
 }

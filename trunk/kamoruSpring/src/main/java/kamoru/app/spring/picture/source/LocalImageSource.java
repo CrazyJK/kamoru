@@ -60,8 +60,13 @@ public class LocalImageSource implements ImageSource {
 	}
 
 	@Override
-	public int getImageSize() {
+	public int getImageSourceSize() {
 		return createImageSource().size();
+	}
+
+	@Override
+	public void reload() {
+		listImages();
 	}
 
 }

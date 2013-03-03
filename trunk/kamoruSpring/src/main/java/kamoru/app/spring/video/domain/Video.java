@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,10 +38,6 @@ public class Video implements Comparable<Object>, Serializable {
 	private static final long serialVersionUID = 1L;
 	protected static final Log logger = LogFactory.getLog(Video.class);
 
-	private String mainBasePath;
-	private String editor;
-	private String player;
-	
 	private String studio;
 	private String opus;
 	private String title;
@@ -56,20 +53,12 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private String sortMethod;
 
-	private final String FileEncoding = "UTF-8";
 	
 	public Video() {
 		videoFileList = new ArrayList<File>();
 		subtitlesFileList = new ArrayList<File>();
 		etcFileList = new ArrayList<File>();
 		actressList = new ArrayList<String>();
-	}
-	
-	public Video(String mainBasePath, String player, String editor) {
-		this();
-		this.mainBasePath = mainBasePath;
-		this.editor = editor;
-		this.player = player;
 	}
 	
 	public String toString() {
@@ -82,156 +71,7 @@ public class Video implements Comparable<Object>, Serializable {
 		sb.append("etc : ").append(this.getEtcFileListPath());
 		return sb.toString();
 	}
-
-
-	// action method
-	private void saveHistory(Action action) {
-		String msg = null; 
-		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	
-		if(action.equals(Action.PLAY)) {
-			msg = "play video : " + getVideoFileListPath();
-		} else if(action.equals(Action.OVERVIEW)) {
-			msg = "write overview : " + getOverviewFilePath();
-		} else if(action.equals(Action.COVER)) {
-			msg = "view cover : " + getCoverFilePath();
-		} else if(action.equals(Action.SUBTITLES)) {
-			msg = "edit subtitles : " + getSubtitlesFileListPath();
-		} else if(action.equals(Action.DELETE)) {
-			msg = "delete all : " + this.toString();
-		} else {
-			throw new IllegalStateException("Undefined Action : " + action.toString());
-		}
-		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", 
-				currDate, getOpus(), action, msg, System.getProperty("line.separator"));
-		
-		logger.debug("save history - " + historymsg);
-		try {
-			if(getHistoryFile() == null)
-				setHistoryFile(new File(getVideoPathWithoutExtension() + ".log"));
-			FileUtils.writeStringToFile(getHistoryFile(), historymsg, FileEncoding, true);
-		} catch (IOException e) {
-			logger.error(historymsg, e);
-		}
-		try {
-			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, FileEncoding, true);
-		} catch (IOException e) {
-			logger.error(historymsg, e);
-		}
-	}
-	public void deleteVideo() {
-		this.saveHistory(Action.DELETE);
-
-		for(File videoFile : getVideoFileList())
-			FileUtils.deleteQuietly(videoFile);
-		FileUtils.deleteQuietly(getCoverFile());
-		for(File subtitlesFile : getSubtitlesFileList())
-			FileUtils.deleteQuietly(subtitlesFile);
-		FileUtils.deleteQuietly(getOverviewFile());
-		FileUtils.deleteQuietly(getHistoryFile());
-		for(File etcFile : getEtcFileList())
-			FileUtils.deleteQuietly(etcFile);
-	}
-	public void saveOverViewText(String newOverviewTxt) {
-		if(!isExistOverviewFile()) makeOverviewFile();
-		logger.debug("saveOverViewTxt : " + getOpus() + " [" + getOverviewFile() + "]");
-		try {
-			FileUtils.writeStringToFile(getOverviewFile(), newOverviewTxt, FileEncoding);
-			saveHistory(Action.OVERVIEW);
-		} catch (IOException e) {
-			logger.error(newOverviewTxt, e);
-		}
-	}
-	private void makeOverviewFile() {
-		setOverviewFile(new File(getVideoPathWithoutExtension() + ".txt"));
-	}
-	private String getVideoPathWithoutExtension() {
-		if(isExistVideoFileList()) {
-			String videoPath = getVideoFileList().get(0).getAbsolutePath();
-			return videoPath.substring(0, videoPath.lastIndexOf("."));
-		} else if(isExistCoverFile()) {
-			return getCoverFilePath().substring(0, getCoverFilePath().lastIndexOf("."));
-		} else if(isExistOverviewFile()) {
-			return getOverviewFilePath().substring(0, getOverviewFilePath().lastIndexOf("."));
-		} else if(isExistSubtitlesFileList()) {
-			String subtitlesPath = getSubtitlesFileList().get(0).getAbsolutePath();
-			return subtitlesPath.substring(0, subtitlesPath.lastIndexOf("."));
-		} else {
-			return null;
-		}
-	}
-	public String getOverviewText() {
-		if(isExistOverviewFile()) {
-			try {
-				return FileUtils.readFileToString(getOverviewFile(), FileEncoding );
-			}catch(IOException ioe){
-				return "Error:" + ioe.getMessage();
-			}
-		} else {
-			return "";
-		}
-	}
-	public String getHistoryText() {
-		if(isExistHistoryFile()) {
-			try {
-				return FileUtils.readFileToString(getHistoryFile(), FileEncoding );
-			}catch(IOException ioe){
-				return "Error:" + ioe.getMessage();
-			}
-		} else {
-			return "";
-		}
-	}
-	/*
-	public void viewImage(HttpServletResponse response) throws IOException {
-		String img = getCover() == null ? prop.noImagePath : getCover();
-		response.setContentType("image/" + img.substring(img.lastIndexOf(".")+1));
-		response.getOutputStream().write(getCoverImageByte(img));
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
-	}
-	public byte[] getCoverImageByte(String img) {
-		File imageFile = new File(img);
-		byte[] b = new byte[(int)imageFile.length()];
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(imageFile);
-			fis.read(b);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(fis != null) try {fis.close();}catch(IOException e){}
-		}
-		return b;
-	}
-	*/
-	
-	public void editSubtitles() {
-		try {
-			if(isExistSubtitlesFileList()) {
-				String[] cmdArray = ArrayUtils.addAll(new String[]{editor}, getSubtitlesFileListPathArray());
-				Runtime.getRuntime().exec(cmdArray);
-				logger.debug("edit subtitles : [" + VideoUtils.arrayToString(cmdArray) + "]");
-				saveHistory(Action.SUBTITLES);
-			}
-		} catch (IOException e) {
-			logger.error("Error : edit subtitles", e);
-		}
-	}
-	
-	public void playVideo() {
-		try {
-			if(isExistVideoFileList()) {
-				String[] cmdArray = ArrayUtils.addAll(new String[]{player.toString()}, getVideoFileListPathArray());
-				logger.debug("play video : [" + VideoUtils.arrayToString(cmdArray) + "]");
-				Runtime.getRuntime().exec(cmdArray);
-				saveHistory(Action.PLAY);
-			}
-		} catch (IOException e) {
-			logger.error("Error : play video", e);
-		}
-	}
-
 	public String getActress() {
 		return VideoUtils.arrayToString(actressList);
 	}
@@ -471,5 +311,40 @@ public class Video implements Comparable<Object>, Serializable {
 	public void setSortMethod(String sortMethod) {
 		this.sortMethod = sortMethod;
 	}
+
+	public List<File> getFileAll() {
+		List<File> list = new ArrayList<File>();
+		list.addAll(getVideoFileList());
+		list.addAll(getSubtitlesFileList());
+		list.add(getCoverFile());
+		list.add(getHistoryFile());
+		list.add(getOverviewFile());
+		list.addAll(getEtcFileList());
+		return list;
+	}
 	
+	public String getOverviewText() {
+		if(isExistOverviewFile()) {
+			try {
+				return FileUtils.readFileToString(getOverviewFile());
+			}catch(IOException ioe){
+				return "Error:" + ioe.getMessage();
+			}
+		} else {
+			return "";
+		}
+	}
+	
+	public String getHistoryText() {
+		if(isExistHistoryFile()) {
+			try {
+				return FileUtils.readFileToString(getHistoryFile());
+			}catch(IOException ioe){
+				return "Error:" + ioe.getMessage();
+			}
+		} else {
+			return "";
+		}
+	}
+
 }

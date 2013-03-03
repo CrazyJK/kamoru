@@ -11,7 +11,6 @@ public interface VideoSource {
 	Video get(Object opus);
 	void put(String opus, Video video);
 	void remove(Object opus);
-	void delete(String opus);
 	Set<String> keySet();
 	Map<String, Video> getMap();
 	List<Video> getList();
