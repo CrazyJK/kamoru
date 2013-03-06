@@ -17,6 +17,7 @@
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
 var opusArray = ${opusArray};
+var bgImageCount = ${bgImageCount};
 </script>
 <script src="<c:url value="/resources/video.js" />" type="text/javascript"></script>
 </head>
@@ -69,7 +70,7 @@ var opusArray = ${opusArray};
 	</div>
 </div>
 
-<div id="contentDiv" class="boxDiv" style="background-image:url('<c:url value="/video/bgimage" />')">
+<div id="contentDiv" class="boxDiv">
 	<span id="totalCount">Total <c:out value="${fn:length(videoList)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnBGImageView();">BG</span>
 	<c:choose>
 		<c:when test="${params['listViewType'] eq 'card' }">

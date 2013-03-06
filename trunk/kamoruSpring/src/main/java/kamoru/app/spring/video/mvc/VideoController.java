@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import kamoru.app.spring.picture.service.ImageService;
 import kamoru.app.spring.video.domain.Video;
 import kamoru.app.spring.video.service.VideoService;
 import kamoru.app.spring.video.util.VideoUtils;
@@ -39,7 +40,9 @@ public class VideoController {
 	
 	@Autowired
 	private VideoService videoService;
-	
+	@Autowired
+	private ImageService imageService;
+
 	@RequestMapping(value="/video")
 	public String av(Model model, @RequestParam Map<String, String> params) {
 		List<Video> videoList =  videoService.getVideoListByParams(params);
@@ -49,6 +52,7 @@ public class VideoController {
 		model.addAttribute("actressMap", videoService.getActressMap());
 		model.addAttribute("studioMap", videoService.getStudioMap());
 		model.addAttribute("params", params);
+		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
 		return "video/video";
 	}
 
@@ -129,22 +133,4 @@ public class VideoController {
 		return "video/list";
 	}
 
-	@RequestMapping(value="/video/bgimage", method=RequestMethod.GET)
-	public void showBGImage(@RequestParam(value="curr", required=false) String curr,
-			HttpServletResponse response) throws IOException {
-		logger.info("start");
-		File imageFile = videoService.getBGImageFile(curr);
-		Tika tika = new Tika();
-	    String mimeType = tika.detect(imageFile);
-		response.setContentType(mimeType);
-		response.getOutputStream().write(FileUtils.readFileToByteArray(imageFile));
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
-	}
-	
-	@RequestMapping(value="/image/slide")
-	public String showBGImageSlide() {
-		
-		return "image/slide";
-	}
 }

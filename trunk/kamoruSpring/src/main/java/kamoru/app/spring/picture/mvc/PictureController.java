@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Random;
 
 import kamoru.app.spring.picture.domain.PictureType;
 import kamoru.app.spring.picture.service.ImageService;
@@ -51,6 +52,14 @@ public class PictureController {
 	@RequestMapping(value="/image/{idx}")
 	public HttpEntity<byte[]> viewImage(@PathVariable int idx) {
 		byte[] imageBytes = imageService.getImage(idx).getImageBytes(PictureType.MASTER);
+		
+		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
+	}
+	
+	@RequestMapping(value="/image/random")
+	public HttpEntity<byte[]> viewImageRandom() {
+		int random = new Random().nextInt(imageService.getImageSourceSize());
+		byte[] imageBytes = imageService.getImage(random).getImageBytes(PictureType.MASTER);
 		
 		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
 	}

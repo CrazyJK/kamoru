@@ -26,8 +26,6 @@ public interface VideoService {
 
 	void playVideo(String opus);
 
-	File getBGImageFile(String curr);
-
 	File getVideoCoverFile(String opus);
 
 	void saveVideoOverview(String opus, String overViewTxt);

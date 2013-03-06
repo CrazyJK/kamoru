@@ -4,24 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
-import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import kamoru.app.spring.video.dao.VideoDao;
@@ -31,47 +24,16 @@ import kamoru.app.spring.video.domain.Video;
 @Service
 public class VideoServiceImpl implements VideoService {
 	protected static final Log logger = LogFactory.getLog(VideoServiceImpl.class);
-	
-	private VideoDao videoDao;
-	private Map<String, String> history;
-	
-	@Value("#{videoProp['defaultCoverFilePath']}") 
-	private String defaultCoverFilePath;
-	@Value("#{videoProp['backgroundImagePoolPath']}") 
-	private String backgroundImagePoolPath;
-	private List<File> list;
-	private File currentBackgroundImageFile;
 
-	@Value("#{videoProp['editor']}") 
-	private String editor;
-	@Value("#{videoProp['player']}") 
-	private String player;
-	@Value("#{videoProp['mainBasePath']}")
-	private String mainBasePath;
-	
 	public final String FileEncoding = "UTF-8";
 
-	public VideoServiceImpl() {
-		history = new HashMap<String, String>();
-	}
+	@Autowired private VideoDao videoDao;
 	
-	@Inject
-	public void setVideoDao(VideoDao videoDao) {
-		this.videoDao = videoDao;
-	}
-
-	@Scheduled(fixedRate=3600000)
-	public void listBackgroundImages() {
-		logger.info("start");
-		String[] bgImgPoolPath = StringUtils.split(backgroundImagePoolPath, ",");
-		list = new ArrayList<File>();
-		for(String bgImgPath : bgImgPoolPath) {
-			File dir = new File(bgImgPath);
-			if(dir.isDirectory())
-				list.addAll(FileUtils.listFiles(dir, new String[]{"jpg"}, true));
-		}
-	}
-
+	@Value("#{videoProp['defaultCoverFilePath']}") private String defaultCoverFilePath;
+	@Value("#{videoProp['editor']}") private String editor;
+	@Value("#{videoProp['player']}") private String player;
+	@Value("#{videoProp['mainBasePath']}") private String mainBasePath;
+	
 	@Override
 	public List<Video> getVideoListByParams(Map<String, String> params) {
 		return videoDao.getVideoListByParams(params);
@@ -146,7 +108,6 @@ public class VideoServiceImpl implements VideoService {
 	public void playVideo(String opus) {
 		saveHistory(getVideo(opus), Action.PLAY);
 		executeCommand(Action.PLAY, getVideo(opus));
-		history.put(opus, "play");
 	}
 
 	@Override
@@ -155,10 +116,10 @@ public class VideoServiceImpl implements VideoService {
 	}
 	
 	@Async
-	private void executeCommand(Action play, Video video) {
+	private void executeCommand(Action action, Video video) {
 		String command = null;
 		String[] argumentsArray = null;
-		switch(play) {
+		switch(action) {
 		case PLAY:
 			command = player;
 			argumentsArray = video.getVideoFileListPathArray();
@@ -184,16 +145,6 @@ public class VideoServiceImpl implements VideoService {
 		
 	}
 
-	@Override
-	public File getBGImageFile(String curr) {
-		if(list == null) 
-			listBackgroundImages();
-	    if(!BooleanUtils.toBoolean(curr) || currentBackgroundImageFile == null) {
-			currentBackgroundImageFile = list.get(new Random().nextInt(list.size()));
-	    }
-	    return currentBackgroundImageFile;
-	}
-	
 	@Override
 	public File getVideoCoverFile(String opus) {
 		File coverFile = videoDao.getVideo(opus).getCoverFile();

@@ -52,7 +52,7 @@ $(document).ready(function(){
 				});
 		});
  	$('span[id^="checkbox-exist"]').bind("click", function(){
- 		if($("#addCond").val() == "off") {
+ 		if($("#addCond").val() == "off" || $("#addCond").val() == "") {
  			$("#checkbox-addCond").click();
  			$("#debug").html("addCond click");
  		}
@@ -76,8 +76,11 @@ function resizeDivHeight() {
 	$("#contentDiv").height(resizeContentDivHeight);
 	resizeBackgroundImage();
 }
+var currBGImageUrl;
+var selectedNumber = Math.floor(Math.random() * bgImageCount);
 function resizeBackgroundImage() {
-	var url = $('#contentDiv').css('background-image').replace(/url\(|\)$/ig, "");
+	currBGImageUrl = context + "image/" + selectedNumber;
+	
 	var img = $("<img />");
 	img.hide();
 	img.bind('load', function(){
@@ -106,10 +109,11 @@ function resizeBackgroundImage() {
 			}
 		}
 		//$("#debug").html("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
+		$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
 		$("#contentDiv").css("background-size", width + "px " + height + "px");
 	});
 	$("body").append(img);
-	img.attr("src", url);
+	img.attr("src", currBGImageUrl);
 }
 function ratioSize(numerator1, numerator2, denominator) {
 	return parseInt(numerator1 * numerator2 / denominator);
@@ -182,52 +186,35 @@ function fnOpusFocus(opus) {
 	});
 }
 function fnBGImageView() {
-	var vUrl    = context + "video/bgimage?curr=y";
-    var vName   = "BGimageview";
-    var vWidth  = 800;
-    var vHeight = 539;
-    var vLeft   = (window.screen.width  - vWidth)/2;
-    var vTop    = (window.screen.height - vHeight)/2;
-    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
-    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
-          		   "status=0,menubar=0,scrollbars=0,resizable=1";
-    window.open(vUrl, vName, vSpecs);	
+	popup(currBGImageUrl, "BGimageview", 800, 600);
 }
 function fnImageView(opus) {
 	$("#debug").html("Cover image view : " + opus);
-	var vUrl    = context + "video/" + opus + "/cover";
-    var vName   = "imageview-"+opus;
-    var vWidth  = 800;
-    var vHeight = 539;
-    var vLeft   = (window.screen.width  - vWidth)/2;
-    var vTop    = (window.screen.height - vHeight)/2;
-    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
-    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
-          		   "status=0,menubar=0,scrollbars=0,resizable=1";
-    window.open(vUrl, vName, vSpecs);	
+	popup(context + "video/" + opus + "/cover", "imageview-"+opus, 800, 539);
 }
 function fnEditOverview(opus) {
 	$("#debug").html("Overview Popup : " + opus);
-	var vUrl    = context + "video/" + opus + "/overview";
-    var vName   = "overview-"+opus;
-    var vWidth  = 400;
-    var vHeight = 300;
-    var vLeft   = window.event.x;
-    var vTop    = window.event.y;
-    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
-    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
-          		   "status=0,menubar=0,scrollbars=0,resizable=1";
-    window.open(vUrl, vName, vSpecs);	
+    popup(context + "video/" + opus + "/overview", "overview-"+opus, 400, 300, 'Mouse');
 }
 function fnVideoDetail(opus) {
-	var vUrl    = context + "video/" + opus;
-    var vName   = "detailview-"+opus;
-    var vWidth  = 850;
-    var vHeight = 800;
-    var vLeft   = (window.screen.width  - vWidth)/2;
-    var vTop    = (window.screen.height - vHeight)/2;
-    var vSpecs  = "width="+vWidth+", height="+vHeight+", top="+vTop+", left="+vLeft
-    			 + "toolbar=0,location=0,directories=0,titlebar=0"+
-          		   "status=0,menubar=0,scrollbars=0,resizable=1";
-    window.open(vUrl, vName, vSpecs);	
+    popup(context + "video/" + opus, "detailview-"+opus, 850, 800);
+}
+function popup(url, name, width, height, positionMethod, spec) {
+	var left = (window.screen.width  - width)/2;
+	var top  = (window.screen.height - height)/2;
+	var specs = "toolbar=0,location=0,directories=0,titlebar=0,status=0,menubar=0,scrollbars=0,resizable=1";
+	if(positionMethod) {
+		if(positionMethod == 'Window.Center') {
+			left = (window.screen.width  - width)/2;
+			top  = (window.screen.height - height)/2;
+		} else if(positionMethod == 'Mouse') {
+			left = window.event.x;
+			top  = window.event.y;
+		}
+	}
+	if(spec) {
+		specs = spec;
+	}
+	specs = "width="+width+",height="+height+",top="+top+", left="+left + "," + specs;
+	window.open(url, name, specs);
 }
