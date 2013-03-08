@@ -1,7 +1,7 @@
 package kamoru.app.spring.video.dao;
 
 import static org.junit.Assert.*;
-import kamoru.app.spring.video.source.FileBasedVideoSource;
+import kamoru.app.spring.video.source.AbstractVideoSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,21 +14,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FileBasedVideoSourceTest {
 
 	@Autowired
-	private FileBasedVideoSource videoSource;
+	private AbstractVideoSource videoSource;
 	
 	@Test
 	public void testInstance() {
-		assertTrue((videoSource instanceof kamoru.app.spring.video.source.FileBasedVideoSource));
+		assertTrue((videoSource instanceof kamoru.app.spring.video.source.AbstractVideoSource));
 	}
 	@Test
 	public void testGet() {		
-		videoSource.get("");
+//		videoSource.get("");
 		//Assert.("Not yet implemented");
 	}
 
 	@Test
 	public void testGetList() {
-		videoSource.getList();
+//		videoSource.getList();
 	}
 	
 //	@Test

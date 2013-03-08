@@ -6,31 +6,33 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import kamoru.app.spring.video.domain.Actress;
+import kamoru.app.spring.video.domain.Studio;
+import kamoru.app.spring.video.domain.Video;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import kamoru.app.spring.video.domain.Video;
-
-public class FileBasedVideoSource implements VideoSource {
-	protected static final Log logger = LogFactory.getLog(FileBasedVideoSource.class);
+public class FileBaseVideoSource extends AbstractVideoSource {
+	protected static final Log logger = LogFactory.getLog(FileBaseVideoSource.class);
 
 	private final String UNKNOWN = "_Unknown";
 	private final String unclassifiedStudio = UNKNOWN;
 	private final String unclassifiedOpus = UNKNOWN;
 	private final String unclassifiedActress = UNKNOWN;
 
-	private volatile Map<String, Video> dataMap;
 	private String[] paths;
 	private String video_extensions;
 	private String cover_extensions;
 	private String subtitles_extensions;
 	private String overview_extensions;
+
+	private Map<String, Video> videoMap;
+	private Map<String, Studio> studioMap;
+	private Map<String, Actress> actressMap;
 		
 	// setter
 	public void setPaths(String[] paths) {
@@ -49,13 +51,9 @@ public class FileBasedVideoSource implements VideoSource {
 		this.overview_extensions = overview_extensions;
 	}
 
-	private Map<String, Video> createVideoSource() {
-		if(dataMap != null)
-			return dataMap;
-		
-		load();
-		
-		return dataMap;
+	public final void createVideoSource() {
+		if(videoMap == null || studioMap == null || actressMap == null)
+			load();
 	}
 	private void load() {
 		Collection<File> files = new ArrayList<File>();
@@ -68,7 +66,10 @@ public class FileBasedVideoSource implements VideoSource {
 		}
 		logger.debug("found file size : " + files.size());
 
-		dataMap = new HashMap<String, Video>();
+		videoMap = new HashMap<String, Video>();
+		studioMap = new HashMap<String, Studio>();
+		actressMap = new HashMap<String, Actress>();
+		
 		int unclassifiedNo = 1;
 		for(File file : files) {
 			String filename = file.getName();
@@ -76,45 +77,47 @@ public class FileBasedVideoSource implements VideoSource {
 			String ext  = getFileExtension(file);
 			
 			String[] names = StringUtils.split(name, "]");
-			String studio  = UNKNOWN;
+			String studioName  = UNKNOWN;
 			String opus    = UNKNOWN;
 			String title   = filename;
-			String actress = UNKNOWN;
+			String actressName = UNKNOWN;
 			String etcInfo = "";
 			
 			switch(names.length) {
 			case 5:
 				etcInfo = trimName(names[4]);
 			case 4:
-				actress = trimName(names[3]);
+				actressName = trimName(names[3]);
 			case 3:
 				title = trimName(names[2]);
 			case 2:
 				opus = trimName(names[1]);
-				studio = trimName(names[0]);
+				studioName = trimName(names[0]);
 				break;
 			case 1:
-				studio 	= unclassifiedStudio;
+				studioName 	= unclassifiedStudio;
 				opus 	= unclassifiedOpus + unclassifiedNo++;
 				title 	= filename;
-				actress = unclassifiedActress;
+				actressName = unclassifiedActress;
 				break;
 			default: // if names length is over 6
-				studio 	= trimName(names[0]);
+				studioName 	= trimName(names[0]);
 				opus 	= trimName(names[1]);
 				title 	= trimName(names[2]);
-				actress = trimName(names[3]);
+				actressName = trimName(names[3]);
 				for(int i=4, iEnd=names.length; i<iEnd; i++)
 					etcInfo = trimName(names[i]);
 			}
+			
 			Video video = null;
-			if((video = dataMap.get(opus)) == null) {
+			if((video = videoMap.get(opus)) == null) {
 				video = new Video();
-				video.setStudio(studio);
+//				video.setStudio(studioName);
 				video.setOpus(opus);
 				video.setTitle(title);
-				video.setActress(actress);
+//				video.setActress(actressName);
 				video.setEtcInfo(etcInfo);
+				videoMap.put(opus, video);
 			}
 			if(video_extensions.indexOf(ext) > -1) {
 				video.setVideoFile(file);
@@ -134,9 +137,32 @@ public class FileBasedVideoSource implements VideoSource {
 			else {
 				video.setEtcFile(file);
 			}
-			dataMap.put(opus, video);
+			
+			Studio studio = null;
+			if((studio = studioMap.get(studioName)) == null) {
+				studio = new Studio(studioName);
+				studioMap.put(studioName, studio);
+			}
+
+			List<Actress> actressList = ActressFactory.getActress(actressName);
+			for(Actress actress : actressList) {
+				actressMap.put(actress.getName(), actress);
+			}
+
+			// inject reference
+			studio.putVideo(video);
+			studio.putActressList(actressList);
+			
+			video.setStudio(studio);
+			video.setActressList(actressList);
+			
+			for(Actress actress : actressList) {
+				actress.putVideo(video);
+				actress.putStudio(studio);
+			}
+			
 		}
-		logger.debug("Found video size : " + dataMap.size());
+		logger.debug("Found video size : " + videoMap.size());
 	}
 	private String getFileName(File file) {
 		String name = file.getName();
@@ -153,49 +179,26 @@ public class FileBasedVideoSource implements VideoSource {
 			return "";
 		return StringUtils.replace(str, "[", "").trim();
 	}
-	
-	@Override
-	public Video get(Object opus) {
-		Video video = createVideoSource().get(opus);
-		if(video == null)
-			throw new RuntimeException("Not found video");
-		return video;
-	}
-
-	@Override
-	public void put(String opus, Video video) {
-		createVideoSource().put(opus, video);		
-	}
-
-	@Override
-	public void remove(Object opus) {
-		for(File file : createVideoSource().get(opus).getFileAll())
-			FileUtils.deleteQuietly(file);
-		createVideoSource().remove(opus);
-	}
-
-	@Override
-	public Set<String> keySet() {
-		return createVideoSource().keySet();
-	}
-
-	@Override
-	public Map<String, Video> getMap() {
-		return createVideoSource();
-	}
-
-	@Override
-	public List<Video> getList() {
-		return new ArrayList<Video>(createVideoSource().values());
-	}
-
-	@Override
-	public boolean contains(Object opus) {
-		return createVideoSource().containsKey(opus);
-	}
 
 	@Override
 	public void reload() {
 		load();
 	}
+	@Override
+	public Map<String, Video> getVideoMap() {
+		createVideoSource();
+		return videoMap;
+	}
+	@Override
+	public Map<String, Studio> getStudioMap() {
+		createVideoSource();
+		return studioMap;
+	}
+	@Override
+	public Map<String, Actress> getActressMap() {
+		createVideoSource();
+		return actressMap;
+	}
+
+
 }

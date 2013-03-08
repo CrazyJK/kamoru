@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import kamoru.app.spring.video.domain.Actress;
+import kamoru.app.spring.video.domain.Studio;
 import kamoru.app.spring.video.domain.Video;
 import kamoru.app.spring.video.source.VideoSource;
 
@@ -15,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,8 +60,8 @@ public class VideoDaoFile implements VideoDao {
 		}
 		
 		List<Video> list = new ArrayList<Video>();
-		for(Video video : videoSource.getList()) {
-			if((studio  == null || studio.trim().length()  == 0 || studio.equalsIgnoreCase(video.getStudio())) 
+		for(Video video : videoSource.getVideoList()) {
+			if((studio  == null || studio.trim().length()  == 0 || studio.equalsIgnoreCase(video.getStudio().getName())) 
 			&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(video.getOpus()))
 			&& (title   == null || title.trim().length()   == 0 || video.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
 			&& (actress == null || actress.trim().length() == 0 || video.containsActress(actress))
@@ -77,37 +80,12 @@ public class VideoDaoFile implements VideoDao {
 	}
 	
 	@Override
-	public Map<String, Integer> getStudioMap() {
-		Map<String, Integer> studioMap = new TreeMap<String, Integer>();
-		for(Video video : videoSource.getList()) {
-			String studio = video.getStudio().toUpperCase();
-			int count = 0;
-			if(studioMap.containsKey(studio)) {
-				count = studioMap.get(studio);
-			}
-			studioMap.put(studio, ++count);
-		}
-		return studioMap;
+	public List<Studio> getStudioList() {
+		return videoSource.getStudioList();
 	}
 	@Override
-	public Map<String, Integer> getActressMap() {
-		Map<String, Integer> actressMap = new TreeMap<String, Integer>();
-		for(Video video : videoSource.getList()) {
-			List<String> actressList = video.getActressList();
-			for(String actress : actressList) {
-				int count = 0;
-				String reverseName = reverseName(actress);
-				if(actressMap.containsKey(actress)) {
-					count = actressMap.get(actress);
-				} 
-				else if(actressMap.containsKey(reverseName)) {
-					count = actressMap.get(reverseName);
-					actress = reverseName;
-				}
-				actressMap.put(actress, ++count);
-			}
-		}
-		return actressMap;
+	public List<Actress> getActressList() {
+		return videoSource.getActressList();
 	}
 	private String reverseName(String name) {
 		if(name == null) return null;
@@ -144,29 +122,25 @@ public class VideoDaoFile implements VideoDao {
 		return getAV(selectedBasePathId, studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse, useCacheData);
 	}
 
-	@Override
-	public List<Video> getVideoListByActress(String actress) {
-		return this.getAV(null, null, null, null, actress, false, false, false, null, false, false);
-	}
-
-	@Override
-	public List<Video> getVideoListByStudio(String studio) {
-		return this.getAV(null, studio, null, null, null, false, false, false, null, false, false);
-	}
-
-	@Override
-	public List<Video> getVideoListByTitle(String title) {
-		return this.getAV(null, null, null, title, null, false, false, false, null, false, false);
-	}
 
 	@Override
 	public Video getVideo(String opus) {
-		return videoSource.get(opus);
+		return videoSource.getVideo(opus);
 	}
 
 	@Override
 	public void deleteVideo(String opus) {
-		videoSource.remove(opus);
+		videoSource.removeVideo(opus);
+	}
+
+	@Override
+	public Studio getStudio(String name) {
+		return videoSource.getStudio(name);
+	}
+
+	@Override
+	public Actress getActress(String name) {
+		return videoSource.getActress(name);
 	}
 
 }

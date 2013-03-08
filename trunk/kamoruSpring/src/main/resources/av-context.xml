@@ -21,7 +21,7 @@
 		
 	<util:properties id="videoProp" location="classpath:/av.#{T(java.net.InetAddress).getLocalHost().getHostName()}.properties" />
 	
-	<bean id="videoSource" class="kamoru.app.spring.video.source.FileBasedVideoSource"	>
+	<bean id="videoSource" class="kamoru.app.spring.video.source.FileBaseVideoSource"	>
 		<property name="paths" value="#{videoProp['basePath']}" />
 		<property name="video_extensions" value="#{videoProp['video_extensions']}" />
 		<property name="cover_extensions" value="#{videoProp['cover_extensions']}" />

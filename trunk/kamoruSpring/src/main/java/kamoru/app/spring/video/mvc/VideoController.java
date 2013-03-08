@@ -49,17 +49,24 @@ public class VideoController {
 		String opusArrayStyleString = VideoUtils.getOpusArrayStyleString(videoList);
 		model.addAttribute("videoList", videoList);
 		model.addAttribute("opusArray", opusArrayStyleString);
-		model.addAttribute("actressMap", videoService.getActressMap());
-		model.addAttribute("studioMap", videoService.getStudioMap());
+		model.addAttribute("actressList", videoService.getActressList());
+		model.addAttribute("studioList", videoService.getStudioList());
 		model.addAttribute("params", params);
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
-		return "video/video";
+		return "video/videoMain";
 	}
 
+	@RequestMapping(value="/video/list", method=RequestMethod.GET)
+	public String showVideoList(Model model) {
+		model.addAttribute("videoList", videoService.getVideoListByParams(null));
+		return "video/videoList";
+	}
+
+		
 	@RequestMapping(value="/video/{opus}", method=RequestMethod.GET)
 	public String showAVOpus(Model model, @PathVariable String opus) {
 		model.addAttribute("video", videoService.getVideo(opus));
-		return "video/opus";
+		return "video/videoDetail";
 	}
 
 	@RequestMapping(value="/video/{opus}", method=RequestMethod.DELETE)
@@ -84,12 +91,12 @@ public class VideoController {
 	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.GET)
 	public String showOverview(Model model, @PathVariable("opus") String opus) {
 		model.addAttribute("video", videoService.getVideo(opus));
-		return "video/overview";
+		return "video/videoOverview";
 	}
 	@RequestMapping(value="/video/{opus}/overview", method=RequestMethod.POST) //	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String doSaveOverview(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
 		videoService.saveVideoOverview(opus, overViewTxt);
-		return "video/overviewSave";
+		return "video/videoOverviewSave";
 	}
 	@RequestMapping(value="/video/{opus}/play", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -104,33 +111,28 @@ public class VideoController {
 	}
 	
 	@RequestMapping(value="/video/actress", method=RequestMethod.GET)
-	public String showActress(Model model) {
-		model.addAttribute(videoService.getActressMap());
-		return "video/actress";
+	public String showActressList(Model model) {
+		model.addAttribute(videoService.getActressList());
+		return "video/actressList";
 	}
 	
 	@RequestMapping(value="/video/actress/{actress}", method=RequestMethod.GET)
-	public String showVideoListByActress(Model model, @PathVariable String actress) {
-		model.addAttribute(videoService.getVideoListByActress(actress));
-		return "video/list";
+	public String showActress(Model model, @PathVariable String actress) {
+		model.addAttribute(videoService.getActress(actress));
+		return "video/actressDetail";
 	}
 	
 	@RequestMapping(value="/video/studio", method=RequestMethod.GET)
-	public String showStudio(Model model) {
-		model.addAttribute(videoService.getStudioMap());
-		return "video/studio";
+	public String showStudioList(Model model) {
+		model.addAttribute(videoService.getStudioList());
+		return "video/studioList";
 	}
 	
 	@RequestMapping(value="/video/studio/{studio}", method=RequestMethod.GET)
-	public String showVideoListByStudio(Model model, @PathVariable String studio) {
-		model.addAttribute(videoService.getVideoListByStudio(studio));
-		return "video/list";
+	public String showStudio(Model model, @PathVariable String studio) {
+		model.addAttribute(videoService.getStudio(studio));
+		return "video/studioDetail";
 	}
 	
-	@RequestMapping(value="/video/title/{title}", method=RequestMethod.GET)
-	public String showVideoListByTitle(Model model, @PathVariable String title) {
-		model.addAttribute(videoService.getVideoListByTitle(title));
-		return "video/list";
-	}
 
 }

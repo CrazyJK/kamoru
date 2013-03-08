@@ -4,23 +4,23 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import kamoru.app.spring.video.domain.Actress;
+import kamoru.app.spring.video.domain.Studio;
 import kamoru.app.spring.video.domain.Video;
 
 public interface VideoService {
 
 	List<Video> getVideoListByParams(Map<String, String> params);
 
-	List<Video> getVideoListByActress(String actress);
+	List<Studio> getStudioList();
 
-	List<Video> getVideoListByStudio(String studio);
-
-	List<Video> getVideoListByTitle(String title);
-
-	Map<String, Integer> getActressMap();
-
-	Map<String, Integer> getStudioMap();
+	List<Actress> getActressList();
 
 	Video getVideo(String opus);
+
+	Studio getStudio(String studioName);
+
+	Actress getActress(String actressName);
 
 	void deleteVideo(String opus);
 
@@ -31,5 +31,7 @@ public interface VideoService {
 	void saveVideoOverview(String opus, String overViewTxt);
 
 	void editVideoSubtitles(String opus);
+
+
 
 }

@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kamoru.app.spring.video.util.VideoUtils;
 
@@ -38,10 +40,10 @@ public class Video implements Comparable<Object>, Serializable {
 	private static final long serialVersionUID = 1L;
 	protected static final Log logger = LogFactory.getLog(Video.class);
 
-	private String studio;
+//	private String studio;
 	private String opus;
 	private String title;
-	private List<String> actressList;
+//	private List<String> actressList;
 	private String etcInfo;
 	
 	private List<File> videoFileList;
@@ -52,13 +54,15 @@ public class Video implements Comparable<Object>, Serializable {
 	private List<File> etcFileList;
 	
 	private String sortMethod;
-
+	
+	private Studio studio;
+	private List<Actress> actressList;
 	
 	public Video() {
 		videoFileList = new ArrayList<File>();
 		subtitlesFileList = new ArrayList<File>();
 		etcFileList = new ArrayList<File>();
-		actressList = new ArrayList<String>();
+		actressList = new ArrayList<Actress>();
 	}
 	
 	public String toString() {
@@ -75,50 +79,19 @@ public class Video implements Comparable<Object>, Serializable {
 	public String getActress() {
 		return VideoUtils.arrayToString(actressList);
 	}
-	public void setActress(String names) {
-		String[] namesArr = names.split(",");
-		for(String name : namesArr) {
-			name = StringUtils.join(StringUtils.split(name), " ");
-			boolean bFindSameName = false;
-			for(String actress : actressList) {
-				if(equalsName(actress, name)) {
-					bFindSameName = true;
-					break;
-				}
-			}
-			if(!bFindSameName) {
-				actressList.add(name.trim());
-			}
-		}
-	}
-	public List<String> getActressList() {
+
+	public List<Actress> getActressList() {
 		Collections.sort(actressList);
 		return actressList;
 	}
-	public void setActressList(List<String> actressList) {
+	public void setActressList(List<Actress> actressList) {
 		this.actressList = actressList;
 	}
-	private String forwardNameSort(String name) {
-		if(name == null) return null;
-		String[] nameArr = StringUtils.split(name);
-		Arrays.sort(nameArr);
-		String retName = "";
-		for(String part : nameArr) {
-			retName += part + " ";
-		}
-		return retName.trim();
-	}
-	private boolean equalsName(String name1, String name2) {
-		if(name1 == null || name2 == null) return false;
-		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2)) || name1.toLowerCase().indexOf(name2.toLowerCase()) > -1;
-	}
 	
-	public boolean containsActress(String name) {
-		for(String actress : actressList) {
-			if(equalsName(actress, name)) {
+	public boolean containsActress(String actressName) {
+		for(Actress actress : actressList)
+			if(actress.contains(actressName))
 				return true;
-			}
-		}
 		return false;
 	}
 	
@@ -128,8 +101,8 @@ public class Video implements Comparable<Object>, Serializable {
 		String thisStr = null;
 		String compStr = null;
 		if("S".equals(sortMethod)) {
-			thisStr = this.getStudio();
-			compStr = comp.getStudio();
+			thisStr = this.getStudio().getName();
+			compStr = comp.getStudio().getName();
 		} else if("O".equals(sortMethod)) {
 			thisStr = this.getOpus();
 			compStr = comp.getOpus();
@@ -264,11 +237,11 @@ public class Video implements Comparable<Object>, Serializable {
 	public void setEtcFileList(List<File> etcFileList) {
 		this.etcFileList = etcFileList;
 	}
-	public String getStudio() {
+	public Studio getStudio() {
 		return studio;
 	}
 
-	public void setStudio(String studio) {
+	public void setStudio(Studio studio) {
 		this.studio = studio;
 	}
 

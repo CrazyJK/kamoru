@@ -26,8 +26,8 @@ public class LocalImageSource implements ImageSource {
 
 	private void listImages() {
 		List<File> imageFileList = new ArrayList<File>();
+		logger.info("listpath : " + this.backgroundImagePoolPath);
 		for(String path : this.backgroundImagePoolPath) {
-			logger.info(path + " listfile");
 			File dir = new File(path);
 			if(dir.isDirectory()) {
 				Collection<File> found = FileUtils.listFiles(dir, new String[]{"jpg", "jpeg", "gif", "png"}, true);

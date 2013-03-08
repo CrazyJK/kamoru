@@ -59,13 +59,13 @@ var bgImageCount = ${bgImageCount};
 	</form>
 	</div>
 	<div id="studioDiv" class="boxDiv">
-	<c:forEach var="studio" items="${studioMap}">
-		<span onclick="fnStudioSearch('<c:out value="${studio.key}"/>')" class="studioSpanBtn"><c:out value="${studio.key}"/>(<c:out value="${studio.value}"/>)</span>
+	<c:forEach var="studio" items="${studioList}">
+		<span onclick="fnStudioSearch('<c:out value="${studio.name}"/>')" class="studioSpanBtn" title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}"><c:out value="${studio.name}"/>(<c:out value="${fn:length(studio.videoList)}"/>)</span>
 	</c:forEach>
 	</div>
 	<div id="actressDiv" class="boxDiv">
-	<c:forEach items="${actressMap}" var="actress">
-		<span onclick="fnActressSearch('<c:out value="${actress.key}"/>')" class="actressSpanBtn"><c:out value="${actress.key}"/>(<c:out value="${actress.value}"/>)</span>
+	<c:forEach items="${actressList}" var="actress">
+		<span onclick="fnActressSearch('<c:out value="${actress.name}"/>')" class="actressSpanBtn"><c:out value="${actress.name}"/>(<c:out value="${fn:length(actress.videoList)}"/>)</span>
 	</c:forEach>
 	</div>
 </div>
@@ -88,10 +88,10 @@ var bgImageCount = ${bgImageCount};
 							</td>
 							<td>
 								<dl>
-									<dt><span class="studioSpan">${video.studio}</span>&nbsp;<span class="opusSpan">${video.opus}</span></dt>
+									<dt><span class="studioSpan">${video.studio.name}</span>&nbsp;<span class="opusSpan">${video.opus}</span></dt>
 									<dt>             
 										<c:forEach items="${video.actressList}" var="actress">
-										<span class="actressSpan" onclick="fnActressSearch('${actress}')">${actress}</span>
+										<span class="actressSpan" onclick="fnActressSearch('${actress.name}')">${actress.name}</span>
 										</c:forEach>
 									</dt>
 									<dd> 
@@ -119,11 +119,11 @@ var bgImageCount = ${bgImageCount};
 				<div class="opusBoxDiv">                   
 					<dl style="background-image:url('<c:url value="/video/${video.opus}/cover" />'); background-size:300px 200px; height:200px;">
 						<dt><span class="bgSpan" id="titleSpan" onclick="fnVideoDetail('${video.opus}')"><c:out value="${video.title}"/></span></dt>
-						<dd><span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio}"/>')"><c:out value="${video.studio}"/></span></dd>
+						<dd><span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio.name}"/>')"><c:out value="${video.studio.name}"/></span></dd>
 						<dd><span class="bgSpan" id="opusSpan"><c:out value="${video.opus}"/></span></dd>
 						<dd>
 							<c:forEach items="${video.actressList}" var="actress">
-							<span class="bgSpan" id="actressSpan" onclick="fnActressSearch('<c:out value="${actress}"/>')"><c:out value="${actress}"/></span>
+							<span class="bgSpan" id="actressSpan" onclick="fnActressSearch('<c:out value="${actress.name}"/>')"><c:out value="${actress.name}"/></span>
 							</c:forEach>
 						</dd>
 						<dd><span class="bgSpan <c:out value="${video.existVideoFileList     ? 'existFile' : 'nonExistFile' }"/>" onclick="fnPlay('<c:out value="${video.opus}"/>')"          title="<c:out value="${video.videoFileListPath}" escapeXml="true"/>">Video</span></dd>
@@ -144,10 +144,10 @@ var bgImageCount = ${bgImageCount};
 			<li id="<c:out value="${video.opus}"/>" class="sboxLI">
 				<div class="opusSBoxDiv">
 					<span class="bgSpan" id="titleSpan"><c:out value="${video.title}"/></span>
-					<span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio}"/>')"><c:out value="${video.studio}"/></span>
+					<span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio.name}"/>')"><c:out value="${video.studio.name}"/></span>
 					<span class="bgSpan" id="opusSpan"><c:out value="${video.opus}"/></span>
 					<c:forEach items="${video.actressList}" var="actress">
-					<span class="bgSpan" id="actressSpan" onclick="fnActressSearch('<c:out value="${actress}"/>')"><c:out value="${actress}"/></span>
+					<span class="bgSpan" id="actressSpan" onclick="fnActressSearch('<c:out value="${actress.name}"/>')"><c:out value="${actress.name}"/></span>
 					</c:forEach>
 					<span class="bgSpan <c:out value="${video.existVideoFileList     ? 'existFile' : 'nonExistFile' }"/>" onclick="fnPlay('<c:out value="${video.opus}"/>')"          title="<c:out value="${video.videoFileListPath}" escapeXml="true"/>">V</span>
 					<span class="bgSpan <c:out value="${video.existCoverFile         ? 'existFile' : 'nonExistFile' }"/>" onclick="fnImageView('<c:out value="${video.opus}"/>')"     title="<c:out value="${video.coverFile}" escapeXml="true"/>">C</span>
@@ -170,11 +170,11 @@ var bgImageCount = ${bgImageCount};
 			</tr>
 			<c:forEach items="${videoList}" var="video">
 			<tr>
-				<td><span class="" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio}"/>')"><c:out value="${video.studio}"/></span></td>		
+				<td><span class="" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio.name}"/>')"><c:out value="${video.studio.name}"/></span></td>		
 				<td><span class="" id="opusSpan"><c:out value="${video.opus}"/></span></td>		
 				<td><span class="" id="titleSpan"><c:out value="${video.title}"/></span></td>		
 				<td><c:forEach items="${video.actressList}" var="actress">
-					<span class="" id="actressSpan" onclick="fnActressSearch('<c:out value="${actress}"/>')"><c:out value="${actress}"/></span>
+					<span class="" id="actressSpan" onclick="fnActressSearch('<c:out value="${actress.name}"/>')"><c:out value="${actress.name}"/></span>
 					</c:forEach></td>	
 				<td>
 					<span class="bgSpan <c:out value="${video.existVideoFileList     ? 'existFile' : 'nonExistFile' }"/>" onclick="fnPlay('<c:out value="${video.opus}"/>')"          title="<c:out value="${video.videoFileListPath}" escapeXml="true"/>">V</span>
@@ -187,7 +187,7 @@ var bgImageCount = ${bgImageCount};
 		</c:when>
 		<c:otherwise>
 			<c:forEach items="${videoList}" var="video">
-				<c:out value="${video.studio}"/> <c:out value="${video.opus}"/> <c:out value="${video.title}"/> 
+				<c:out value="${video.studio.name}"/> <c:out value="${video.opus}"/> <c:out value="${video.title}"/> 
 			</c:forEach>		
 		</c:otherwise>
 	</c:choose>

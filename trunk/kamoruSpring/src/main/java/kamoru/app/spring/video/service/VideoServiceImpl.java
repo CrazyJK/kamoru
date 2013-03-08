@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import kamoru.app.spring.video.dao.VideoDao;
 import kamoru.app.spring.video.domain.Action;
+import kamoru.app.spring.video.domain.Actress;
+import kamoru.app.spring.video.domain.Studio;
 import kamoru.app.spring.video.domain.Video;
 
 @Service
@@ -36,32 +39,19 @@ public class VideoServiceImpl implements VideoService {
 	
 	@Override
 	public List<Video> getVideoListByParams(Map<String, String> params) {
+		if(params == null)
+			params = new HashMap<String, String>();
 		return videoDao.getVideoListByParams(params);
 	}
 
 	@Override
-	public List<Video> getVideoListByActress(String actress) {
-		return videoDao.getVideoListByActress(actress);
+	public List<Actress> getActressList() {
+		return videoDao.getActressList();
 	}
 
 	@Override
-	public List<Video> getVideoListByStudio(String studio) {
-		return videoDao.getVideoListByStudio(studio);
-	}
-
-	@Override
-	public List<Video> getVideoListByTitle(String title) {
-		return videoDao.getVideoListByTitle(title);
-	}
-
-	@Override
-	public Map<String, Integer> getActressMap() {
-		return videoDao.getActressMap();
-	}
-
-	@Override
-	public Map<String, Integer> getStudioMap() {
-		return videoDao.getStudioMap();
+	public List<Studio> getStudioList() {
+		return videoDao.getStudioList();
 	}
 
 	@Override
@@ -197,6 +187,16 @@ public class VideoServiceImpl implements VideoService {
 		} catch (IOException e) {
 			logger.error(historymsg, e);
 		}
+	}
+
+	@Override
+	public Actress getActress(String actressName) {
+		return videoDao.getActress(actressName);
+	}
+
+	@Override
+	public Studio getStudio(String studioName) {
+		return videoDao.getStudio(studioName);
 	}
 
 }

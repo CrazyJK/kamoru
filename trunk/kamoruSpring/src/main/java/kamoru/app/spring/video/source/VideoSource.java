@@ -4,23 +4,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import kamoru.app.spring.video.domain.Actress;
+import kamoru.app.spring.video.domain.Studio;
 import kamoru.app.spring.video.domain.Video;
 
 public interface VideoSource {
 
-	Video get(Object opus);
+	Video getVideo(Object opus);
+	
+	Studio getStudio(String name);
+	
+	Actress getActress(String name);
 
-	void put(String opus, Video video);
+	void removeVideo(Object opus);
 
-	void remove(Object opus);
+	Map<String, Video> getVideoMap();
+	
+	Map<String, Studio> getStudioMap();
+	
+	Map<String, Actress> getActressMap();
 
-	Set<String> keySet();
+	List<Video> getVideoList();
+	
+	List<Studio> getStudioList();
+	
+	List<Actress> getActressList();
 
-	Map<String, Video> getMap();
-
-	List<Video> getList();
-
-	boolean contains(Object opus);
-
+	boolean containsVideo(Object opus);
+	
+	boolean containsStudio(Object name);
+	
+	boolean containsActress(Object name);
+	
 	void reload();
 }
