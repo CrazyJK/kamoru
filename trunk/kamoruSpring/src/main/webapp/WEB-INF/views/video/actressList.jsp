@@ -20,6 +20,7 @@ var context = '<spring:url value="/"/>';
 </script>
 </head>
 <body>
+${fn:length(actressList)}
 <ul>
 <c:forEach items="${actressList}" var="actress">
 	<li id="<c:out value="${actress.name}"/>" class="boxLI">

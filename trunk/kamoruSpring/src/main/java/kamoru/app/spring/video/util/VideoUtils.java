@@ -1,13 +1,23 @@
 package kamoru.app.spring.video.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import kamoru.app.spring.video.dao.VideoDaoFile;
 import kamoru.app.spring.video.domain.Video;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -117,10 +127,6 @@ public class VideoUtils {
 		return toString.substring(1, toString.length() - 1);
 	}
 	
-	public static void main(String[] g) {
-		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
-	}
-
 	public static String getOpusArrayStyleString(List<Video> videoList) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -131,5 +137,50 @@ public class VideoUtils {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+	
+	public static String reverseActressName(String name) {
+		if(name == null) return null;
+		String[] nameArr = StringUtils.split(name.toLowerCase());
+		ArrayUtils.reverse(nameArr);
+		String retName = "";
+		for(int i=0; i<nameArr.length; i++)
+			retName += nameArr[i] + " ";
+		return retName.trim();
+	}
+
+	public static List<URL> getGoogleImage(String name) {
+		List<URL> list = new ArrayList<URL>();
+		try {
+			name = URLEncoder.encode(name);
+			URL url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
+			        "v=1.0&q=" + name + "&userip=&safe=off");
+			URLConnection connection = url.openConnection();
+			connection.addRequestProperty("Referer", "http://www.kamoru.com");
+	
+			String line;
+			StringBuilder builder = new StringBuilder();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			while((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+			reader.close();
+	
+			JSONObject json = JSONObject.fromObject(builder.toString());
+			JSONObject responseData = json.getJSONObject("responseData");
+			JSONArray results = responseData.getJSONArray("results");
+			for(int i=0, e=results.size(); i<e; i++){
+				String urlStr = results.getJSONObject(i).getString("url");
+				list.add(new URL(urlStr));
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		return list;
+	}
+	
+	public static void main(String[] args) {
+//		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
+		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
 	}
 }

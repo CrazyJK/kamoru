@@ -1,12 +1,15 @@
 package kamoru.app.spring.video.domain;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import kamoru.app.spring.video.util.VideoUtils;
 
 public class Actress implements Serializable, Comparable<Object> {
 
@@ -94,5 +97,8 @@ public class Actress implements Serializable, Comparable<Object> {
 		return this.name.toLowerCase().indexOf(actressName.toLowerCase()) > -1;
 	}
 	
+	public List<URL> getWebImage() {
+		return VideoUtils.getGoogleImage(this.getName());
+	}
 	
 }

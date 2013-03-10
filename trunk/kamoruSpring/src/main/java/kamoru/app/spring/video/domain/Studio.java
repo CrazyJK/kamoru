@@ -2,11 +2,12 @@ package kamoru.app.spring.video.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Studio implements Serializable{
+public class Studio implements Serializable, Comparable<Object>{
 
 	private static final long serialVersionUID = 3627610711503320177L;
 
@@ -30,11 +31,16 @@ public class Studio implements Serializable{
 		if(!videoList.contains(video))
 			this.videoList.add(video);		
 	}
-	public void putActressList(List<Actress> actressList) {
-		for(Actress actress : actressList) {
-			if(!this.actressList.contains(actress))
-				this.actressList.add(actress);
+	public void putActress(Actress actress) {
+		boolean found = false;
+		for(Actress actressInList : this.actressList) {
+			if(actressInList.getName().equalsIgnoreCase(actress.getName())) {
+				found = true;
+				actressInList = actress;
+			}
 		}
+		if(!found)
+			this.actressList.add(actress);
 	}
 	
 	public String getName() {
@@ -67,6 +73,16 @@ public class Studio implements Serializable{
 	}
 	public void setVideoList(List<Video> videoList) {
 		this.videoList = videoList;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Studio comp = (Studio)o;
+		String thisStr = this.getName().toLowerCase();
+		String compStr = comp.getName().toLowerCase();
+		String[] s = {thisStr, compStr};
+		Arrays.sort(s);
+		return s[0].equals(thisStr) ? -1 : 1;
 	}
 	
 }

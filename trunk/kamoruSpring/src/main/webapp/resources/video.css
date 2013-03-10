@@ -72,6 +72,7 @@ div#contentDiv {overflow:auto; text-align:center;}
    .existFile {color:blue;  opacity:0.7;}
 .nonExistFile {color:gray;  opacity:0.7;}
   /* .overviewDD {height:60px; overflow:auto;} */
+  .spanSize10 {font-size:13pt;}
 
 
 .boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin: 10px;

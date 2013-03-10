@@ -20,6 +20,8 @@ var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
 </script>
 <script src="<c:url value="/resources/video.js" />" type="text/javascript"></script>
+<script src="<c:url value="/resources/common.js" />"></script>
+<script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
 </head>
 <body>
 <div id="headerDiv">
@@ -60,12 +62,12 @@ var bgImageCount = ${bgImageCount};
 	</div>
 	<div id="studioDiv" class="boxDiv">
 	<c:forEach var="studio" items="${studioList}">
-		<span onclick="fnStudioSearch('<c:out value="${studio.name}"/>')" class="studioSpanBtn" title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}"><c:out value="${studio.name}"/>(<c:out value="${fn:length(studio.videoList)}"/>)</span>
+		<span onclick="fnStudioSearch('<c:out value="${studio.name}"/>')" class="studioSpanBtn ${fn:length(studio.videoList) > 9 ? "spanSize10" : ""}" title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}"><c:out value="${studio.name}"/>(<c:out value="${fn:length(studio.videoList)}"/>)</span>
 	</c:forEach>
 	</div>
 	<div id="actressDiv" class="boxDiv">
 	<c:forEach items="${actressList}" var="actress">
-		<span onclick="fnActressSearch('<c:out value="${actress.name}"/>')" class="actressSpanBtn"><c:out value="${actress.name}"/>(<c:out value="${fn:length(actress.videoList)}"/>)</span>
+		<span onclick="fnActressSearch('<c:out value="${actress.name}"/>')" class="actressSpanBtn ${fn:length(actress.videoList) > 9 ? "spanSize10" : ""}"><c:out value="${actress.name}"/>(<c:out value="${fn:length(actress.videoList)}"/>)</span>
 	</c:forEach>
 	</div>
 </div>

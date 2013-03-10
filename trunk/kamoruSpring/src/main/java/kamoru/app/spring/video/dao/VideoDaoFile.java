@@ -30,8 +30,6 @@ import org.springframework.stereotype.Component;
 public class VideoDaoFile implements VideoDao {
 	protected static final Log logger = LogFactory.getLog(VideoDaoFile.class);
 
-	private final String DEFAULT_SORTMETHOD = "O";
-
 	@Autowired
 	private VideoSource videoSource;
 
@@ -67,7 +65,9 @@ public class VideoDaoFile implements VideoDao {
 			&& (actress == null || actress.trim().length() == 0 || video.containsActress(actress))
 			&& (addCond ? (existVideo ? video.isExistVideoFileList() : !video.isExistVideoFileList()) && (existSubtitles ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList()) : true)
 			) {
-				video.setSortMethod(sortMethod);
+				if(sortMethod != null && sortMethod.trim().length() > 0) {
+					video.setSortMethod(sortMethod);
+				}
 				list.add(video);
 			}
 		}
@@ -87,38 +87,25 @@ public class VideoDaoFile implements VideoDao {
 	public List<Actress> getActressList() {
 		return videoSource.getActressList();
 	}
-	private String reverseName(String name) {
-		if(name == null) return null;
-		String[] nameArr = StringUtils.split(name);
-		ArrayUtils.reverse(nameArr);
-		String retName = "";
-		for(int i=0; i<nameArr.length; i++)
-			retName += nameArr[i] + " ";
-		return retName.trim();
-	}
 
 	@Override
 	public List<Video> getVideoListByParams(Map<String, String> params) {
 		String[] selectedBasePathId = null; 
-		String studio = params.get("studio"); 
-		String opus = params.get("opus");
-		String title = params.get("title");
-		String actress = params.get("actress");
-		boolean addCond = BooleanUtils.toBoolean(params.get("addCond"));
-		boolean existVideo = BooleanUtils.toBoolean(params.get("existVideo")); 
-		boolean existSubtitles = BooleanUtils.toBoolean(params.get("existSubtitles"));
-		String listViewType = params.get("listViewType");
+		String studio 	= StringUtils.trim(params.get("studio")); 
+		String opus 	= StringUtils.trim(params.get("opus"));
+		String title 	= StringUtils.trim(params.get("title"));
+		String actress 	= StringUtils.trim(params.get("actress"));
+		boolean addCond 		= BooleanUtils.toBoolean(params.get("addCond"));
+		boolean existVideo 		= BooleanUtils.toBoolean(params.get("existVideo")); 
+		boolean existSubtitles 	= BooleanUtils.toBoolean(params.get("existSubtitles"));
+		String listViewType 	= params.get("listViewType");
 		if(listViewType == null) {
 			listViewType = "box";
 			params.put("listViewType", listViewType); 
 		}
-		String sortMethod = params.get("sortMethod");
-		if(sortMethod == null) {
-			sortMethod = DEFAULT_SORTMETHOD;
-			params.put("sortMethod", sortMethod);
-		}
-		boolean sortReverse = BooleanUtils.toBoolean(params.get("sortReverse")); 
-		boolean useCacheData = BooleanUtils.toBoolean(params.get("useCacheData"));
+		String sortMethod 		= params.get("sortMethod");
+		boolean sortReverse 	= BooleanUtils.toBoolean(params.get("sortReverse")); 
+		boolean useCacheData 	= BooleanUtils.toBoolean(params.get("useCacheData"));
 		return getAV(selectedBasePathId, studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse, useCacheData);
 	}
 

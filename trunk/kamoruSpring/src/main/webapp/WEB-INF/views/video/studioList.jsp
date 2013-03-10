@@ -22,8 +22,8 @@ var context = '<spring:url value="/"/>';
 <body>
 <ul>
 <c:forEach items="${studioList}" var="studio">
-	<li id="<c:out value="${studio.name}"/>" class="boxLI">
-		<div class="opusBoxDiv">                   
+	<li id="<c:out value="${studio.name}"/>">
+		<div class="opusBoxDiv" style="width:99%;">                   
 			<%@ include file="/WEB-INF/views/video/studioInfo.inc" %>
 		</div>
 	</li>

@@ -6,12 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+ 
 import kamoru.app.spring.video.domain.Actress;
 import kamoru.app.spring.video.domain.Studio;
 import kamoru.app.spring.video.domain.Video;
+import kamoru.app.spring.video.util.VideoUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -139,26 +141,34 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 			}
 			
 			Studio studio = null;
-			if((studio = studioMap.get(studioName)) == null) {
+			String lowerCasestudioName = studioName.toLowerCase();
+			if((studio = studioMap.get(lowerCasestudioName)) == null) {
 				studio = new Studio(studioName);
-				studioMap.put(studioName, studio);
+				studioMap.put(lowerCasestudioName, studio);
 			}
 
 			List<Actress> actressList = ActressFactory.getActress(actressName);
-			for(Actress actress : actressList) {
-				actressMap.put(actress.getName(), actress);
-			}
 
 			// inject reference
 			studio.putVideo(video);
-			studio.putActressList(actressList);
 			
 			video.setStudio(studio);
-			video.setActressList(actressList);
 			
-			for(Actress actress : actressList) {
-				actress.putVideo(video);
-				actress.putStudio(studio);
+			for(Actress actress : actressList) { 
+				Actress actressInMap = null;
+				String reverseActressName = VideoUtils.reverseActressName(actress.getName());
+				if((actressInMap = actressMap.get(reverseActressName)) == null) {
+					actressMap.put(reverseActressName, actress);
+					actress.putVideo(video);
+					actress.putStudio(studio);
+					studio.putActress(actress);
+					video.putActress(actress);
+				} else {
+					actressInMap.putVideo(video);
+					actressInMap.putStudio(studio);
+					studio.putActress(actressInMap);
+					video.putActress(actressInMap);
+				}
 			}
 			
 		}

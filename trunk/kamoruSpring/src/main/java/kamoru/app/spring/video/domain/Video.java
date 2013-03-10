@@ -3,28 +3,16 @@ package kamoru.app.spring.video.domain;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import kamoru.app.spring.video.util.VideoUtils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
 /**
  * AV Bean class<br>
@@ -53,7 +41,8 @@ public class Video implements Comparable<Object>, Serializable {
 	private File historyFile;
 	private List<File> etcFileList;
 	
-	private String sortMethod;
+	private final String DEFAULT_SORTMETHOD = "O";
+	private String sortMethod = DEFAULT_SORTMETHOD;
 	
 	private Studio studio;
 	private List<Actress> actressList;
@@ -87,7 +76,18 @@ public class Video implements Comparable<Object>, Serializable {
 	public void setActressList(List<Actress> actressList) {
 		this.actressList = actressList;
 	}
-	
+	public void putActress(Actress actress) {
+		boolean found = false;
+		for(Actress actressInList : this.actressList) {
+			if(actressInList.getName().equalsIgnoreCase(actress.getName())) {
+				found = true;
+				actressInList = actress;
+			}
+		}
+		if(!found)
+			this.actressList.add(actress);
+	}
+
 	public boolean containsActress(String actressName) {
 		for(Actress actress : actressList)
 			if(actress.contains(actressName))

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s"      uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,11 +15,15 @@
 <script src="<c:url value="/resources/common.js" />"></script>
 <script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
 <script type="text/javascript">
-var context = '<spring:url value="/"/>';
+var context = '<s:url value="/"/>';
 </script>
 </head>
 <body>
-<div>구글 이미지 검색으로 배우의 이미지 출력</div>
+<div id="actressImage">
+<c:forEach items="${actress.webImage}" var="url">
+	<img src="${url}" width="185px" onclick="fnViewFullImage(this)"/>
+</c:forEach>
+</div>
 <div>
 	<%@ include file="/WEB-INF/views/video/actressInfo.inc" %>
 </div>

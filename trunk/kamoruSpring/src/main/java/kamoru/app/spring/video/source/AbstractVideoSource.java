@@ -3,6 +3,7 @@ package kamoru.app.spring.video.source;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import kamoru.app.spring.video.domain.Actress;
 import kamoru.app.spring.video.domain.Studio;
 import kamoru.app.spring.video.domain.Video;
+import kamoru.app.spring.video.util.VideoUtils;
 
 public abstract class AbstractVideoSource implements VideoSource {
 	protected static final Log logger = LogFactory.getLog(AbstractVideoSource.class);
@@ -40,14 +42,14 @@ public abstract class AbstractVideoSource implements VideoSource {
 	
 	@Override
 	public Studio getStudio(String name) {
-		Studio studio = getStudioMap().get(name);
+		Studio studio = getStudioMap().get(name.toLowerCase());
 		if(studio == null) throw new RuntimeException("Not found Studio : " + name);
 		return studio;
 	}
 
 	@Override
 	public Actress getActress(String name) {
-		Actress actress = getActressMap().get(name);
+		Actress actress = getActressMap().get(VideoUtils.reverseActressName(name));
 		if(actress == null) throw new RuntimeException("Not found actress : " + name);
 		return actress;
 	}
@@ -61,15 +63,21 @@ public abstract class AbstractVideoSource implements VideoSource {
 
 	@Override
 	public List<Video> getVideoList() {
-		return new ArrayList<Video>(getVideoMap().values());
+		List<Video> list = new ArrayList<Video>(getVideoMap().values());
+		Collections.sort(list);
+		return list;
 	}
 	@Override
 	public List<Studio> getStudioList() {
-		return new ArrayList<Studio>(getStudioMap().values());
+		List<Studio> list = new ArrayList<Studio>(getStudioMap().values()); 
+		Collections.sort(list);
+		return list;
 	}
 	@Override
 	public List<Actress> getActressList() {
-		return new ArrayList<Actress>(getActressMap().values());
+		List<Actress> list = new ArrayList<Actress>(getActressMap().values()); 
+		Collections.sort(list);
+		return list;
 	}
 
 	@Override

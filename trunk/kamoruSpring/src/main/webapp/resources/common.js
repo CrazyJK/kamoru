@@ -17,3 +17,17 @@ function popup(url, name, width, height, positionMethod, spec) {
 	specs = "width="+width+",height="+height+",top="+top+", left="+left + "," + specs;
 	window.open(url, name, specs);
 }
+
+function fnViewFullImage(image) {
+	
+	var img = $("<img />");
+	img.hide();
+	img.bind('load', function(){
+		var imgWidth  = $(this).width() + 20;
+		var imgHeight = $(this).height() + 20;
+		popup(image.src, "", imgWidth, imgHeight);
+	});
+	$("body").append(img);
+	img.attr("src", image.src);
+	
+}
