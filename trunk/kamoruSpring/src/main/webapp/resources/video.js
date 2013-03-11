@@ -186,11 +186,13 @@ function fnOpusFocus(opus) {
 	});
 }
 function fnBGImageView() {
-	popup(currBGImageUrl, "BGimageview", 800, 600);
+//	popup(currBGImageUrl, "BGimageview", 800, 600);
+	popupImage(currBGImageUrl);
 }
 function fnImageView(opus) {
 	$("#debug").html("Cover image view : " + opus);
-	popup(context + "video/" + opus + "/cover", "imageview-"+opus, 800, 539);
+//	popup(context + "video/" + opus + "/cover", "imageview-"+opus, 800, 539);
+	popupImage(context + "video/" + opus + "/cover");
 }
 function fnEditOverview(opus) {
 	$("#debug").html("Overview Popup : " + opus);
@@ -198,4 +200,14 @@ function fnEditOverview(opus) {
 }
 function fnVideoDetail(opus) {
     popup(context + "video/" + opus, "detailview-"+opus, 850, 800);
+}
+
+function popupImage(url) {
+	var img = $("<img />");
+	img.hide();
+	img.attr("src", url);
+	img.bind('load', function(){
+		mw_image_window(this);
+	});
+	return img;
 }

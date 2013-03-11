@@ -22,6 +22,7 @@ var bgImageCount = ${bgImageCount};
 <script src="<c:url value="/resources/video.js" />" type="text/javascript"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
 <script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
+<script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
 <body>
 <div id="headerDiv">
