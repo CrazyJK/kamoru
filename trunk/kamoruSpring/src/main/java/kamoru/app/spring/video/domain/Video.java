@@ -13,6 +13,8 @@ import kamoru.app.spring.video.util.VideoUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * AV Bean class<br>
@@ -21,6 +23,8 @@ import org.apache.commons.logging.LogFactory;
  * @author kamoru
  *
  */
+@Component
+@Scope("prototype")
 public class Video implements Comparable<Object>, Serializable {
 	/**
 	 * 

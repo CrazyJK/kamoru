@@ -23,4 +23,6 @@ public interface VideoDao {
 
 	void deleteVideo(String opus);
 
+	void reload();
+
 }

@@ -1,6 +1,8 @@
 package kamoru.app.spring.schedule;
 
+import kamoru.app.spring.picture.service.ImageService;
 import kamoru.app.spring.picture.source.ImageSource;
+import kamoru.app.spring.video.service.VideoService;
 import kamoru.app.spring.video.source.VideoSource;
 
 import org.slf4j.Logger;
@@ -14,21 +16,19 @@ public class BatchExecutor {
 
 	private static final Logger logger = LoggerFactory.getLogger(BatchExecutor.class);
 
-	@Autowired
-	VideoSource videoSource;
-	@Autowired
-	ImageSource imageSource;
+	@Autowired VideoService videoService;
+	@Autowired ImageService imageService;
 	
-	@Scheduled(cron="* */5 * * * *")
+	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
 		logger.info("execute batch");
-		videoSource.reload();
+		videoService.reload();
 	}
 	
-	@Scheduled(cron="* */5 * * * *")
+	@Scheduled(cron="0 */5 * * * *")
 	public void batchImageSource() {
 		logger.info("execute batch");
-		imageSource.reload();
+		imageService.reload();
 	}
 	
 }

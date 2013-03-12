@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>Overview[${video.opus}] - AV World</title>
-<link rel="stylesheet" href="<c:url value="/resources/video.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <style type="text/css">
 .overviewTxt {width:100%; height:275px;}
 </style>

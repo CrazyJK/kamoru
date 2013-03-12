@@ -22,4 +22,9 @@ public class ImageServiceImpl implements ImageService {
 		return imageSource.getImageSourceSize();
 	}
 
+	@Override
+	public void reload() {
+		imageSource.reload();
+	}
+
 }

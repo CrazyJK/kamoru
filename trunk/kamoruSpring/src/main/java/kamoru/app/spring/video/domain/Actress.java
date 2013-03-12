@@ -9,8 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import kamoru.app.spring.video.util.VideoUtils;
 
+@Component
+@Scope("prototype")
 public class Actress implements Serializable, Comparable<Object> {
 
 	private static final long serialVersionUID = -3241999343906740614L;

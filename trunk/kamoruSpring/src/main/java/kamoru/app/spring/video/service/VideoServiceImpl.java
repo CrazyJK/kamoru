@@ -199,4 +199,9 @@ public class VideoServiceImpl implements VideoService {
 		return videoDao.getStudio(studioName);
 	}
 
+	@Override
+	public void reload() {
+		videoDao.reload();
+	}
+
 }

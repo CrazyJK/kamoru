@@ -2,10 +2,14 @@ package kamoru.app.spring.video.source;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
  
 import kamoru.app.spring.video.domain.Actress;
 import kamoru.app.spring.video.domain.Studio;
@@ -17,6 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class FileBaseVideoSource extends AbstractVideoSource {
 	protected static final Log logger = LogFactory.getLog(FileBaseVideoSource.class);
@@ -35,6 +40,10 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 	private Map<String, Video> videoMap;
 	private Map<String, Studio> studioMap;
 	private Map<String, Actress> actressMap;
+	
+	@Inject Provider<Video> videoProvider;
+	@Inject Provider<Studio> studioProvider;
+	@Inject Provider<Actress> actressProvider;
 		
 	// setter
 	public void setPaths(String[] paths) {
@@ -113,7 +122,8 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 			
 			Video video = null;
 			if((video = videoMap.get(opus)) == null) {
-				video = new Video();
+//				video = new Video();
+				video = this.videoProvider.get();
 //				video.setStudio(studioName);
 				video.setOpus(opus);
 				video.setTitle(title);
@@ -143,11 +153,13 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 			Studio studio = null;
 			String lowerCasestudioName = studioName.toLowerCase();
 			if((studio = studioMap.get(lowerCasestudioName)) == null) {
-				studio = new Studio(studioName);
+//				studio = new Studio(studioName);
+				studio = this.studioProvider.get();
+				studio.setName(studioName);
 				studioMap.put(lowerCasestudioName, studio);
 			}
 
-			List<Actress> actressList = ActressFactory.getActress(actressName);
+			List<Actress> actressList = getActressList(actressName);
 
 			// inject reference
 			studio.putVideo(video);
@@ -159,16 +171,12 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 				String reverseActressName = VideoUtils.reverseActressName(actress.getName());
 				if((actressInMap = actressMap.get(reverseActressName)) == null) {
 					actressMap.put(reverseActressName, actress);
-					actress.putVideo(video);
-					actress.putStudio(studio);
-					studio.putActress(actress);
-					video.putActress(actress);
-				} else {
-					actressInMap.putVideo(video);
-					actressInMap.putStudio(studio);
-					studio.putActress(actressInMap);
-					video.putActress(actressInMap);
+					actressInMap = actress;
 				}
+				actressInMap.putVideo(video);
+				actressInMap.putStudio(studio);
+				studio.putActress(actressInMap);
+				video.putActress(actressInMap);
 			}
 			
 		}
@@ -208,6 +216,46 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 	public Map<String, Actress> getActressMap() {
 		createVideoSource();
 		return actressMap;
+	}
+
+
+	private List<Actress> getActressList(String actressNames) {
+		List<Actress> actressList = new ArrayList<Actress>();
+		
+		String[] namesArr = StringUtils.split(actressNames, ",");
+		for(String name : namesArr) {
+			name = StringUtils.join(StringUtils.split(name), " ");
+			boolean bFindSameName = false;
+			for(Actress actress : actressList) {
+				if(equalsName(actress, name)) {
+					bFindSameName = true;
+					break;
+				}
+			}
+			if(!bFindSameName) {
+//					Actress actress = new Actress();
+				Actress actress = this.actressProvider.get();
+				actress.setName(name);
+				actressList.add(actress);
+			}
+		}
+		
+		return actressList;
+	}
+
+	private static boolean equalsName(Actress actress, String name2) {
+		String name1 = actress.getName();
+		if(name1 == null || name2 == null) return false;
+		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2)) || name1.toLowerCase().indexOf(name2.toLowerCase()) > -1;
+	}
+	private static String forwardNameSort(String name) {
+		String[] nameArr = StringUtils.split(name);
+		Arrays.sort(nameArr);
+		String retName = "";
+		for(String part : nameArr) {
+			retName += part + " ";
+		}
+		return retName.trim();
 	}
 
 

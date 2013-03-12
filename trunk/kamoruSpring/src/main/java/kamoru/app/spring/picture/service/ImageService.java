@@ -8,4 +8,6 @@ public interface ImageService {
 
 	int getImageSourceSize();
 
+	void reload();
+
 }

@@ -130,5 +130,10 @@ public class VideoDaoFile implements VideoDao {
 		return videoSource.getActress(name);
 	}
 
+	@Override
+	public void reload() {
+		videoSource.reload();
+	}
+
 }
 

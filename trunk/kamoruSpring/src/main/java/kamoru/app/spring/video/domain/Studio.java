@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Studio implements Serializable, Comparable<Object>{
 
 	private static final long serialVersionUID = 3627610711503320177L;

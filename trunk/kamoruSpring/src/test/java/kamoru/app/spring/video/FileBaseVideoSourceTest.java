@@ -1,7 +1,8 @@
-package kamoru.app.spring.video.dao;
+package kamoru.app.spring.video;
 
 import static org.junit.Assert.*;
 import kamoru.app.spring.video.source.AbstractVideoSource;
+import kamoru.app.spring.video.source.FileBaseVideoSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,11 +11,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/av-context.xml")
-public class FileBasedVideoSourceTest {
+@ContextConfiguration(locations="/video-context.xml")
+public class FileBaseVideoSourceTest {
 
 	@Autowired
-	private AbstractVideoSource videoSource;
+	private FileBaseVideoSource videoSource;
 	
 	@Test
 	public void testInstance() {

@@ -7,9 +7,9 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/favicon_video.ico" />">
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>Video collection</title>
-<link rel="stylesheet" href="<c:url value="/resources/video.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -19,7 +19,7 @@ var context = '<spring:url value="/"/>';
 var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
 </script>
-<script src="<c:url value="/resources/video.js" />" type="text/javascript"></script>
+<script src="<c:url value="/resources/video/video.js" />" type="text/javascript"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
 <script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
 <script src="<c:url value="/resources/image-popup.js" />"></script>
