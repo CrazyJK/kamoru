@@ -135,5 +135,17 @@ public class VideoDaoFile implements VideoDao {
 		videoSource.reload();
 	}
 
+	@Override
+	public List<Video> findVideoList(String query) {
+		query = query.toLowerCase();
+		List<Video> found = new ArrayList<Video>();
+		for(Video video : videoSource.getVideoList()) {
+			if(video.getOpus().toLowerCase().indexOf(query) > -1) {
+				found.add(video);
+			}
+		}
+		return found;
+	}
+
 }
 

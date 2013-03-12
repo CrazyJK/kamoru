@@ -24,4 +24,15 @@
  
  	<context:component-scan base-package="kamoru.app.spring" resource-pattern="**/*Controller.class" />
 	
+	<!-- ajax view JSON rendering -->
+    <beans:bean id="lenient" class="net.sf.json.util.CycleDetectionStrategy$LenientCycleDetectionStrategy"/>
+    
+    <beans:bean id="jsonConfig" class="net.sf.json.JsonConfig">
+       <beans:property name="cycleDetectionStrategy" ref="lenient" />
+    </beans:bean>
+    
+    <beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView" >
+       <beans:property name="jsonConfig" ref="jsonConfig" />
+    </beans:bean>
+    
 </beans:beans>

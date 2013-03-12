@@ -25,4 +25,6 @@ public interface VideoDao {
 
 	void reload();
 
+	List<Video> findVideoList(String query);
+
 }

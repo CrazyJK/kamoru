@@ -2,7 +2,9 @@ package kamoru.app.spring.video.mvc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,9 @@ import kamoru.app.spring.video.domain.Video;
 import kamoru.app.spring.video.service.VideoService;
 import kamoru.app.spring.video.util.VideoUtils;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.tika.Tika;
 import org.slf4j.Logger;
@@ -23,6 +28,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -134,5 +140,28 @@ public class VideoController {
 		return "video/studioDetail";
 	}
 	
-
+	@RequestMapping(value="/videosearch/q={query}", method=RequestMethod.GET) //	@ResponseBody
+	public ResponseEntity<String> findVideo(@PathVariable String query) {
+		List<Video> foundVideoList = videoService.findVideoList(query);
+		logger.info("query=" + query + " found count=" + foundVideoList.size());
+		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
+		for(Video video : foundVideoList) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("opus", video.getOpus());
+			map.put("title", video.getTitle());
+			map.put("studio", video.getStudio().getName());
+			map.put("actress", video.getActress());
+			map.put("existVideo", String.valueOf(video.isExistVideoFileList()));
+			map.put("existCover", String.valueOf(video.isExistCoverFile()));
+			map.put("existSubtitles", String.valueOf(video.isExistSubtitlesFileList()));
+			foundMapList.add(map);
+		}
+		JSONArray json = JSONArray.fromObject(foundMapList);
+		
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+        return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);		
+		
+//		return json.toString();
+	}
 }

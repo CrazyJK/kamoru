@@ -34,6 +34,6 @@ public interface VideoService {
 
 	void reload();
 
-
+	List<Video> findVideoList(String query);
 
 }

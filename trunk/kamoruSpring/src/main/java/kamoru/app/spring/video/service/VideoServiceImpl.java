@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -202,6 +203,13 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void reload() {
 		videoDao.reload();
+	}
+
+	@Override
+	public List<Video> findVideoList(String query) {
+		if(query == null || query.trim().length() == 0)
+			return new ArrayList<Video>();
+		return videoDao.findVideoList(query);
 	}
 
 }

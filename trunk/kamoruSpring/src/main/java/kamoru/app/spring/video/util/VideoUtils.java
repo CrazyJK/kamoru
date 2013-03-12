@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 import kamoru.app.spring.video.dao.VideoDaoFile;
+import kamoru.app.spring.video.domain.Actress;
 import kamoru.app.spring.video.domain.Video;
 
 import net.sf.json.JSONArray;
@@ -182,5 +183,16 @@ public class VideoUtils {
 	public static void main(String[] args) {
 //		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
 		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
+	}
+
+	public static <T> String toListToSimpleString(List<T> list) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0, e=list.size(); i<e; i++) {
+			T name = list.get(i);
+			sb.append(name);
+			if(i < e-1)
+				sb.append(", ");
+		}
+		return sb.toString();
 	}
 }

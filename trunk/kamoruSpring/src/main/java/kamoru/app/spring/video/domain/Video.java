@@ -70,7 +70,11 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 	
 	public String getActress() {
-		return VideoUtils.arrayToString(actressList);
+		List<String> list = new ArrayList<String>();
+		for(Actress actress : actressList) {
+			list.add(actress.getName());
+		}
+		return VideoUtils.toListToSimpleString(list);
 	}
 
 	public List<Actress> getActressList() {
