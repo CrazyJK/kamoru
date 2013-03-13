@@ -140,8 +140,13 @@ public class VideoController {
 		return "video/studioDetail";
 	}
 	
-	@RequestMapping(value="/videosearch/q={query}", method=RequestMethod.GET) //	@ResponseBody
-	public ResponseEntity<String> findVideo(@PathVariable String query) {
+	@RequestMapping(value="/video/search", method=RequestMethod.GET)
+	public String videoSearch() {
+		return "video/search";
+	}
+	
+	@RequestMapping(value="/video/search.json", method=RequestMethod.GET)
+	public ResponseEntity<String> findVideo(@RequestParam(value="q", required=false, defaultValue="") String query) {
 		List<Video> foundVideoList = videoService.findVideoList(query);
 		logger.info("query=" + query + " found count=" + foundVideoList.size());
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
@@ -161,7 +166,5 @@ public class VideoController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
         return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);		
-		
-//		return json.toString();
 	}
 }

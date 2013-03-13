@@ -16,13 +16,13 @@ public class BatchExecutor {
 
 	private static final Logger logger = LoggerFactory.getLogger(BatchExecutor.class);
 
-	@Autowired VideoService videoService;
+	@Autowired VideoSource videoSource;
 	@Autowired ImageService imageService;
 	
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
 		logger.info("execute batch");
-		videoService.reload();
+		videoSource.reload();
 	}
 	
 	@Scheduled(cron="0 */5 * * * *")

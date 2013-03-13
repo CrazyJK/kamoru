@@ -56,8 +56,6 @@ var bgImageCount = ${bgImageCount};
 			<span class="separatorSpan">|</span>
 			<span class="checkbox" id="checkbox-viewStudioDiv"  title="view Studio panel"  onclick="fnStudioDivToggle()">S</span>	<input type="hidden" name="viewStudioDiv"  id="viewStudioDiv"  value="<c:out value="${params['viewStudioDiv']}"/>"> 
 			<span class="checkbox" id="checkbox-viewActressDiv" title="view Actress panel" onclick="fnActressDivToggle()">A</span>	<input type="hidden" name="viewActressDiv" id="viewActressDiv" value="<c:out value="${params['viewActressDiv']}"/>">
-			<span class="separatorSpan">|</span>
-			<span class="checkbox" id="checkbox-useCacheData" title="use cache data">C</span>				<input type="hidden" name="useCacheData" id="useCacheData" value="<c:out value="${params['useCacheData']}"/>">
 		</span>
 	</form>
 	</div>

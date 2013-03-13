@@ -22,8 +22,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
  
- 	<context:component-scan base-package="kamoru.app.spring" resource-pattern="**/*Controller.class" />
-	
+	<context:component-scan base-package="kamoru.app.spring"/>
+
 	<!-- ajax view JSON rendering -->
     <beans:bean id="lenient" class="net.sf.json.util.CycleDetectionStrategy$LenientCycleDetectionStrategy"/>
     
@@ -34,5 +34,7 @@
     <beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView" >
        <beans:property name="jsonConfig" ref="jsonConfig" />
     </beans:bean>
+    
+    <beans:import resource="classpath:/video-context.xml" />
     
 </beans:beans>

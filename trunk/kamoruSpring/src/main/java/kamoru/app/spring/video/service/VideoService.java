@@ -32,8 +32,6 @@ public interface VideoService {
 
 	void editVideoSubtitles(String opus);
 
-	void reload();
-
 	List<Video> findVideoList(String query);
 
 }

@@ -9,11 +9,16 @@ import kamoru.app.spring.video.domain.Video;
 
 public interface VideoDao {
 
-	List<Video> getVideoListByParams(Map<String, String> params);
+	List<Video> getVideoList(
+			String studio, String opus, String title, String actress, 
+			boolean addCond, boolean existVideo, boolean existSubtitles, 
+			String sortMethod, boolean sortReverse);
+	
+	List<Video> getVideoList();
+	
+	List<Studio> getStudioList();
 
 	List<Actress> getActressList();
-
-	List<Studio> getStudioList();
 
 	Video getVideo(String opus);
 	
@@ -22,9 +27,5 @@ public interface VideoDao {
 	Actress getActress(String name);
 
 	void deleteVideo(String opus);
-
-	void reload();
-
-	List<Video> findVideoList(String query);
 
 }

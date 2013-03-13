@@ -10,6 +10,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>Video collection</title>
 <link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/video/video-search.css" />" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -19,7 +20,7 @@ var context = '<spring:url value="/"/>';
 
 $(document).ready(function(){
 	$("#query").bind("keyup", function(event){
-		var queryUrl = context + 'videosearch/q=' + $(this).val(); 
+		var queryUrl = context + 'video/search.json?q=' + $(this).val(); 
 		$("#debug").html(queryUrl);
 		$("#opus").val($(this).val());
 		$.getJSON(queryUrl ,function(data) {
@@ -42,9 +43,9 @@ $(document).ready(function(){
 <div><span id="debug"></span></div>
 <div>
 	<input type="text" name="query" id="query" style="width:100px;" />
-	<span class="bgSpan">
+	<span class="bgSpan">new 
 	<input type="text" name="studio"  id="studio"   style="width:80px;" />
-	<input type="text" name="opus" 	  id="opus"     style="width:80px;" />
+	<input type="text" name="opus" 	  id="opus"     style="width:80px;" readonly="readonly"/>
 	<input type="text" name="title"   id="title"    style="width:100px;" />
 	<input type="text" name="actress" id="actress"  style="width:100px;" />
 	<input type="text" name="etcInfo" id="etcInfo"  style="width:100px;" />
@@ -56,7 +57,7 @@ $(document).ready(function(){
 	<ul id="foundUL"></ul>
 </div>
 
-<div id="newVideo">
+<div id="newVideo" class="boxDiv">
 	
 </div>
 </body>

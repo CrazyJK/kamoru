@@ -1,9 +1,11 @@
 package kamoru.app.spring.video.source;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +23,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jetty.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
-public class FileBaseVideoSource extends AbstractVideoSource {
+
+public class FileBaseVideoSource implements VideoSource {
 	protected static final Log logger = LogFactory.getLog(FileBaseVideoSource.class);
 
 	private final String UNKNOWN = "_Unknown";
@@ -75,7 +81,7 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 				files.addAll(found);
 			}
 		}
-		logger.debug("found file size : " + files.size());
+//		logger.debug("found file size : " + files.size());
 
 		videoMap = new HashMap<String, Video>();
 		studioMap = new HashMap<String, Studio>();
@@ -129,7 +135,7 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 				video.setTitle(title);
 //				video.setActress(actressName);
 				video.setEtcInfo(etcInfo);
-				videoMap.put(opus, video);
+				videoMap.put(opus.toLowerCase(), video);
 			}
 			if(video_extensions.indexOf(ext) > -1) {
 				video.setVideoFile(file);
@@ -197,28 +203,6 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 			return "";
 		return StringUtils.replace(str, "[", "").trim();
 	}
-
-	@Override
-	public void reload() {
-		load();
-	}
-	@Override
-	public Map<String, Video> getVideoMap() {
-		createVideoSource();
-		return videoMap;
-	}
-	@Override
-	public Map<String, Studio> getStudioMap() {
-		createVideoSource();
-		return studioMap;
-	}
-	@Override
-	public Map<String, Actress> getActressMap() {
-		createVideoSource();
-		return actressMap;
-	}
-
-
 	private List<Actress> getActressList(String actressNames) {
 		List<Actress> actressList = new ArrayList<Actress>();
 		
@@ -242,7 +226,6 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 		
 		return actressList;
 	}
-
 	private static boolean equalsName(Actress actress, String name2) {
 		String name1 = actress.getName();
 		if(name1 == null || name2 == null) return false;
@@ -257,6 +240,26 @@ public class FileBaseVideoSource extends AbstractVideoSource {
 		}
 		return retName.trim();
 	}
-
+	
+	@Override
+	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
+	public void reload() {
+		load();
+	}
+	@Override
+	public Map<String, Video> getVideoMap() {
+		createVideoSource();
+		return videoMap;
+	}
+	@Override
+	public Map<String, Studio> getStudioMap() {
+		createVideoSource();
+		return studioMap;
+	}
+	@Override
+	public Map<String, Actress> getActressMap() {
+		createVideoSource();
+		return actressMap;
+	}
 
 }

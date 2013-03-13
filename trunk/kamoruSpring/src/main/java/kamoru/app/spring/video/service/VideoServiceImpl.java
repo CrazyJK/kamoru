@@ -12,6 +12,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,22 @@ public class VideoServiceImpl implements VideoService {
 	public List<Video> getVideoListByParams(Map<String, String> params) {
 		if(params == null)
 			params = new HashMap<String, String>();
-		return videoDao.getVideoListByParams(params);
+		String studio 	= StringUtils.trim(params.get("studio")); 
+		String opus 	= StringUtils.trim(params.get("opus"));
+		String title 	= StringUtils.trim(params.get("title"));
+		String actress 	= StringUtils.trim(params.get("actress"));
+		boolean addCond 		= BooleanUtils.toBoolean(params.get("addCond"));
+		boolean existVideo 		= BooleanUtils.toBoolean(params.get("existVideo")); 
+		boolean existSubtitles 	= BooleanUtils.toBoolean(params.get("existSubtitles"));
+		String listViewType 	= params.get("listViewType");
+		if(listViewType == null) {
+			listViewType = "box";
+			params.put("listViewType", listViewType); 
+		}
+		String sortMethod 		= params.get("sortMethod");
+		boolean sortReverse 	= BooleanUtils.toBoolean(params.get("sortReverse")); 
+		
+		return videoDao.getVideoList(studio, opus, title, actress, addCond, existVideo, existSubtitles, sortMethod, sortReverse);
 	}
 
 	@Override
@@ -201,15 +218,18 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public void reload() {
-		videoDao.reload();
-	}
-
-	@Override
 	public List<Video> findVideoList(String query) {
 		if(query == null || query.trim().length() == 0)
 			return new ArrayList<Video>();
-		return videoDao.findVideoList(query);
-	}
 
+		query = query.toLowerCase();
+		List<Video> found = new ArrayList<Video>();
+		for(Video video : videoDao.getVideoList()) {
+			if(video.getOpus().toLowerCase().indexOf(query) > -1) {
+				found.add(video);
+			}
+		}
+		return found;
+	}
 }
+

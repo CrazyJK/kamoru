@@ -1,7 +1,6 @@
 package kamoru.app.spring.video;
 
 import static org.junit.Assert.*;
-import kamoru.app.spring.video.source.AbstractVideoSource;
 import kamoru.app.spring.video.source.FileBaseVideoSource;
 
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class FileBaseVideoSourceTest {
 	
 	@Test
 	public void testInstance() {
-		assertTrue((videoSource instanceof kamoru.app.spring.video.source.AbstractVideoSource));
+		assertTrue((videoSource instanceof kamoru.app.spring.video.source.FileBaseVideoSource));
 	}
 	@Test
 	public void testGet() {		

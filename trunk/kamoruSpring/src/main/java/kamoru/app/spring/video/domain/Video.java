@@ -328,4 +328,9 @@ public class Video implements Comparable<Object>, Serializable {
 		}
 	}
 
+	public void removeVideo() {
+		for(File file : getFileAll())
+			FileUtils.deleteQuietly(file);
+	}
+
 }

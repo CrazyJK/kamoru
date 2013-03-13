@@ -4,10 +4,12 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 	
 	<!-- Video Context -->
 	<context:component-scan base-package="kamoru.app.spring" />
@@ -25,6 +27,17 @@
 		<property name="cover_extensions" value="#{videoProp['cover_extensions']}" />
 		<property name="subtitles_extensions" value="#{videoProp['subtitles_extensions']}" />
 		<property name="overview_extensions" value="#{videoProp['overview_extensions']}" />
+	</bean>
+	
+	<cache:annotation-driven />
+	
+	<!-- <bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager" /> -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager">
+			<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+				<property name="configLocation" value="classpath:/ehcache.xml"></property>
+			</bean>
+		</property>
 	</bean>
 	
 </beans>

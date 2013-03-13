@@ -11,14 +11,18 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import kamoru.app.spring.test.TestService;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.tika.Tika;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -87,6 +91,21 @@ public class TestController {
 //		random = 0;
 		File imageFile = files[random];
 		return FileUtils.readFileToByteArray(imageFile);
+	}
+
+	@Autowired
+	TestService testService;
+	
+	@RequestMapping(value="/cachetest1")
+	public String testCache1(Model model) {
+		model.addAttribute("now", testService.getNow());
+		return "test/cachetest";
+	}
+
+	@RequestMapping(value="/cachetest2")
+	public String testCache2(Model model) {
+		model.addAttribute("now", testService.getNow(2));
+		return "test/cachetest";
 	}
 
 }

@@ -92,7 +92,6 @@ public class VideoServiceImplTest {
 		}
 		assertThat(testOpusVideoFile.exists(), is(true));
 		assertThat(testOpusCoverFile.exists(), is(true));
-		videoService.reload();
 		videoService.deleteVideo("opus");
 		assertThat(testOpusVideoFile.exists(), is(false));
 		assertThat(testOpusCoverFile.exists(), is(false));
