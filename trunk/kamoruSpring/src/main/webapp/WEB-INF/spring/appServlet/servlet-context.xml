@@ -30,7 +30,7 @@
     <beans:bean id="jsonConfig" class="net.sf.json.JsonConfig">
        <beans:property name="cycleDetectionStrategy" ref="lenient" />
     </beans:bean>
-    
+
     <beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView" >
        <beans:property name="jsonConfig" ref="jsonConfig" />
     </beans:bean>
