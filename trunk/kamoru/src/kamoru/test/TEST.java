@@ -1,5 +1,6 @@
 package kamoru.test;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -145,6 +146,10 @@ public class TEST {
 	    System.out.println(
 	    		InetAddress.getLocalHost().getHostName()
 	    		);
+	    
+	    List<File> list2 = null;
+	    for(File file : list2)
+	    	System.out.println("null file");
 	}
 
 }
