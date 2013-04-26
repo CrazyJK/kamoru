@@ -26,7 +26,7 @@ public class WebpConverter {
 			System.out.println(file.getAbsolutePath());
 			System.out.println(file.getParent());
 			
-			String command = cwebp + " " + fullname + " -q 80 -o " + destPath + name + ".webp";
+			String command = cwebp + " " + fullname + " -q 50 -o " + destPath + name + ".webp";
 			System.out.println(command);
 			Runtime.getRuntime().exec(command);
 			Thread.sleep(1000);

@@ -98,12 +98,13 @@ public class VideoController {
 
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> image(@PathVariable String opus) throws IOException {
-//		File imageFile = videoService.getVideoCoverFile(opus);
+		File imageFile = videoService.getVideoCoverFile(opus);
+		String suffic = VideoUtils.getFileExtension(imageFile);
 //		byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
 		byte[] imageBytes = videoService.getVideoCoverByteArray(opus);
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("image/webp"));
+		headers.setContentType(MediaType.parseMediaType("image/" + suffic));
 		headers.setContentLength(imageBytes.length);
 		headers.setCacheControl("max-age=" + 86400);
 		headers.setDate(new Date().getTime() + 86400*1000l);
