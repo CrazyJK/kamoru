@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+body#deco_body {
+	background:url(/kamoru/img/green3.png); 
+	margin:0 auto; 
+	font-family:'Comic Sans MS' '나눔고딕코딩' '맑은 고딕';}
+#deco_header {
+	background-color:#588;
+/* 	display: block; */
+	margin:0;}
+#deco_h1 {
+	width:800px;
+	margin:0 auto;}
+#deco_h1 a {
+	font-family: 'Comic Sans MS' 'Impact' '나눔손글씨 펜' '나눔손글씨 붓' 'URW Chancery L' 'Purisa';}
+#deco_nav {
+/* 	display: block; */
+/* 	float: left; */
+	background-color:lightgreen;
+}
+#deco_section {
+	padding:10px;
+	margin:0 auto;
+	width:800px;
+	overflow:auto;
+/* 	display: block; */
+/* 	float: right; */
+/* 	background-color:green; */
+}
+#deco_footer {
+/* 	display: block; */
+	padding-top:10px; 
+	font: 10pt arial; 
+	text-align:center;
+	bottom: 0px;
+	position: float;
+	width:100%;
+}
+a {
+	color:#123;
+	text-decoration: none;}
+a:hover {
+	color:#123;
+	text-decoration: none;
+	text-shadow: 2px 2px 5px #333;}

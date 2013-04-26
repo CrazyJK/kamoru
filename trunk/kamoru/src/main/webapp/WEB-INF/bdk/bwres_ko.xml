@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<section sectionid="stringtable">
+		<!-- TABLE -->
+		<item itemid="TABLE_COLUMN_INDEX1">ID</item>
+		<item itemid="TABLE_COLUMN_INDEX2">상태</item>
+		<item itemid="TABLE_COLUMN_INDEX3">프로세스명</item>
+		<item itemid="TABLE_COLUMN_INDEX4">생성자</item>
+		<item itemid="TABLE_COLUMN_INDEX5">생성일</item>
+		<item itemid="TABLE_COLUMN_INDEX6">완료일</item>
+
+		<item itemid="TABLE_INFO_NODATA">내용이 없습니다.</item>
+		
+<item itemid="Labor_Insurance">	노동보험	</item>
+<item itemid="Labor_Insurance_Premiums">	노동보험료	</item>
+<item itemid="Management">	관리	</item>
+<item itemid="Portal">	업무포탈	</item>
+<item itemid="Application">	신청등록	</item>
+<item itemid="Process">	신청처리	</item>
+<item itemid="Monitoring">	처리진행조회	</item>
+<item itemid="Statistics">	각종 통계	</item>
+<item itemid="Basic_Information_Register">	기초 자료 등록	</item>
+<item itemid="My_To-Dos">	나의 대기 업무 건수	</item>
+<item itemid="Department_To-Dos">	부서 대기 업무 건수	</item>
+<item itemid="Delayed_Jobs">	지연된 업무 건수	</item>
+<item itemid="My_To-Dos-List">	나의 대기 업무 목록	</item>
+<item itemid="Title">	업무명	</item>
+<item itemid="Status">	진행단계	</item>
+<item itemid="Application_Date">	신청일	</item>
+<item itemid="New_Jobs">	신청 업무 목록	</item>
+<item itemid="Details">	설명	</item>
+<item itemid="Finished_Jobs">	처리 완료 업무 목록	</item>
+<item itemid="Finished_Date">	종료일	</item>
+<item itemid="Delayed_Jobs">	처리 지연 업무 목록	</item>
+<item itemid="Days_Delayed">	지연일	</item>
+<item itemid="Application_No">	신청번호	</item>
+<item itemid="Applicant">	신청자명	</item>
+<item itemid="Monitoring_Queued_Jobs">	진행중인 업무 모니터링	</item>
+<item itemid="Monitoring_Finished_Jobs">	완료된 업무 모니티렁	</item>
+<item itemid="No_of_Applications_Per_Month">	월별 전체 신청 건수	</item>
+<item itemid="No_of_Applications_Per_Progress">	진행 단계별 처리 건수	</item>
+<item itemid="No_of_Applications_Per_Job_Type">	업무별 신청 건수	</item>
+<item itemid="Company">	회사	</item>
+<item itemid="Subscriber">	보험가입자	</item>
+<item itemid="Number">	순번	</item>
+<item itemid="Company">	회사명	</item>
+<item itemid="Business_Registration_Number">	회사등록번호	</item>
+<item itemid="CEO">	대표자 명(주로 사장님)	</item>
+<item itemid="Tel">	전화번호	</item>
+
+<item itemid="Birth">생년월일</item>
+<item itemid="SSN">주민번호</item>
+<item itemid="Insurance_Number">보험가입번호</item>
+		
+		
+	</section>
+</resources>

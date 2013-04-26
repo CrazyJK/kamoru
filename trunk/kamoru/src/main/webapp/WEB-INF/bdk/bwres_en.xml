@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<section sectionid="stringtable">
+		<!-- TABLE -->
+		<item itemid="TABLE_COLUMN_INDEX1">ID</item>
+		<item itemid="TABLE_COLUMN_INDEX2">상태</item>
+		<item itemid="TABLE_COLUMN_INDEX3">프로세스명</item>
+		<item itemid="TABLE_COLUMN_INDEX4">생성자</item>
+		<item itemid="TABLE_COLUMN_INDEX5">생성일</item>
+		<item itemid="TABLE_COLUMN_INDEX6">완료일</item>
+
+		<item itemid="TABLE_INFO_NODATA">내용이 없습니다.</item>
+		
+<item itemid="Labor_Insurance">	Labor Insurance	</item>
+<item itemid="Labor_Insurance_Premiums">	Labor Insurance Premiums	</item>
+<item itemid="Management">	Management	</item>
+<item itemid="Portal">	Portal	</item>
+<item itemid="Application">	Application	</item>
+<item itemid="Process">	Process	</item>
+<item itemid="Monitoring">	Monitoring	</item>
+<item itemid="Statistics">	Statistics	</item>
+<item itemid="Basic_Information_Register">	Basic Information Register	</item>
+<item itemid="My_To-Dos">	My To-Do’s	</item>
+<item itemid="Department_To-Dos">	Department To-Do’s	</item>
+<item itemid="Delayed_Jobs">	Delayed Jobs	</item>
+<item itemid="My_To-Dos-List">	My To-Do’s	</item>
+<item itemid="Title">	Title	</item>
+<item itemid="Status">	Status	</item>
+<item itemid="Application_Date">	Application Date	</item>
+<item itemid="New_Jobs">	New Jobs	</item>
+<item itemid="Details">	Details	</item>
+<item itemid="Finished_Jobs">	Finished Jobs	</item>
+<item itemid="Finished_Date">	Finished Date	</item>
+<item itemid="Delayed_Jobs">	Delayed Jobs	</item>
+<item itemid="Days_Delayed">	Days Delayed	</item>
+<item itemid="Application_No">	Application No.	</item>
+<item itemid="Applicant">	Applicant	</item>
+<item itemid="Monitoring_Queued_Jobs">	Monitoring Queued Jobs	</item>
+<item itemid="Monitoring_Finished_Jobs">	Monitoring Finished Jobs	</item>
+<item itemid="No_of_Applications_Per_Month">	No. of Applications Per Month	</item>
+<item itemid="No_of_Applications_Per_Progress">	No. of Applications Per Progress	</item>
+<item itemid="No_of_Applications_Per_Job_Type">	No. of Applications Per Job Type	</item>
+<item itemid="Company">	Company	</item>
+<item itemid="Subscriber">	Subscriber	</item>
+<item itemid="Number">	Number	</item>
+<item itemid="Company">	Company	</item>
+<item itemid="Business_Registration_Number">	Business Registration Number	</item>
+<item itemid="CEO">	CEO	</item>
+<item itemid="Tel">	Tel	</item>
+		
+		
+		
+	</section>
+</resources>

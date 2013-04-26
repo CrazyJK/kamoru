@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Database>
+	<!-- CSD bizflow -->
+	<Connection 
+		Default="true" 
+		Driver="oracle.jdbc.driver.OracleDriver"
+		Impl="com.hs.frmwk.db.BWConnectionPoolDbcpImpl" 
+		Vendor="dbcp" 
+		InitConn="0"
+		MaxConn="3" 
+		Name="kamoru" 
+		Url="jdbc:oracle:thin:@123.212.190.136:1521:ora92" 
+		User="bizflow"
+		Password="bizflow" 
+	/>
+	<Connection 
+		Default="false" 
+		Driver="oracle.jdbc.driver.OracleDriver"
+		Impl="com.hs.frmwk.db.BWConnectionPoolDbcpImpl" 
+		Vendor="dbcp" 
+		InitConn="1"
+		MaxConn="3" 
+		Name="mboard"
+		Url="jdbc:oracle:thin:@123.212.190.136:1521:ora92" 
+		User="sa"
+		Password="csd" 
+	/>
+</Database>

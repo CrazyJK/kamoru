@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+        <!-- Root Context: defines shared resources visible to all other web components -->
+
+        <!-- <jee:jndi-lookup id="dataSource2" jndi-name="/jdbc/kamoruDB" resource-ref="true" /> -->
+
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+                <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+                <property name="url" value="jdbc:oracle:thin:@123.212.190.111:1521:csrnd" />
+                <property name="username" value="kamoru" />
+                <property name="password" value="kamoru" />
+                <property name="initialSize" value="2" />
+                <property name="maxActive" value="5" />
+        </bean>
+
+        <!-- JDBC -->
+        <!-- <bean id="spitterDao" class="com.springinaction.spitter.persistence.JdbcSpitterDao">
+                <property name="dataSource" ref="dataSource" />
+        </bean> -->
+        <!-- Hibernate -->
+        <!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="packagesToScan" value="com.springinaction.spitter.domain"></property>
+                <property name="hibernateProperties">
+                        <props>
+                                <prop key="dialect">org.hibernate.dialect.OracleDialect</prop>
+                        </props>
+                </property>
+        </bean> -->
+        <!-- find @Repository -->
+        <!-- <context:component-scan base-package="com.springinaction.spitter.persistence" /> -->
+        <!-- translate PersistenceException for @Repository -->
+        <!-- <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> -->
+
+        <!-- JPA -->
+        <!-- <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+                p:dataSource-ref="dataSource" p:jpaVendorAdapter-ref="jpaVendorAdapter" />
+        <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                p:database="ORACLE" p:showSql="true" p:generateDdl="false" p:databasePlatform="org.hibernate.dialect.OracleDialect" />
+        enable EntityManager DI
+        <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+         -->
+
+        <!-- Transaction -->
+        <!-- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+                p:entityManagerFactory-ref="emf" /> -->
+        <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+                p:dataSource-ref="dataSource" />
+        <tx:annotation-driven/> -->
+
+</beans>

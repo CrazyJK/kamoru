@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QueryList>
+<!-- 
+	ID numbering
+	1000 ~ addon
+ -->
+	<Query ID="1001" Description="로그인 사용자 찾기">
+		<![CDATA[
+			SELECT  *
+		    FROM    (
+		            SELECT  count(*) over() total, rownum rnum, rqst_id, rmt_group_id, subject, content, answer, version, component, rqster_name,
+		                (SELECT	c.cmpny_name FROM TB_CMPNYINFO c WHERE c.cmpny_id = r.cmpny_id) cmpny_name, 
+		                    TO_CHAR(rqst_date, 'yyyy-mm-dd') rqst_dt   
+		            FROM    TB_RQST r
+		            WHERE   version like ?
+		            --AND     prcs_stts_cd = 5000
+		            AND     rqster like '핸디소프트'
+		            --AND     answer is not null
+		            --AND		rmt_group_id IS NOT null	
+		            AND     rqst_date > sysdate - 365
+		            ORDER BY rqst_id DESC
+		    ) t
+		    WHERE   t.rnum BETWEEN ? AND ?
+   		]]>
+	</Query>
+	
+</QueryList>		
