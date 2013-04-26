@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013. 4. 10 ?????? 1:06:21 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hs.alice.domain.AuthUser" table="AUTH_USER" schema="ALICE">
+        <id name="userid" type="big_decimal">
+            <column name="USERID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="authGroup" class="com.hs.alice.domain.AuthGroup" fetch="select">
+            <column name="GROUPID" precision="22" scale="0" />
+        </many-to-one>
+        <property name="username" type="string">
+            <column name="USERNAME" length="20" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="PASSWORD" length="100" not-null="true" />
+        </property>
+        <property name="refkey" type="string">
+            <column name="REFKEY" length="100" />
+        </property>
+        <property name="accountexpired" type="java.lang.Character">
+            <column name="ACCOUNTEXPIRED" length="1" />
+        </property>
+        <property name="accountlocked" type="java.lang.Character">
+            <column name="ACCOUNTLOCKED" length="1" />
+        </property>
+        <property name="passwordexpired" type="java.lang.Character">
+            <column name="PASSWORDEXPIRED" length="1" />
+        </property>
+        <property name="passwordexpireddate" type="date">
+            <column name="PASSWORDEXPIREDDATE" length="7" />
+        </property>
+        <property name="passwordfailcount" type="big_decimal">
+            <column name="PASSWORDFAILCOUNT" precision="22" scale="0" />
+        </property>
+        <property name="accountexpireddate" type="date">
+            <column name="ACCOUNTEXPIREDDATE" length="7" />
+        </property>
+        <set name="authRoleUserMaps" table="AUTH_ROLE_USER_MAP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="USERID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.hs.alice.domain.AuthRoleUserMap" />
+        </set>
+    </class>
+</hibernate-mapping>

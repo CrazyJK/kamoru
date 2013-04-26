@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<body onload='document.f.j_username.focus();'>
+<!-- <p><font color='red'>Your login attempt was not successful, try again.<br/><br/>Reason: Bad credentials</font></p> -->
+<h3>Login with Username and Password</h3>
+<form name='f' action='/alice/j_spring_security_check' method='POST'>
+ <table>
+    <tr><td>User:</td><td><input type='text' name='j_username' value=''></td></tr>
+    <tr><td>Password:</td><td><input type='password' name='j_password'/></td></tr>
+    <tr><td colspan='2'><input name="submit" type="submit" value="Login"/></td></tr>
+  </table>
+</form></body>
+</html>

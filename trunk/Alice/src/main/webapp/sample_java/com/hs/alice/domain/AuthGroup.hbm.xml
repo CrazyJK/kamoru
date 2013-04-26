@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013. 4. 10 ?????? 1:06:21 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hs.alice.domain.AuthGroup" table="AUTH_GROUP" schema="ALICE">
+        <id name="groupid" type="big_decimal">
+            <column name="GROUPID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="groupname" type="string">
+            <column name="GROUPNAME" length="100" not-null="true" />
+        </property>
+        <property name="parentid" type="big_decimal">
+            <column name="PARENTID" precision="22" scale="0" />
+        </property>
+        <property name="enabled" type="java.lang.Character">
+            <column name="ENABLED" length="1" />
+        </property>
+        <set name="authRoleGroupMaps" table="AUTH_ROLE_GROUP_MAP" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="GROUPID" precision="22" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="com.hs.alice.domain.AuthRoleGroupMap" />
+        </set>
+        <set name="authUsers" table="AUTH_USER" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="GROUPID" precision="22" scale="0" />
+            </key>
+            <one-to-many class="com.hs.alice.domain.AuthUser" />
+        </set>
+    </class>
+</hibernate-mapping>

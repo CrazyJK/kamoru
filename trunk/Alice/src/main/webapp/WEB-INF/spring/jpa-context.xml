@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.hs.alice.auth.domain" />
+		<!-- <property name="persistenceXmlLocation" value="classpath:/com/hs/alice/orm/jpa/alice-persistence.xml" /> -->
+		<property name="jpaProperties">
+			<props>
+				<!-- for eclipselink
+				<prop key="eclipselink.weaving">false</prop>
+				<prop key="eclipselink.logging.level">FINE</prop> -->
+				<!-- hibernate lazy loading Not used. but bug exist.
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop> -->
+				<!-- use Cache 
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+				<prop key="hibernate.generate_statistics">true</prop>-->
+				<!-- hibernate 3.x
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop> -->
+			</props>
+		</property> 
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf" />
+	</bean>
+
+	<tx:annotation-driven/>
+		
+</beans>

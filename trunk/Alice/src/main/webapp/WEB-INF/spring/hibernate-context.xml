@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:/com/hs/alice/orm/hibernate/AuthGroup.hbm.xml</value>
+				<value>classpath:/com/hs/alice/orm/hibernate/AuthRole.hbm.xml</value>
+				<value>classpath:/com/hs/alice/orm/hibernate/AuthRoleGroupMap.hbm.xml</value>
+				<value>classpath:/com/hs/alice/orm/hibernate/AuthRoleUserMap.hbm.xml</value>
+				<value>classpath:/com/hs/alice/orm/hibernate/AuthUser.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="dialect">org.hibernate.dialect.Oracle9iDialect</prop>
+				<prop key="show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+</beans>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" package="com.hs.alice.auth.domain">
+	<class name="User" table="AUTH_USER">
+		<id name="userid" column="USERID" type="integer">
+			<generator class="sequence">
+				<param name="sequence">SEQ_AUTH_USER</param>
+			</generator>
+		</id>
+		<property name="username" column="USERNAME" />
+		<property name="password" column="PASSWORD" />
+		<property name="refkey" column="REFKEY" />
+		<property name="accountexpired" column="ACCOUNTEXPIRED" type="true_false" />
+		<property name="accountexpireddate" column="ACCOUNTEXPIREDDATE" type="date" />
+		<property name="accountlocked" column="ACCOUNTLOCKED" type="true_false" />
+		<property name="passwordexpired" column="PASSWORDEXPIRED" type="true_false" />
+		<property name="passwordexpireddate" column="PASSWORDEXPIREDDATE" type="date" />
+		<property name="passwordfailcount" column="PASSWORDFAILCOUNT" />
+		<many-to-one name="group" column="GROUPID" class="com.hs.alice.auth.domain.Group" />
+		<set name="roles" table="AUTH_ROLE_USER_MAP" cascade="save-update">
+			<key column="USERID" />
+			<many-to-many class="com.hs.alice.auth.domain.Role" column="ROLEID" />
+		</set>
+	</class>
+
+	<class name="Group" table="AUTH_GROUP">
+		<id name="groupid" column="GROUPID" type="integer">
+			<generator class="sequence">
+				<param name="sequence">SEQ_AUTH_GROUP</param>
+			</generator>
+		</id>
+		<property name="groupname" column="GROUPNAME" />
+		<property name="enabled" column="ENABLED" type="true_false" />
+		<set name="users" inverse="true" cascade="save-update">
+			<key column="GROUPID" />
+			<one-to-many class="com.hs.alice.auth.domain.User" />
+		</set>
+		<set name="roles" table="AUTH_ROLE_GROUP_MAP" cascade="save-update">
+			<key column="GROUPID" />
+			<many-to-many class="com.hs.alice.auth.domain.Role" column="ROLEID" />
+		</set>
+	</class>
+
+	<class name="Role" table="AUTH_ROLE">
+		<id name="roleid" column="ROLEID" type="integer">
+			<generator class="sequence">
+				<param name="sequence">SEQ_AUTH_USER</param>
+			</generator>
+		</id>
+		<property name="rolename" column="ROLENAME" />
+		<property name="enabled" column="ENABLED" type="true_false" />
+		<set name="users" table="AUTH_ROLE_USER_MAP" cascade="save-update" inverse="true" >
+			<key column="ROLEID" />
+			<many-to-many class="com.hs.alice.auth.domain.User" column="USERID" />
+		</set>
+		<set name="groups" table="AUTH_ROLE_GROUP_MAP" cascade="save-update" inverse="true">
+			<key column="ROLEID" />
+			<many-to-many class="com.hs.alice.auth.domain.Group" column="GROUPID" />
+		</set>
+	</class>
+
+</hibernate-mapping>

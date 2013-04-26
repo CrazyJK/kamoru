@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.hs.alice.psa.csd.CsdUser" table="TB_USERINFO">
+		<id       name="userid"   column="USER_ID"/>
+		<property name="username" column="LOGIN_ID" />
+		<property name="password" column="PWD" />
+		<property name="refkey"   column="EMP_CODE" />
+		<property name="groupid"  column="DEPT_ID" />
+		<property name="accountexpired"      column="USE_FLAG" />
+	</class>
+</hibernate-mapping>

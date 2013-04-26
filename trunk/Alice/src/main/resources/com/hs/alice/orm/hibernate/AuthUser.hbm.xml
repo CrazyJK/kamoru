@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2013. 4. 10 ?????? 10:19:22 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="com.hs.alice.domain.AuthUser" schema="ALICE" table="AUTH_USER">
+  <id name="userid" type="big_decimal">
+   <column name="USERID" precision="22" scale="0"/>
+   <generator class="sequence">
+    <param name="sequence">SEQ_AUTH_USER</param>
+   </generator>
+  </id>
+  <many-to-one class="com.hs.alice.domain.AuthGroup" fetch="select"
+   lazy="proxy" name="authGroup">
+   <column name="GROUPID" precision="22" scale="0"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="username" type="string">
+   <column length="20" name="USERNAME" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="password" type="string">
+   <column length="100" name="PASSWORD" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="refkey" type="string">
+   <column length="100" name="REFKEY"/>
+  </property>
+  <property generated="never" lazy="false" name="accountexpired" type="java.lang.Character">
+   <column length="1" name="ACCOUNTEXPIRED"/>
+  </property>
+  <property generated="never" lazy="false" name="accountlocked" type="java.lang.Character">
+   <column length="1" name="ACCOUNTLOCKED"/>
+  </property>
+  <property generated="never" lazy="false" name="passwordexpired" type="java.lang.Character">
+   <column length="1" name="PASSWORDEXPIRED"/>
+  </property>
+  <property generated="never" lazy="false" name="passwordexpireddate" type="date">
+   <column length="7" name="PASSWORDEXPIREDDATE"/>
+  </property>
+  <property generated="never" lazy="false" name="passwordfailcount" type="big_decimal">
+   <column name="PASSWORDFAILCOUNT" precision="22" scale="0"/>
+  </property>
+  <property generated="never" lazy="false" name="accountexpireddate" type="date">
+   <column length="7" name="ACCOUNTEXPIREDDATE"/>
+  </property>
+  <set cascade="all-delete-orphan" fetch="join" inverse="true" lazy="false"
+   name="authRoleUserMaps" sort="unsorted" table="AUTH_ROLE_USER_MAP">
+   <key>
+    <column name="USERID" not-null="true" precision="22" scale="0"/>
+   </key>
+   <one-to-many class="com.hs.alice.domain.AuthRoleUserMap"/>
+  </set>
+ </class>
+</hibernate-mapping>

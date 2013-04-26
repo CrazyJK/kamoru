@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<http auto-config="false" use-expressions="true"
+		entry-point-ref="loginUrlAuthenticationEntryPoint"
+		access-denied-page="/login?denied=true">
+
+		<intercept-url pattern="/resources/**" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" /><!-- requires-channel="https" -->
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN') and hasIpAddress('10.30.6.55')" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+
+		<custom-filter ref="aliceUsernamePasswordAuthenticationFilter" position="FORM_LOGIN_FILTER" />
+		
+		<logout logout-success-url="/login"/>
+		<remember-me key="aliceKey" token-validity-seconds="600000" />
+	</http>
+
+	<beans:bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+ 		<beans:property name="loginFormUrl" value="/login"/>
+	</beans:bean>
+	<beans:bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	 	<beans:property name="defaultTargetUrl" value="/home"/>
+	</beans:bean>
+	<beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+	 	<beans:property name="defaultFailureUrl" value="/login?login_error=true"/>
+	</beans:bean>
+	
+	<beans:bean id="aliceUsernamePasswordAuthenticationFilter" 
+		class="com.hs.alice.util.security.auth.AliceUsernamePasswordAuthenticationFilter" >
+		<beans:property name="enc" value="UTF-8" />
+		<beans:property name="crypt">
+			<beans:bean class="com.hs.alice.util.crypt.HSCrypt"/>
+		</beans:property>	
+		<beans:property name="authenticationManager" ref="authenticationManager"/> 
+		<beans:property name="authenticationFailureHandler" ref="failureHandler"/>
+ 		<beans:property name="authenticationSuccessHandler" ref="successHandler"/> 
+	</beans:bean>
+	
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="csdUserService">
+			<!-- <user-service>
+				<user name="kamoru" password="1122" authorities="ROLE_RND"/>
+				<user name="admin" password="admin1" authorities="ROLE_RND, ROLE_ADMIN"/>
+			</user-service> -->
+		</authentication-provider>
+	</authentication-manager>
+	
+	<jdbc-user-service id="csdUserService" data-source-ref="dataSource"
+		users-by-username-query="SELECT login_id, pwd, 1 FROM tb_userinfo WHERE use_flag = 0 AND login_id = ?"
+		authorities-by-username-query="SELECT login_id, 'ROLE_USER' FROM tb_userinfo WHERE use_flag = 0 AND login_id = ?" />
+</beans:beans>

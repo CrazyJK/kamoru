@@ -1,0 +1,23 @@
+<sitemesh>
+	<!-- default decorator -->
+  	<mapping decorator="/WEB-INF/views/sitemesh/decorator.jsp"/>
+
+  	<mapping path="/auth*" decorator="/WEB-INF/views/sitemesh/auth-deco.jsp"/>
+  	<mapping path="/csr*"  decorator="/WEB-INF/views/sitemesh/csr-deco.jsp"/>
+  
+  	<!-- Alternative convention. 
+  	   	 This is more verbose but allows multiple decorators to be applied to a single path. 
+  	<mapping>
+    	<path>/articles/*</path>
+    	<decorator>/decorators/article.html</decorator>
+    	<decorator>/decorators/two-page-layout.html</decorator>
+    	<decorator>/decorators/common.html</decorator>
+  	</mapping>
+  	-->
+  
+  	<!-- Exclude path from decoration -->
+  	<mapping path="/video" 	 exclue="true"/>
+  	<mapping path="/video/*" exclue="true"/>
+  	<mapping path="/av.do" 	 exclue="true"/>
+
+</sitemesh>

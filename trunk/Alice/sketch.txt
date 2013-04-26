@@ -1,0 +1,48 @@
+[UI]
+For RnD members
+	todo list
+		/todo || /todo/{id} 
+	done list
+		/done || /done/{id}
+	CAPI list
+		/capi
+
+For CS Engineer or etc requester
+	my proceeding list
+		/sr || /sr/{id}
+	new SR
+		/sr/new
+
+For Manager
+	SR processing progress
+		/sr/progress
+
+For All members
+	total SR list
+		/sr/total
+
+Home
+	recently SR
+		/recentSR
+	recent reply
+		/recentReply
+	todo list
+		/mytodo
+
+[Dependecy system]
+Promise 
+	code info
+CSD 
+	org  info
+	company, person, install info 
+CSD BPM
+	rqst complete
+
+[Persistence]
+	Hibernate + myBatis
+
+[package structure]
+com.hs.alice.sr.service
+com.hs.alice.org
+com.hs.alice.psa.csd
+com.hs.alice.psa.promise
