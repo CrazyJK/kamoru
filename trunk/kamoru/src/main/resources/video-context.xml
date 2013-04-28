@@ -29,6 +29,10 @@
 		<property name="cover_extensions" value="#{videoProp['cover_extensions']}" />
 		<property name="subtitles_extensions" value="#{videoProp['subtitles_extensions']}" />
 		<property name="overview_extensions" value="#{videoProp['overview_extensions']}" />
+		<property name="webp_mode" value="#{videoProp['webp.mode']}" />
+		<property name="webp_path" value="#{videoProp['webp.path']}" />
+		<property name="webp_exec" value="#{videoProp['webp.exec']}" />
+		
 	</bean>
 	<!-- AOP : VideoSource.load() -->	
 	<aop:config>

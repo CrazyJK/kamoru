@@ -2,6 +2,7 @@ package com.kamoru.app.video.source;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,11 +38,15 @@ public class FileBaseVideoSource implements VideoSource {
 	private final String unclassifiedOpus = UNKNOWN;
 	private final String unclassifiedActress = UNKNOWN;
 
+	// property
 	private String[] paths;
 	private String video_extensions;
 	private String cover_extensions;
 	private String subtitles_extensions;
 	private String overview_extensions;
+	private boolean webp_mode;
+	private String webp_path;
+	private String webp_exec;
 
 	private Map<String, Video> videoMap;
 	private Map<String, Studio> studioMap;
@@ -67,11 +72,26 @@ public class FileBaseVideoSource implements VideoSource {
 	public void setOverview_extensions(String overview_extensions) {
 		this.overview_extensions = overview_extensions;
 	}
-
+	public void setWebp_mode(boolean webp_mode) {
+		this.webp_mode = webp_mode;
+	}
+	public void setWebp_path(String webp_path) {
+		this.webp_path = webp_path;
+	}
+	public void setWebp_exec(String webp_exec) {
+		this.webp_exec = webp_exec;
+	}
+	
+	/**
+	 * 기존에 만든적이 없으면, video source를 로드를 호출한다.
+	 */
 	public final void createVideoSource() {
 		if(videoMap == null || studioMap == null || actressMap == null)
 			load();
 	}
+	/**
+	 * video데이터를 로드한다.
+	 */
 	private void load() {
 		Collection<File> files = new ArrayList<File>();
 		for(String path : paths) {
@@ -93,6 +113,9 @@ public class FileBaseVideoSource implements VideoSource {
 			String filename = file.getName();
 			String name = getFileName(file);
 			String ext  = getFileExtension(file);
+			
+			if("history.log".equals(filename))
+				continue;
 			
 			String[] names = StringUtils.split(name, "]");
 			String studioName  = UNKNOWN;
@@ -138,11 +161,18 @@ public class FileBaseVideoSource implements VideoSource {
 				video.setEtcInfo(etcInfo);
 				videoMap.put(opus.toLowerCase(), video);
 			}
+			
+			// set File
 			if(video_extensions.indexOf(ext) > -1) {
 				video.setVideoFile(file);
-			} 
+			}
 			else if(cover_extensions.indexOf(ext) > -1) {
-				video.setCoverFile(file);
+				if(webp_mode) {
+					video.setCoverFile(convertWebpFile(file));
+				}
+				else {
+					video.setCoverFile(file);
+				}
 			}
 			else if(subtitles_extensions.indexOf(ext) > -1) {
 				video.setSubtitlesFile(file);
@@ -152,7 +182,7 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			else if("log".indexOf(ext) > -1) {
 				video.setHistoryFile(file);
-			} 
+			}
 			else {
 				video.setEtcFile(file);
 			}
@@ -189,21 +219,60 @@ public class FileBaseVideoSource implements VideoSource {
 		}
 		logger.debug("total found video size : " + videoMap.size());
 	}
+	/**
+	 * 이미지를 webp파일로 반환. 없으면 만드는 작업 호출
+	 * @param file
+	 * @return
+	 */
+	private File convertWebpFile(File file) {
+		File webpfile = new File(webp_path, getFileName(file) + ".webp");
+		if(webpfile.exists()) {
+			return webpfile;
+		}
+		String command = webp_exec + " \"" + file.getAbsolutePath() + "\" -q 80 -o \"" + webpfile.getAbsolutePath() + "\"";
+		logger.info(command);
+		try {
+			Runtime.getRuntime().exec(command);
+		} catch (IOException e) {
+			logger.error(e);
+		}
+		return webpfile;
+	}
+	/**
+	 * 확장자 뺀 화일명 반환
+	 * @param file
+	 * @return
+	 */
 	private String getFileName(File file) {
 		String name = file.getName();
 		int idx = name.lastIndexOf(".");
 		return idx < 0 ? name : name.substring(0, idx);
 	}
+	/**
+	 * 확장자 반환
+	 * @param file
+	 * @return
+	 */
 	private String getFileExtension(File file) {
 		String filename = file.getName();
 		int index = filename.lastIndexOf(".");
 		return index < 0 ? "" : filename.substring(index + 1); 
 	}
+	/**
+	 * [ 를 ""로 변환
+	 * @param str
+	 * @return
+	 */
 	private String trimName(String str) {
 		if(str == null)
 			return "";
 		return StringUtils.replace(str, "[", "").trim();
 	}
+	/**
+	 * 컴마(,)로 구분된 이름을 List&lt;Actress&gt;로 반환
+	 * @param actressNames
+	 * @return
+	 */
 	private List<Actress> getActressList(String actressNames) {
 		List<Actress> actressList = new ArrayList<Actress>();
 		
@@ -227,12 +296,25 @@ public class FileBaseVideoSource implements VideoSource {
 		
 		return actressList;
 	}
-	private static boolean equalsName(Actress actress, String name2) {
+	/**
+	 * 같은 이름인지 확인
+	 * @param actress
+	 * @param name2
+	 * @return
+	 */
+	private boolean equalsName(Actress actress, String name2) {
 		String name1 = actress.getName();
-		if(name1 == null || name2 == null) return false;
-		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2)) || name1.toLowerCase().indexOf(name2.toLowerCase()) > -1;
+		if(name1 == null || name2 == null) 
+			return false;
+		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2)) 
+				|| name1.toLowerCase().indexOf(name2.toLowerCase()) > -1;
 	}
-	private static String forwardNameSort(String name) {
+	/**
+	 * 공백이 들어간 이름을 순차정렬해서 반환
+	 * @param name
+	 * @return
+	 */
+	private String forwardNameSort(String name) {
 		String[] nameArr = StringUtils.split(name);
 		Arrays.sort(nameArr);
 		String retName = "";

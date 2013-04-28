@@ -8,9 +8,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.util.VideoUtils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
@@ -26,10 +29,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class Video implements Comparable<Object>, Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
+	
 	protected static final Log logger = LogFactory.getLog(Video.class);
 
 //	private String studio;
@@ -46,6 +48,8 @@ public class Video implements Comparable<Object>, Serializable {
 	private File historyFile;
 	private List<File> etcFileList;
 	
+	private Integer playCount;
+	
 	private final String DEFAULT_SORTMETHOD = "O";
 	private String sortMethod = DEFAULT_SORTMETHOD;
 	
@@ -57,8 +61,10 @@ public class Video implements Comparable<Object>, Serializable {
 		subtitlesFileList = new ArrayList<File>();
 		etcFileList = new ArrayList<File>();
 		actressList = new ArrayList<Actress>();
+		playCount = 0;
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("video : ").append(this.getVideoFileListPath()).append(",");
@@ -126,6 +132,7 @@ public class Video implements Comparable<Object>, Serializable {
 			compStr = String.valueOf(comp.isExistVideoFileList() ? comp.getVideoFileList().get(0).lastModified() : 0);
 		}
 		String[] s = {thisStr, compStr};
+//		logger.info(ArrayUtils.toString(s));
 		Arrays.sort(s);
 		return s[0].equals(thisStr) ? -1 : 1;
 	}
@@ -198,6 +205,17 @@ public class Video implements Comparable<Object>, Serializable {
 			return VideoUtils.arrayToString(getEtcFileList());
 		return null;
 	}
+	public Integer getPlayCount() {
+		return playCount;
+	}
+
+	public void setPlayCount(Integer playCount) {
+		this.playCount = playCount;
+	}
+	public void increasePlayCount() {
+		this.playCount++;
+	}
+
 	// getter & setter method end
 	public List<File> getVideoFileList() {
 		return videoFileList;
@@ -216,6 +234,8 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 
 	public byte[] getCoverByteArray() {
+		if(this.coverByteArray == null)
+			this.coverByteArray = readFileToByteArray(coverFile);
 		return this.coverByteArray;
 	}
 	
@@ -225,13 +245,21 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public void setCoverFile(File coverFile) {
 		this.coverFile = coverFile;
+		if(coverFile.exists())
+			this.coverByteArray = readFileToByteArray(coverFile);
+	}
+	
+	private byte[] readFileToByteArray(File file) {
+		if(file == null)
+			return null;
 		try {
-			this.coverByteArray = FileUtils.readFileToByteArray(coverFile);
+			return FileUtils.readFileToByteArray(file);
 		} catch (IOException e) {
 			logger.error(e);
+			return null;
 		}
 	}
-
+	
 	public File getOverviewFile() {
 		return overviewFile;
 	}
@@ -246,6 +274,19 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public void setHistoryFile(File historyFile) {
 		this.historyFile = historyFile;
+		try {
+			List<String> lineList = FileUtils.readLines(historyFile, VideoCore.FileEncoding);
+			for(String line : lineList) {
+				String[] linePart = StringUtils.split(line, ",");
+				if(linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) {
+					this.playCount++;
+				}
+			}
+		} catch (IOException e) {
+			logger.error(e);
+		}
+		if(this.playCount == 0)
+			logger.info(this.getOpus() + " never play.");
 	}
 
 	public List<File> getEtcFileList() {
@@ -317,7 +358,7 @@ public class Video implements Comparable<Object>, Serializable {
 	public String getOverviewText() {
 		if(isExistOverviewFile()) {
 			try {
-				return FileUtils.readFileToString(getOverviewFile());
+				return FileUtils.readFileToString(getOverviewFile(), VideoCore.FileEncoding);
 			}catch(IOException ioe){
 				return "Error:" + ioe.getMessage();
 			}
@@ -329,7 +370,7 @@ public class Video implements Comparable<Object>, Serializable {
 	public String getHistoryText() {
 		if(isExistHistoryFile()) {
 			try {
-				return FileUtils.readFileToString(getHistoryFile());
+				return FileUtils.readFileToString(getHistoryFile(), VideoCore.FileEncoding);
 			}catch(IOException ioe){
 				return "Error:" + ioe.getMessage();
 			}

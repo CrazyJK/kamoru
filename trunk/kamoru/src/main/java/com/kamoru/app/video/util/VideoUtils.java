@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import com.kamoru.app.video.dao.VideoDaoFile;
@@ -194,5 +195,20 @@ public class VideoUtils {
 				sb.append(", ");
 		}
 		return sb.toString();
+	}
+
+	public static void makeWebp(String webp_path, File webpFile) {
+		
+		
+	}
+
+	public static String getOpusArrayStyleStringWithVideofile(List<Video> videoList) {
+		List<Video> videoListWithVideofile = new ArrayList<Video>();
+		for(Video video : videoList) {
+			if(video.getVideoFileList() != null && video.getVideoFileList().size() > 0) {
+				videoListWithVideofile.add(video);
+			}
+		}
+		return getOpusArrayStyleString(videoListWithVideofile);
 	}
 }

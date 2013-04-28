@@ -42,27 +42,37 @@ public class VideoDaoFile implements VideoDao {
 		return this.getVideoList(
 				videoSearch.getStudio(), videoSearch.getOpus(), videoSearch.getTitle(), videoSearch.getActress(), 
 				videoSearch.isAddCond(), videoSearch.isExistVideo(), videoSearch.isExistSubtitles(), 
-				videoSearch.getSortMethod(), videoSearch.isSortReverse());
+				videoSearch.getSortMethod(), videoSearch.isSortReverse(), videoSearch.isNeverPlay());
 	}
 	
 	private List<Video> getVideoList(
 			String studio, String opus, String title, String actress, 
 			boolean addCond, boolean existVideo, boolean existSubtitles, 
-			String sortMethod, boolean sortReverse) {
-//		logger.debug("getAV : params[studio:" + studio + ", opus:" + opus + ", title:" + title + ", actress:" + actress + ", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + ", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse + "]");
+			String sortMethod, boolean sortReverse, boolean neverPlay) {
+		logger.debug("getAV : params[studio:" + studio + 
+				", opus:" + opus + ", title:" + title + ", actress:" + actress + 
+				", addCond:" + addCond + ", existVideo:" + existVideo + ", existSubtitles:" + existSubtitles + 
+				", sortMethod:" + sortMethod + ", sortReverse:" + sortReverse +
+				", neverPlay:" + neverPlay + 
+				"]");
 		
 		List<Video> list = new ArrayList<Video>();
 		for(Video video : getVideoList()) {
 			if((studio  == null || studio.trim().length()  == 0 || studio.equalsIgnoreCase(video.getStudio().getName())) 
-			&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(video.getOpus()))
-			&& (title   == null || title.trim().length()   == 0 || video.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
-			&& (actress == null || actress.trim().length() == 0 || video.containsActress(actress))
-			&& (addCond ? (existVideo ? video.isExistVideoFileList() : !video.isExistVideoFileList()) && (existSubtitles ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList()) : true)
+				&& (opus    == null || opus.trim().length()    == 0 || opus.equalsIgnoreCase(video.getOpus()))
+				&& (title   == null || title.trim().length()   == 0 || video.getTitle().toLowerCase().indexOf(title.toLowerCase()) > -1) 
+				&& (actress == null || actress.trim().length() == 0 || video.containsActress(actress))
+				&& (neverPlay ? (video.getPlayCount() == 0) : true)
+				&& (addCond ? (existVideo ? video.isExistVideoFileList() : !video.isExistVideoFileList()) 
+						&& (existSubtitles ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList()) : true)
 			) {
 				if(sortMethod != null && sortMethod.trim().length() > 0) {
 					video.setSortMethod(sortMethod);
 				}
 				list.add(video);
+			}
+			else {
+//				logger.debug("제외된 비디오 : " + video);
 			}
 		}
 //		logger.debug("getAV : found opus size " + list.size());
@@ -70,25 +80,26 @@ public class VideoDaoFile implements VideoDao {
 			Collections.sort(list, Collections.reverseOrder());
 		else
 			Collections.sort(list);
+//		logger.debug("getAV : found opus size " + list.size());
 		return list;
 	}
 
 	@Override
 	public List<Video> getVideoList() {
 		List<Video> list = new ArrayList<Video>(videoSource.getVideoMap().values());
-		Collections.sort(list);
+//		Collections.sort(list);
 		return list;
 	}
 	@Override
 	public List<Studio> getStudioList() {
 		List<Studio> list = new ArrayList<Studio>(videoSource.getStudioMap().values()); 
-		Collections.sort(list);
+//		Collections.sort(list);
 		return list;
 	}
 	@Override
 	public List<Actress> getActressList() {
 		List<Actress> list = new ArrayList<Actress>(videoSource.getActressMap().values()); 
-		Collections.sort(list);
+//		Collections.sort(list);
 		return list;
 	}
 

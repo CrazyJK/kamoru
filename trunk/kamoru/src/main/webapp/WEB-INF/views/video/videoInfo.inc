@@ -5,5 +5,5 @@
 	<dd><c:forEach items="${video.actressList}" var="actress">
 			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
 		</c:forEach></dd>
-	<dd><span>${video.etcInfo}</span></dd>
+	<dd><span class="bgSpan">${video.etcInfo}</span></dd>
 </dl>

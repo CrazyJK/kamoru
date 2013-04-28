@@ -8,17 +8,23 @@ import org.apache.commons.io.FileUtils;
 
 public class WebpConverter {
 
-	private static final String cwebp = "/home/kamoru/DevTools/libwebp-0.3.0-linux-x86-32/cwebp"; 
-	private static final String imgPath = "/home/kamoru/DaumCloud/MyPictures/Entertainer";
+//	private static final String cwebp = "/home/kamoru/DevTools/libwebp-0.3.0-linux-x86-32/cwebp"; 
+//	private static final String imgPath = "/home/kamoru/DaumCloud/MyPictures/Entertainer";
+//	private static final String destPath = "/home/kamoru/Enter/";
+
+	private static final String cwebp = "E:\\tools\\libwebp-0.3.0-windows-x86\\cwebp.exe"; 
+	private static final String imgPath = "E:\\Unwatched_video";
+	private static final String destPath = "E:\\av_cover\\";
+
 	private static final String[] imgExt = {"jpg", "jpng", "png", "JPG", "JPNG", "PNG"};
-	private static final String destPath = "/home/kamoru/Enter/";
+
 	/**
 	 * @param args
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args) throws IOException, InterruptedException {
-		Collection<File> found = FileUtils.listFiles(new File(imgPath), imgExt, false);
+		Collection<File> found = FileUtils.listFiles(new File(imgPath), imgExt, true);
 		for(File file : found) {
 			String fullname = file.getAbsolutePath();
 			String name = getFileName(file);
@@ -26,7 +32,7 @@ public class WebpConverter {
 			System.out.println(file.getAbsolutePath());
 			System.out.println(file.getParent());
 			
-			String command = cwebp + " " + fullname + " -q 50 -o " + destPath + name + ".webp";
+			String command = cwebp + " \"" + fullname + "\" -q 80 -o \"" + destPath + name + ".webp\"";
 			System.out.println(command);
 			Runtime.getRuntime().exec(command);
 			Thread.sleep(1000);

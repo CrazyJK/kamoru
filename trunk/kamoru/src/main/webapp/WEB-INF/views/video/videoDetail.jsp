@@ -22,13 +22,14 @@ var context = '<spring:url value="/"/>';
 <body>
 <img src="<c:url value="/video/${video.opus}/cover" />" />
 <%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
-<span onclick="top.fnPlay('${video.opus}')">${video.videoFileListPath}</span>
-<span>${video.coverFilePath}</span>
-<span onclick="top.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span>
-<span>${video.etcFileListPath}</span>
-<span title='${video.historyText}'>${video.historyFile}</span>
-<span>${video.overviewFile}</span>
-<pre  onclick="opener.fnEditOverview('${video.opus}')"  >${video.overviewText}</pre>
-
+<ul>
+<li><span onclick="top.fnPlay('${video.opus}')">${video.videoFileListPath}</span>
+<li><span>${video.coverFilePath}</span>
+<li><span onclick="top.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span>
+<li><span>${video.etcFileListPath}</span>
+<li><span title='${video.historyText}'>${video.historyFile}</span>
+<li><span>${video.overviewFile}</span>
+	<pre  onclick="opener.fnEditOverview('${video.opus}')"  >${video.overviewText}</pre>
+</ul>
 </body>
 </html>

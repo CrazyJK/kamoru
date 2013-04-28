@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.dao.VideoDao;
 import com.kamoru.app.video.domain.Action;
 import com.kamoru.app.video.domain.Actress;
@@ -31,8 +32,6 @@ import com.kamoru.app.video.domain.VideoSearch;
 @Service
 public class VideoServiceImpl implements VideoService {
 	protected static final Log logger = LogFactory.getLog(VideoServiceImpl.class);
-
-	public final String FileEncoding = "UTF-8";
 
 	@Autowired private VideoDao videoDao;
 	
@@ -71,7 +70,7 @@ public class VideoServiceImpl implements VideoService {
 		Video video = getVideo(opus);
 		if(!video.isExistOverviewFile()) video.setOverviewFile(new File(getVideoPathWithoutExtension(video) + ".txt"));
 		try {
-			FileUtils.writeStringToFile(video.getOverviewFile(), overViewTxt, FileEncoding);
+			FileUtils.writeStringToFile(video.getOverviewFile(), overViewTxt, VideoCore.FileEncoding);
 		} catch (IOException e) {
 			logger.error("save overview error", e);
 			throw new RuntimeException(e);
@@ -172,7 +171,13 @@ public class VideoServiceImpl implements VideoService {
 	
 		switch(action) {
 		case PLAY :
-			msg = "play video : " + video.getVideoFileListPath();
+			if(video.getVideoFileListPath() != null) {
+				msg = "play video : " + video.getVideoFileListPath();
+				video.increasePlayCount();
+			}
+			else {
+				throw new IllegalStateException("No video to play. " + video.getOpus());
+			}
 			break;
 		case OVERVIEW :
 			msg = "write overview : " + video.getOverviewFilePath();
@@ -196,12 +201,12 @@ public class VideoServiceImpl implements VideoService {
 		try {
 			if(video.getHistoryFile() == null)
 				video.setHistoryFile(new File(getVideoPathWithoutExtension(video) + ".log"));
-			FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, FileEncoding, true);
+			FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
 		} catch (IOException e) {
 			logger.error(historymsg, e);
 		}
 		try {
-			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, FileEncoding, true);
+			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, VideoCore.FileEncoding, true);
 		} catch (IOException e) {
 			logger.error(historymsg, e);
 		}

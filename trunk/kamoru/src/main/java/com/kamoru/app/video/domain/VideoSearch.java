@@ -1,9 +1,12 @@
 package com.kamoru.app.video.domain;
 
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
+import java.io.Serializable;
 
-public class VideoSearch {
+import com.kamoru.app.video.VideoCore;
+
+public class VideoSearch implements Serializable{
+
+	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
 
 	String studio; 
 	String opus;
@@ -12,6 +15,7 @@ public class VideoSearch {
 	boolean addCond;
 	boolean existVideo; 
 	boolean existSubtitles;
+	boolean neverPlay = true;
 	String listViewType = "box";
 	String sortMethod = "M";
 	boolean sortReverse = true;
@@ -90,6 +94,12 @@ public class VideoSearch {
 	}
 	public void setViewActressDiv(boolean viewActressDiv) {
 		this.viewActressDiv = viewActressDiv;
+	}
+	public boolean isNeverPlay() {
+		return neverPlay;
+	}
+	public void setNeverPlay(boolean neverPlay) {
+		this.neverPlay = neverPlay;
 	}
 
 	

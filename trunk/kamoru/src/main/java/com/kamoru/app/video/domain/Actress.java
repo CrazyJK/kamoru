@@ -12,13 +12,14 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.util.VideoUtils;
 
 @Component
 @Scope("prototype")
 public class Actress implements Serializable, Comparable<Object> {
 
-	private static final long serialVersionUID = -3241999343906740614L;
+	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
 
 	private String name;
 	private Date birth;

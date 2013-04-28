@@ -55,10 +55,11 @@ public class VideoController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String av(Model model, @ModelAttribute VideoSearch videoSearch) {
 		List<Video> videoList =  videoService.searchVideo(videoSearch);
-		String opusArrayStyleString = VideoUtils.getOpusArrayStyleString(videoList);
 
+//		logger.debug("videoList size = " + videoList.size());
+		
 		model.addAttribute("videoList", videoList);
-		model.addAttribute("opusArray", opusArrayStyleString);
+		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
 		model.addAttribute("actressList", videoService.getActressList());
 		model.addAttribute("studioList", videoService.getStudioList());
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());

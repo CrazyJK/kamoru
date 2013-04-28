@@ -10,11 +10,13 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.kamoru.app.video.VideoCore;
+
 @Component
 @Scope("prototype")
 public class Studio implements Serializable, Comparable<Object>{
 
-	private static final long serialVersionUID = 3627610711503320177L;
+	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
 
 	private String name;
 	private String homepage;
