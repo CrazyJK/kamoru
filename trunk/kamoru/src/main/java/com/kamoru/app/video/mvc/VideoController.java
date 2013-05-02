@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kamoru.app.image.service.ImageService;
@@ -98,10 +99,14 @@ public class VideoController {
 	}
 
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> image(@PathVariable String opus) throws IOException {
+	public HttpEntity<byte[]> image(@PathVariable String opus, HttpServletResponse response) throws IOException {
 		File imageFile = videoService.getVideoCoverFile(opus);
+		if(imageFile == null) {
+			response.sendRedirect("../no/cover");
+			return null;
+		}
+			
 		String suffic = VideoUtils.getFileExtension(imageFile);
-//		byte[] imageBytes = FileUtils.readFileToByteArray(imageFile);
 		byte[] imageBytes = videoService.getVideoCoverByteArray(opus);
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -111,8 +116,23 @@ public class VideoController {
 		headers.setDate(new Date().getTime() + 86400*7*1000l);
 		headers.setExpires(new Date().getTime() + 86400*7*1000l);
 		return new HttpEntity<byte[]>(imageBytes, headers);
+
 	}
 
+	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
+	public HttpEntity<byte[]> noimage() {
+		byte[] imageBytes = videoService.getDefaultCoverFileByteArray();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("image/jpg"));
+		headers.setContentLength(imageBytes.length);
+		headers.setCacheControl("max-age=" + 86400*7);
+		headers.setDate(new Date().getTime() + 86400*7*1000l);
+		headers.setExpires(new Date().getTime() + 86400*7*1000l);
+		return new HttpEntity<byte[]>(imageBytes, headers);
+	}
+
+	
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.GET)
 	public String showOverview(Model model, @PathVariable("opus") String opus) {
 		model.addAttribute("video", videoService.getVideo(opus));

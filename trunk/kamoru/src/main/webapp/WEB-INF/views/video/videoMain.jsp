@@ -21,7 +21,6 @@ var bgImageCount = ${bgImageCount};
 </script>
 <script src="<c:url value="/resources/video/video.js" />" type="text/javascript"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
 <script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
 <body>
@@ -121,7 +120,7 @@ var bgImageCount = ${bgImageCount};
 			<c:forEach items="${videoList}" var="video" varStatus="status">
 			<li id="<c:out value="${video.opus}"/>" class="boxLI">
 				<div class="opusBoxDiv">     <%-- ${status.count} --%>             
-					<dl style="background-image:url('<c:url value="/video/${video.opus}/cover" />'); background-size:300px 200px; height:200px;">
+					<dl style="background-image:url('<c:url value="/video/${video.existCoverFile ? video.opus : 'no'}/cover" />'); background-size:300px 200px; height:200px;">
 						<dt><span class="bgSpan" id="titleSpan" onclick="fnVideoDetail('${video.opus}')"><c:out value="${video.title}"/></span></dt>
 						<dd><span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio.name}"/>')"><c:out value="${video.studio.name}"/></span></dd>
 						<dd><span class="bgSpan" id="opusSpan"><c:out value="${video.opus}"/></span></dd>

@@ -40,6 +40,8 @@ public class VideoServiceImpl implements VideoService {
 	@Value("#{videoProp['player']}") private String player;
 	@Value("#{videoProp['mainBasePath']}") private String mainBasePath;
 
+	private byte[] defaultCoverFileBytes;
+	
 	@Override
 	public List<Video> searchVideo(VideoSearch videoSearch) {
 		return videoDao.searchVideo(videoSearch);
@@ -144,9 +146,9 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public File getVideoCoverFile(String opus) {
 		File coverFile = videoDao.getVideo(opus).getCoverFile();
-		if(coverFile == null)
-			coverFile = getDefaultCoverFile();
 		return coverFile;
+//		if(coverFile == null)
+//			coverFile = getDefaultCoverFile();
 	}
 
 	public byte[] getVideoCoverByteArray(String opus) {
@@ -235,6 +237,18 @@ public class VideoServiceImpl implements VideoService {
 			}
 		}
 		return found;
+	}
+
+	@Override
+	public byte[] getDefaultCoverFileByteArray() {
+		if(defaultCoverFileBytes == null) {
+			try {
+				defaultCoverFileBytes = FileUtils.readFileToByteArray(getDefaultCoverFile());
+			} catch (IOException e) {
+				logger.error(e);
+			}
+		}
+		return defaultCoverFileBytes;
 	}
 
 }

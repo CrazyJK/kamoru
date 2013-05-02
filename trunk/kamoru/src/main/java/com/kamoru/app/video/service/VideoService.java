@@ -29,6 +29,8 @@ public interface VideoService {
 
 	File getVideoCoverFile(String opus);
 
+	byte[] getDefaultCoverFileByteArray();
+	
 	byte[] getVideoCoverByteArray(String opus);
 	
 	void saveVideoOverview(String opus, String overViewTxt);
