@@ -107,9 +107,9 @@ public class VideoController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("image/" + suffic));
 		headers.setContentLength(imageBytes.length);
-		headers.setCacheControl("max-age=" + 86400);
-		headers.setDate(new Date().getTime() + 86400*1000l);
-		headers.setExpires(new Date().getTime() + 86400*1000l);
+		headers.setCacheControl("max-age=" + 86400*7);
+		headers.setDate(new Date().getTime() + 86400*7*1000l);
+		headers.setExpires(new Date().getTime() + 86400*7*1000l);
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
 
