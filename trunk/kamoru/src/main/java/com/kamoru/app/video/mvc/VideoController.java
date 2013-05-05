@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kamoru.app.image.service.ImageService;
+import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.domain.Video;
 import com.kamoru.app.video.domain.VideoSearch;
 import com.kamoru.app.video.service.VideoService;
@@ -61,8 +62,8 @@ public class VideoController {
 		
 		model.addAttribute("videoList", videoList);
 		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
-		model.addAttribute("actressList", videoService.getActressList());
-		model.addAttribute("studioList", videoService.getStudioList());
+		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
+		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
 		return "video/videoMain";
 	}
@@ -86,7 +87,6 @@ public class VideoController {
 		return "video/videoList";
 	}
 
-		
 	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
 	public String showAVOpus(Model model, @PathVariable String opus) {
 		model.addAttribute("video", videoService.getVideo(opus));
@@ -108,13 +108,15 @@ public class VideoController {
 			
 		String suffic = VideoUtils.getFileExtension(imageFile);
 		byte[] imageBytes = videoService.getVideoCoverByteArray(opus);
+		long today = new Date().getTime();
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("image/" + suffic));
+		headers.setCacheControl("max-age=" + VideoCore.CacheTime_sec);
 		headers.setContentLength(imageBytes.length);
-		headers.setCacheControl("max-age=" + 86400*7);
-		headers.setDate(new Date().getTime() + 86400*7*1000l);
-		headers.setExpires(new Date().getTime() + 86400*7*1000l);
+		headers.setContentType(MediaType.parseMediaType("image/" + suffic));
+		headers.setDate(today + VideoCore.CacheTime_Mili);
+		headers.setExpires(today + VideoCore.CacheTime_Mili);
+		headers.setLastModified(imageFile.lastModified());
 		return new HttpEntity<byte[]>(imageBytes, headers);
 
 	}
@@ -122,13 +124,15 @@ public class VideoController {
 	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> noimage() {
 		byte[] imageBytes = videoService.getDefaultCoverFileByteArray();
+		long today = new Date().getTime();
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("image/jpg"));
+		headers.setCacheControl("max-age=" + VideoCore.CacheTime_sec);
 		headers.setContentLength(imageBytes.length);
-		headers.setCacheControl("max-age=" + 86400*7);
-		headers.setDate(new Date().getTime() + 86400*7*1000l);
-		headers.setExpires(new Date().getTime() + 86400*7*1000l);
+		headers.setContentType(MediaType.parseMediaType("image/jpg"));
+		headers.setDate(today + VideoCore.CacheTime_Mili);
+		headers.setExpires(today + VideoCore.CacheTime_Mili);
+		headers.setLastModified(today - VideoCore.CacheTime_Mili);
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
 

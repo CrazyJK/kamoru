@@ -10,7 +10,11 @@
 <link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <style type="text/css">
 * {margin:0px; padding:0px;}
-.btnPosition {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}
+#navDiv {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}
+#imageThumbnailDiv {position:absolute; right:0px; top:40px; width:160px; margin:10px 5px 0px 0px; text-align:center; overflow:hidden;}
+#imageDiv {text-align:center};
+.otherThumbnails  {opacity:0.5; border: solid 1px green;}
+.currentThumbnail {opacity:1.0; border: solid 2px cyan;}
 </style>
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -47,6 +51,7 @@ $(document).ready(function(){
 		case 32:
 		case 39:
 			fnNextImageView(); break;
+		case 13:
 		case 38:
 			fnRandomImageView(); break;
 		}
@@ -70,7 +75,10 @@ var img;
 var selectedNumber;
 var url;
 var imageCount = <c:out value="${imageCount}" />;
-function fnViewImage() {
+function fnViewImage(current) {
+	if(current)
+		selectedNumber = current;
+	fnDisplayThumbnail();
 	url = imagepath + selectedNumber;
 	img = $("<img id='img'/>");
 	img.hide();
@@ -78,12 +86,13 @@ function fnViewImage() {
 	img.bind('load', resizeImage);
 	$("#imageDiv").empty().append(img);
 	$("#fullImageBtn").html("F" + selectedNumber);
+	fnDisplayThumbnail();
 }
 function resizeImage() {
 	imgWidth  = $(this).width();
 	imgHeight = $(this).height();
 	var divWidth  = $(window).width();
-	var divHeight = $(window).height()-5;
+	var divHeight = $(window).height() - 5;
 	var width  = 0;
 	var height = 0;
 	
@@ -107,6 +116,8 @@ function resizeImage() {
 	$(this).attr("width", width);
 	$(this).attr("height", height);
 	$(this).fadeIn('fast');
+	$("#imageThumbnailDiv").height(divHeight - 50);
+
 	$("#debug").html("image:" + imgWidth + "x" + imgHeight + " window:" + divWidth + "x" + divHeight + " resize:" + width + "x" + height);
 }
 function ratioSize(numerator1, numerator2, denominator) {
@@ -128,15 +139,29 @@ function fnRandomImageView() {
 	selectedNumber = Math.floor(Math.random() * imageCount);	
 	fnViewImage();
 }
+function fnDisplayThumbnail() {
+	var thumbnailRange = 3;
+	$("#imageThumbnailDiv").empty();
+	for(var current = selectedNumber - thumbnailRange; current <= selectedNumber + thumbnailRange; current++) {
+		var url = imagepath + current + "/thumbnail";
+		var cssClass = "otherThumbnails";
+		if(current == selectedNumber)
+			cssClass = "currentThumbnail";
+		img = $("<img id='thumbnail' onclick='fnViewImage("+current+")' class='"+cssClass+"'/>");
+		img.attr("src", url);
+		$("#imageThumbnailDiv").append(img);
+	}
+}
 </script>
 </head>
 <body>
 <span id="debug" style="display:none;"></span>
-<div class="btnPosition">
-<span class="bgSpan" onclick="fnPrevImageView()">&lt;</span>
-<span id="fullImageBtn" onclick="fnFullyImageView();" class="bgSpan">F</span>
-<span class="bgSpan" onclick="fnNextImageView()">&gt;</span>
+<div id="navDiv">
+	<span class="bgSpan" onclick="fnPrevImageView()">&lt;</span>
+	<span id="fullImageBtn" onclick="fnFullyImageView();" class="bgSpan">F</span>
+	<span class="bgSpan" onclick="fnNextImageView()">&gt;</span>
 </div>
-<div id="imageDiv" style="text-align:center;"></div>
+<div id="imageDiv"></div>
+<div id="imageThumbnailDiv"></div>
 </body>
 </html>

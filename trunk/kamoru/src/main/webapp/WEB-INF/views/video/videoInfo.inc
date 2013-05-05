@@ -6,4 +6,5 @@
 			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
 		</c:forEach></dd>
 	<dd><span class="bgSpan">${video.etcInfo}</span></dd>
+	<dd><span class="bgSpan">${video.videoDate}</span></dd>
 </dl>

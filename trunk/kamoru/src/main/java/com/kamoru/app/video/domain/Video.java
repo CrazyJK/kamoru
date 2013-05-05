@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.kamoru.app.video.VideoCore;
@@ -14,6 +15,7 @@ import com.kamoru.app.video.util.VideoUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
@@ -43,6 +45,7 @@ public class Video implements Comparable<Object>, Serializable {
 	private List<File> videoFileList;
 	private List<File> subtitlesFileList;
 	private File coverFile;
+	private File coverWebpFile;
 	private byte[] coverByteArray;
 	private File overviewFile;
 	private File historyFile;
@@ -55,6 +58,8 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private Studio studio;
 	private List<Actress> actressList;
+
+	private byte[] coverWebpByteArray;
 	
 	public Video() {
 		videoFileList = new ArrayList<File>();
@@ -128,8 +133,12 @@ public class Video implements Comparable<Object>, Serializable {
 			thisStr = this.getActress();
 			compStr = comp.getActress();
 		} else if("M".equals(sortMethod)) {
-			thisStr = String.valueOf(this.isExistVideoFileList() ? this.getVideoFileList().get(0).lastModified() : 0);
-			compStr = String.valueOf(comp.isExistVideoFileList() ? comp.getVideoFileList().get(0).lastModified() : 0);
+			thisStr = String.valueOf(
+					this.isExistVideoFileList() ? this.getVideoFileList().get(0).lastModified() : 
+						(this.isExistCoverFile() ? this.getCoverFile().lastModified() : 0));
+			compStr = String.valueOf(
+					comp.isExistVideoFileList() ? comp.getVideoFileList().get(0).lastModified() : 
+						(comp.isExistCoverFile() ? comp.getCoverFile().lastModified() : 0));
 		}
 		String[] s = {thisStr, compStr};
 //		logger.info(ArrayUtils.toString(s));
@@ -146,6 +155,9 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 	public boolean isExistCoverFile() {
 		return getCoverFile() != null;
+	}
+	public boolean isExistCoverWebpFile() {
+		return getCoverWebpFile() != null;
 	}
 	public boolean isExistOverviewFile() {
 		return getOverviewFile() != null; 
@@ -216,11 +228,28 @@ public class Video implements Comparable<Object>, Serializable {
 		this.playCount++;
 	}
 
-	// getter & setter method end
+	// getter & setter method
+	
 	public List<File> getVideoFileList() {
 		return videoFileList;
 	}
 
+	public File getCoverWebpFile() {
+		return coverWebpFile;
+	}
+
+	public void setCoverWebpFile(File coverWebpFile) {
+		this.coverWebpFile = coverWebpFile;
+		if(coverWebpFile.exists())
+			this.coverWebpByteArray = readFileToByteArray(coverWebpFile);
+	}
+
+	public byte[] getCoverWebpByteArray() {
+		if(this.coverWebpByteArray == null)
+			this.coverWebpByteArray = readFileToByteArray(coverWebpFile);
+		return this.coverWebpByteArray;
+	}
+	
 	public void setVideoFileList(List<File> videoFileList) {
 		this.videoFileList = videoFileList;
 	}
@@ -384,4 +413,15 @@ public class Video implements Comparable<Object>, Serializable {
 			FileUtils.deleteQuietly(file);
 	}
 
+	public String getVideoDate() {
+		if(this.isExistVideoFileList()) {
+			return DateFormatUtils.format(this.videoFileList.get(0).lastModified(), "yyyy-MM-dd");
+		} 
+		else if(this.isExistCoverFile()) {
+			return DateFormatUtils.format(this.coverFile.lastModified(), "yyyy-MM-dd");
+		}
+		else {
+			return "";
+		}
+	}
 }

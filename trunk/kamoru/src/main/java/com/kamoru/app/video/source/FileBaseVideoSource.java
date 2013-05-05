@@ -168,11 +168,9 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			else if(cover_extensions.indexOf(ext) > -1) {
 				if(webp_mode) {
-					video.setCoverFile(convertWebpFile(file));
+					video.setCoverWebpFile(convertWebpFile(file));
 				}
-				else {
-					video.setCoverFile(file);
-				}
+				video.setCoverFile(file);
 			}
 			else if(subtitles_extensions.indexOf(ext) > -1) {
 				video.setSubtitlesFile(file);

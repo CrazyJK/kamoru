@@ -41,4 +41,8 @@ public interface VideoService {
 
 	List<Video> searchVideo(VideoSearch videoSearch);
 
+	List<Actress> getActressListOfVideoes(List<Video> videoList);
+
+	List<Studio> getStudioListOfVideoes(List<Video> videoList);
+
 }

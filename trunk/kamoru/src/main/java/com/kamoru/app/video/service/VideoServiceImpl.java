@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -145,21 +146,25 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public File getVideoCoverFile(String opus) {
-		File coverFile = videoDao.getVideo(opus).getCoverFile();
-		return coverFile;
-//		if(coverFile == null)
-//			coverFile = getDefaultCoverFile();
+		if(videoDao.getVideo(opus).getCoverWebpFile() != null)
+			return videoDao.getVideo(opus).getCoverWebpFile();
+		else
+			return videoDao.getVideo(opus).getCoverFile();
 	}
 
 	public byte[] getVideoCoverByteArray(String opus) {
-		byte[] bytes = videoDao.getVideo(opus).getCoverByteArray();
-		if(bytes == null)
+		if(videoDao.getVideo(opus).getCoverWebpByteArray() != null)
+			return videoDao.getVideo(opus).getCoverWebpByteArray();
+		else if(videoDao.getVideo(opus).getCoverByteArray() != null)
+			return videoDao.getVideo(opus).getCoverByteArray();
+		else {
 			try {
-				bytes = FileUtils.readFileToByteArray(getDefaultCoverFile());
+				return FileUtils.readFileToByteArray(getDefaultCoverFile());
 			} catch (IOException e) {
 				logger.error(e);
+				return null;
 			}
-		return bytes;
+		}
 	}
 	
 	private File getDefaultCoverFile() {
@@ -249,6 +254,30 @@ public class VideoServiceImpl implements VideoService {
 			}
 		}
 		return defaultCoverFileBytes;
+	}
+
+	@Override
+	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
+		List<Actress> actressList = new ArrayList<Actress>();
+		for(Video video : videoList) {
+			for(Actress actress : video.getActressList()) {
+				if(!actressList.contains(actress))
+					actressList.add(actress);
+			}
+		}
+		Collections.sort(actressList);
+		return actressList;
+	}
+
+	@Override
+	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
+		List<Studio> studioList = new ArrayList<Studio>();
+		for(Video video : videoList) {
+			if(!studioList.contains(video.getStudio()))
+				studioList.add(video.getStudio());
+		}
+		Collections.sort(studioList);
+		return studioList;
 	}
 
 }

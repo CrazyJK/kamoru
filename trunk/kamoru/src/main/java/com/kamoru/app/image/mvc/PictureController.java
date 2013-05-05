@@ -9,6 +9,7 @@ import java.util.Random;
 import com.kamoru.app.image.domain.PictureType;
 import com.kamoru.app.image.service.ImageService;
 import com.kamoru.app.image.source.ImageSource;
+import com.kamoru.app.video.VideoCore;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,12 +67,15 @@ public class PictureController {
 	}
 	
 	private HttpEntity<byte[]> getImageEntity(byte[] imageBytes, MediaType type) {
+		long today = new Date().getTime();
+
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(type);
+		headers.setCacheControl("max-age=" + VideoCore.CacheTime_sec);
 		headers.setContentLength(imageBytes.length);
-		headers.setCacheControl("max-age=" + 86400);
-		headers.setDate(new Date().getTime() + 86400*1000l);
-		headers.setExpires(new Date().getTime() + 86400*1000l);
+		headers.setContentType(type);
+		headers.setDate(today + VideoCore.CacheTime_Mili);
+		headers.setExpires(today + VideoCore.CacheTime_Mili);
+		headers.setLastModified(today - VideoCore.CacheTime_Mili);
 
 		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}

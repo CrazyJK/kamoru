@@ -1,8 +1,6 @@
 package com.kamoru.app.image.domain;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +11,6 @@ import org.apache.commons.io.FileUtils;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 
-import com.mortennobel.imagescaling.ResampleOp;
-
 import com.kamoru.app.video.util.VideoUtils;
 
 public class Image {
@@ -24,6 +20,10 @@ public class Image {
 	private long size;
 	private long lastModified;
 	private File file;
+	
+	private byte[] masterBytes;
+	private byte[] webBytes;
+	private byte[] thumbBytes;
 	
 	public Image(File file) {
 		this.file = file;
@@ -61,11 +61,11 @@ public class Image {
 		try {
 			switch(type) {
 			case MASTER:
-				return FileUtils.readFileToByteArray(file);
+				return masterBytes == null ? masterBytes = FileUtils.readFileToByteArray(file) : masterBytes;
 			case WEB:
-				return toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
+				return webBytes == null ? webBytes = toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500)) : webBytes;
 			case THUMBNAIL:
-				return toByteArray(Scalr.pad(Scalr.resize(ImageIO.read(file), Method.SPEED, 150, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER), 4));
+				return thumbBytes == null ? thumbBytes = toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 150, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER)) : thumbBytes;
 			default:
 				throw new RuntimeException("잘못된 타입");
 			}
