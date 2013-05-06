@@ -87,6 +87,11 @@ public class VideoController {
 		return "video/videoList";
 	}
 
+	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
+	public void videoPost() {
+		// do not something yet
+		logger.info("POST do not something yet");
+	}
 	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
 	public String showAVOpus(Model model, @PathVariable String opus) {
 		model.addAttribute("video", videoService.getVideo(opus));
@@ -94,8 +99,11 @@ public class VideoController {
 	}
 
 	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
-	public void doDeleteVideo(@PathVariable("opus") String opus) {
+	@ResponseBody
+	public String doDeleteVideo(@PathVariable("opus") String opus) {
+		logger.info(opus);
 		videoService.deleteVideo(opus);
+		return opus + " will be deleted";
 	}
 
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)

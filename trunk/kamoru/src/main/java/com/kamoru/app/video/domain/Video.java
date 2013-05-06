@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.kamoru.app.video.VideoCore;
+import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.util.VideoUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -36,10 +37,12 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	protected static final Log logger = LogFactory.getLog(Video.class);
 
-//	private String studio;
+	private final String DEFAULT_SORTMETHOD = "O";
+
+	private Studio studio;
 	private String opus;
+	private List<Actress> actressList;
 	private String title;
-//	private List<String> actressList;
 	private String etcInfo;
 	
 	private List<File> videoFileList;
@@ -47,19 +50,16 @@ public class Video implements Comparable<Object>, Serializable {
 	private File coverFile;
 	private File coverWebpFile;
 	private byte[] coverByteArray;
+	private byte[] coverWebpByteArray;
 	private File overviewFile;
 	private File historyFile;
 	private List<File> etcFileList;
 	
 	private Integer playCount;
 	
-	private final String DEFAULT_SORTMETHOD = "O";
 	private String sortMethod = DEFAULT_SORTMETHOD;
 	
-	private Studio studio;
-	private List<Actress> actressList;
 
-	private byte[] coverWebpByteArray;
 	
 	public Video() {
 		videoFileList = new ArrayList<File>();
@@ -96,18 +96,28 @@ public class Video implements Comparable<Object>, Serializable {
 	public void setActressList(List<Actress> actressList) {
 		this.actressList = actressList;
 	}
+	/**
+	 * actress를 추가한다. 기존actress가 발견되면 ref를 갱신.
+	 * @param actress
+	 */
 	public void putActress(Actress actress) {
-		boolean found = false;
+		boolean notFound = true;
 		for(Actress actressInList : this.actressList) {
 			if(actressInList.getName().equalsIgnoreCase(actress.getName())) {
-				found = true;
+				notFound = false;
 				actressInList = actress;
+				break;
 			}
 		}
-		if(!found)
+		if(notFound)
 			this.actressList.add(actress);
 	}
 
+	/**
+	 * actress 이름이 있는지 확인
+	 * @param actressName
+	 * @return
+	 */
 	public boolean containsActress(String actressName) {
 		for(Actress actress : actressList)
 			if(actress.contains(actressName))
@@ -148,26 +158,27 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	// isExist file method
 	public boolean isExistVideoFileList() {
-		return getVideoFileList() != null && getVideoFileList().size() > 0;  
+		return this.videoFileList != null && this.videoFileList.size() > 0;  
 	}
 	public boolean isExistSubtitlesFileList() {
-		return getSubtitlesFileList() != null && getSubtitlesFileList().size() > 0;
+		return this.subtitlesFileList != null && this.subtitlesFileList.size() > 0;
 	}
 	public boolean isExistCoverFile() {
-		return getCoverFile() != null;
+		return this.coverFile != null;
 	}
 	public boolean isExistCoverWebpFile() {
-		return getCoverWebpFile() != null;
+		return this.coverWebpFile != null;
 	}
 	public boolean isExistOverviewFile() {
-		return getOverviewFile() != null; 
+		return this.overviewFile != null; 
 	}
 	public boolean isExistHistoryFile() {
-		return getHistoryFile() != null;
+		return this.historyFile != null;
 	}
 	public boolean isExistEtcFileList() {
-		return getEtcFileList() != null && getEtcFileList().size() > 0;
+		return this.etcFileList != null && this.etcFileList.size() > 0;
 	}
+	
 	// file path method
 	public String getVideoFileListPath() {
 		if(isExistVideoFileList()) 
@@ -238,15 +249,23 @@ public class Video implements Comparable<Object>, Serializable {
 		return coverWebpFile;
 	}
 
+	/**
+	 * webp형식의 cover file 저장. 파일이 존재하면 byte[]도 같이 저장한다.
+	 * @param coverWebpFile
+	 */
 	public void setCoverWebpFile(File coverWebpFile) {
 		this.coverWebpFile = coverWebpFile;
 		if(coverWebpFile.exists())
-			this.coverWebpByteArray = readFileToByteArray(coverWebpFile);
+			this.coverWebpByteArray = VideoUtils.readFileToByteArray(coverWebpFile);
 	}
 
+	/**
+	 * webp형식의 cover file의 byte[] 반환. null이면 다시 한번 읽기 시도한다.
+	 * @return
+	 */
 	public byte[] getCoverWebpByteArray() {
 		if(this.coverWebpByteArray == null)
-			this.coverWebpByteArray = readFileToByteArray(coverWebpFile);
+			this.coverWebpByteArray = VideoUtils.readFileToByteArray(coverWebpFile);
 		return this.coverWebpByteArray;
 	}
 	
@@ -262,9 +281,13 @@ public class Video implements Comparable<Object>, Serializable {
 		this.subtitlesFileList = subtitlesFileList;
 	}
 
+	/**
+	 * cover file의 byte[] 반환. null이면 다시 읽기 시도한다.
+	 * @return
+	 */
 	public byte[] getCoverByteArray() {
 		if(this.coverByteArray == null)
-			this.coverByteArray = readFileToByteArray(coverFile);
+			this.coverByteArray = VideoUtils.readFileToByteArray(coverFile);
 		return this.coverByteArray;
 	}
 	
@@ -272,24 +295,23 @@ public class Video implements Comparable<Object>, Serializable {
 		return coverFile;
 	}
 
+	/**
+	 * cover 파일 저장. 파일이 존재하면 coverByteArray도 함께 저장한다.
+	 * @param coverFile
+	 */
 	public void setCoverFile(File coverFile) {
 		this.coverFile = coverFile;
 		if(coverFile.exists())
-			this.coverByteArray = readFileToByteArray(coverFile);
+			this.coverByteArray = VideoUtils.readFileToByteArray(coverFile);
 	}
 	
-	private byte[] readFileToByteArray(File file) {
-		if(file == null)
-			return null;
-		try {
-			return FileUtils.readFileToByteArray(file);
-		} catch (IOException e) {
-			logger.error(e);
-			return null;
-		}
-	}
-	
+	/**
+	 * overview file. 없으면 대표이름으로 만들어서 반환
+	 * @return
+	 */
 	public File getOverviewFile() {
+		if(overviewFile == null)
+			overviewFile = new File(getPath(), getNameWithoutSuffix() + ".txt");
 		return overviewFile;
 	}
 
@@ -297,15 +319,26 @@ public class Video implements Comparable<Object>, Serializable {
 		this.overviewFile = overviewFile;
 	}
 
+	/**
+	 * history file. 없을경우 대표이름으로 만들어서 반환
+	 * @return
+	 */
 	public File getHistoryFile() {
+		if(historyFile == null)
+			historyFile = new File(getPath(), getNameWithoutSuffix() + ".log");
 		return historyFile;
 	}
 
+	/**
+	 * history 파일 설정. 파일이 존재하면 읽어서 playCount도 설정
+	 * @param historyFile
+	 */
 	public void setHistoryFile(File historyFile) {
 		this.historyFile = historyFile;
 		try {
-			List<String> lineList = FileUtils.readLines(historyFile, VideoCore.FileEncoding);
-			for(String line : lineList) {
+			if(!historyFile.exists())
+				return;
+			for(String line : FileUtils.readLines(historyFile, VideoCore.FileEncoding)) {
 				String[] linePart = StringUtils.split(line, ",");
 				if(linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) {
 					this.playCount++;
@@ -314,8 +347,6 @@ public class Video implements Comparable<Object>, Serializable {
 		} catch (IOException e) {
 			logger.error(e);
 		}
-		if(this.playCount == 0)
-			logger.info(this.getOpus() + " never play.");
 	}
 
 	public List<File> getEtcFileList() {
@@ -373,6 +404,10 @@ public class Video implements Comparable<Object>, Serializable {
 		this.sortMethod = sortMethod;
 	}
 
+	/**
+	 * 모든 파일 list. null도 포함 되어 있을수 있음
+	 * @return
+	 */
 	public List<File> getFileAll() {
 		List<File> list = new ArrayList<File>();
 		list.addAll(getVideoFileList());
@@ -385,43 +420,74 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 	
 	public String getOverviewText() {
-		if(isExistOverviewFile()) {
-			try {
-				return FileUtils.readFileToString(getOverviewFile(), VideoCore.FileEncoding);
-			}catch(IOException ioe){
-				return "Error:" + ioe.getMessage();
-			}
-		} else {
-			return "";
-		}
+		return VideoUtils.readFileToString(getOverviewFile());
 	}
 	
 	public String getHistoryText() {
-		if(isExistHistoryFile()) {
-			try {
-				return FileUtils.readFileToString(getHistoryFile(), VideoCore.FileEncoding);
-			}catch(IOException ioe){
-				return "Error:" + ioe.getMessage();
-			}
-		} else {
-			return "";
-		}
+		return VideoUtils.readFileToString(getHistoryFile());
 	}
 
+	/**
+	 * 모든 파일을 지운다.
+	 */
 	public void removeVideo() {
 		for(File file : getFileAll())
-			FileUtils.deleteQuietly(file);
+			if(file != null) 
+				if(FileUtils.deleteQuietly(file))
+					logger.debug(file.getAbsoluteFile());
+				else
+					logger.info("delete fail : " + file.getAbsoluteFile());
 	}
 
+	/**
+	 * video의 대표 날자. video > cover > overview > subtitles > etc 순으로 찾는다.
+	 * @return
+	 */
 	public String getVideoDate() {
+		return DateFormatUtils.format(this.getDelegateFile().lastModified(), "yyyy-MM-dd");
+	}
+	
+	/**
+	 * video 대표 폴더 경로. video > cover > overview > subtitles > etc 순으로 찾는다.
+	 * @return
+	 */
+	private String getPath() {
+		return this.getDelegateFile().getParent();
+	}
+	
+	/**
+	 * video 대표 파일 이름. 확장자를 뺀 대표이름
+	 * @return
+	 */
+	private String getNameWithoutSuffix() {
+		return VideoUtils.getName(getFilename());
+	}
+	/**
+	 * video 대표 파일 이름
+	 * @return
+	 */
+	private String getFilename() {
+		return this.getDelegateFile().getName();
+	}
+
+	/**
+	 * video 대표 파일
+	 * @return
+	 */
+	private File getDelegateFile() {
 		if(this.isExistVideoFileList()) {
-			return DateFormatUtils.format(this.videoFileList.get(0).lastModified(), "yyyy-MM-dd");
-		} 
-		else if(this.isExistCoverFile()) {
-			return DateFormatUtils.format(this.coverFile.lastModified(), "yyyy-MM-dd");
-		}
-		else {
-			return "";
+			return this.getVideoFileList().get(0);
+		} else if(this.isExistCoverFile()) {
+			return this.getCoverFile();
+		} else if(this.isExistOverviewFile()) {
+			return this.getOverviewFile();
+		} else if(this.isExistSubtitlesFileList()) {
+			return this.getSubtitlesFileList().get(0);
+		} else if(this.isExistEtcFileList()) {
+			return this.getEtcFileList().get(0);
+		} else {
+			throw new VideoException("No delegate video file : " + this.getOpus());
 		}
 	}
+	
 }

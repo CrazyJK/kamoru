@@ -23,6 +23,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.kamoru.app.video.VideoCore;
+import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.dao.VideoDao;
 import com.kamoru.app.video.domain.Action;
 import com.kamoru.app.video.domain.Actress;
@@ -65,13 +66,17 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public Video getVideo(String opus) {
-		return videoDao.getVideo(opus);
+		try {
+			return videoDao.getVideo(opus);
+		}
+		catch(VideoException ve) {
+			return null;
+		}
 	}
 
 	@Override
 	public void saveVideoOverview(String opus, String overViewTxt) {
 		Video video = getVideo(opus);
-		if(!video.isExistOverviewFile()) video.setOverviewFile(new File(getVideoPathWithoutExtension(video) + ".txt"));
 		try {
 			FileUtils.writeStringToFile(video.getOverviewFile(), overViewTxt, VideoCore.FileEncoding);
 		} catch (IOException e) {
@@ -81,24 +86,9 @@ public class VideoServiceImpl implements VideoService {
 		logger.debug("saveOverViewTxt : " + opus + " [" + video.getOverviewFile() + "]");
 	}
 
-	private String getVideoPathWithoutExtension(Video video) {
-		if(video.isExistVideoFileList()) {
-			String videoPath = video.getVideoFileList().get(0).getAbsolutePath();
-			return videoPath.substring(0, videoPath.lastIndexOf("."));
-		} else if(video.isExistCoverFile()) {
-			return video.getCoverFilePath().substring(0, video.getCoverFilePath().lastIndexOf("."));
-		} else if(video.isExistOverviewFile()) {
-			return video.getOverviewFilePath().substring(0, video.getOverviewFilePath().lastIndexOf("."));
-		} else if(video.isExistSubtitlesFileList()) {
-			String subtitlesPath = video.getSubtitlesFileList().get(0).getAbsolutePath();
-			return subtitlesPath.substring(0, subtitlesPath.lastIndexOf("."));
-		} else {
-			throw new RuntimeException("No video file");
-		}
-	}
-
 	@Override
 	public void deleteVideo(String opus) {
+		logger.info(opus);
 		saveHistory(getVideo(opus), Action.DELETE);
 		videoDao.deleteVideo(opus);
 	}
@@ -206,11 +196,11 @@ public class VideoServiceImpl implements VideoService {
 		
 		logger.debug("save history - " + historymsg);
 		try {
-			if(video.getHistoryFile() == null)
-				video.setHistoryFile(new File(getVideoPathWithoutExtension(video) + ".log"));
 			FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
 		} catch (IOException e) {
 			logger.error(historymsg, e);
+		} catch (VideoException ve) {
+			logger.error(ve.getMessage());
 		}
 		try {
 			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, VideoCore.FileEncoding, true);

@@ -167,6 +167,9 @@ function fnDeleteOpus(selectedOpus) {
 		if(confirm("Are you kidding? D.E.L.E.T.E [" + selectedOpus + "]?")) {
 			$("#debug").html("delete " + selectedOpus);
 			$("#hiddenHttpMethod").val("delete");
+			
+			$("#" + selectedOpus).hide();
+			
 			var frm = document.forms["actionFrm"];
 			frm.action = context + "video/" + selectedOpus;
 			frm.submit();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.domain.Actress;
 import com.kamoru.app.video.domain.Studio;
 import com.kamoru.app.video.domain.Video;
@@ -105,7 +106,7 @@ public class VideoDaoFile implements VideoDao {
 
 	@Override
 	public void deleteVideo(String opus) {
-		videoSource.getVideoMap().get(opus).removeVideo();
+		videoSource.getVideoMap().get(opus.toLowerCase()).removeVideo();
 		videoSource.reload();
 	}
 
@@ -113,7 +114,7 @@ public class VideoDaoFile implements VideoDao {
 	@Cacheable(value="videoCache")
 	public Video getVideo(String opus) {
 		Video video = videoSource.getVideoMap().get(opus.toLowerCase());
-		if(video == null) throw new RuntimeException("Not found video : " + opus);
+		if(video == null) throw new VideoException("Not found video : " + opus);
 		return video;
 	}
 
@@ -121,7 +122,7 @@ public class VideoDaoFile implements VideoDao {
 	@Cacheable("studioCache")
 	public Studio getStudio(String name) {
 		Studio studio = videoSource.getStudioMap().get(name.toLowerCase());
-		if(studio == null) throw new RuntimeException("Not found Studio : " + name);
+		if(studio == null) throw new VideoException("Not found Studio : " + name);
 		return studio;
 	}
 
@@ -129,7 +130,7 @@ public class VideoDaoFile implements VideoDao {
 	@Cacheable("actressCache")
 	public Actress getActress(String name) {
 		Actress actress = videoSource.getActressMap().get(VideoUtils.reverseActressName(name));
-		if(actress == null) throw new RuntimeException("Not found actress : " + name);
+		if(actress == null) throw new VideoException("Not found actress : " + name);
 		return actress;
 	}
 

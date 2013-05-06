@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.dao.VideoDaoFile;
 import com.kamoru.app.video.domain.Actress;
 import com.kamoru.app.video.domain.Video;
@@ -24,11 +25,19 @@ import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class VideoUtils {
 
-	static VideoDaoFile ctrl = new VideoDaoFile();
-	
+	protected static final Log logger = LogFactory.getLog(VideoUtils.class);
+
+	/**
+	 * <p>단독으로 파일명을 재조합한다.
+	 * 상황과 조건에 따라 로직이 달라지므로 사용시 수정 필요</P>
+	 * @param path
+	 * @param unclassifiedPath
+	 */
 	public static void changeOldNameStyle(String path, String unclassifiedPath) {
 		Collection<File> found = FileUtils.listFiles(new File(path), null, true);
 		int classified = -1;
@@ -107,11 +116,28 @@ public class VideoUtils {
 		}
 	}
 	
+	/**
+	 * 파일 이름 반환
+	 * @param file
+	 * @return 확장자 뺀 이름만
+	 */
 	public static String getFileName(File file) {
-		String filename = file.getName();
-		int index = filename.lastIndexOf(".");
-		return index < 0 ? filename : filename.substring(0, index); 
+		return getName(file.getName()); 
 	}
+	/**
+	 * 확장자를 제거한 이름 반환
+	 * @param name
+	 * @return
+	 */
+	public static String getName(String name) {
+		int index = name.lastIndexOf(".");
+		return index < 0 ? name : name.substring(0, index); 
+	}
+	/**
+	 * 확장자 반환
+	 * @param file
+	 * @return 확장자. 없으면 공백 반환
+	 */
 	public static String getFileExtension(File file) {
 		String filename = file.getName();
 		int index = filename.lastIndexOf(".");
@@ -124,11 +150,22 @@ public class VideoUtils {
 		return str.trim();
 	}
 
+	/**
+	 * 배열을 컴마(,)로 구분한 문자열로 반환. a, b<br>
+	 * ArrayUtils.toString() 이용
+	 * @param array
+	 * @return
+	 */
 	public static String arrayToString(Object array) {
 		String toString = ArrayUtils.toString(array);
 		return toString.substring(1, toString.length() - 1);
 	}
 	
+	/**
+	 * video list을 opus값 배열 스타일로 반환. [abs-123, avs-34]
+	 * @param videoList
+	 * @return
+	 */
 	public static String getOpusArrayStyleString(List<Video> videoList) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -141,6 +178,11 @@ public class VideoUtils {
 		return sb.toString();
 	}
 	
+	/**
+	 * 이름을 공백으로 나나고, 소문자,역순 정렬하여 반환. " abc ewq " -> "ewq abc"
+	 * @param name
+	 * @return
+	 */
 	public static String reverseActressName(String name) {
 		if(name == null) return null;
 		String[] nameArr = StringUtils.split(name.toLowerCase());
@@ -151,6 +193,13 @@ public class VideoUtils {
 		return retName.trim();
 	}
 
+	/**
+	 * 주어진 이름을 구글 이미지 검색을 사용해 URL list로 반환.<br>
+	 * google url : https://ajax.googleapis.com/ajax/services/search/images<br>
+	 * 에러 발생시 빈 list 리턴.
+	 * @param name
+	 * @return
+	 */
 	public static List<URL> getGoogleImage(String name) {
 		List<URL> list = new ArrayList<URL>();
 		try {
@@ -176,7 +225,7 @@ public class VideoUtils {
 				list.add(new URL(urlStr));
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			logger.error(e);
 		}
 		return list;
 	}
@@ -186,6 +235,11 @@ public class VideoUtils {
 		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
 	}
 
+	/**
+	 * list를 컴마(,)로 구분한 string반환
+	 * @param list
+	 * @return
+	 */
 	public static <T> String toListToSimpleString(List<T> list) {
 		StringBuilder sb = new StringBuilder();
 		for(int i=0, e=list.size(); i<e; i++) {
@@ -197,11 +251,11 @@ public class VideoUtils {
 		return sb.toString();
 	}
 
-	public static void makeWebp(String webp_path, File webpFile) {
-		
-		
-	}
-
+	/**
+	 * video list중 video파일이 있는것만 골라 opus값 배열 스타일로 반환. [abs-123, avs-34]
+	 * @param videoList
+	 * @return
+	 */
 	public static String getOpusArrayStyleStringWithVideofile(List<Video> videoList) {
 		List<Video> videoListWithVideofile = new ArrayList<Video>();
 		for(Video video : videoList) {
@@ -211,4 +265,37 @@ public class VideoUtils {
 		}
 		return getOpusArrayStyleString(videoListWithVideofile);
 	}
+	
+	/**
+	 * file의 내용을 읽어 반환. null이나 ioexception시 공백 반환
+	 * @param file
+	 * @return
+	 */
+	public static String readFileToString(File file) {
+		if(file == null || !file.exists()) return "";
+		try {
+			return FileUtils.readFileToString(file, VideoCore.FileEncoding);
+		}catch(IOException ioe){
+			logger.error(ioe);
+			return "";
+		}
+	}
+
+	/**
+	 * 파일을 byte배열로 읽어 반환. null이거나 에러시 null반환
+	 * @param file
+	 * @return
+	 */
+	public static byte[] readFileToByteArray(File file) {
+		if(file == null || !file.exists())
+			return null;
+		try {
+			return FileUtils.readFileToByteArray(file);
+		} catch (IOException e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+
 }
