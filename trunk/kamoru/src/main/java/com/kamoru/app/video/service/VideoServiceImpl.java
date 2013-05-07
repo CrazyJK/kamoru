@@ -214,9 +214,12 @@ public class VideoServiceImpl implements VideoService {
 
 		query = query.toLowerCase();
 		for(Video video : videoDao.getVideoList()) {
-			if(video.getOpus().toLowerCase().indexOf(query) > -1) {
+			if(StringUtils.containsIgnoreCase(video.getOpus(), query)
+				|| StringUtils.containsIgnoreCase(video.getStudio().getName(), query)
+				|| StringUtils.containsIgnoreCase(video.getTitle(), query)
+				|| StringUtils.containsIgnoreCase(video.getActress(), query)) {
 				found.add(video);
-			}
+			} 
 		}
 		return found;
 	}

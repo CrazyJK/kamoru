@@ -42,7 +42,7 @@ public class VideoDaoFile implements VideoDao {
 		return compare == null || compare.trim().length() == 0 || target.equalsIgnoreCase(compare);
 	}
 	private boolean containsName(String target, String compare) {
-		return compare == null || compare.trim().length() == 0 || target.toLowerCase().contains(compare);
+		return compare == null || compare.trim().length() == 0 || StringUtils.containsIgnoreCase(target, compare);
 	}
 	private boolean containsActress(Video target, String compare) {
 		return compare == null || compare.trim().length() == 0 || target.containsActress(compare);

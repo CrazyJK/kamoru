@@ -80,6 +80,10 @@ public class Video implements Comparable<Object>, Serializable {
 		return sb.toString();
 	}
 	
+	/**
+	 * 전체 배우 이름을 컴마(,)로 구분한 문자로 반환
+	 * @return
+	 */
 	public String getActress() {
 		List<String> list = new ArrayList<String>();
 		for(Actress actress : actressList) {
