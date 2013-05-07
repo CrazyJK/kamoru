@@ -67,9 +67,11 @@ function searchAndHighlight(searchTerm) {
 	$("#resultDiv:contains('"+searchTerm+"')").html($('#resultDiv').html().replace(rexp,"<span class='highlighted'>"+searchTerm+"</span>"));
 	$("#newVideo:contains('"+searchTerm+"')").html($('#newVideo').html().replace(rexp,"<span class='highlighted'>"+searchTerm+"</span>"));
 
-   if($('.highlighted:first').length) {
-       $(window).scrollTop($('.highlighted:first').position().top);
-   }
+   	if($('.highlighted:first').length) {
+       	$(window).scrollTop($('.highlighted:first').position().top);
+   	}
+   	
+   	$("#foundList").html($("#foundList").html().replace(/true/gi, '<font color="red">true</font>'));
 }
 
 </script>
