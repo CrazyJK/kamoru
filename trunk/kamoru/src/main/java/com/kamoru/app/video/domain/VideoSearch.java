@@ -1,6 +1,9 @@
 package com.kamoru.app.video.domain;
 
 import java.io.Serializable;
+import java.util.Enumeration;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.kamoru.app.video.VideoCore;
 
@@ -16,8 +19,8 @@ public class VideoSearch implements Serializable{
 	boolean existVideo; 
 	boolean existSubtitles;
 	boolean neverPlay = true;
-	String listViewType = "box";
-	String sortMethod = "M";
+	View listViewType = View.B;
+	Sort sortMethod = Sort.M;
 	boolean sortReverse = true;
 	
 	boolean viewStudioDiv = false;
@@ -43,12 +46,6 @@ public class VideoSearch implements Serializable{
 	}
 	public boolean isExistSubtitles() {
 		return existSubtitles;
-	}
-	public String getListViewType() {
-		return listViewType;
-	}
-	public String getSortMethod() {
-		return sortMethod;
 	}
 	public boolean isSortReverse() {
 		return sortReverse;
@@ -80,12 +77,6 @@ public class VideoSearch implements Serializable{
 	public void setExistSubtitles(boolean existSubtitles) {
 		this.existSubtitles = existSubtitles;
 	}
-	public void setListViewType(String listViewType) {
-		this.listViewType = listViewType;
-	}
-	public void setSortMethod(String sortMethod) {
-		this.sortMethod = sortMethod;
-	}
 	public void setSortReverse(boolean sortReverse) {
 		this.sortReverse = sortReverse;
 	}
@@ -101,6 +92,40 @@ public class VideoSearch implements Serializable{
 	public void setNeverPlay(boolean neverPlay) {
 		this.neverPlay = neverPlay;
 	}
+	public Sort getSortMethod() {
+		return sortMethod;
+	}
+	public void setSortMethod(Sort sortMethod) {
+		this.sortMethod = sortMethod;
+	}
+	public View getListViewType() {
+		return listViewType;
+	}
+	public void setListViewType(View listViewType) {
+		this.listViewType = listViewType;
+	}
+	@Override
+	public String toString() {
+		return String
+				.format("VideoSearch [studio=%s, opus=%s, title=%s, actress=%s, addCond=%s, existVideo=%s, existSubtitles=%s, neverPlay=%s, listViewType=%s, sortMethod=%s, sortReverse=%s, viewStudioDiv=%s, viewActressDiv=%s]",
+						studio, opus, title, actress, addCond, existVideo,
+						existSubtitles, neverPlay, listViewType, sortMethod,
+						sortReverse, viewStudioDiv, viewActressDiv);
+	}
 
+	
+	
+	String getParam(HttpServletRequest request) {
+		StringBuffer sb = new StringBuffer();
+		Enumeration enu = request.getParameterNames();
+		while(enu.hasMoreElements()) {
+			String name = (String)enu.nextElement();
+			String value = request.getParameter(name);
+			sb.append("&").append(name).append("=").append(value);
+		}
+		return sb.toString();
+	}
+
+	
 	
 }

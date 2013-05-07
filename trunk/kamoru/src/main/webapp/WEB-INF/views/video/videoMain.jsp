@@ -44,18 +44,19 @@ var bgImageCount = ${bgImageCount};
 			<span class="button" onclick="fnRandomPlay()">Random</span>
 		</span>
 		<span class="viewGroupSpan">
-			<span class="radio" id="radio-listViewType-card"  title="show card type list">C</span> 
-			<span class="radio" id="radio-listViewType-box"   title="show box type list">B</span> 
-			<span class="radio" id="radio-listViewType-sbox"  title="show small box type list">SB</span>
-			<span class="radio" id="radio-listViewType-table" title="show table type list">T</span>			<form:hidden path="listViewType"/>
+			<c:forEach items="${views}" var="view">
+				<span class="radio" id="radio-listViewType-${view}"  title="show ${view.desc} type list">${view}</span> 
+			</c:forEach><form:hidden path="listViewType"/>
+			
 			<span class="separatorSpan">|</span>
-			<span class="radio" id="radio-sortMethod-S" title="sort by studio">S</span>
-			<span class="radio" id="radio-sortMethod-O" title="sort by opus">O</span>
-			<span class="radio" id="radio-sortMethod-T" title="sort by title">T</span>
-			<span class="radio" id="radio-sortMethod-A" title="sort by actress">A</span>
-			<span class="radio" id="radio-sortMethod-M" title="sort by lastmodified">M</span>				<form:hidden path="sortMethod"/>
-			<span class="checkbox" id="checkbox-sortReverse" title="reverse sort">R</span>					<form:hidden path="sortReverse"/>
+			
+			<c:forEach items="${sorts}" var="sort">
+			<span class="radio" id="radio-sortMethod-${sort}" title="sort by ${sort.desc}">${sort}</span>
+			</c:forEach><form:hidden path="sortMethod"/>
+			<span class="checkbox" id="checkbox-sortReverse" title="reverse sort">R</span><form:hidden path="sortReverse"/>
+			
 			<span class="separatorSpan">|</span>
+			
 			<span class="checkbox" id="checkbox-viewStudioDiv"  title="view Studio panel"  onclick="fnStudioDivToggle()">S</span>	<form:hidden path="viewStudioDiv"/> 
 			<span class="checkbox" id="checkbox-viewActressDiv" title="view Actress panel" onclick="fnActressDivToggle()">A</span>	<form:hidden path="viewActressDiv"/>
 		</span>
@@ -76,7 +77,7 @@ var bgImageCount = ${bgImageCount};
 <div id="contentDiv" class="boxDiv">
 	<span id="totalCount">Total <c:out value="${fn:length(videoList)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnBGImageView();">BG</span>
 	<c:choose>
-		<c:when test="${videoSearch.listViewType eq 'card' }">
+		<c:when test="${videoSearch.listViewType eq 'C' }">
 		<ul>
 			<c:forEach items="${videoList}" var="video">
 			<li id="${video.opus}" class="boxLI">
@@ -115,7 +116,7 @@ var bgImageCount = ${bgImageCount};
 			</c:forEach>
 		</ul>
 		</c:when>
-		<c:when test="${videoSearch.listViewType eq 'box'}">
+		<c:when test="${videoSearch.listViewType eq 'B'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video" varStatus="status">
 			<li id="<c:out value="${video.opus}"/>" class="boxLI">
@@ -141,7 +142,7 @@ var bgImageCount = ${bgImageCount};
 			</c:forEach>
 		</ul>
 		</c:when>
-		<c:when test="${videoSearch.listViewType eq 'sbox'}">
+		<c:when test="${videoSearch.listViewType eq 'SB'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video">
 			<li id="<c:out value="${video.opus}"/>" class="sboxLI">
@@ -162,7 +163,7 @@ var bgImageCount = ${bgImageCount};
 			</c:forEach>
 		</ul>
 		</c:when>
-		<c:when test="${videoSearch.listViewType eq 'table'}">
+		<c:when test="${videoSearch.listViewType eq 'T'}">
 		<table class="listTable">
 			<tr>
 				<th>Studio</th>

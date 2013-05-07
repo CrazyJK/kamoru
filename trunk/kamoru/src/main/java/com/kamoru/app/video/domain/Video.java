@@ -37,7 +37,7 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	protected static final Log logger = LogFactory.getLog(Video.class);
 
-	private final String DEFAULT_SORTMETHOD = "O";
+	private final Sort DEFAULT_SORTMETHOD = Sort.M;
 
 	private Studio studio;
 	private String opus;
@@ -57,9 +57,8 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private Integer playCount;
 	
-	private String sortMethod = DEFAULT_SORTMETHOD;
+	private Sort sortMethod = DEFAULT_SORTMETHOD;
 	
-
 	
 	public Video() {
 		videoFileList = new ArrayList<File>();
@@ -130,19 +129,19 @@ public class Video implements Comparable<Object>, Serializable {
 		Video comp = (Video)o;
 		String thisStr = null;
 		String compStr = null;
-		if("S".equals(sortMethod)) {
+		if (sortMethod == Sort.S) {
 			thisStr = this.getStudio().getName();
 			compStr = comp.getStudio().getName();
-		} else if("O".equals(sortMethod)) {
+		} else if (sortMethod == Sort.O) {
 			thisStr = this.getOpus();
 			compStr = comp.getOpus();
-		} else if("T".equals(sortMethod)) {
+		} else if (sortMethod == Sort.T) {
 			thisStr = this.getTitle();
 			compStr = comp.getTitle();
-		} else if("A".equals(sortMethod)) {
+		} else if (sortMethod == Sort.A) {
 			thisStr = this.getActress();
 			compStr = comp.getActress();
-		} else if("M".equals(sortMethod)) {
+		} else if (sortMethod == Sort.M) {
 			thisStr = String.valueOf(
 					this.isExistVideoFileList() ? this.getVideoFileList().get(0).lastModified() : 
 						(this.isExistCoverFile() ? this.getCoverFile().lastModified() : 0));
@@ -400,7 +399,7 @@ public class Video implements Comparable<Object>, Serializable {
 		this.etcFileList.add(file);		
 	}
 
-	public void setSortMethod(String sortMethod) {
+	public void setSortMethod(Sort sortMethod) {
 		this.sortMethod = sortMethod;
 	}
 
@@ -485,8 +484,20 @@ public class Video implements Comparable<Object>, Serializable {
 			return this.getSubtitlesFileList().get(0);
 		} else if(this.isExistEtcFileList()) {
 			return this.getEtcFileList().get(0);
+		} else if(this.isExistHistoryFile()) {
+			return this.getHistoryFile();
 		} else {
 			throw new VideoException("No delegate video file : " + this.getOpus());
+		}
+	}
+
+	public void saveOverView(String overViewText) {
+		logger.debug(opus + " [" + overViewText + "]");
+		try {
+			FileUtils.writeStringToFile(getOverviewFile(), overViewText, VideoCore.FileEncoding);
+		} catch (IOException e) {
+			logger.error("save overview error", e);
+			throw new VideoException("save overview error", e);
 		}
 	}
 	

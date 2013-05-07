@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -143,6 +144,11 @@ public class VideoUtils {
 		int index = filename.lastIndexOf(".");
 		return index < 0 ? "" : filename.substring(index + 1); 
 	}
+	/**
+	 * 공백, [ 제거
+	 * @param str
+	 * @return
+	 */
 	public static String removeUnnecessaryCharacter(String str) {
 		// 공백, [ 제거  
 		str = str.trim();
@@ -179,18 +185,31 @@ public class VideoUtils {
 	}
 	
 	/**
-	 * 이름을 공백으로 나나고, 소문자,역순 정렬하여 반환. " abc ewq " -> "ewq abc"
+	 * 공백이 들어간 이름을 순차정렬해서 반환
 	 * @param name
 	 * @return
 	 */
-	public static String reverseActressName(String name) {
+	public static String forwardNameSort(String name) {
 		if(name == null) return null;
-		String[] nameArr = StringUtils.split(name.toLowerCase());
-		ArrayUtils.reverse(nameArr);
+		String[] nameArr = StringUtils.split(name);
+		Arrays.sort(nameArr);
 		String retName = "";
-		for(int i=0; i<nameArr.length; i++)
-			retName += nameArr[i] + " ";
+		for(String part : nameArr) {
+			retName += part + " ";
+		}
 		return retName.trim();
+	}
+
+	/**
+	 * 같은 이름인지 확인. 대소문자 구분없이 공백을 기준으로 순차 정렬하여 비교.
+	 * @param name1
+	 * @param name2
+	 * @return
+	 */
+	public static boolean equalsName(String name1, String name2) {
+		if(name1 == null || name2 == null) 
+			return false;
+		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2));
 	}
 
 	/**

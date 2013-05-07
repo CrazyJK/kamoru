@@ -111,8 +111,8 @@ public class FileBaseVideoSource implements VideoSource {
 		int unclassifiedNo = 1;
 		for(File file : files) {
 			String filename = file.getName();
-			String name = getFileName(file);
-			String ext  = getFileExtension(file);
+			String name = VideoUtils.getFileName(file);
+			String ext  = VideoUtils.getFileExtension(file).toLowerCase();
 			
 			if("history.log".equals(filename))
 				continue;
@@ -126,56 +126,53 @@ public class FileBaseVideoSource implements VideoSource {
 			
 			switch(names.length) {
 			case 5:
-				etcInfo = trimName(names[4]);
+				etcInfo 	= VideoUtils.removeUnnecessaryCharacter(names[4]);
 			case 4:
-				actressName = trimName(names[3]);
+				actressName = VideoUtils.removeUnnecessaryCharacter(names[3]);
 			case 3:
-				title = trimName(names[2]);
+				title 		= VideoUtils.removeUnnecessaryCharacter(names[2]);
 			case 2:
-				opus = trimName(names[1]);
-				studioName = trimName(names[0]);
+				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1]);
+				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0]);
 				break;
 			case 1:
 				studioName 	= unclassifiedStudio;
-				opus 	= unclassifiedOpus + unclassifiedNo++;
-				title 	= filename;
+				opus 		= unclassifiedOpus + unclassifiedNo++;
+				title 		= filename;
 				actressName = unclassifiedActress;
 				break;
 			default: // if names length is over 6
-				studioName 	= trimName(names[0]);
-				opus 	= trimName(names[1]);
-				title 	= trimName(names[2]);
-				actressName = trimName(names[3]);
+				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0]);
+				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1]);
+				title 		= VideoUtils.removeUnnecessaryCharacter(names[2]);
+				actressName = VideoUtils.removeUnnecessaryCharacter(names[3]);
 				for(int i=4, iEnd=names.length; i<iEnd; i++)
-					etcInfo = trimName(names[i]);
+					etcInfo = VideoUtils.removeUnnecessaryCharacter(etcInfo + " " + names[i]);
 			}
 			
 			Video video = null;
 			if((video = videoMap.get(opus.toLowerCase())) == null) {
-//				video = new Video();
 				video = this.videoProvider.get();
-//				video.setStudio(studioName);
 				video.setOpus(opus);
 				video.setTitle(title);
-//				video.setActress(actressName);
 				video.setEtcInfo(etcInfo);
 				videoMap.put(opus.toLowerCase(), video);
 			}
 			
 			// set File
-			if(video_extensions.indexOf(ext) > -1) {
+			if(video_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setVideoFile(file);
 			}
-			else if(cover_extensions.indexOf(ext) > -1) {
+			else if(cover_extensions.toLowerCase().indexOf(ext) > -1) {
 				if(webp_mode) {
 					video.setCoverWebpFile(convertWebpFile(file));
 				}
 				video.setCoverFile(file);
 			}
-			else if(subtitles_extensions.indexOf(ext) > -1) {
+			else if(subtitles_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setSubtitlesFile(file);
 			}
-			else if(overview_extensions.indexOf(ext) > -1) {
+			else if(overview_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setOverviewFile(file);
 			}
 			else if("log".indexOf(ext) > -1) {
@@ -188,7 +185,6 @@ public class FileBaseVideoSource implements VideoSource {
 			Studio studio = null;
 			String lowerCasestudioName = studioName.toLowerCase();
 			if((studio = studioMap.get(lowerCasestudioName)) == null) {
-//				studio = new Studio(studioName);
 				studio = this.studioProvider.get();
 				studio.setName(studioName);
 				studioMap.put(lowerCasestudioName, studio);
@@ -203,9 +199,9 @@ public class FileBaseVideoSource implements VideoSource {
 			
 			for(Actress actress : actressList) { 
 				Actress actressInMap = null;
-				String reverseActressName = VideoUtils.reverseActressName(actress.getName());
-				if((actressInMap = actressMap.get(reverseActressName)) == null) {
-					actressMap.put(reverseActressName, actress);
+				String forwardActressName = VideoUtils.forwardNameSort(actress.getName());
+				if((actressInMap = actressMap.get(forwardActressName)) == null) {
+					actressMap.put(forwardActressName, actress);
 					actressInMap = actress;
 				}
 				actressInMap.putVideo(video);
@@ -217,17 +213,19 @@ public class FileBaseVideoSource implements VideoSource {
 		}
 		logger.debug("total found video size : " + videoMap.size());
 	}
+
 	/**
 	 * 이미지를 webp파일로 반환. 없으면 만드는 작업 호출
 	 * @param file
 	 * @return
 	 */
 	private File convertWebpFile(File file) {
-		File webpfile = new File(webp_path, getFileName(file) + ".webp");
+		File webpfile = new File(webp_path, VideoUtils.getFileName(file) + ".webp");
 		if(webpfile.exists()) {
 			return webpfile;
 		}
 		String command = webp_exec + " \"" + file.getAbsolutePath() + "\" -q 80 -o \"" + webpfile.getAbsolutePath() + "\"";
+//		String[] command = {webp_exec, file.getAbsolutePath(), "-q 80 -o", webpfile.getAbsolutePath()};
 		logger.info(command);
 		try {
 			Runtime.getRuntime().exec(command);
@@ -236,36 +234,7 @@ public class FileBaseVideoSource implements VideoSource {
 		}
 		return webpfile;
 	}
-	/**
-	 * 확장자 뺀 화일명 반환
-	 * @param file
-	 * @return
-	 */
-	private String getFileName(File file) {
-		String name = file.getName();
-		int idx = name.lastIndexOf(".");
-		return idx < 0 ? name : name.substring(0, idx);
-	}
-	/**
-	 * 확장자 반환
-	 * @param file
-	 * @return
-	 */
-	private String getFileExtension(File file) {
-		String filename = file.getName();
-		int index = filename.lastIndexOf(".");
-		return index < 0 ? "" : filename.substring(index + 1); 
-	}
-	/**
-	 * [ 를 ""로 변환
-	 * @param str
-	 * @return
-	 */
-	private String trimName(String str) {
-		if(str == null)
-			return "";
-		return StringUtils.replace(str, "[", "").trim();
-	}
+	
 	/**
 	 * 컴마(,)로 구분된 이름을 List&lt;Actress&gt;로 반환
 	 * @param actressNames
@@ -279,7 +248,7 @@ public class FileBaseVideoSource implements VideoSource {
 			name = StringUtils.join(StringUtils.split(name), " ");
 			boolean bFindSameName = false;
 			for(Actress actress : actressList) {
-				if(equalsName(actress, name)) {
+				if(VideoUtils.equalsName(actress.getName(), name)) {
 					bFindSameName = true;
 					break;
 				}
@@ -293,33 +262,6 @@ public class FileBaseVideoSource implements VideoSource {
 		}
 		
 		return actressList;
-	}
-	/**
-	 * 같은 이름인지 확인
-	 * @param actress
-	 * @param name2
-	 * @return
-	 */
-	private boolean equalsName(Actress actress, String name2) {
-		String name1 = actress.getName();
-		if(name1 == null || name2 == null) 
-			return false;
-		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2)) 
-				|| name1.toLowerCase().indexOf(name2.toLowerCase()) > -1;
-	}
-	/**
-	 * 공백이 들어간 이름을 순차정렬해서 반환
-	 * @param name
-	 * @return
-	 */
-	private String forwardNameSort(String name) {
-		String[] nameArr = StringUtils.split(name);
-		Arrays.sort(nameArr);
-		String retName = "";
-		for(String part : nameArr) {
-			retName += part + " ";
-		}
-		return retName.trim();
 	}
 	
 	@Override

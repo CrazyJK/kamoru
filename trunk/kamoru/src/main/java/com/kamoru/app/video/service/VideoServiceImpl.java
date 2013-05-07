@@ -41,6 +41,7 @@ public class VideoServiceImpl implements VideoService {
 	@Value("#{videoProp['editor']}") private String editor;
 	@Value("#{videoProp['player']}") private String player;
 	@Value("#{videoProp['mainBasePath']}") private String mainBasePath;
+	@Value("#{videoProp['webp.mode']}") private boolean webpMode;
 
 	private byte[] defaultCoverFileBytes;
 	
@@ -70,20 +71,14 @@ public class VideoServiceImpl implements VideoService {
 			return videoDao.getVideo(opus);
 		}
 		catch(VideoException ve) {
+			logger.error(ve);
 			return null;
 		}
 	}
 
 	@Override
-	public void saveVideoOverview(String opus, String overViewTxt) {
-		Video video = getVideo(opus);
-		try {
-			FileUtils.writeStringToFile(video.getOverviewFile(), overViewTxt, VideoCore.FileEncoding);
-		} catch (IOException e) {
-			logger.error("save overview error", e);
-			throw new RuntimeException(e);
-		}
-		logger.debug("saveOverViewTxt : " + opus + " [" + video.getOverviewFile() + "]");
+	public void saveVideoOverview(String opus, String overViewText) {
+		videoDao.getVideo(opus).saveOverView(overViewText);
 	}
 
 	@Override
@@ -95,12 +90,14 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void playVideo(String opus) {
+		logger.info(opus);
 		saveHistory(getVideo(opus), Action.PLAY);
 		executeCommand(Action.PLAY, getVideo(opus));
 	}
 
 	@Override
 	public void editVideoSubtitles(String opus) {
+		logger.info(opus);
 		executeCommand(Action.SUBTITLES, getVideo(opus));
 	}
 	
@@ -136,31 +133,20 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public File getVideoCoverFile(String opus) {
-		if(videoDao.getVideo(opus).getCoverWebpFile() != null)
+		if(webpMode)
 			return videoDao.getVideo(opus).getCoverWebpFile();
 		else
 			return videoDao.getVideo(opus).getCoverFile();
 	}
 
+	@Override
 	public byte[] getVideoCoverByteArray(String opus) {
-		if(videoDao.getVideo(opus).getCoverWebpByteArray() != null)
+		if(webpMode)
 			return videoDao.getVideo(opus).getCoverWebpByteArray();
-		else if(videoDao.getVideo(opus).getCoverByteArray() != null)
+		else 
 			return videoDao.getVideo(opus).getCoverByteArray();
-		else {
-			try {
-				return FileUtils.readFileToByteArray(getDefaultCoverFile());
-			} catch (IOException e) {
-				logger.error(e);
-				return null;
-			}
-		}
 	}
 	
-	private File getDefaultCoverFile() {
-		return new File(defaultCoverFilePath);
-	}
-
 	// action method
 	private void saveHistory(Video video, Action action) {
 		String msg = null; 
@@ -196,7 +182,8 @@ public class VideoServiceImpl implements VideoService {
 		
 		logger.debug("save history - " + historymsg);
 		try {
-			FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
+			if(action != Action.DELETE)
+				FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
 		} catch (IOException e) {
 			logger.error(historymsg, e);
 		} catch (VideoException ve) {
@@ -221,11 +208,11 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Video> findVideoList(String query) {
+		List<Video> found = new ArrayList<Video>();
 		if(query == null || query.trim().length() == 0)
-			return new ArrayList<Video>();
+			return found;
 
 		query = query.toLowerCase();
-		List<Video> found = new ArrayList<Video>();
 		for(Video video : videoDao.getVideoList()) {
 			if(video.getOpus().toLowerCase().indexOf(query) > -1) {
 				found.add(video);
@@ -236,13 +223,12 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public byte[] getDefaultCoverFileByteArray() {
-		if(defaultCoverFileBytes == null) {
+		if(defaultCoverFileBytes == null)
 			try {
-				defaultCoverFileBytes = FileUtils.readFileToByteArray(getDefaultCoverFile());
+				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCoverFilePath));
 			} catch (IOException e) {
 				logger.error(e);
 			}
-		}
 		return defaultCoverFileBytes;
 	}
 
