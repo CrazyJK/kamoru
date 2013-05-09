@@ -249,11 +249,6 @@ public class VideoUtils {
 		return list;
 	}
 	
-	public static void main(String[] args) {
-//		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
-		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
-	}
-
 	/**
 	 * list를 컴마(,)로 구분한 string반환
 	 * @param list
@@ -314,6 +309,24 @@ public class VideoUtils {
 			logger.error(e);
 			return null;
 		}
+	}
+
+	public static String removeSpecialCharacters(String str) {
+		String str_imsi = ""; 
+		String[] filter_word = {"","\\.","\\?","\\/","\\~","\\!","\\@","\\#","\\$","\\%","\\^","\\&","\\*","\\(","\\)","\\_","\\+","\\=","\\|","\\\\","\\}","\\]","\\{","\\[","\\\"","\\'","\\:","\\;","\\<","\\,","\\>","\\.","\\?","\\/"};
+		for(int i=0;i<filter_word.length;i++){
+			System.out.println(i + "[" + filter_word[i] + "]");
+			str_imsi = str.replaceAll(filter_word[i],"");
+			str = str_imsi;
+		}
+		return str;
+	}
+	
+	public static void main(String[] args) {
+//		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
+//		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
+		removeSpecialCharacters("22");
+		
 	}
 
 
