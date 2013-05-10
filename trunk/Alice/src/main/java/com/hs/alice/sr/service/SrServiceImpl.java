@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hs.alice.sr.dao.RqstDao;
 import com.hs.alice.sr.domain.RndRqst;
 
-@Service
-@Transactional(readOnly=true)
+//@Service
+//@Transactional(readOnly=true)
 public class SrServiceImpl implements SrService {
 
 	private static final Log logger = LogFactory.getLog(SrServiceImpl.class);

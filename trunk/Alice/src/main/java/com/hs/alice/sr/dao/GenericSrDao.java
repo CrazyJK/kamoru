@@ -10,7 +10,7 @@ public interface GenericSrDao<T> {
 	
 	T merge(T detachedInstance);
 	
-	T findById(Integer id);
+	T findById(int id);
 
 	T findByName(String name);
 	

@@ -16,8 +16,8 @@ import com.hs.alice.sr.domain.RndRqst;
 import com.hs.alice.sr.service.SrService;
 import com.hs.alice.web.security.AliceUserDetails;
 
-@Controller
-@RequestMapping("/csr")
+//@Controller
+//@RequestMapping("/csr")
 public class CsrController {
 
 	@Autowired SrService srService;

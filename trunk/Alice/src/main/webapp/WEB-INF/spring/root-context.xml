@@ -13,6 +13,7 @@
 	<import resource="security-context.xml" />
 	<import resource="jpa-context.xml" />
 	<!-- <import resource="jpa-multi-db-context.xml" /> -->
+	<!-- <import resource="ibatis-context.xml" /> -->
 	<import resource="cache-context.xml" />
 
 	<!-- Root Context: defines shared resources visible to all other web components -->

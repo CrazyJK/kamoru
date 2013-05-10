@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hs.alice.sr.domain.RndRqst;
 
-@Repository
+//@Repository
 public class RqstDaoJpa implements RqstDao {
 
 	private static final Log logger = LogFactory.getLog(RqstDaoJpa.class);
@@ -43,7 +43,7 @@ public class RqstDaoJpa implements RqstDao {
 	}
 
 	@Override
-	public RndRqst findById(Integer id) {
+	public RndRqst findById(int id) {
 		logger.info(id);
 		return this.entityManager.find(RndRqst.class, id);
 	}

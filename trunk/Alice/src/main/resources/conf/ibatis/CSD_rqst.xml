@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="map" type="java.util.HashMap"/>
+	<typeAlias alias="tbRqst" type="com.hs.alice.pas.csd.domain.TbRqst"/>
+	<typeAlias alias="rndRqst" type="com.hs.alice.pas.csd.domain.RndRqst"/>
+
+	<select id="getRndRqstList" parameterClass="int" resultClass="rndRqst">
+		SELECT * FROM rnd_rqst WHERE rqstid > #rqstid# 
+	</select>
+
+	<select id="getTbRqstList" parameterClass="tbRqst" resultClass="tbRqst">
+		SELECT * FROM tb_rqst 
+		<isNotEmpty property="rqstIdList">
+			WHERE  rqst_id in
+			<iterate property="rqstIdList" open="(" close=")" conjunction=",">
+				#rqstIdList []#
+			</iterate>
+		</isNotEmpty>
+	</select>
+
+
+</sqlMap>
