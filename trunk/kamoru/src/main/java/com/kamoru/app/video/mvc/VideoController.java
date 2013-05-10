@@ -35,6 +35,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Video Collection controller<br>
+ * data loading, searching, background-image setting
+ * @author kamoru
+ *
+ */
 @Controller
 @RequestMapping("/video")
 public class VideoController {

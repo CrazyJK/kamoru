@@ -25,12 +25,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-/**
- * AV Collection controller<br>
- * data loading, searching, background-image setting
- * @author kamoru
- *
- */
 @Repository
 public class VideoDaoFile implements VideoDao {
 	protected static final Log logger = LogFactory.getLog(VideoDaoFile.class);
