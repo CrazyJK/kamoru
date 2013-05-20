@@ -315,7 +315,7 @@ public class VideoUtils {
 		String str_imsi = ""; 
 		String[] filter_word = {"","\\.","\\?","\\/","\\~","\\!","\\@","\\#","\\$","\\%","\\^","\\&","\\*","\\(","\\)","\\_","\\+","\\=","\\|","\\\\","\\}","\\]","\\{","\\[","\\\"","\\'","\\:","\\;","\\<","\\,","\\>","\\.","\\?","\\/"};
 		for(int i=0;i<filter_word.length;i++){
-			System.out.println(i + "[" + filter_word[i] + "]");
+//			System.out.println(i + "[" + filter_word[i] + "]");
 			str_imsi = str.replaceAll(filter_word[i],"");
 			str = str_imsi;
 		}
@@ -325,7 +325,13 @@ public class VideoUtils {
 	public static void main(String[] args) {
 //		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
 //		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
-		removeSpecialCharacters("22");
+		
+		
+		File dir = new File("E:\\aaa");
+		File[] fs = dir.listFiles();
+		for(File f : fs) {
+			System.out.format("%s -> %s%n", f.getName(), removeSpecialCharacters(f.getName()));
+		}
 		
 	}
 

@@ -502,5 +502,16 @@ public class Video implements Comparable<Object>, Serializable {
 		sb.append("etc : ").append(this.getEtcFileListPath());
 		return sb.toString();
 	}
+
+	public void move(String WATCHED_PATH) {
+		for(File file : getFileAll())
+			if(file != null && file.exists())
+				try {
+					FileUtils.moveFileToDirectory(file, new File(WATCHED_PATH), true);
+				} catch (IOException e) {
+					logger.error(e);
+					e.printStackTrace();
+				}
+	}
 	
 }

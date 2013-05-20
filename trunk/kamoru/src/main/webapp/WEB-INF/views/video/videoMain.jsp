@@ -74,7 +74,7 @@ var bgImageCount = ${bgImageCount};
 	</div>
 </div>
 
-<div id="contentDiv" class="boxDiv">
+<div id="contentDiv" class="boxDiv" onclick="fnBGImageView();">
 	<span id="totalCount">Total <c:out value="${fn:length(videoList)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnBGImageView();">BG</span>
 	<c:choose>
 		<c:when test="${videoSearch.listViewType eq 'C' }">
