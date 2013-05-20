@@ -30,7 +30,8 @@ public class JpaTest {
 	@Autowired PlatformTransactionManager transactionManager;
 	@Autowired MemberDao dao;
 	@Autowired MemberTemplateDao templateDao;
-	@Autowired MemberRepositoryDao repositoryDao;
+	//@Autowired 
+	MemberRepositoryDao repositoryDao;
 	
 	@Test @Transactional 
 	public void sharedEntityManager() {
@@ -108,7 +109,7 @@ public class JpaTest {
 		}
 	}
 	
-	@Repository
+	//@Repository
 	public static class MemberRepositoryDao {
 		@PersistenceContext
 		EntityManager em;
@@ -123,7 +124,7 @@ public class JpaTest {
 	public static class MemberTemplateDao {
 		JpaTemplate jpaTemplate;
 
-		@Autowired
+		//@Autowired
 		public void init(EntityManagerFactory emf) {
 			jpaTemplate = new JpaTemplate(emf);
 		}

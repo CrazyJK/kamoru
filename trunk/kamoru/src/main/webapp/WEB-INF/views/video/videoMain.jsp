@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8" />
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<title>Video collection</title>
+<title><spring:message code="title" text="video"/></title>
 <link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -39,9 +39,9 @@ var bgImageCount = ${bgImageCount};
 			<span class="separatorSpan">|</span>
 			<span class="checkbox" id="checkbox-neverPlay" title="unseen video?">P</span>			<form:hidden path="neverPlay"/>
 			<span class="separatorSpan">|</span>
-			<span class="button" onclick="fnDetailSearch()">Search</span>
+			<span class="button" onclick="fnDetailSearch()"><spring:message code="btn.search" text="Search video"/></span>
 			<span class="separatorSpan">|</span>
-			<span class="button" onclick="fnRandomPlay()">Random</span>
+			<span class="button" onclick="fnRandomPlay()"><spring:message code="btn.random" text="Random play"/></span>
 		</span>
 		<span class="viewGroupSpan">
 			<c:forEach items="${views}" var="view">

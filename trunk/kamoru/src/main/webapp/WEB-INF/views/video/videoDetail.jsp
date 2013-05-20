@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Detail view [${video.opus}] ${video.title} - AV Worlde</title>
+<title>Detail view [${video.opus}] ${video.title} - Video World</title>
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <!--[if lt IE 9]>

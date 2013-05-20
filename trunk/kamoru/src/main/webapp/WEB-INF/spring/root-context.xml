@@ -2,21 +2,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
         <!-- Root Context: defines shared resources visible to all other web components -->
 
         <!-- <jee:jndi-lookup id="dataSource2" jndi-name="/jdbc/kamoruDB" resource-ref="true" /> -->
 
-        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
                 <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
                 <property name="url" value="jdbc:oracle:thin:@123.212.190.111:1521:csrnd" />
                 <property name="username" value="kamoru" />
                 <property name="password" value="kamoru" />
                 <property name="initialSize" value="2" />
                 <property name="maxActive" value="5" />
-        </bean>
+        </bean> -->
 
         <!-- JDBC -->
         <!-- <bean id="spitterDao" class="com.springinaction.spitter.persistence.JdbcSpitterDao">
@@ -52,5 +54,20 @@
         <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
                 p:dataSource-ref="dataSource" />
         <tx:annotation-driven/> -->
+
+		<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+			<property name="basenames">
+				<list>
+					<value>com.kamoru.app.video.messages.videoMessage</value>
+					<value>defaultMessage</value>
+				</list>
+			</property>
+		</bean>
+
+		<import resource="classpath:/video-context.xml" />
+	
+		<context:component-scan base-package="com.kamoru" >
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		</context:component-scan>
 
 </beans>

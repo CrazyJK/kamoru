@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kamoru.app.image.service.ImageService;
 import com.kamoru.app.video.VideoCore;
+import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.domain.Sort;
 import com.kamoru.app.video.domain.View;
 import com.kamoru.app.video.domain.Video;
@@ -186,4 +187,12 @@ public class VideoController {
         return "video/search";		
 	}
 
+	@RequestMapping("/error")
+	public void error() {
+		throw new RuntimeException("error");
+	}
+	@RequestMapping("/videoError")
+	public void errorVideo() {
+		throw new VideoException("error");
+	}
 }

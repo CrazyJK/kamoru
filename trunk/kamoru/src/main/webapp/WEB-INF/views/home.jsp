@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page session="false" %>
 <html>
 <head>
@@ -6,9 +7,11 @@
 </head>
 <body>
 <h1>
-	kAmOrU learning project using by SpringFramework
+	<spring:message code="application.title"/> learning project using by SpringFramework
 </h1>
-
+<h2>
+	<spring:message code="application.author"/>
+</h2>
 Application List
 <ul>
 	<li><a href="./video">Video Main</a>
