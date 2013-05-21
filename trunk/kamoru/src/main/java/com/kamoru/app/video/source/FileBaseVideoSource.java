@@ -1,12 +1,9 @@
 package com.kamoru.app.video.source;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +17,10 @@ import com.kamoru.app.video.domain.Video;
 import com.kamoru.app.video.util.VideoUtils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.jetty.util.Scanner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 
 public class FileBaseVideoSource implements VideoSource {
@@ -45,7 +38,6 @@ public class FileBaseVideoSource implements VideoSource {
 	private String subtitles_extensions;
 	private String overview_extensions;
 	private boolean webp_mode;
-	private String webp_path;
 	private String webp_exec;
 
 	private Map<String, Video> videoMap;
@@ -74,9 +66,6 @@ public class FileBaseVideoSource implements VideoSource {
 	}
 	public void setWebp_mode(boolean webp_mode) {
 		this.webp_mode = webp_mode;
-	}
-	public void setWebp_path(String webp_path) {
-		this.webp_path = webp_path;
 	}
 	public void setWebp_exec(String webp_exec) {
 		this.webp_exec = webp_exec;
@@ -220,7 +209,7 @@ public class FileBaseVideoSource implements VideoSource {
 	 * @return
 	 */
 	private File convertWebpFile(File file) {
-		File webpfile = new File(webp_path, VideoUtils.getFileName(file) + ".webp");
+		File webpfile = new File(file.getParent(), VideoUtils.getFileName(file) + ".webp");
 		if(webpfile.exists()) {
 			return webpfile;
 		}
@@ -254,7 +243,6 @@ public class FileBaseVideoSource implements VideoSource {
 				}
 			}
 			if(!bFindSameName) {
-//					Actress actress = new Actress();
 				Actress actress = this.actressProvider.get();
 				actress.setName(name);
 				actressList.add(actress);
