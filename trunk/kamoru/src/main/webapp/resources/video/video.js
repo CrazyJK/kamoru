@@ -224,8 +224,8 @@ function fnOpusFocus(opus) {
 	}, 1000, function(){
 		$(this).css("background-color", "cyan");
 	});
-	alert($("#" + opus).position().top);
-	$("#contentDiv").scrollTop($("#" + opus).position().top);
+	var topValue = $("#" + opus).position().top - $("#headerDiv").outerHeight() - 20;
+	$("#contentDiv").scrollTop(topValue);
 }
 function fnBGImageView() {
 	popupImage(currBGImageUrl);
