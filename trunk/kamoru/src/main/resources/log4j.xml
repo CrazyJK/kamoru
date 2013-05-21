@@ -9,10 +9,30 @@
 			<param name="ConversionPattern" value="%d{HH:mm:ss} %-5p: %C{1}.%M - %m%n" />
 		</layout>
 	</appender>
-	
+
+    <!--  날짜별 로그 -->  
+	<!-- 이것은 날짜별로  로그를 남김. 파일명.확장자.DatePattern으로 정의 함-->  
+    <appender name="dailyout" class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="file" value="dailyout.log"/>  
+        <param name="Append" value="true"/>  
+        <param name="DatePattern" value="'.'yyMMdd"/>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="%t> [%p] [%d{yyyy-MM-dd HH:mm:ss}] [%c{1}.%M(%L)] %m %n"/>  
+        </layout>  
+    </appender>  
+ 	
+ 	<!-- xml 로그-->  
+    <!-- xml형식으로 로그를 남김 -->  
+	<appender name="xmlout" class="org.apache.log4j.FileAppender">  
+        <param name="file" value="log4jxml.xml"/>  
+        <param name="Append" value="true"/>  
+        <layout class="org.apache.log4j.xml.XMLLayout"/>  
+    </appender>  
+    
 	<!-- Application Loggers -->
-	<logger name="kamoru.app.spring">
-		<level value="debug" />
+	<logger name="com.kamoru">
+		<level value="DEBUG" />
+		<appender-ref ref="dailyout" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -34,7 +54,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
 	
