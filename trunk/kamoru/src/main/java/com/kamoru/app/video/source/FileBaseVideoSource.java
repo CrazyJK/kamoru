@@ -103,6 +103,9 @@ public class FileBaseVideoSource implements VideoSource {
 			String name = VideoUtils.getFileName(file);
 			String ext  = VideoUtils.getFileExtension(file).toLowerCase();
 			
+			//연속 스페이스 제거
+			name = name.replaceAll("\\s{2,}", " ");
+			
 			if("history.log".equals(filename))
 				continue;
 			
