@@ -45,4 +45,6 @@ public interface VideoService {
 
 	List<Studio> getStudioListOfVideoes(List<Video> videoList);
 
+	void rankVideo(String opus, int rank);
+
 }

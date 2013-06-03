@@ -259,5 +259,11 @@ public class VideoServiceImpl implements VideoService {
 		return studioList;
 	}
 
+	@Override
+	public void rankVideo(String opus, int rank) {
+		videoDao.getVideo(opus).setRank(rank);
+		
+	}
+
 }
 

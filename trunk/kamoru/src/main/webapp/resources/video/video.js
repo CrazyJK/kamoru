@@ -54,8 +54,8 @@ $(document).ready(function(){
 	$("li").toggle(
 		function() {
 			$(this).animate({
-				opacity: 0.75
-				}, 1000, function(){
+				opacity: 1
+				}, 500, function(){
 					$(this).css("background-color", "green");
 					$("#DEL-"+$(this).attr("id")).css("display", "");
 				});
@@ -96,6 +96,11 @@ $(document).ready(function(){
  	} else {
  		$("#actressDiv").css("display", "block");
  	}
+ 	
+ 	//rank coloring
+ 	$('input[type="range"]').each(function() {
+ 		fnRankColor($(this));
+ 	});
  	
  	// resize contentDiv height
 	resizeDivHeight();
@@ -189,8 +194,10 @@ function fnDeleteOpus(selectedOpus) {
 			$("#" + selectedOpus).hide();
 			// remove element
 			for(var i=0; i<opusArray.length; i++) 
-				if(selectedOpus == opusArray[i])
+				if(selectedOpus == opusArray[i]) {
 					opusArray.splice(i, 1);
+					break;
+				}
 			
 			var frm = document.forms["actionFrm"];
 			frm.action = context + "video/" + selectedOpus;
@@ -205,6 +212,7 @@ function fnEditSubtitles(selectedOpus) {
 function fnPlay(selectedOpus) {
 	$("#debug").html("Video play " + selectedOpus);
 	$("#actionIframe").attr("src", context + "video/" + selectedOpus + "/play");
+	fnVideoDetail(selectedOpus);
 }
 function fnRandomPlay() {
 	$("#debug").html("Random play start");
@@ -241,7 +249,28 @@ function fnEditOverview(opus) {
 function fnVideoDetail(opus) {
     popup(context + "video/" + opus, "detailview-"+opus, 850, 800);
 }
-
+function fnRank(opus) {
+//	alert(opus + " : " + obj.value);
+//	$("#actionIframe").attr("src", context + "video/" + opus + "/rank/" + rank);
+	var rank = $("#Rank-"+opus);
+	fnRankColor(rank);
+	$("#hiddenHttpMethod").val("put");
+	var frm = document.forms["actionFrm"];
+	frm.action = context + "video/" + opus + "/rank/" + rank.val();
+	frm.submit();
+}
+function fnRankColor(rank) {
+	if(rank.val() == 0) {
+		rank.css("background-color", "cyan");
+	}
+	else if(rank.val() > 0) {
+		rank.css("background-color", "red");
+	}
+	else {
+		rank.css("background-color", "blue");
+	}
+//	alert(rank.val());
+}
 function popupImage(url) {
 	var img = $("<img />");
 	img.hide();

@@ -143,6 +143,12 @@ public class VideoController {
 		videoService.editVideoSubtitles(opus);
 	}
 	
+	@RequestMapping(value="/{opus}/rank/{rank}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void doRankVideo(@PathVariable String opus, @PathVariable int rank) {
+		videoService.rankVideo(opus, rank);
+	}
+	
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
 	public String showActressList(Model model) {
 		model.addAttribute(videoService.getActressList());

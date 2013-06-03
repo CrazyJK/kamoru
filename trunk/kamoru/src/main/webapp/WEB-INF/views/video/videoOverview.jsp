@@ -17,6 +17,8 @@
 <script type="text/javascript">
 function overviewSave()
 {
+	var overview = $(".overviewTxt");
+	$("#overview-${video.opus}", opener.document).attr("title", overview.val());
 	var frm = document.forms['overviewFrm'];
 	frm.submit();
 /* 	if(opener) {

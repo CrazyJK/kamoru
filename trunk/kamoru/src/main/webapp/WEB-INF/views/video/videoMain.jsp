@@ -133,8 +133,12 @@ var bgImageCount = ${bgImageCount};
 						<dd><span class="bgSpan <c:out value="${video.existVideoFileList     ? 'existFile' : 'nonExistFile' }"/>" onclick="fnPlay('<c:out value="${video.opus}"/>')"          title="<c:out value="${video.videoFileListPath}" escapeXml="true"/>">Video (${video.playCount})</span></dd>
 						<dd><span class="bgSpan <c:out value="${video.existCoverFile         ? 'existFile' : 'nonExistFile' }"/>" onclick="fnImageView('<c:out value="${video.opus}"/>')"     title="<c:out value="${video.coverFile}" escapeXml="true"/>">Cover</span></dd>
 						<dd><span class="bgSpan <c:out value="${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}"/>" onclick="fnEditSubtitles('<c:out value="${video.opus}"/>')" title="<c:out value="${video.subtitlesFileList}" escapeXml="true"/>">smi</span></dd>
-						<dd><span class="bgSpan <c:out value="${video.existOverviewFile      ? 'existFile' : 'nonExistFile' }"/>" onclick="fnEditOverview('<c:out value="${video.opus}"/>')"  title="<c:out value="${video.overviewText}" escapeXml="true"/>">Overview</span>
+						<dd><span class="bgSpan <c:out value="${video.existOverviewFile      ? 'existFile' : 'nonExistFile' }"/>" onclick="fnEditOverview('<c:out value="${video.opus}"/>')"  title="<c:out value="${video.overviewText}" escapeXml="true"/>" id="overview-${video.opus}">Overview</span>
 							<span id="DEL-<c:out value="${video.opus}"/>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<c:out value="${video.opus}"/>')" title="<c:out value="${video}" escapeXml="true"/>">Del</span>
+						</dd>
+						<!-- <dd><span class="bgSpan">★★★☆☆</span></dd> -->
+						<dd>
+							<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>
 						</dd>
 					</dl>
 				</div>

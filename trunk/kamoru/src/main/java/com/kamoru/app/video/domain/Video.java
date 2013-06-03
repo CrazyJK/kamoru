@@ -52,10 +52,13 @@ public class Video implements Comparable<Object>, Serializable {
 	private File overviewFile;
 	private File historyFile;
 	private List<File> etcFileList;
+	private File rankFile;
 	
 	private Integer playCount;
 	
 	private Sort sortMethod = DEFAULT_SORTMETHOD;
+
+	private int rank;
 	
 	
 	public Video() {
@@ -513,5 +516,24 @@ public class Video implements Comparable<Object>, Serializable {
 					e.printStackTrace();
 				}
 	}
+
+	public File getRankFile() {
+		if(rankFile == null)
+			rankFile = new File(getPath(), getNameWithoutSuffix() + ".rank");
+		return rankFile;
+	}
+
+	public void setRankFile(File rankFile) {
+		this.rankFile = rankFile;
+		rank = VideoUtils.readFileToInteger(rankFile);
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+		VideoUtils.writeStringToFile(getRankFile(), String.valueOf(rank));
+	}
 	
+	public int getRank() {
+		return rank;
+	}
 }

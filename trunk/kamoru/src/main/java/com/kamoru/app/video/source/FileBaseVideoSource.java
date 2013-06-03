@@ -170,6 +170,9 @@ public class FileBaseVideoSource implements VideoSource {
 			else if("log".indexOf(ext) > -1) {
 				video.setHistoryFile(file);
 			}
+			else if("rank".indexOf(ext) > -1) {
+				video.setRankFile(file);
+			}
 			else {
 				video.setEtcFile(file);
 			}

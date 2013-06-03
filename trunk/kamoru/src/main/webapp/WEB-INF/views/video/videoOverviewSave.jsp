@@ -13,7 +13,7 @@
 $(document).ready(function(){
 	//var reload = parent.opener.document.getElementById("reloadData");
 	//reload = "on";
-	parent.opener.document.forms[0].submit();
+	//parent.opener.document.forms[0].submit();
 	self.close();
 });
 </script>

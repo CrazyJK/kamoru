@@ -335,5 +335,22 @@ public class VideoUtils {
 		
 	}
 
+	public static int readFileToInteger(File rankFile) {
+		try {
+			return Integer.parseInt(readFileToString(rankFile));
+		}
+		catch(Exception e) {
+			return 0;
+		}
+	}
+
+	public static void writeStringToFile(File file, String data) {
+		try {
+			FileUtils.writeStringToFile(file, data, VideoCore.FileEncoding);
+		} catch (IOException e) {
+			logger.error("file write error ", e);
+			e.printStackTrace();
+		}
+	}
 
 }

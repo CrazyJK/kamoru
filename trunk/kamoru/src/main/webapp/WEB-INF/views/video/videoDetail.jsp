@@ -19,17 +19,24 @@
 var context = '<spring:url value="/"/>';
 </script>
 </head>
-<body>
-<img src="<c:url value="/video/${video.opus}/cover" />" />
-<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
-<ul>
-<li><span onclick="top.fnPlay('${video.opus}')">${video.videoFileListPath}</span>
-<li><span>${video.coverFilePath}</span>
-<li><span onclick="top.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span>
-<li><span>${video.etcFileListPath}</span>
-<li><span title='${video.historyText}'>${video.historyFile}</span>
-<li><span>${video.overviewFile}</span>
-	<pre  onclick="opener.fnEditOverview('${video.opus}')"  >${video.overviewText}</pre>
-</ul>
+<body  style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
+<%-- <img src="<c:url value="/video/${video.opus}/cover" />" /> --%>
+<dl>
+	<dt><span class="bgSpan" onclick="fnViewVideoDetail('${video.opus}')">${video.title}</span></dt>
+	<dd><span class="bgSpan" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
+	<dd><span class="bgSpan">${video.opus}</span></dd>
+	<dd><c:forEach items="${video.actressList}" var="actress">
+			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
+		</c:forEach></dd>
+	<dd><span class="bgSpan">${video.etcInfo}</span></dd>
+	<dd><span class="bgSpan">${video.videoDate}</span></dd>
+	<dd><span class="bgSpan" onclick="top.fnPlay('${video.opus}')">${video.videoFileListPath}</span></dd>
+	<dd><span class="bgSpan">${video.coverFilePath}</span></dd>
+	<dd><span class="bgSpan" onclick="top.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span></dd>
+	<dd><span class="bgSpan">${video.etcFileListPath}</span></dd>
+	<dd><span class="bgSpan" title='${video.historyText}'>${video.historyFile}</span></dd>
+	<dd><span class="bgSpan">${video.overviewFile}</span></dd>
+	<dd><pre class="bgSpan" onclick="opener.fnEditOverview('${video.opus}')"  >${video.overviewText}</pre></dd>
+</dl>
 </body>
 </html>
