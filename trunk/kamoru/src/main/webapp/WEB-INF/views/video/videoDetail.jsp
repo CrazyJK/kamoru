@@ -14,25 +14,30 @@
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
+<script src="<c:url value="/resources/video/video.js" />"></script>
 <script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
+$(document).ready(function(){
+	fnRank('${video.opus}');
+});
 </script>
 </head>
 <body  style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 <%-- <img src="<c:url value="/video/${video.opus}/cover" />" /> --%>
 <dl>
-	<dt><span class="bgSpan" onclick="fnViewVideoDetail('${video.opus}')">${video.title}</span></dt>
+	<dt><span class="bgSpan">${video.title}</span></dt>
+	<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
 	<dd><span class="bgSpan" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
 	<dd><span class="bgSpan">${video.opus}</span></dd>
 	<dd><c:forEach items="${video.actressList}" var="actress">
 			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
 		</c:forEach></dd>
-	<dd><span class="bgSpan">${video.etcInfo}</span></dd>
 	<dd><span class="bgSpan">${video.videoDate}</span></dd>
-	<dd><span class="bgSpan" onclick="top.fnPlay('${video.opus}')">${video.videoFileListPath}</span></dd>
+	<dd><span class="bgSpan">${video.etcInfo}</span></dd>
+	<dd><span class="bgSpan" onclick="opener.fnPlay('${video.opus}')">${video.videoFileListPath}</span></dd>
 	<dd><span class="bgSpan">${video.coverFilePath}</span></dd>
-	<dd><span class="bgSpan" onclick="top.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span></dd>
+	<dd><span class="bgSpan" onclick="opener.fnEditSubtitles('${video.opus}')" >${video.subtitlesFileListPath}</span></dd>
 	<dd><span class="bgSpan">${video.etcFileListPath}</span></dd>
 	<dd><span class="bgSpan" title='${video.historyText}'>${video.historyFile}</span></dd>
 	<dd><span class="bgSpan">${video.overviewFile}</span></dd>

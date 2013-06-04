@@ -93,6 +93,10 @@ public class Video implements Comparable<Object>, Serializable {
 			compStr = String.valueOf(
 					comp.isExistVideoFileList() ? comp.getVideoFileList().get(0).lastModified() : 
 						(comp.isExistCoverFile() ? comp.getCoverFile().lastModified() : 0));
+		} else if (sortMethod == Sort.P) {
+			return this.getPlayCount() - comp.getPlayCount();
+		} else if (sortMethod == Sort.R) {
+			return this.getRank() - comp.getRank();
 		}
 		String[] s = {thisStr, compStr};
 //		logger.info(ArrayUtils.toString(s));
@@ -531,6 +535,7 @@ public class Video implements Comparable<Object>, Serializable {
 	public void setRank(int rank) {
 		this.rank = rank;
 		VideoUtils.writeStringToFile(getRankFile(), String.valueOf(rank));
+		logger.info(this.getOpus() + " rank is " + rank);
 	}
 	
 	public int getRank() {

@@ -41,45 +41,28 @@ public class VideoDaoFile implements VideoDao {
 	private boolean containsActress(Video target, String compare) {
 		return compare == null || compare.trim().length() == 0 || target.containsActress(compare);
 	}
+	
 	@Override
 	public List<Video> searchVideo(VideoSearch search) {
 		logger.debug(search.toString());
-/*		return this.getVideoList(
-				videoSearch.getStudio(), videoSearch.getOpus(), videoSearch.getTitle(), videoSearch.getActress(), 
-				videoSearch.isAddCond(), videoSearch.isExistVideo(), videoSearch.isExistSubtitles(), 
-				videoSearch.getSortMethod(), videoSearch.isSortReverse(), videoSearch.isNeverPlay());
-	}
-	
-	private List<Video> getVideoList(
-			String studio, String opus, String title, String actress, 
-			boolean addCond, boolean existVideo, boolean existSubtitles, 
-			String sortMethod, boolean sortReverse, boolean neverPlay) {
-*/		
 		List<Video> list = new ArrayList<Video>();
 		for(Video video : getVideoList()) {
-			if(    equals(video.getStudio().getName(), search.getStudio()) 
-				&& equals(video.getOpus(),             search.getOpus())
-				&& containsName(video.getTitle(),      search.getTitle()) 
-				&& containsActress(video,              search.getActress())
-				&& (search.isNeverPlay() ? (video.getPlayCount() == 0) : true)
-				&& (search.isAddCond()   
-						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList()) 
-								&& (search.isExistSubtitles() ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList())) 
-						: true)
-			) {
+			if((equals(video.getStudio().getName(), search.getSearchText()) || equals(video.getOpus(), search.getSearchText()) ||
+					containsName(video.getTitle(), search.getSearchText()) || containsActress(video, search.getSearchText())) 
+					&& (search.isNeverPlay() ? (video.getPlayCount() == 0) : true)
+					&& (search.isAddCond()   
+						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList()) && 
+						   (search.isExistSubtitles() ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList())) 
+						: true)) {
 				video.setSortMethod(search.getSortMethod());
 				list.add(video);
 			}
-			else {
-//				logger.debug("제외된 비디오 : " + video);
-			}
 		}
-//		logger.debug("getAV : found opus size " + list.size());
 		if(search.isSortReverse())
 			Collections.sort(list, Collections.reverseOrder());
 		else
 			Collections.sort(list);
-//		logger.debug("getAV : found opus size " + list.size());
+		//logger.debug("getAV : found opus size " + list.size());
 		return list;
 	}
 
