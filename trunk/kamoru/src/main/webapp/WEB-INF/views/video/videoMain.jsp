@@ -130,27 +130,36 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'B'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video" varStatus="status">
-			<li id="<c:out value="${video.opus}"/>" class="boxLI">
+			<li id="<c:out value="${video.opus}"/>" class="boxLI">					<c:out value="		" escapeXml="true"/>
 				<div class="opusBoxDiv">     <%-- ${status.count} --%>             
 					<dl style="background-image:url('<c:url value="/video/${video.existCoverFile ? video.opus : 'no'}/cover" />'); background-size:300px 200px; height:200px;">
-						<dt><span class="bgSpan" id="titleSpan"  onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
-						<dd><span class="bgSpan" id="studioSpan" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></dd>
+						<dt><span class="bgSpan" id="titleSpan"  onclick="fnVideoDetail('<c:out value="${video.opus}" escapeXml="true"/>')">${video.title}</span></dt>
+						<dd><span class="bgSpan" id="studioSpan" onclick="fnSearchText('<c:out value="${video.studio.name}" escapeXml="true"/>')">${video.studio.name}</span></dd>
 						<dd><span class="bgSpan" id="opusSpan">${video.opus}</span></dd>
 						<dd>
 							<c:forEach items="${video.actressList}" var="actress">
-							<span class="bgSpan" id="actressSpan" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
+							<span class="bgSpan" id="actressSpan" onclick="fnSearchText('<c:out value="${actress.name}" escapeXml="true"/>')">${actress.name}</span>
 							</c:forEach>
 						</dd>
-						<dd><span class="bgSpan ${video.existVideoFileList     ? 'existFile' : 'nonExistFile' }" onclick="fnPlay('${video.opus}')"          
+						<dd><span class="bgSpan ${video.existVideoFileList     ? 'existFile' : 'nonExistFile'}" 
+								onclick="fnPlay('<c:out value="${video.opus}" escapeXml="true"/>')"          
 								title="<c:out value="${video.videoFileListPath}" escapeXml="true"/>">Video (${video.playCount})</span></dd>
-						<dd><span class="bgSpan ${video.existCoverFile         ? 'existFile' : 'nonExistFile' }" onclick="fnImageView('${video.opus}')"     
+						<dd><span class="bgSpan ${video.existCoverFile         ? 'existFile' : 'nonExistFile'}" 
+								onclick="fnImageView('<c:out value="${video.opus}" escapeXml="true"/>')"     
 								title="<c:out value="${video.coverFile}" escapeXml="true"/>">Cover</span></dd>
-						<dd><span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile' }" onclick="fnEditSubtitles('${video.opus}')" 
+						<dd><span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}" 
+								onclick="fnEditSubtitles('<c:out value="${video.opus}" escapeXml="true"/>')" 
 								title="<c:out value="${video.subtitlesFileList}" escapeXml="true"/>">smi</span></dd>
-						<dd><span class="bgSpan ${video.existOverviewFile      ? 'existFile' : 'nonExistFile' }" onclick="fnEditOverview('${video.opus}')"  
-								title="<c:out value="${video.overviewText}" escapeXml="true"/>" id="overview-${video.opus}">Overview</span>
-							<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>	
-							<span id="DEL-${video.opus}" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')" title="<c:out value="${video}" escapeXml="true"/>">Del</span>
+						<dd><span class="bgSpan ${video.existOverviewFile      ? 'existFile' : 'nonExistFile'}" 
+								onclick="fnEditOverview('<c:out value="${video.opus}" escapeXml="true"/>')"  
+								title="<c:out value="${video.overviewText}" escapeXml="true"/>" 
+								id="overview-<c:out value="${video.opus}" escapeXml="true"/>">Overview</span>
+							<input type="range" id="Rank-<c:out value="${video.opus}" escapeXml="true"/>" name="points" min="-5" max="5" 
+								value="<c:out value="${video.rank}" escapeXml="true"/>" 
+								onmouseup="fnRank('<c:out value="${video.opus}" escapeXml="true"/>')"/>	
+							<span id="DEL-<c:out value="${video.opus}" escapeXml="true"/>" style="display:none;" class="bgSpan" 
+								onclick="fnDeleteOpus('<c:out value="${video.opus}" escapeXml="true"/>')" 
+								title="<c:out value="${video}" escapeXml="true"/>">Del</span>
 						</dd>
 					</dl>
 				</div>

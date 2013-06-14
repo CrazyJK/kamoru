@@ -32,7 +32,7 @@ $(document).ready(function(){
 			delta = -event.detail/3;
 		if (delta) {
 			if (delta > 0) {
-		        //alert("마우스 휠 위로~");
+				//alert("마우스 휠 위로~");
 				fnPrevImageView();
 		    }
 		    else {
