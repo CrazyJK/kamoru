@@ -180,6 +180,8 @@ public class Video implements Comparable<Object>, Serializable {
 			return this.getEtcFileList().get(0);
 		} else if(this.isExistHistoryFile()) {
 			return this.getHistoryFile();
+		} else if(this.isExistRankFile()) {
+			return this.getRankFile();
 		} else {
 			throw new VideoException("No delegate video file : " + this.getOpus());
 		}
@@ -207,6 +209,7 @@ public class Video implements Comparable<Object>, Serializable {
 		list.add(getHistoryFile());
 		list.add(getOverviewFile());
 		list.addAll(getEtcFileList());
+		list.add(getRankFile());
 		return list;
 	}
 	
@@ -352,6 +355,10 @@ public class Video implements Comparable<Object>, Serializable {
 		return this.historyFile != null;
 	}
 
+	public boolean isExistRankFile() {
+		return this.rankFile != null;
+	}
+
 	public boolean isExistOverviewFile() {
 		return this.overviewFile != null; 
 	}
@@ -386,7 +393,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 */
 	public void removeVideo() {
 		for(File file : getFileAll())
-			if(file != null) 
+			if(file != null && file.exists()) 
 				if(FileUtils.deleteQuietly(file))
 					logger.debug(file.getAbsoluteFile());
 				else

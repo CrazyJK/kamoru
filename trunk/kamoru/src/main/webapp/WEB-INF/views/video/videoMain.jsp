@@ -130,8 +130,8 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'B'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video" varStatus="status">
-			<li id="<c:out value="${video.opus}"/>" class="boxLI">					<c:out value="		" escapeXml="true"/>
-				<div class="opusBoxDiv">     <%-- ${status.count} --%>             
+			<li id="<c:out value="${video.opus}"/>" class="boxLI">
+				<div class="opusBoxDiv">     <!-- ${status.count} -->             
 					<dl style="background-image:url('<c:url value="/video/${video.existCoverFile ? video.opus : 'no'}/cover" />'); background-size:300px 200px; height:200px;">
 						<dt><span class="bgSpan" id="titleSpan"  onclick="fnVideoDetail('<c:out value="${video.opus}" escapeXml="true"/>')">${video.title}</span></dt>
 						<dd><span class="bgSpan" id="studioSpan" onclick="fnSearchText('<c:out value="${video.studio.name}" escapeXml="true"/>')">${video.studio.name}</span></dd>
