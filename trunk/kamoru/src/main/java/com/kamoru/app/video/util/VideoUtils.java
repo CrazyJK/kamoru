@@ -2,8 +2,13 @@ package com.kamoru.app.video.util;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -12,8 +17,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.dao.VideoDaoFile;
@@ -321,19 +328,6 @@ public class VideoUtils {
 		}
 		return str;
 	}
-	
-	public static void main(String[] args) {
-//		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
-//		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
-		
-		
-		File dir = new File("E:\\aaa");
-		File[] fs = dir.listFiles();
-		for(File f : fs) {
-			System.out.format("%s -> %s%n", f.getName(), removeSpecialCharacters(f.getName()));
-		}
-		
-	}
 
 	public static int readFileToInteger(File rankFile) {
 		try {
@@ -353,4 +347,102 @@ public class VideoUtils {
 		}
 	}
 
+	
+	public static void main(String[] args) throws Exception {
+//		VideoUtils.changeOldNameStyle("E:\\AV_JAP", "E:\\AV_JAP\\unclassified");
+//		System.out.println(ArrayUtils.toString(VideoUtils.getGoogleImage("Abigaile")));
+		
+		
+//		File dir = new File("E:\\aaa");
+//		File[] fs = dir.listFiles();
+//		for(File f : fs) {
+//			System.out.format("%s -> %s%n", f.getName(), removeSpecialCharacters(f.getName()));
+//		}
+		
+		// ObjectOutputStream 이용한 내용 저장
+		/*
+		File infoFile = new File("/home/kamoru/ETC/info.sample");
+		List<String> logList = new ArrayList<String>();
+		logList.add("play 1");
+		logList.add("play 2");
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("text", "overview text 코멘트");
+		data.put("rank", new Integer(3));
+		data.put("log", logList);
+		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(infoFile));
+        os.writeObject(data);
+        os.flush();
+        os.close(); 
+        
+        // ObjectInputStream 이용한 내용 읽기
+        ObjectInputStream is = new ObjectInputStream(new FileInputStream(infoFile));
+        Map<String, Object> dataR = (HashMap<String, Object>) is.readObject();
+        is.close();
+        System.out.println(dataR.get("text"));
+        System.out.println(dataR.get("rank"));
+        System.out.println(
+        		ArrayUtils.toString(
+        				((ArrayList<String>)dataR.get("log"))
+        						)
+        				);
+
+        */
+		
+		JSONObject json = JSONObject.fromObject(FileUtils.readFileToString(new File("/home/kamoru/ETC/info.json.sample")));
+		JSONObject infoData = json.getJSONObject("info");
+
+		System.out.println("opus : " + infoData.getString("opus"));
+		System.out.println("rank : " + infoData.getString("rank"));
+		System.out.println("txt  : " + infoData.getString("txt"));
+
+		JSONArray hisArray = infoData.getJSONArray("history");
+		
+		for(int i=0, e=hisArray.size(); i<e; i++){
+			String str = hisArray.getString(i); //results.getJSONObject(i).getString("url");
+			System.out.println("his  : " + str);
+		}
+		
+		JSONObject root = new JSONObject();
+		
+		JSONObject info = new JSONObject();
+		
+		info.put("opus", "IPZ-011");
+		
+		info.put("rank", "3");
+
+		info.put("txt", "텍스트\nasvfd");
+
+		JSONArray his = new JSONArray();
+		his.add("PLAY-1");
+		his.add("PLAY-2");
+		
+		info.put("history", his);
+		
+		root.put("info", info);
+		
+		System.out.println("---" + root.toString());
+
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -127,8 +127,6 @@ public class VideoServiceImpl implements VideoService {
 			logger.error("Error : executes command", e);
 			throw new RuntimeException(e);
 		}
-
-		
 	}
 
 	@Override
@@ -181,14 +179,16 @@ public class VideoServiceImpl implements VideoService {
 				currDate, video.getOpus(), action, msg, System.getProperty("line.separator"));
 		
 		logger.debug("save history - " + historymsg);
-		try {
-			if(action != Action.DELETE)
-				FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
-		} catch (IOException e) {
-			logger.error(historymsg, e);
-		} catch (VideoException ve) {
-			logger.error(ve.getMessage());
-		}
+		if(action != Action.DELETE)
+			video.addHistory(historymsg);
+//		try {
+//			if(action != Action.DELETE)
+//				FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
+//		} catch (IOException e) {
+//			logger.error(historymsg, e);
+//		} catch (VideoException ve) {
+//			logger.error(ve.getMessage());
+//		}
 		try {
 			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, VideoCore.FileEncoding, true);
 		} catch (IOException e) {

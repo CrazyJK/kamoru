@@ -12,8 +12,12 @@ import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.util.VideoUtils;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,8 +62,11 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private Sort sortMethod = DEFAULT_SORTMETHOD;
 
-	private int rank;
-	
+	// json properties
+	private File infoFile; // json file
+	private int rank; // ranking score
+	private String overview; // overview text
+	private List<String> historyList; // history list
 	
 	public Video() {
 		videoFileList = new ArrayList<File>();
@@ -67,6 +74,9 @@ public class Video implements Comparable<Object>, Serializable {
 		etcFileList = new ArrayList<File>();
 		actressList = new ArrayList<Actress>();
 		playCount = 0;
+		rank = 0;
+		overview = "";
+		historyList = new ArrayList<String>();
 	}
 	
 	@Override
@@ -103,7 +113,7 @@ public class Video implements Comparable<Object>, Serializable {
 		Arrays.sort(s);
 		return s[0].equals(thisStr) ? -1 : 1;
 	}
-	
+
 	/**
 	 * actress 이름이 있는지 확인
 	 * @param actressName
@@ -262,6 +272,7 @@ public class Video implements Comparable<Object>, Serializable {
 		return null;
 	}
 	public String getOverviewText() {
+		// TODO 		return this.overview;
 		return VideoUtils.readFileToString(getOverviewFile());
 	}
 
@@ -402,12 +413,14 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public void saveOverView(String overViewText) {
 		logger.debug(opus + " [" + overViewText + "]");
-		try {
-			FileUtils.writeStringToFile(getOverviewFile(), overViewText, VideoCore.FileEncoding);
-		} catch (IOException e) {
-			logger.error("save overview error", e);
-			throw new VideoException("save overview error", e);
-		}
+		this.overview = overViewText;
+		this.saveInfo();
+//		try {
+//			FileUtils.writeStringToFile(getOverviewFile(), overViewText, VideoCore.FileEncoding);
+//		} catch (IOException e) {
+//			logger.error("save overview error", e);
+//			throw new VideoException("save overview error", e);
+//		}
 	}
 
 	public void setActressList(List<Actress> actressList) {
@@ -456,6 +469,8 @@ public class Video implements Comparable<Object>, Serializable {
 			if(!historyFile.exists())
 				return;
 			for(String line : FileUtils.readLines(historyFile, VideoCore.FileEncoding)) {
+				historyList.add(line);
+				
 				String[] linePart = StringUtils.split(line, ",");
 				if(linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) {
 					this.playCount++;
@@ -541,11 +556,80 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public void setRank(int rank) {
 		this.rank = rank;
-		VideoUtils.writeStringToFile(getRankFile(), String.valueOf(rank));
+		this.saveInfo();
+//		VideoUtils.writeStringToFile(getRankFile(), String.valueOf(rank));
 		logger.info(this.getOpus() + " rank is " + rank);
 	}
 	
 	public int getRank() {
 		return rank;
+	}
+
+	public void setInfoFile(File file) {
+		this.infoFile = file;
+		
+		JSONObject json = null;
+		try {
+			json = JSONObject.fromObject(FileUtils.readFileToString(infoFile));
+		} catch (IOException e1) {
+			logger.error(e1);
+			e1.printStackTrace();
+		}
+		JSONObject infoData = json.getJSONObject("info");
+
+		String opus = infoData.getString("opus");
+		if (!this.opus.equalsIgnoreCase(opus)) 
+			throw new VideoException("invalid info file");
+		String rank = infoData.getString("rank");
+		this.rank = NumberUtils.toInt(rank, 0);
+		
+		this.overview = infoData.getString("overview");
+
+		JSONArray hisArray = infoData.getJSONArray("history");
+		this.playCount = 0;
+		for(int i=0, e=hisArray.size(); i<e; i++){
+			String line = hisArray.getString(i);
+			String[] linePart = StringUtils.split(line, ",");
+			if(linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) {
+				this.playCount++;
+			}
+		}
+
+	}
+
+	public File getInfoFile() {
+		if(this.infoFile == null) {
+			this.infoFile = new File(this.getPath(), this.getNameWithoutSuffix() + ".info");
+		}
+		return infoFile;
+	}
+	
+	private void saveInfo() {
+		JSONObject info = new JSONObject();
+		info.put("opus", this.opus);
+		info.put("rank", this.rank);
+		info.put("overview",  this.overview);
+
+		JSONArray his = new JSONArray();
+		his.addAll(historyList);
+		
+		info.put("history", his);
+		JSONObject root = new JSONObject();
+		root.put("info", info);
+		
+		System.out.println("---" + root.toString());
+		File file = this.getInfoFile();
+		try {
+			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FileEncoding);
+		} catch (IOException e) {
+			logger.error(e);
+			e.printStackTrace();
+		}
+
+	}
+
+	public void addHistory(String historymsg) {
+		historyList.add(historymsg);
+		this.saveInfo();
 	}
 }

@@ -48,6 +48,8 @@ public class FileBaseVideoSource implements VideoSource {
 	@Inject Provider<Studio> studioProvider;
 	@Inject Provider<Actress> actressProvider;
 		
+	private boolean bLoading;
+	
 	// setter
 	public void setPaths(String[] paths) {
 		this.paths = paths;
@@ -82,6 +84,8 @@ public class FileBaseVideoSource implements VideoSource {
 	 * video데이터를 로드한다.
 	 */
 	private void load() {
+		bLoading = true;
+		
 		Collection<File> files = new ArrayList<File>();
 		for(String path : paths) {
 			File directory = new File(path);
@@ -164,6 +168,9 @@ public class FileBaseVideoSource implements VideoSource {
 			else if(subtitles_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setSubtitlesFile(file);
 			}
+			else if ("info".equalsIgnoreCase(ext)) {
+				video.setInfoFile(file);
+			}
 			else if(overview_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setOverviewFile(file);
 			}
@@ -206,6 +213,7 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			
 		}
+		bLoading = false;
 		logger.debug("total found video size : " + videoMap.size());
 	}
 
@@ -261,7 +269,12 @@ public class FileBaseVideoSource implements VideoSource {
 	@Override
 	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
 	public void reload() {
-		load();
+		if (bLoading) {
+			logger.info("Currently loaded because it will pass");
+		} 
+		else {
+			load();
+		}
 	}
 	@Override
 	public Map<String, Video> getVideoMap() {
