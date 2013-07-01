@@ -37,14 +37,15 @@ public class Video implements Comparable<Object>, Serializable {
 
 	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
 	
-	protected static final Log logger = LogFactory.getLog(Video.class);
+	private static final Log logger = LogFactory.getLog(Video.class);
 
 	private final Sort DEFAULT_SORTMETHOD = Sort.M;
 
+	// TITLE
 	private Studio studio;
 	private String opus;
-	private List<Actress> actressList;
 	private String title;
+	private List<Actress> actressList;
 	private String etcInfo;
 	
 	private List<File> videoFileList;
@@ -53,30 +54,30 @@ public class Video implements Comparable<Object>, Serializable {
 	private File coverWebpFile;
 	private byte[] coverByteArray;
 	private byte[] coverWebpByteArray;
-	private File overviewFile;
-	private File historyFile;
 	private List<File> etcFileList;
-	private File rankFile;
 	
-	private Integer playCount;
-	
-	private Sort sortMethod = DEFAULT_SORTMETHOD;
-
-	// json properties
+	// INFO json properties
 	private File infoFile; // json file
 	private int rank; // ranking score
 	private String overview; // overview text
 	private List<String> historyList; // history list
+
+	private Integer playCount;
 	
+	private Sort sortMethod = DEFAULT_SORTMETHOD;
+
+
 	public Video() {
-		videoFileList = new ArrayList<File>();
-		subtitlesFileList = new ArrayList<File>();
-		etcFileList = new ArrayList<File>();
+		videoFileList 		= new ArrayList<File>();
+		subtitlesFileList 	= new ArrayList<File>();
+		etcFileList 		= new ArrayList<File>();
+		
 		actressList = new ArrayList<Actress>();
-		playCount = 0;
-		rank = 0;
-		overview = "";
 		historyList = new ArrayList<String>();
+
+		playCount 	= 0;
+		rank 		= 0;
+		overview 	= "";
 	}
 	
 	@Override
@@ -173,6 +174,11 @@ public class Video implements Comparable<Object>, Serializable {
 	public File getCoverWebpFile() {
 		return coverWebpFile;
 	}
+	public String getCoverWebpFilePath() {
+		if (this.isExistCoverWebpFile())
+			return this.getCoverWebpFile().getAbsolutePath();
+		return "";
+	}
 	/**
 	 * video 대표 파일
 	 * @return
@@ -182,16 +188,12 @@ public class Video implements Comparable<Object>, Serializable {
 			return this.getVideoFileList().get(0);
 		} else if(this.isExistCoverFile()) {
 			return this.getCoverFile();
-		} else if(this.isExistOverviewFile()) {
-			return this.getOverviewFile();
 		} else if(this.isExistSubtitlesFileList()) {
 			return this.getSubtitlesFileList().get(0);
 		} else if(this.isExistEtcFileList()) {
 			return this.getEtcFileList().get(0);
-		} else if(this.isExistHistoryFile()) {
-			return this.getHistoryFile();
-		} else if(this.isExistRankFile()) {
-			return this.getRankFile();
+		} else if (this.infoFile != null) {
+			return this.infoFile;
 		} else {
 			throw new VideoException("No delegate video file : " + this.getOpus());
 		}
@@ -215,11 +217,10 @@ public class Video implements Comparable<Object>, Serializable {
 		List<File> list = new ArrayList<File>();
 		list.addAll(getVideoFileList());
 		list.addAll(getSubtitlesFileList());
-		list.add(getCoverFile());
-		list.add(getHistoryFile());
-		list.add(getOverviewFile());
 		list.addAll(getEtcFileList());
-		list.add(getRankFile());
+		list.add(this.coverFile);
+		list.add(this.coverWebpFile);
+		list.add(this.infoFile);
 		return list;
 	}
 	
@@ -231,23 +232,6 @@ public class Video implements Comparable<Object>, Serializable {
 		return this.getDelegateFile().getName();
 	}
 	/**
-	 * history file. 없을경우 대표이름으로 만들어서 반환
-	 * @return
-	 */
-	public File getHistoryFile() {
-		if(historyFile == null)
-			historyFile = new File(getPath(), getNameWithoutSuffix() + ".log");
-		return historyFile;
-	}
-	public String getHistoryFilePath() {
-		if(isExistHistoryFile())
-			return getHistoryFile().getAbsolutePath();
-		return null;
-	}
-	public String getHistoryText() {
-		return VideoUtils.readFileToString(getHistoryFile());
-	}
-	/**
 	 * video 대표 파일 이름. 확장자를 뺀 대표이름
 	 * @return
 	 */
@@ -257,30 +241,15 @@ public class Video implements Comparable<Object>, Serializable {
 	public String getOpus() {
 		return opus;
 	}
-	/**
-	 * overview file. 없으면 대표이름으로 만들어서 반환
-	 * @return
-	 */
-	public File getOverviewFile() {
-		if(overviewFile == null)
-			overviewFile = new File(getPath(), getNameWithoutSuffix() + ".txt");
-		return overviewFile;
-	}
-	public String getOverviewFilePath() {
-		if(isExistOverviewFile())
-			return getOverviewFile().getAbsolutePath();
-		return null;
-	}
 	public String getOverviewText() {
-		// TODO 		return this.overview;
-		return VideoUtils.readFileToString(getOverviewFile());
+		return this.overview;
 	}
 
 	/**
 	 * video 대표 폴더 경로. video > cover > overview > subtitles > etc 순으로 찾는다.
 	 * @return
 	 */
-	private String getPath() {
+	private String getDelegatePath() {
 		return this.getDelegateFile().getParent();
 	}
 	public Integer getPlayCount() {
@@ -362,18 +331,6 @@ public class Video implements Comparable<Object>, Serializable {
 		return this.etcFileList != null && this.etcFileList.size() > 0;
 	}
 
-	public boolean isExistHistoryFile() {
-		return this.historyFile != null;
-	}
-
-	public boolean isExistRankFile() {
-		return this.rankFile != null;
-	}
-
-	public boolean isExistOverviewFile() {
-		return this.overviewFile != null; 
-	}
-
 	public boolean isExistSubtitlesFileList() {
 		return this.subtitlesFileList != null && this.subtitlesFileList.size() > 0;
 	}
@@ -415,12 +372,6 @@ public class Video implements Comparable<Object>, Serializable {
 		logger.debug(opus + " [" + overViewText + "]");
 		this.overview = overViewText;
 		this.saveInfo();
-//		try {
-//			FileUtils.writeStringToFile(getOverviewFile(), overViewText, VideoCore.FileEncoding);
-//		} catch (IOException e) {
-//			logger.error("save overview error", e);
-//			throw new VideoException("save overview error", e);
-//		}
 	}
 
 	public void setActressList(List<Actress> actressList) {
@@ -459,36 +410,10 @@ public class Video implements Comparable<Object>, Serializable {
 		this.etcInfo = etcInfo;
 	}
 
-	/**
-	 * history 파일 설정. 파일이 존재하면 읽어서 playCount도 설정
-	 * @param historyFile
-	 */
-	public void setHistoryFile(File historyFile) {
-		this.historyFile = historyFile;
-		try {
-			if(!historyFile.exists())
-				return;
-			for(String line : FileUtils.readLines(historyFile, VideoCore.FileEncoding)) {
-				historyList.add(line);
-				
-				String[] linePart = StringUtils.split(line, ",");
-				if(linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) {
-					this.playCount++;
-				}
-			}
-		} catch (IOException e) {
-			logger.error(e);
-		}
-	}
-
 	public void setOpus(String opus) {
 		this.opus = opus;
 	}
 
-	public void setOverviewFile(File overviewFile) {
-		this.overviewFile = overviewFile;
-	}
-	
 	public void setPlayCount(Integer playCount) {
 		this.playCount = playCount;
 	}
@@ -526,8 +451,7 @@ public class Video implements Comparable<Object>, Serializable {
 		sb.append("video : ").append(this.getVideoFileListPath()).append(",");
 		sb.append("subtitles : ").append(this.getSubtitlesFileListPath()).append(",");
 		sb.append("cover : ").append(this.getCoverFilePath()).append(",");
-		sb.append("overview : ").append(this.getOverviewFilePath()).append(",");
-		sb.append("history : ").append(this.getHistoryFilePath()).append(",");
+		sb.append("info : ").append(this.infoFile.getAbsolutePath()).append(",");
 		sb.append("etc : ").append(this.getEtcFileListPath());
 		return sb.toString();
 	}
@@ -543,22 +467,10 @@ public class Video implements Comparable<Object>, Serializable {
 				}
 	}
 
-	public File getRankFile() {
-		if(rankFile == null)
-			rankFile = new File(getPath(), getNameWithoutSuffix() + ".rank");
-		return rankFile;
-	}
-
-	public void setRankFile(File rankFile) {
-		this.rankFile = rankFile;
-		rank = VideoUtils.readFileToInteger(rankFile);
-	}
-
 	public void setRank(int rank) {
+		logger.info(this.getOpus() + " rank is " + rank);
 		this.rank = rank;
 		this.saveInfo();
-//		VideoUtils.writeStringToFile(getRankFile(), String.valueOf(rank));
-		logger.info(this.getOpus() + " rank is " + rank);
 	}
 	
 	public int getRank() {
@@ -570,7 +482,7 @@ public class Video implements Comparable<Object>, Serializable {
 		
 		JSONObject json = null;
 		try {
-			json = JSONObject.fromObject(FileUtils.readFileToString(infoFile));
+			json = JSONObject.fromObject(FileUtils.readFileToString(infoFile, VideoCore.FileEncoding));
 		} catch (IOException e1) {
 			logger.error(e1);
 			e1.printStackTrace();
@@ -589,6 +501,7 @@ public class Video implements Comparable<Object>, Serializable {
 		this.playCount = 0;
 		for(int i=0, e=hisArray.size(); i<e; i++){
 			String line = hisArray.getString(i);
+			historyList.add(line);
 			String[] linePart = StringUtils.split(line, ",");
 			if(linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) {
 				this.playCount++;
@@ -599,11 +512,15 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public File getInfoFile() {
 		if(this.infoFile == null) {
-			this.infoFile = new File(this.getPath(), this.getNameWithoutSuffix() + ".info");
+			this.infoFile = new File(this.getDelegatePath(), this.getNameWithoutSuffix() + ".info");
 		}
 		return infoFile;
 	}
-	
+	public String getInfoFilePath() {
+		if (infoFile != null)
+			return this.infoFile.getAbsolutePath();
+		return "";
+	}
 	private void saveInfo() {
 		JSONObject info = new JSONObject();
 		info.put("opus", this.opus);
@@ -617,7 +534,6 @@ public class Video implements Comparable<Object>, Serializable {
 		JSONObject root = new JSONObject();
 		root.put("info", info);
 		
-		System.out.println("---" + root.toString());
 		File file = this.getInfoFile();
 		try {
 			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FileEncoding);
@@ -625,11 +541,19 @@ public class Video implements Comparable<Object>, Serializable {
 			logger.error(e);
 			e.printStackTrace();
 		}
-
+		logger.info(opus + " " + root.toString());
 	}
 
 	public void addHistory(String historymsg) {
 		historyList.add(historymsg);
 		this.saveInfo();
+	}
+	
+	public String getHistoryText() {
+		StringBuilder sb = new StringBuilder();
+		for (String his : historyList) {
+			sb.append(his).append(System.getProperty("line.separator"));
+		}
+		return sb.toString();
 	}
 }

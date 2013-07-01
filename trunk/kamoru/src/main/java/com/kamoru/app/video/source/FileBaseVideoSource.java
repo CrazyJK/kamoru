@@ -171,14 +171,7 @@ public class FileBaseVideoSource implements VideoSource {
 			else if ("info".equalsIgnoreCase(ext)) {
 				video.setInfoFile(file);
 			}
-			else if(overview_extensions.toLowerCase().indexOf(ext) > -1) {
-				video.setOverviewFile(file);
-			}
-			else if("log".indexOf(ext) > -1) {
-				video.setHistoryFile(file);
-			}
-			else if("rank".indexOf(ext) > -1) {
-				video.setRankFile(file);
+			else if("webp".equalsIgnoreCase(ext)) {
 			}
 			else {
 				video.setEtcFile(file);

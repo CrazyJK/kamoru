@@ -161,7 +161,7 @@ public class VideoServiceImpl implements VideoService {
 			}
 			break;
 		case OVERVIEW :
-			msg = "write overview : " + video.getOverviewFilePath();
+			msg = "save overview : " + video.getInfoFile().getName();
 			break;
 		case COVER :
 			msg = "view cover : " + video.getCoverFilePath();
@@ -261,6 +261,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void rankVideo(String opus, int rank) {
+		logger.info(opus + " : " + rank);
 		videoDao.getVideo(opus).setRank(rank);
 		
 	}

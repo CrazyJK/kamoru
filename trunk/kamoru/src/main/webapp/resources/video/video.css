@@ -11,6 +11,9 @@
 	width: 100px;
     height:10px;
 }
+pre {
+	font-family: "나눔고딕코딩"; font-size:8pt;
+}
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none  !important;
     -webkit-border-radius: 5px;

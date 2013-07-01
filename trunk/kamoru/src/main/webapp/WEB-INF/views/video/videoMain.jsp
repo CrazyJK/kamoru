@@ -150,7 +150,7 @@ var bgImageCount = ${bgImageCount};
 						<dd><span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}" 
 								onclick="fnEditSubtitles('<c:out value="${video.opus}" escapeXml="true"/>')" 
 								title="<c:out value="${video.subtitlesFileList}" escapeXml="true"/>">smi</span></dd>
-						<dd><span class="bgSpan ${video.existOverviewFile      ? 'existFile' : 'nonExistFile'}" 
+						<dd><span class="bgSpan" 
 								onclick="fnEditOverview('<c:out value="${video.opus}" escapeXml="true"/>')"  
 								title="<c:out value="${video.overviewText}" escapeXml="true"/>" 
 								id="overview-<c:out value="${video.opus}" escapeXml="true"/>">Overview</span>
@@ -184,7 +184,7 @@ var bgImageCount = ${bgImageCount};
 						title="<c:out value="${video.coverFile}" escapeXml="true"/>">C</span>
 					<span class="bgSpan <c:out value="${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile' }"/>" onclick="fnEditSubtitles('<c:out value="${video.opus}"/>')" 
 						title="<c:out value="${video.subtitlesFileList}" escapeXml="true"/>">s</span>
-					<span class="bgSpan <c:out value="${video.existOverviewFile      ? 'existFile' : 'nonExistFile' }"/>" onclick="fnEditOverview('<c:out value="${video.opus}"/>')"  
+					<span class="bgSpan" onclick="fnEditOverview('<c:out value="${video.opus}"/>')"  
 						title="<c:out value="${video.overviewText}" escapeXml="true"/>">O</span>
 					<span id="DEL-<c:out value="${video.opus}"/>" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('<c:out value="${video.opus}"/>')" 
 						title="<c:out value="${video}" escapeXml="true"/>">Del</span>
@@ -217,7 +217,7 @@ var bgImageCount = ${bgImageCount};
 						title="<c:out value="${video.coverFile}" escapeXml="true"/>">C</span>
 					<span class="bgSpan <c:out value="${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile' }"/>" onclick="fnEditSubtitles('<c:out value="${video.opus}"/>')" 
 						title="<c:out value="${video.subtitlesFileList}" escapeXml="true"/>">s</span>
-					<span class="bgSpan <c:out value="${video.existOverviewFile      ? 'existFile' : 'nonExistFile' }"/>" onclick="fnEditOverview('<c:out value="${video.opus}"/>')"  
+					<span class="bgSpan" onclick="fnEditOverview('<c:out value="${video.opus}"/>')"  
 						title="<c:out value="${video.overviewText}" escapeXml="true"/>">O</span>
 			</tr>
 			</c:forEach>

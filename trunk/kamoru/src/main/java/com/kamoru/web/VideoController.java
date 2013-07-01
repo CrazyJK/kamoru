@@ -146,6 +146,7 @@ public class VideoController {
 	@RequestMapping(value="/{opus}/rank/{rank}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void doRankVideo(@PathVariable String opus, @PathVariable int rank) {
+		logger.info(opus + " : " + rank);
 		videoService.rankVideo(opus, rank);
 	}
 	
