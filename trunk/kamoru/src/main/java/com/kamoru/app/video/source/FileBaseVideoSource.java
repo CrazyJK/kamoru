@@ -84,6 +84,7 @@ public class FileBaseVideoSource implements VideoSource {
 	 * video데이터를 로드한다.
 	 */
 	private void load() {
+		logger.info(new String());
 		bLoading = true;
 		
 		Collection<File> files = new ArrayList<File>();
@@ -216,13 +217,14 @@ public class FileBaseVideoSource implements VideoSource {
 	 * @return
 	 */
 	private File convertWebpFile(File file) {
+		logger.debug(file.getAbsoluteFile());
 		File webpfile = new File(file.getParent(), VideoUtils.getFileName(file) + ".webp");
 		if(webpfile.exists()) {
 			return webpfile;
 		}
 		String command = webp_exec + " \"" + file.getAbsolutePath() + "\" -q 80 -o \"" + webpfile.getAbsolutePath() + "\"";
 //		String[] command = {webp_exec, file.getAbsolutePath(), "-q 80 -o", webpfile.getAbsolutePath()};
-		logger.info(command);
+		logger.debug(command);
 		try {
 			Runtime.getRuntime().exec(command);
 		} catch (IOException e) {
@@ -232,11 +234,12 @@ public class FileBaseVideoSource implements VideoSource {
 	}
 	
 	/**
-	 * 컴마(,)로 구분된 이름을 List&lt;Actress&gt;로 반환
+	 * 컴마(,)로 구분된 이름을 <code>List&lt;Actress&gt;</code>로 반환
 	 * @param actressNames
 	 * @return
 	 */
 	private List<Actress> getActressList(String actressNames) {
+		logger.debug(actressNames);
 		List<Actress> actressList = new ArrayList<Actress>();
 		
 		String[] namesArr = StringUtils.split(actressNames, ",");
@@ -262,6 +265,7 @@ public class FileBaseVideoSource implements VideoSource {
 	@Override
 	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
 	public void reload() {
+		logger.info(new String());
 		if (bLoading) {
 			logger.info("Currently loaded because it will pass");
 		} 
@@ -271,16 +275,19 @@ public class FileBaseVideoSource implements VideoSource {
 	}
 	@Override
 	public Map<String, Video> getVideoMap() {
+		logger.info(new String());
 		createVideoSource();
 		return videoMap;
 	}
 	@Override
 	public Map<String, Studio> getStudioMap() {
+		logger.info(new String());
 		createVideoSource();
 		return studioMap;
 	}
 	@Override
 	public Map<String, Actress> getActressMap() {
+		logger.info(new String());
 		createVideoSource();
 		return actressMap;
 	}

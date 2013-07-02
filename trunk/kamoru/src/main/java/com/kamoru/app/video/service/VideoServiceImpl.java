@@ -47,26 +47,31 @@ public class VideoServiceImpl implements VideoService {
 	
 	@Override
 	public List<Video> searchVideo(VideoSearch videoSearch) {
+		logger.info(videoSearch);
 		return videoDao.searchVideo(videoSearch);
 	}
 
 	@Override
 	public List<Video> getVideoList() {
+		logger.info(new String());
 		return videoDao.getVideoList();
 	}
 
 	@Override
 	public List<Actress> getActressList() {
+		logger.info(new String());
 		return videoDao.getActressList();
 	}
 
 	@Override
 	public List<Studio> getStudioList() {
+		logger.info(new String());
 		return videoDao.getStudioList();
 	}
 
 	@Override
 	public Video getVideo(String opus) {
+		logger.info(opus);
 		try {
 			return videoDao.getVideo(opus);
 		}
@@ -78,6 +83,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void saveVideoOverview(String opus, String overViewText) {
+		logger.info(opus + " : " + overViewText);
 		videoDao.getVideo(opus).saveOverView(overViewText);
 	}
 
@@ -91,31 +97,33 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void playVideo(String opus) {
 		logger.info(opus);
+		executeCommand(getVideo(opus), Action.PLAY);
+		getVideo(opus).increasePlayCount();
 		saveHistory(getVideo(opus), Action.PLAY);
-		executeCommand(Action.PLAY, getVideo(opus));
 	}
 
 	@Override
 	public void editVideoSubtitles(String opus) {
 		logger.info(opus);
-		executeCommand(Action.SUBTITLES, getVideo(opus));
+		executeCommand(getVideo(opus), Action.SUBTITLES);
 	}
 	
 	@Async
-	private void executeCommand(Action action, Video video) {
+	private void executeCommand(Video video, Action action) {
+		logger.info(video.getOpus() + " : " + action);
 		String command = null;
 		String[] argumentsArray = null;
 		switch(action) {
-		case PLAY:
-			command = player;
-			argumentsArray = video.getVideoFileListPathArray();
-			break;
-		case SUBTITLES:
-			command = editor;
-			argumentsArray = video.getSubtitlesFileListPathArray();
-			break;
-		default:
-			throw new RuntimeException("Unknown Action");
+			case PLAY:
+				command = player;
+				argumentsArray = video.getVideoFileListPathArray();
+				break;
+			case SUBTITLES:
+				command = editor;
+				argumentsArray = video.getSubtitlesFileListPathArray();
+				break;
+			default:
+				throw new RuntimeException("Unknown Action");
 		}
 		if(argumentsArray == null)
 			throw new RuntimeException("No arguments");
@@ -131,6 +139,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public File getVideoCoverFile(String opus) {
+		logger.info(opus);
 		if(webpMode)
 			return videoDao.getVideo(opus).getCoverWebpFile();
 		else
@@ -139,6 +148,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public byte[] getVideoCoverByteArray(String opus) {
+		logger.info(opus);
 		if(webpMode)
 			return videoDao.getVideo(opus).getCoverWebpByteArray();
 		else 
@@ -147,48 +157,35 @@ public class VideoServiceImpl implements VideoService {
 	
 	// action method
 	private void saveHistory(Video video, Action action) {
-		String msg = null; 
+		logger.info(video.getOpus() + " : " + action);
+		String files = null; 
 		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	
 		switch(action) {
-		case PLAY :
-			if(video.getVideoFileListPath() != null) {
-				msg = "play video : " + video.getVideoFileListPath();
-				video.increasePlayCount();
-			}
-			else {
-				throw new IllegalStateException("No video to play. " + video.getOpus());
-			}
-			break;
-		case OVERVIEW :
-			msg = "save overview : " + video.getInfoFile().getName();
-			break;
-		case COVER :
-			msg = "view cover : " + video.getCoverFilePath();
-			break;
-		case SUBTITLES :
-			msg = "edit subtitles : " + video.getSubtitlesFileListPath();
-			break;
-		case DELETE :
-			msg = "delete all : " + video.toString();
-			break;
-		default:
-			throw new IllegalStateException("Undefined Action : " + action.toString());
+			case PLAY :
+				files = video.getVideoFileListPath();
+				break;
+			case OVERVIEW :
+				files = video.getInfoFile().getName();
+				break;
+			case COVER :
+				files = video.getCoverFilePath();
+				break;
+			case SUBTITLES :
+				files = video.getSubtitlesFileListPath();
+				break;
+			case DELETE :
+				files = video.toString();
+				break;
+			default:
+				throw new IllegalStateException("Undefined Action : " + action.toString());
 		}
 		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", 
-				currDate, video.getOpus(), action, msg, System.getProperty("line.separator"));
+				currDate, video.getOpus(), action, files, System.getProperty("line.separator"));
 		
 		logger.debug("save history - " + historymsg);
 		if(action != Action.DELETE)
 			video.addHistory(historymsg);
-//		try {
-//			if(action != Action.DELETE)
-//				FileUtils.writeStringToFile(video.getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
-//		} catch (IOException e) {
-//			logger.error(historymsg, e);
-//		} catch (VideoException ve) {
-//			logger.error(ve.getMessage());
-//		}
 		try {
 			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, VideoCore.FileEncoding, true);
 		} catch (IOException e) {
@@ -198,16 +195,19 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public Actress getActress(String actressName) {
+		logger.info(actressName);
 		return videoDao.getActress(actressName);
 	}
 
 	@Override
 	public Studio getStudio(String studioName) {
+		logger.info(studioName);
 		return videoDao.getStudio(studioName);
 	}
 
 	@Override
 	public List<Video> findVideoList(String query) {
+		logger.info(query);
 		List<Video> found = new ArrayList<Video>();
 		if(query == null || query.trim().length() == 0)
 			return found;
@@ -226,6 +226,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public byte[] getDefaultCoverFileByteArray() {
+		logger.info(new String());
 		if(defaultCoverFileBytes == null)
 			try {
 				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCoverFilePath));
@@ -237,6 +238,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
+		logger.info(videoList);
 		List<Actress> actressList = new ArrayList<Actress>();
 		for(Video video : videoList) {
 			for(Actress actress : video.getActressList()) {
@@ -250,6 +252,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
+		logger.info(videoList);
 		List<Studio> studioList = new ArrayList<Studio>();
 		for(Video video : videoList) {
 			if(!studioList.contains(video.getStudio()))

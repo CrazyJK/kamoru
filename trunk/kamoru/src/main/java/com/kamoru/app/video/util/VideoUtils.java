@@ -170,7 +170,7 @@ public class VideoUtils {
 	 * @return
 	 */
 	public static String arrayToString(Object array) {
-		String toString = ArrayUtils.toString(array);
+		String toString = ArrayUtils.toString(array, "");
 		return toString.substring(1, toString.length() - 1);
 	}
 	

@@ -451,7 +451,7 @@ public class Video implements Comparable<Object>, Serializable {
 		sb.append("video : ").append(this.getVideoFileListPath()).append(",");
 		sb.append("subtitles : ").append(this.getSubtitlesFileListPath()).append(",");
 		sb.append("cover : ").append(this.getCoverFilePath()).append(",");
-		sb.append("info : ").append(this.infoFile.getAbsolutePath()).append(",");
+		sb.append("info : ").append(this.getInfoFilePath()).append(",");
 		sb.append("etc : ").append(this.getEtcFileListPath());
 		return sb.toString();
 	}
@@ -538,8 +538,7 @@ public class Video implements Comparable<Object>, Serializable {
 		try {
 			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FileEncoding);
 		} catch (IOException e) {
-			logger.error(e);
-			e.printStackTrace();
+			logger.error("info save error", e);
 		}
 		logger.info(opus + " " + root.toString());
 	}

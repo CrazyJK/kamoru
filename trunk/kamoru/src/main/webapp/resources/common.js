@@ -9,8 +9,10 @@ function popup(url, name, width, height, positionMethod, spec) {
 			left = (window.screen.width  - width)/2;
 			top  = (window.screen.height - height)/2;
 		} else if(positionMethod == 'Mouse') {
-			left = window.event.x;
-			top  = window.event.y;
+			try {
+				left = window.event.x;
+				top  = window.event.y;
+			} catch(e) {}
 		}
 	}
 	if(spec) {

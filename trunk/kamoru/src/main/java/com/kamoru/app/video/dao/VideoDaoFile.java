@@ -44,7 +44,7 @@ public class VideoDaoFile implements VideoDao {
 	
 	@Override
 	public List<Video> searchVideo(VideoSearch search) {
-		logger.debug(search.toString());
+		logger.info(search.toString());
 		List<Video> list = new ArrayList<Video>();
 		for(Video video : getVideoList()) {
 			if((equals(video.getStudio().getName(), search.getSearchText()) || equals(video.getOpus(), search.getSearchText()) ||
@@ -62,31 +62,35 @@ public class VideoDaoFile implements VideoDao {
 			Collections.sort(list, Collections.reverseOrder());
 		else
 			Collections.sort(list);
-		//logger.debug("getAV : found opus size " + list.size());
+		logger.debug("found video size : " + list.size());
 		return list;
 	}
 
 	@Override
 	@Cacheable(value="videoCache")
 	public List<Video> getVideoList() {
+		logger.info(new String());
 		return new ArrayList<Video>(videoSource.getVideoMap().values());
 	}
 	
 	@Override
 	@Cacheable("studioCache")
 	public List<Studio> getStudioList() {
+		logger.info(new String());
 		return new ArrayList<Studio>(videoSource.getStudioMap().values()); 
 	}
 
 	@Override
 	@Cacheable("actressCache")
 	public List<Actress> getActressList() {
+		logger.info(new String());
 		return new ArrayList<Actress>(videoSource.getActressMap().values()); 
 	}
 
 	@Override
 	@Cacheable(value="videoCache")
 	public Video getVideo(String opus) {
+		logger.info(opus);
 		Video video = videoSource.getVideoMap().get(opus.toLowerCase());
 		if(video == null) throw new VideoException("Not found video : " + opus);
 		return video;
@@ -95,6 +99,7 @@ public class VideoDaoFile implements VideoDao {
 	@Override
 	@Cacheable("studioCache")
 	public Studio getStudio(String name) {
+		logger.info(name);
 		Studio studio = videoSource.getStudioMap().get(name.toLowerCase());
 		if(studio == null) throw new VideoException("Not found Studio : " + name);
 		return studio;
@@ -103,6 +108,7 @@ public class VideoDaoFile implements VideoDao {
 	@Override
 	@Cacheable("actressCache")
 	public Actress getActress(String name) {
+		logger.info(name);
 		Actress actress = videoSource.getActressMap().get(VideoUtils.forwardNameSort(name));
 		if(actress == null) throw new VideoException("Not found actress : " + name);
 		return actress;
@@ -110,6 +116,7 @@ public class VideoDaoFile implements VideoDao {
 
 	@Override
 	public void deleteVideo(String opus) {
+		logger.info(opus);
 		videoSource.getVideoMap().get(opus.toLowerCase()).removeVideo();
 		videoSource.reload();
 	}

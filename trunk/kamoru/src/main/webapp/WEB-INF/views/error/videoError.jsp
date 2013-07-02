@@ -5,6 +5,8 @@
 <title>Video Error</title>
 </head>
 <body>
+<h1>Video Error</h1>
 <span style="color:red; font-weight:bold;">${exceptionMsg}</span>
+<p>view debug log
 </body>
 </html>

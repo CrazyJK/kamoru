@@ -54,7 +54,7 @@
 	</beans:bean>
     
     <!-- Exception Resolver -->
-    <beans:bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <beans:bean id="exceptionResolver" class="com.kamoru.util.spring.handler.DebugMappingExceptionResolver">
     	<beans:property name="exceptionMappings">
     		<beans:props>
     			<beans:prop key="com.kamoru.app.video.VideoException">error/videoError</beans:prop>

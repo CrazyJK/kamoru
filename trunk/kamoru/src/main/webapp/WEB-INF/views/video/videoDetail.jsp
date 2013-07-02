@@ -13,15 +13,16 @@
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video.js" />"></script>
-<script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
+var bgImageCount = 0;
 $(document).ready(function(){
 	//fnRank('${video.opus}');
 });
 </script>
+<script src="<c:url value="/resources/video/video.js" />" type="text/javascript"></script>
+<script src="<c:url value="/resources/common.js" />"></script>
+<script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
 <body  style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 <%-- <img src="<c:url value="/video/${video.opus}/cover" />" /> --%>
@@ -35,7 +36,7 @@ $(document).ready(function(){
 		</c:forEach></dd>
 	<dd><span class="bgSpan">DATE : ${video.videoDate}</span></dd>
 	<dd><span class="bgSpan">ETC : ${video.etcInfo}</span></dd>
-	<dd><span class="bgSpan" onclick="opener.fnPlay('${video.opus}')">${video.videoFileListPath}</span></dd>
+	<dd><span class="bgSpan" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
 	<dd><span class="bgSpan">COVER : ${video.coverFilePath}</span></dd>
 	<dd><span class="bgSpan">WEBP : ${video.coverWebpFilePath}</span></dd>
 	<dd><span class="bgSpan" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
