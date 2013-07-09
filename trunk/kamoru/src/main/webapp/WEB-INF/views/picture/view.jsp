@@ -10,20 +10,16 @@
 <link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <style type="text/css">
 * {margin:0px; padding:0px;}
-body {background-size:contain; background-repeat:no-repeat; background-position:center center;}
-li {display:inline-block;}
 #navDiv {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}
-#imageThumbnailDiv {position:absolute; bottom:0px; height:160px; width:100%; margin:10px 5px 0px 0px; text-align:center; overflow:hidden;}
+#imageThumbnailDiv {position:absolute; right:0px; top:40px; width:160px; margin:10px 5px 0px 0px; text-align:center; overflow:hidden;}
 #imageDiv {text-align:center};
 .otherThumbnails  {opacity:0.5; border: solid 1px green;}
 .currentThumbnail {opacity:1.0; border: solid 2px cyan;}
-.thumbDiv {width:150px; height:160px;}
 </style>
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(window).bind("mousewheel", function(e){
@@ -61,100 +57,111 @@ $(document).ready(function(){
 		}
 		
 	});
-	/* 
 	$("#imageDiv").bind("click", function(e){
 		var event=window.event || e;
 		//alert(event.type + " - " + event.button + ", keyValue=" + event.keyCode);
 		
-		//event.preventDefault();
-		//event.stopPropagation();
+		event.preventDefault();
+		event.stopPropagation();
 		if(event.button == 0) {
 			fnRandomImageView();
 		} 
-	}); */
-	$(window).bind("resize", resizeImage);
+	});
 	fnRandomImageView();
-	resizeImage();
 });
-function resizeImage() {
-	var windowHeight = $(window).height();
-	$("#imageDiv").height(windowHeight);
-}
 var imagepath = '<s:url value="/image/" />';
+var imgWidth, imgHeight;
+var img;
 var selectedNumber;
-var selectedImgUrl;
+var url;
 var imageCount = <c:out value="${imageCount}" />;
 function fnViewImage(current) {
-	selectedNumber = current;
-	selectedImgUrl = imagepath + selectedNumber;
-	
-	$("body").css("background-image", "url('" + selectedImgUrl + "')");
-	$("#leftNo").html(getPrevNumber());
-	$("#currNo").html(selectedNumber);
-	$("#rightNo").html(getNextNumber());
+	if(current)
+		selectedNumber = current;
+	fnDisplayThumbnail();
+	url = imagepath + selectedNumber;
+	img = $("<img id='img'/>");
+	img.hide();
+	img.attr("src", url);
+	img.bind('load', resizeImage);
+	$("#imageDiv").empty().append(img);
+	$("#fullImageBtn").html("F" + selectedNumber);
 	fnDisplayThumbnail();
 }
-function fnFullyImageView(){
-	var img = $("<img />");
-	img.hide();
-	img.attr("src", selectedImgUrl);
-	img.bind('load', function(){
-		mw_image_window(this);
-	});
-	return img;
-}
-function popupImage(url) {
-}
+function resizeImage() {
+	imgWidth  = $(this).width();
+	imgHeight = $(this).height();
+	var divWidth  = $(window).width();
+	var divHeight = $(window).height() - 5;
+	var width  = 0;
+	var height = 0;
+	
+	if(imgWidth <= divWidth && imgHeight <= divHeight) { // 1. x:- y:-
+		width  = imgWidth;
+		height = imgHeight;
+	}else if(imgWidth <= divWidth && imgHeight > divHeight) { // 2. x:- y:+
+		width  = ratioSize(divHeight, imgWidth, imgHeight);
+		height = divHeight;
+	}else if(imgWidth > divWidth && imgHeight <= divHeight) { // 3. x:+ y:-
+		width  = divWidth;
+		height = ratioSize(divWidth, imgHeight, imgWidth);
+	}else if(imgWidth > divWidth && imgHeight > divHeight) { // 4. x:+ y:+
+		width  = divWidth;
+		height = ratioSize(width, imgHeight, imgWidth);
+		if(height > divHeight) {
+			width  = ratioSize(divHeight, imgWidth, imgHeight);
+			height = divHeight;
+		}
+	}
+	$(this).attr("width", width);
+	$(this).attr("height", height);
+	$(this).fadeIn('fast');
+	$("#imageThumbnailDiv").height(divHeight - 50);
 
-function getPrevNumber() {
-	return selectedNumber == 0 ? imageCount - 1 : selectedNumber - 1;
+	$("#debug").html("image:" + imgWidth + "x" + imgHeight + " window:" + divWidth + "x" + divHeight + " resize:" + width + "x" + height);
 }
-function getNextNumber() {
-	return selectedNumber == imageCount -1 ? 0 : selectedNumber + 1;
+function ratioSize(numerator1, numerator2, denominator) {
+	return parseInt(numerator1 * numerator2 / denominator);
+}
+function fnFullyImageView(){
+	$("#img").attr("width", imgWidth);
+	$("#img").attr("height", imgHeight);
 }
 function fnPrevImageView() {
-	fnViewImage(getPrevNumber());
+	selectedNumber = selectedNumber == 0 ? imageCount - 1 : selectedNumber - 1;
+	fnViewImage();
 }
 function fnNextImageView() {
-	fnViewImage(getNextNumber());
+	selectedNumber = selectedNumber == imageCount -1 ? 0 : selectedNumber + 1;
+	fnViewImage();
 }
 function fnRandomImageView() {
-	fnViewImage(Math.floor(Math.random() * imageCount));
+	selectedNumber = Math.floor(Math.random() * imageCount);	
+	fnViewImage();
 }
 function fnDisplayThumbnail() {
-	var thumbnailRange = parseInt(parseInt($(window).width() / 200) / 2);
-	$("#imageThumbnailUL").empty();
+	var thumbnailRange = 3;
+	$("#imageThumbnailDiv").empty();
 	for(var current = selectedNumber - thumbnailRange; current <= selectedNumber + thumbnailRange; current++) {
-		var thumbNo = current;
-		if(thumbNo < 0 ) {
-			thumbNo = imageCount + thumbNo;
-		}
-		if (thumbNo >= imageCount) {
-			thumbNo = thumbNo - imageCount;
-		}
+		var url = imagepath + current + "/thumbnail";
 		var cssClass = "otherThumbnails";
-		if(thumbNo == selectedNumber)
+		if(current == selectedNumber)
 			cssClass = "currentThumbnail";
-		var img = $("<img id='thumbnail' onclick='fnViewImage("+thumbNo+")' class='"+cssClass+"'/>");
-		img.attr("src", imagepath + thumbNo + "/thumbnail");
-		var li = $("<li>");
-		var div = $("<div class='thumbDiv'>");
-		div.append(img);
-		li.append(div);
-		$("#imageThumbnailUL").append(li);
+		img = $("<img id='thumbnail' onclick='fnViewImage("+current+")' class='"+cssClass+"'/>");
+		img.attr("src", url);
+		$("#imageThumbnailDiv").append(img);
 	}
 }
 </script>
 </head>
 <body>
 <span id="debug" style="display:none;"></span>
-<div id="imageDiv">
-	<div id="navDiv">
-		<span class="bgSpan" onclick="fnPrevImageView()">&lt;<span id="leftNo"></span></span>
-		<span id="fullImageBtn" onclick="fnFullyImageView();" class="bgSpan"><span id="currNo"></span></span>
-		<span class="bgSpan" onclick="fnNextImageView()"><span id="rightNo"></span>&gt;</span>
-	</div>
-	<div id="imageThumbnailDiv"><ul id="imageThumbnailUL"></ul></div>
+<div id="navDiv">
+	<span class="bgSpan" onclick="fnPrevImageView()">&lt;</span>
+	<span id="fullImageBtn" onclick="fnFullyImageView();" class="bgSpan">F</span>
+	<span class="bgSpan" onclick="fnNextImageView()">&gt;</span>
 </div>
+<div id="imageDiv"></div>
+<div id="imageThumbnailDiv"></div>
 </body>
 </html>

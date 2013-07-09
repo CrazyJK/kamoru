@@ -104,4 +104,5 @@ $(document).ready(function(){
  	
  	// resize contentDiv height
 	resizeDivHeight();
+	setBackgroundImage();
 });

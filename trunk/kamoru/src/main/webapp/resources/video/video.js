@@ -6,10 +6,19 @@ function resizeDivHeight() {
 	var resizeContentDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
 	//alert(resizeContentDivHeight);
 	$("#contentDiv").height(resizeContentDivHeight);
-	resizeBackgroundImage();
+	//setBackgroundImage();
 }
 var currBGImageUrl;
 var selectedNumber = Math.floor(Math.random() * bgImageCount);
+function setBackgroundImage() {
+	currBGImageUrl = context + "image/" + selectedNumber;
+	$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
+	$("#contentDiv").css("background-size", "contain");
+}
+/**
+ * background-size:contain; Scale the image to the largest size such that both its width and its height can fit inside the content area
+ * 이 설정과 같이 움직이도록 하는 함수 
+ */
 function resizeBackgroundImage() {
 	currBGImageUrl = context + "image/" + selectedNumber;
 	

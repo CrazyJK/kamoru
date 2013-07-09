@@ -49,26 +49,24 @@ var bgImageCount = ${bgImageCount};
 			<span class="button" onclick="fnDetailSearch()"><spring:message code="btn.search" text="Search video"/></span>
 		</span>
 		<span class="viewGroupSpan">
-			<span class="button" onclick="fnRandomPlay()"><spring:message code="btn.random" text="Random play"/></span>
-		</span>
-		<span class="viewGroupSpan">
 			<c:forEach items="${views}" var="view">
 				<span class="radio" id="radio-listViewType-${view}" title="<spring:message code="msg.title.showViewTypeList" text="show view type list" arguments="${view.desc}"/>">${view}</span> 
 			</c:forEach><form:hidden path="listViewType"/>
-			
-			<span class="separatorSpan">|</span>
-			
+		</span>
+		<span class="viewGroupSpan">
 			<c:forEach items="${sorts}" var="sort">
 				<span class="radio" id="radio-sortMethod-${sort}" title="<spring:message code="msg.title.sortBy" text="sort by this" arguments="${sort.desc}"/>">${sort}</span>
 			</c:forEach><form:hidden path="sortMethod"/>
 			<span class="checkbox" id="checkbox-sortReverse" title="<spring:message code="msg.title.reverseSort" text="reverse sort"/>">R</span><form:hidden path="sortReverse"/>
-			
-			<span class="separatorSpan">|</span>
-			
+		</span>
+		<span class="viewGroupSpan">
 			<span class="checkbox" id="checkbox-viewStudioDiv"  title="<spring:message code="msg.title.viewStudioPanel"  text="view Studio panel"/>"  onclick="fnStudioDivToggle()">S</span>	
 				<form:hidden path="viewStudioDiv"/> 
 			<span class="checkbox" id="checkbox-viewActressDiv" title="<spring:message code="msg.title.viewActressPanel" text="view Actress panel"/>" onclick="fnActressDivToggle()">A</span>	
 				<form:hidden path="viewActressDiv"/>
+		</span>
+		<span class="viewGroupSpan">
+			<span class="button" onclick="fnRandomPlay()"><spring:message code="btn.random" text="Random play"/></span>
 		</span>
 	</form:form>
 	</div>
@@ -132,7 +130,7 @@ var bgImageCount = ${bgImageCount};
 			<c:forEach items="${videoList}" var="video" varStatus="status">
 			<li id="<c:out value="${video.opus}"/>" class="boxLI">
 				<div class="opusBoxDiv">     <!-- ${status.count} -->             
-					<dl style="background-image:url('<c:url value="/video/${video.existCoverFile ? video.opus : 'no'}/cover" />'); background-size:300px 200px; height:200px;">
+					<dl class="opusBoxDL" style="background-image:url('<c:url value="/video/${video.existCoverFile ? video.opus : 'no'}/cover" />');">
 						<dt><span class="bgSpan" id="titleSpan"  onclick="fnVideoDetail('<c:out value="${video.opus}" escapeXml="true"/>')">${video.title}</span></dt>
 						<dd><span class="bgSpan" id="studioSpan" onclick="fnSearchText('<c:out value="${video.studio.name}" escapeXml="true"/>')">${video.studio.name}</span></dd>
 						<dd><span class="bgSpan" id="opusSpan">${video.opus}</span></dd>

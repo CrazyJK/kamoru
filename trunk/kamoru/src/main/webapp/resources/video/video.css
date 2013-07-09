@@ -66,8 +66,9 @@ div#contentDiv {overflow:auto; text-align:center;}
        .boxLI {display:inline-block;}
       .sboxLI {display:inline-block;}
    .listTable {width:100%; background-color:lightgray; opacity: 0.75;}
-  .opusBoxDiv {width:300px;
-						background-color: #eee; padding: 5px; margin:5px;
+  .opusBoxDiv {width:300px; height:200px;
+						/* background-color: #eee; */ 
+						padding: 5px; margin:5px;
 						border: 1px solid orange; 
 						border-radius: 10px;
 				   -moz-border-radius: 10px;
@@ -78,7 +79,10 @@ div#contentDiv {overflow:auto; text-align:center;}
 						border-radius: 10px;
 				   -moz-border-radius: 10px;
 				-webkit-border-radius: 10px;}
-
+   .opusBoxDL {height:200px;
+   			   background-repeat:no-repeat; 
+   			   background-position:right center; 
+   			   background-size:contain;}
    		   dl {margin:0px;}
            dt {font-size:10pt; height:30px; vertical-align:middle;}
            dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}

@@ -238,7 +238,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
-		logger.info(videoList);
+		logger.info("size : " + videoList.size());
 		List<Actress> actressList = new ArrayList<Actress>();
 		for(Video video : videoList) {
 			for(Actress actress : video.getActressList()) {
@@ -252,7 +252,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
-		logger.info(videoList);
+		logger.info("size : " + videoList.size());
 		List<Studio> studioList = new ArrayList<Studio>();
 		for(Video video : videoList) {
 			if(!studioList.contains(video.getStudio()))
