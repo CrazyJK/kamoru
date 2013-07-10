@@ -24,7 +24,7 @@ $(document).ready(function(){
 <script src="<c:url value="/resources/common.js" />"></script>
 <script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
-<body  style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
+<body style="background-image:url('<c:url value="/video/${video.opus}/cover" />'); background-position:center center;">
 <%-- <img src="<c:url value="/video/${video.opus}/cover" />" /> --%>
 <dl>
 	<dt><span class="bgSpan">${video.title}</span></dt>

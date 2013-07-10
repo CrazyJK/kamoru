@@ -65,7 +65,7 @@ public class Image {
 			case WEB:
 				return webBytes == null ? webBytes = toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500)) : webBytes;
 			case THUMBNAIL:
-				return thumbBytes == null ? thumbBytes = toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 150, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER)) : thumbBytes;
+				return thumbBytes == null ? thumbBytes = toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER)) : thumbBytes;
 			default:
 				throw new RuntimeException("잘못된 타입");
 			}
@@ -73,6 +73,7 @@ public class Image {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	private byte[] toByteArray(BufferedImage bi) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ImageIO.setUseCache(false);

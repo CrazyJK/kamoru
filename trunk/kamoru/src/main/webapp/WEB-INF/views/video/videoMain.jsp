@@ -26,14 +26,14 @@ var bgImageCount = ${bgImageCount};
 </head>
 <body>
 <div id="headerDiv">
-	<div id="searchDiv" class="boxDiv">
+	<div id="searchDiv" class="boxDiv roundBorder10">
 	<form:form method="GET" commandName="videoSearch">
-		<span class="searchGroupSpan">
+		<span class="groupSpan roundBorder5">
 			<%-- <form:label path="studio" >Studio </form:label><form:input path="studio"  cssClass="schTxt"/>
 			<form:label path="opus"   >Opus   </form:label><form:input path="opus"    cssClass="schTxt"/>
 			<form:label path="title"  >Title  </form:label><form:input path="title"   cssClass="schTxt"/>
 			<form:label path="actress">Actress</form:label><form:input path="actress" cssClass="schTxt"/> --%>
-			<form:label path="searchText"><spring:message code="msg.search" text="Search"/></form:label><form:input path="searchText" cssClass="schTxt"/>
+			<form:label path="searchText"><spring:message code="msg.search" text="Search"/></form:label><form:input path="searchText" cssClass="searchInput"/>
 			
 			<span class="checkbox" id="checkbox-addCond" title="<spring:message code="msg.title.addCondition" text="Add additional conditions"/>">
 				<spring:message code="msg.addCondition" text="Add"/>
@@ -48,52 +48,52 @@ var bgImageCount = ${bgImageCount};
 			<span class="separatorSpan">|</span>
 			<span class="button" onclick="fnDetailSearch()"><spring:message code="btn.search" text="Search video"/></span>
 		</span>
-		<span class="viewGroupSpan">
+		<span class="groupSpan roundBorder5">
 			<c:forEach items="${views}" var="view">
 				<span class="radio" id="radio-listViewType-${view}" title="<spring:message code="msg.title.showViewTypeList" text="show view type list" arguments="${view.desc}"/>">${view}</span> 
 			</c:forEach><form:hidden path="listViewType"/>
 		</span>
-		<span class="viewGroupSpan">
+		<span class="groupSpan roundBorder5">
 			<c:forEach items="${sorts}" var="sort">
 				<span class="radio" id="radio-sortMethod-${sort}" title="<spring:message code="msg.title.sortBy" text="sort by this" arguments="${sort.desc}"/>">${sort}</span>
 			</c:forEach><form:hidden path="sortMethod"/>
 			<span class="checkbox" id="checkbox-sortReverse" title="<spring:message code="msg.title.reverseSort" text="reverse sort"/>">R</span><form:hidden path="sortReverse"/>
 		</span>
-		<span class="viewGroupSpan">
+		<span class="groupSpan roundBorder5">
 			<span class="checkbox" id="checkbox-viewStudioDiv"  title="<spring:message code="msg.title.viewStudioPanel"  text="view Studio panel"/>"  onclick="fnStudioDivToggle()">S</span>	
 				<form:hidden path="viewStudioDiv"/> 
 			<span class="checkbox" id="checkbox-viewActressDiv" title="<spring:message code="msg.title.viewActressPanel" text="view Actress panel"/>" onclick="fnActressDivToggle()">A</span>	
 				<form:hidden path="viewActressDiv"/>
 		</span>
-		<span class="viewGroupSpan">
+		<span class="groupSpan roundBorder5">
 			<span class="button" onclick="fnRandomPlay()"><spring:message code="btn.random" text="Random play"/></span>
 		</span>
 	</form:form>
 	</div>
-	<div id="studioDiv" class="boxDiv">
+	<div id="studioDiv" class="boxDiv roundBorder10">
 	<c:forEach var="studio" items="${studioList}"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
-		<span onclick="fnSearchText('${studio.name}')" class="studioSpanBtn ${countByStudio > 9 ? 'spanSize10' : countByStudio > 4 ? 'spanSize5' : ''}" 
+		<span onclick="fnSearchText('${studio.name}')" class="${countByStudio > 9 ? 'spanSize10' : countByStudio > 4 ? 'spanSize5' : ''}" 
 			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">${studio.name}(${countByStudio})</span>
 	</c:forEach>
 	</div>
-	<div id="actressDiv" class="boxDiv">
+	<div id="actressDiv" class="boxDiv roundBorder10">
 	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<span onclick="fnSearchText('${actress.name}')" class="actressSpanBtn ${countByActress > 9 ? 'spanSize10' : countByActress > 4 ? 'spanSize5' : ''}" >${actress.name}(${countByActress})</span>
+		<span onclick="fnSearchText('${actress.name}')" class="${countByActress > 9 ? 'spanSize10' : countByActress > 4 ? 'spanSize5' : ''}" >${actress.name}(${countByActress})</span>
 	</c:forEach>
 	</div>
 </div>
 
-<div id="contentDiv" class="boxDiv" onclick="fnBGImageView();">
+<div id="contentDiv" class="boxDiv roundBorder10" ><!-- onclick="fnBGImageView();" -->
 	<span id="totalCount">Total <c:out value="${fn:length(videoList)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnBGImageView();">BG</span>
 	<c:choose>
 		<c:when test="${videoSearch.listViewType eq 'C' }">
 		<ul>
 			<c:forEach items="${videoList}" var="video">
-			<li id="${video.opus}" class="boxLI">
-				<div class="opusBoxDiv">
+			<li id="${video.opus}" class="boxLI roundBorder5">
+				<div class="opusBoxDiv roundBorder5">
 					<table>
 						<tr>
-							<td  colspan="2"><span class="titleSpan">${video.title}</span></td>
+							<td  colspan="2"><span class="bgSpan">${video.title}</span></td>
 						</tr>
 						<tr valign="top">
 							<td width="110px">
@@ -101,17 +101,17 @@ var bgImageCount = ${bgImageCount};
 							</td>
 							<td>
 								<dl>
-									<dt><span class="studioSpan">${video.studio.name}</span>&nbsp;<span class="opusSpan">${video.opus}</span></dt>
+									<dt><span class="bgSpan">${video.studio.name}</span>&nbsp;<span class="opusSpan">${video.opus}</span></dt>
 									<dt>             
 										<c:forEach items="${video.actressList}" var="actress">
-										<span class="actressSpan" onclick="fnActressSearch('${actress.name}')">${actress.name}</span>
+										<span class="bgSpan" onclick="fnActressSearch('${actress.name}')">${actress.name}</span>
 										</c:forEach>
 									</dt>
 									<dd> 
-										<span class="" onclick="fnPlay('${video.opus}')"          title="${video.videoFileListPath}">Video</span>
-										<span class="" onclick="fnImageView('${video.opus}')"     title="${video.coverFile}">Cover</span>
-										<span class="" onclick="fnEditSubtitles('${video.opus}')" title="${video.subtitlesFileList}">smi</span>
-										<span class="" onclick="fnEditOverview('${video.opus}')"  title="${video.overviewText}">Overview</span>
+										<span class="bgSpan" onclick="fnPlay('${video.opus}')"          title="${video.videoFileListPath}">Video</span>
+										<span class="bgSpan" onclick="fnImageView('${video.opus}')"     title="${video.coverFile}">Cover</span>
+										<span class="bgSpan" onclick="fnEditSubtitles('${video.opus}')" title="${video.subtitlesFileList}">smi</span>
+										<span class="bgSpan" onclick="fnEditOverview('${video.opus}')"  title="${video.overviewText}">Overview</span>
 									</dd>
 									<dd>
 										<span id="DEL-${video.opus}" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')" title="${video}">Del</span>
@@ -128,15 +128,15 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'B'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video" varStatus="status">
-			<li id="<c:out value="${video.opus}"/>" class="boxLI">
-				<div class="opusBoxDiv">     <!-- ${status.count} -->             
+			<li id="<c:out value="${video.opus}"/>" class="boxLI roundBorder5">
+				<div class="opusBoxDiv roundBorder5">     <!-- ${status.count} -->             
 					<dl class="opusBoxDL" style="background-image:url('<c:url value="/video/${video.existCoverFile ? video.opus : 'no'}/cover" />');">
-						<dt><span class="bgSpan" id="titleSpan"  onclick="fnVideoDetail('<c:out value="${video.opus}" escapeXml="true"/>')">${video.title}</span></dt>
-						<dd><span class="bgSpan" id="studioSpan" onclick="fnSearchText('<c:out value="${video.studio.name}" escapeXml="true"/>')">${video.studio.name}</span></dd>
-						<dd><span class="bgSpan" id="opusSpan">${video.opus}</span></dd>
+						<dt><span class="bgSpan" onclick="fnVideoDetail('<c:out value="${video.opus}" escapeXml="true"/>')">${video.title}</span></dt>
+						<dd><span class="bgSpan" onclick="fnSearchText('<c:out value="${video.studio.name}" escapeXml="true"/>')">${video.studio.name}</span></dd>
+						<dd><span class="bgSpan">${video.opus}</span></dd>
 						<dd>
 							<c:forEach items="${video.actressList}" var="actress">
-							<span class="bgSpan" id="actressSpan" onclick="fnSearchText('<c:out value="${actress.name}" escapeXml="true"/>')">${actress.name}</span>
+							<span class="bgSpan" onclick="fnSearchText('<c:out value="${actress.name}" escapeXml="true"/>')">${actress.name}</span>
 							</c:forEach>
 						</dd>
 						<dd><span class="bgSpan ${video.existVideoFileList     ? 'existFile' : 'nonExistFile'}" 
@@ -168,7 +168,7 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'SB'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video">
-			<li id="<c:out value="${video.opus}"/>" class="sboxLI">
+			<li id="<c:out value="${video.opus}"/>" class="boxLI">
 				<div class="opusSBoxDiv">
 					<span class="bgSpan" id="titleSpan"><c:out value="${video.title}"/></span>
 					<span class="bgSpan" id="studioSpan"  onclick="fnStudioSearch('<c:out value="${video.studio.name}"/>')"><c:out value="${video.studio.name}"/></span>

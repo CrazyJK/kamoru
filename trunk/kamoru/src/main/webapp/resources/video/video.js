@@ -134,15 +134,17 @@ function fnRandomPlay() {
 }
 function fnOpusFocus(opus) {
 	$("#" + opus).animate({
-		opacity: 0.75,
+		opacity: 0.5,
 	}, 1000, function(){
-		$(this).css("background-color", "cyan");
+		$(this).addClass("boxLIplayed");
+		//$(this).css("background-color", "cyan");
 	});
 	var topValue = $("#" + opus).position().top - $("#headerDiv").outerHeight() - 20;
 	$("#contentDiv").scrollTop(topValue);
 }
 function fnBGImageView() {
-	popupImage(currBGImageUrl);
+//	popupImage(currBGImageUrl);
+	popup(context + "image?n=" + selectedNumber, "ImageView" + selectedNumber, 800, 600);
 }
 function fnImageView(opus) {
 	$("#debug").html("Cover image view : " + opus);

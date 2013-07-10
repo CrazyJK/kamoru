@@ -1,114 +1,62 @@
 @CHARSET "UTF-8";
+/* Dom elements */
 * {font-family: 'Comic Sans MS' '나눔고딕코딩' '맑은 고딕';}
-  div#searchDiv {text-align:center;}
-  input {width:20px;}
-  input[type=range] {
-    -webkit-appearance: none;
-    -webkit-border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 5px #333;
-	background-color: silver;
-    opacity: 0.75;
-	width: 100px;
-    height:10px;
-}
-pre {
-	font-family: "나눔고딕코딩"; font-size:8pt;
-}
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none  !important;
-    -webkit-border-radius: 5px;
-    background-color: silver;
-    border: 1px solid cyan;
-    opacity: 0.75;
-    width: 20px;
-    height: 20px;
-}
-  .schTxt       {width:80px; border:0; color:blue; margin:0px; padding:0px; text-align:center;}
-  .searchGroupSpan  {display:inline-block;
-					  background-color:; padding:3px; margin:2px;
-  						border: 1px solid orange; 
-						border-radius: 5px;
-				   -moz-border-radius: 5px;
-				-webkit-border-radius: 5px;}
-    .viewGroupSpan  {display:inline-block;
-					  background-color:; padding:3px; margin:2px;
-  						border: 1px solid orange; 
-						border-radius: 5px;
-				   -moz-border-radius: 5px;
-				-webkit-border-radius: 5px;}
-.separatorSpan {font-weight:bold; color:blue;}				
-.studioSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
-.actressSpanBtn {display:inline-block; font-size:9pt; color:blue; cursor:pointer; margin-left:10px;}
-    .checkbox {cursor:pointer; padding:0px; margin:0px;
-  						border: 0px solid orange; 
-						border-radius: 3px;
-				   -moz-border-radius: 3px;
-				-webkit-border-radius: 3px;}
- .checkbox-on {background-color:lightblue;}
-       .radio {cursor:pointer; padding:0px; margin:0px;
-  						border: 0px solid #bbb; 
-						border-radius: 3px;
-				   -moz-border-radius: 3px;
-				-webkit-border-radius: 3px;}
-    .radio-on {background-color:lightblue;}
-      .button {background-color:;}
-      .button:hover {background-color:lightblue;}
+input {width:20px;}
+input[type=range] { background-color: silver; opacity: 0.75; width: 100px; height:10px;
+	-webkit-appearance: none; -webkit-border-radius: 5px; -webkit-box-shadow: inset 0 0 5px #333;}
+input[type="range"]::-webkit-slider-thumb {background-color: silver; border: 1px solid cyan; opacity: 0.75; width: 20px; height: 20px;
+    -webkit-appearance: none  !important; -webkit-border-radius: 5px;}
+pre {font-family: "나눔고딕코딩"; font-size:8pt;}
+ul {padding:0px; margin:0px;}
+li {font-size:9pt;}
+dl {margin:0px;}
+dt {font-size:10pt; height:30px; vertical-align:middle;}
+dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
 
-div#studioDiv {display:none;}
-div#actressDiv {display:none;}
-
-div#contentDiv {overflow:auto; text-align:center;}
-  #totalCount {text-shadow:2px 2px 2px white;}
-       #debug {text-shadow:2px 2px 2px yellow; margin-left:10px;}
-       #bgimg {text-shadow:2px 2px 2px yellow; float:right;}
-           ul {padding:0px; margin:0px;}
-           li {font-size:9pt;}
-       .boxLI {display:inline-block;}
-      .sboxLI {display:inline-block;}
-   .listTable {width:100%; background-color:lightgray; opacity: 0.75;}
-  .opusBoxDiv {width:300px; height:200px;
-						/* background-color: #eee; */ 
-						padding: 5px; margin:5px;
-						border: 1px solid orange; 
-						border-radius: 10px;
-				   -moz-border-radius: 10px;
-				-webkit-border-radius: 10px;}
- .opusSBoxDiv {
-						background-color: #eee; padding: 5px; margin:5px;
-						border: 1px solid orange; 
-						border-radius: 10px;
-				   -moz-border-radius: 10px;
-				-webkit-border-radius: 10px;}
-   .opusBoxDL {height:200px;
-   			   background-repeat:no-repeat; 
-   			   background-position:right center; 
-   			   background-size:contain;}
-   		   dl {margin:0px;}
-           dt {font-size:10pt; height:30px; vertical-align:middle;}
-           dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
-      .bgSpan {display:inline-block; background-color:white;opacity: 1; padding:0px 5px 0px 5px;
-						border: 1px solid orange; 
-						border-radius: 5px;
-				   -moz-border-radius: 5px;
-				-webkit-border-radius: 5px;}
-				
-   #titleSpan {color:black; opacity:0.7;}
-  #studioSpan {color:blue;  opacity:0.7;}
-    #opusSpan {color:green; opacity:0.7;}
- #actressSpan {color:black; opacity:0.7;}
-   .existFile {color:blue;  opacity:0.7;}
-.nonExistFile {color:gray;  opacity:0.7;}
-  /* .overviewDD {height:60px; overflow:auto;} */
-  .spanSize10 {font-size:13pt; text-shadow:2px 2px 2px cyan;}
-  .spanSize5  {font-size:11pt; text-shadow:2px 2px 2px yellow;}
-
-
+/* class */
 .boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin: 10px;
-			border-radius: 10px;
-	   -moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	        box-shadow: 10px 10px 5px #588;
-	   -moz-box-shadow: 10px 10px 5px #588;	
-	-webkit-box-shadow: 10px 10px 5px #588;}
-.onclick {cursor:pointer;}
-.onclick:hover {color:green;}
+	        box-shadow: 10px 10px 5px #588; -moz-box-shadow: 10px 10px 5px #588; -webkit-box-shadow: 10px 10px 5px #588;}
+.searchInput {width:80px; border:0; color:blue; margin:0px; padding:0px; text-align:center;}
+.groupSpan     {display:inline-block; padding:3px; margin:2px; border: 1px solid orange;}
+.separatorSpan {font-weight:bold; color:blue;}				
+.checkbox    {cursor:pointer; padding:0px; margin:0px;}
+.checkbox-on {background-color:lightblue;}
+.radio       {cursor:pointer; padding:0px; margin:0px;}
+.radio-on    {background-color:lightblue;}
+.button       {background-color:;}
+.button:hover {background-color:lightblue;}
+
+.boxLI {display:inline-block;}
+.boxLIselect {background-color:white;}
+.boxLIplayed {background-color:cyan;}
+.opusBoxDiv {width:300px; height:200px; padding: 5px; margin:5px; border: 1px solid orange;}
+.opusBoxDL  {height:200px; background-repeat:no-repeat; background-position:right center; background-size:contain;}
+.bgSpan       {background-color:;text-shadow:0px 0px 5px white; font-weight:normal; padding:0px 5px 0px 5px; border-bottom: 1px solid orange; border-radius:3px;}
+.existFile    {color:blue;}
+.nonExistFile {color:gray;}
+
+.onclick       {cursor:pointer;}
+.onclick:hover {color:green; text-decoration:underline;}
+
+.spanSize10 {font-size:13pt; text-shadow:2px 2px 2px cyan;}
+.spanSize5  {font-size:11pt; text-shadow:2px 2px 2px yellow;}
+
+.roundBorder3  {border-radius:  3px; -moz-border-radius:  3px; -webkit-border-radius:  3px;}
+.roundBorder5  {border-radius:  5px; -moz-border-radius:  5px; -webkit-border-radius:  5px;}
+.roundBorder10 {border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
+
+.opusSBoxDiv {background-color: #eee; padding: 5px; margin:5px; border: 1px solid orange;}
+.listTable {width:100%; background-color:lightgray; opacity: 0.75;}
+
+/* id */
+div#searchDiv  {text-align:center;}
+div#studioDiv  {display:none;}
+div#studioDiv  span {font-size:9pt; color:blue; margin-left:10px;}
+div#studioDiv  span:hover {color:orange;}
+div#actressDiv {display:none;}
+div#actressDiv span {font-size:9pt; color:blue; margin-left:10px;}
+div#actressDiv span:hover {color:orange;}
+div#contentDiv {overflow:auto; text-align:center;}
+#totalCount {text-shadow:2px 2px 2px white;}
+#debug      {text-shadow:2px 2px 2px yellow; margin-left:10px;}
+#bgimg      {text-shadow:2px 2px 2px yellow; float:right;}

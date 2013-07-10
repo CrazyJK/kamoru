@@ -54,16 +54,18 @@ $(document).ready(function(){
 	$("li").toggle(
 		function() {
 			$(this).animate({
-				opacity: 1
+				opacity: 0.75
 				}, 500, function(){
-					$(this).css("background-color", "green");
+					$(this).addClass("boxLIselect");
+					//$(this).css("background-color", "lightgreen");
 					$("#DEL-"+$(this).attr("id")).css("display", "");
 				});
-		}, function(){
+		}, function() {
 			$(this).animate({
 				opacity: 1
 				}, 500, function(){
-					$(this).css("background-color", "");
+					$(this).removeClass("boxLIselect");
+					//$(this).css("background-color", "");
 					$("#DEL-"+$(this).attr("id")).css("display", "none");
 				});
 		});

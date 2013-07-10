@@ -9,7 +9,9 @@
 <meta charset="UTF-8">
 <title>RequestMapping List</title>
 <style type="text/css">
-dl {}
+ol {}
+li {display:;}
+dl {border-bottom: 1px solid orange; border-radius: 10px;}
 dt {font-size:10pt; color:lightgray;}
 dd {color:gray; font-size:9pt;}
 .highlighted {color:red; font-size:11pt;}
@@ -20,8 +22,13 @@ dd {color:gray; font-size:9pt;}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {// /[/gi
-	$("body").html($('body').html().replace(/\[/g,"[<span class='highlighted'>"));
-	$("body").html($('body').html().replace(/\]/g,"</span>]"));
+//	$("body").html($('body').html().replace(/\[/g,"[<span class='highlighted'>"));
+//	$("body").html($('body').html().replace(/\]/g,"</span>]"));
+	
+	$("dt").each(function() {
+		$(this).html($(this).html().replace(/\[/g,"[<span class='highlighted'>"));
+		$(this).html($(this).html().replace(/\]/g,"</span>]"));
+	});
 	
 });
 </script>

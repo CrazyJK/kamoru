@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -30,10 +31,11 @@ public class PictureController {
 	@Autowired
 	private ImageService imageService;
 	
-	@RequestMapping(value="/list")
-	public String viewImageList(Model model) {
+	@RequestMapping(method=RequestMethod.GET)
+	public String viewImageList(Model model, @RequestParam(value="n", required=false, defaultValue="-1") int n) {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
+		model.addAttribute("selectedNumber", n > count ? count -1 : n);
 		return "/picture/slide";
 	}
 	
@@ -54,14 +56,6 @@ public class PictureController {
 	@RequestMapping(value="/{idx}")
 	public HttpEntity<byte[]> viewImage(@PathVariable int idx) {
 		byte[] imageBytes = imageService.getImage(idx).getImageBytes(PictureType.MASTER);
-		
-		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
-	}
-	
-	@RequestMapping(value="/random")
-	public HttpEntity<byte[]> viewImageRandom() {
-		int random = new Random().nextInt(imageService.getImageSourceSize());
-		byte[] imageBytes = imageService.getImage(random).getImageBytes(PictureType.MASTER);
 		
 		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
 	}

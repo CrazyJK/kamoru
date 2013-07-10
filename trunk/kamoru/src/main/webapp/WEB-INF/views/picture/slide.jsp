@@ -9,92 +9,103 @@
 <title>Local Image Viewer</title>
 <link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <style type="text/css">
-* {margin:0px; padding:0px;}
-body {background-size:contain; background-repeat:no-repeat; background-position:center center;}
-li {display:inline-block;}
-#navDiv {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}
-#imageThumbnailDiv {position:absolute; bottom:0px; height:160px; width:100%; margin:10px 5px 0px 0px; text-align:center; overflow:hidden;}
-#imageDiv {text-align:center};
-.otherThumbnails  {opacity:0.5; border: solid 1px green;}
-.currentThumbnail {opacity:1.0; border: solid 2px cyan;}
-.thumbDiv {width:150px; height:160px;}
+	* {margin:0px; padding:0px;}
+	body {}
+	li {display:inline-block;}
+	#navDiv {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}
+	#imageThumbnailDiv {position:absolute; bottom:0px; height:100px; width:100%; margin:10px 5px 0px 0px; text-align:center; overflow:hidden;}
+	#imageDiv {text-align:center;}
+	.otherThumbnails  {opacity:0.5; border: solid 0px green;}
+	.currentThumbnail {opacity:1.0; border: solid 2px cyan;}
+	.thumbDiv {width:150px; height:100px;}
+	.centerBG {background-size:contain; background-repeat:no-repeat; background-position:center center;}
+	.opacity10 {opacity:1;}
+	.opacity05 {opacity:0.5;}
 </style>
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
+var imagepath = '<s:url value="/image/" />';
+var selectedNumber = ${selectedNumber};
+var selectedImgUrl;
+var imageCount = <c:out value="${imageCount}" />;
+var windowWidth  = $(window).width();
+var windowHeight = $(window).height();
+
 $(document).ready(function(){
-	$(window).bind("mousewheel", function(e){
+	$(window).bind("mousewheel DOMMouseScroll", function(e) {
 		var delta = 0;
-		var event=window.event || e;
+		var event = window.event || e;
 		if (event.wheelDelta) {
 			delta = event.wheelDelta/120;
 			if (window.opera) delta = -delta;
-		} else if (event.detail) 
+		} 
+		else if (event.detail)  
 			delta = -event.detail/3;
+		else
+			delta = parseInt(event.originalEvent.wheelDelta || -event.originalEvent.detail);
 		if (delta) {
-			if (delta > 0) {
-				//alert("마우스 휠 위로~");
-				fnPrevImageView();
-		    }
-		    else {
-				//alert("마우스 휠 아래로~");
-				fnNextImageView();
-		    }
+			if (delta > 0) 
+				fnPrevImageView(); //alert("마우스 휠 위로~");
+		    else 	
+				fnNextImageView(); //alert("마우스 휠 아래로~");
 		}
-		//alert("detail=" + evt.detail + " wheelDelta=" + evt.wheelDelta);
+		//alert("event=" + event + " delta=" + delta);
 	});
-	$(window).bind("keyup", function(e){
-		var event=window.event || e;
-		//alert(event.keyCode); // 37:right, 38:up,  39:left, 40:down, 32:space
+	$(window).bind("keyup", function(e) {
+		var event = window.event || e;
+		//alert(event.keyCode);
 		switch(event.keyCode) {
-		case 37:
+		case 37: // left
+		case 40: // down
 			fnPrevImageView(); break;
-		case 32:
-		case 39:
+		case 32: // space
+		case 39: // right
+		case 38: // up
 			fnNextImageView(); break;
-		case 13:
-		case 38:
+		case 13: // enter
 			fnRandomImageView(); break;
 		}
-		
 	});
-	/* 
 	$("#imageDiv").bind("click", function(e){
-		var event=window.event || e;
+		var event = window.event || e;
 		//alert(event.type + " - " + event.button + ", keyValue=" + event.keyCode);
-		
-		//event.preventDefault();
-		//event.stopPropagation();
+		event.stopImmediatePropagation();
+		event.preventDefault();
+		event.stopPropagation();
 		if(event.button == 0) {
 			fnRandomImageView();
 		} 
-	}); */
+	});
 	$(window).bind("resize", resizeImage);
-	fnRandomImageView();
 	resizeImage();
+	if (selectedNumber > -1)
+		fnViewImage(selectedNumber);
+	else
+		fnRandomImageView();
 });
 function resizeImage() {
-	var windowHeight = $(window).height();
-	$("#imageDiv").height(windowHeight);
+	windowHeight = $(window).height();
+	$("#imageDiv").height(windowHeight - 105);
+	fnDisplayThumbnail();
 }
-var imagepath = '<s:url value="/image/" />';
-var selectedNumber;
-var selectedImgUrl;
-var imageCount = <c:out value="${imageCount}" />;
+
 function fnViewImage(current) {
+	if (selectedNumber == current) {
+		fnFullyImageView();
+		return;
+	}
 	selectedNumber = current;
 	selectedImgUrl = imagepath + selectedNumber;
 	
-	$("body").css("background-image", "url('" + selectedImgUrl + "')");
+	$("#imageDiv").css("background-image", "url('" + selectedImgUrl + "')");
 	$("#leftNo").html(getPrevNumber());
 	$("#currNo").html(selectedNumber);
 	$("#rightNo").html(getNextNumber());
 	fnDisplayThumbnail();
 }
-function fnFullyImageView(){
+function fnFullyImageView() {
 	var img = $("<img />");
 	img.hide();
 	img.attr("src", selectedImgUrl);
@@ -103,9 +114,6 @@ function fnFullyImageView(){
 	});
 	return img;
 }
-function popupImage(url) {
-}
-
 function getPrevNumber() {
 	return selectedNumber == 0 ? imageCount - 1 : selectedNumber - 1;
 }
@@ -124,22 +132,19 @@ function fnRandomImageView() {
 function fnDisplayThumbnail() {
 	var thumbnailRange = parseInt(parseInt($(window).width() / 200) / 2);
 	$("#imageThumbnailUL").empty();
-	for(var current = selectedNumber - thumbnailRange; current <= selectedNumber + thumbnailRange; current++) {
+	for (var current = selectedNumber - thumbnailRange; current <= selectedNumber + thumbnailRange; current++) {
 		var thumbNo = current;
-		if(thumbNo < 0 ) {
+		if (thumbNo < 0 )
 			thumbNo = imageCount + thumbNo;
-		}
-		if (thumbNo >= imageCount) {
+		if (thumbNo >= imageCount)
 			thumbNo = thumbNo - imageCount;
-		}
-		var cssClass = "otherThumbnails";
-		if(thumbNo == selectedNumber)
-			cssClass = "currentThumbnail";
-		var img = $("<img id='thumbnail' onclick='fnViewImage("+thumbNo+")' class='"+cssClass+"'/>");
+		var img = $("<img id='thumbnail" + thumbNo + "' onclick='fnViewImage("+thumbNo+")'" 
+				+ " class='" + (thumbNo == selectedNumber ? "currentThumbnail" : "otherThumbnails") + "'/>");
 		img.attr("src", imagepath + thumbNo + "/thumbnail");
 		var li = $("<li>");
-		var div = $("<div class='thumbDiv'>");
-		div.append(img);
+		var div = $("<div class='thumbDiv centerBG " + (thumbNo == selectedNumber ? "opacity10" : "opacity05") + "' onclick='fnViewImage("+thumbNo+")'>");
+		div.css("background-image", "url('" + imagepath + thumbNo + "/thumbnail" + "')");
+		//div.append(img);
 		li.append(div);
 		$("#imageThumbnailUL").append(li);
 	}
@@ -148,13 +153,12 @@ function fnDisplayThumbnail() {
 </head>
 <body>
 <span id="debug" style="display:none;"></span>
-<div id="imageDiv">
-	<div id="navDiv">
-		<span class="bgSpan" onclick="fnPrevImageView()">&lt;<span id="leftNo"></span></span>
-		<span id="fullImageBtn" onclick="fnFullyImageView();" class="bgSpan"><span id="currNo"></span></span>
-		<span class="bgSpan" onclick="fnNextImageView()"><span id="rightNo"></span>&gt;</span>
-	</div>
-	<div id="imageThumbnailDiv"><ul id="imageThumbnailUL"></ul></div>
+<div id="navDiv">
+	<span class="bgSpan" onclick="fnPrevImageView();">&lt;<span id="leftNo"></span></span>
+	<span class="bgSpan" onclick="fnFullyImageView();"><span id="currNo"></span></span>
+	<span class="bgSpan" onclick="fnNextImageView();"><span id="rightNo"></span>&gt;</span>
 </div>
+<div id="imageThumbnailDiv"><ul id="imageThumbnailUL"></ul></div>
+<div id="imageDiv" class="centerBG"></div>
 </body>
 </html>

@@ -18,6 +18,8 @@ Application List
 	<li><a href="./video/list">Video list</a>
 	<li><a href="./video/actress">Actress list</a>
 	<li><a href="./video/studio">Studio List</a>
+	<li><a href="./image">Image view</a>
+	<li><a href="./requestMappingList">request mapping list</a>
 </ul>
 
 <P>  The time on the server is ${serverTime}. </P>
