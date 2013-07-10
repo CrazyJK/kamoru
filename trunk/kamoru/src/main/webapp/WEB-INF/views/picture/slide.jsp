@@ -92,10 +92,6 @@ function resizeImage() {
 }
 
 function fnViewImage(current) {
-	if (selectedNumber == current) {
-		fnFullyImageView();
-		return;
-	}
 	selectedNumber = current;
 	selectedImgUrl = imagepath + selectedNumber;
 	
