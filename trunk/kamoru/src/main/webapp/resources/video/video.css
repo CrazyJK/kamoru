@@ -12,7 +12,7 @@ li {font-size:9pt;}
 dl {margin:0px;}
 dt {font-size:10pt; height:30px; vertical-align:middle;}
 dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
-
+tr:hover {background-color:rgba(255, 255, 255, 0.75);}
 /* class */
 .boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin: 10px;
 	        box-shadow: 10px 10px 5px #588; -moz-box-shadow: 10px 10px 5px #588; -webkit-box-shadow: 10px 10px 5px #588;}
@@ -23,15 +23,16 @@ dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
 .checkbox-on {background-color:lightblue;}
 .radio       {cursor:pointer; padding:0px; margin:0px;}
 .radio-on    {background-color:lightblue;}
-.button       {background-color:;}
+.button       {color:royalblue; font-weight:bold;}
 .button:hover {background-color:lightblue;}
 
-.boxLI {display:inline-block;}
-.boxLIselect {background-color:white;}
+.boxLI       {display:inline-block;}
+.boxLIselect {background-color:snow;}
 .boxLIplayed {background-color:cyan;}
 .opusBoxDiv {width:300px; height:200px; padding: 5px; margin:5px; border: 1px solid orange;}
 .opusBoxDL  {height:200px; background-repeat:no-repeat; background-position:right center; background-size:contain;}
-.bgSpan       {opacity:0.75; background-color:white; text-shadow:0px 0px 5px white; font-weight:normal; padding:0px 5px 0px 5px; border-bottom: 1px solid orange; border-radius:3px;}
+.bgSpan       {overflow:hidden; background-color:rgba(255, 255, 255, 0.75); color:black; text-shadow:1px 1px 1px white; padding:0px 5px 0px 5px;
+				border-bottom:1px solid orange; border-right:1px solid orange; border-radius:5px;}
 .existFile    {color:blue;}
 .nonExistFile {color:gray;}
 
@@ -41,12 +42,14 @@ dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
 .spanSize10 {font-size:13pt; text-shadow:2px 2px 2px cyan;}
 .spanSize5  {font-size:11pt; text-shadow:2px 2px 2px yellow;}
 
-.roundBorder3  {border-radius:  3px; -moz-border-radius:  3px; -webkit-border-radius:  3px;}
-.roundBorder5  {border-radius:  5px; -moz-border-radius:  5px; -webkit-border-radius:  5px;}
-.roundBorder10 {border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
+.roundBorderS  {border-radius:  5px; -moz-border-radius:  5px; -webkit-border-radius:  5px;}
+.roundBorderM  {border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
+.roundBorderL  {border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;}
 
-.opusSBoxDiv {background-color: #eee; padding: 5px; margin:5px; border: 1px solid orange;}
-.listTable {width:100%; background-color:lightgray; opacity: 0.75;}
+.opusSBoxDiv {background-color:transparent; padding: 5px; margin:5px; border: 1px solid orange;}
+.cardDiv {width:200px; height:150px; padding: 5px; margin:5px; border: 1px solid orange;}
+.cardBG  {background-repeat:no-repeat; background-position:right center; background-size:100px;}
+.listTable {width:100%; background-color:transparent; opacity: 0.75; padding:0; margin:0;}
 
 /* id */
 div#searchDiv  {text-align:center;}
@@ -56,7 +59,7 @@ div#studioDiv  span:hover {color:orange;}
 div#actressDiv {display:none;}
 div#actressDiv span {font-size:9pt; color:blue; margin-left:10px;}
 div#actressDiv span:hover {color:orange;}
-div#contentDiv {overflow:auto; text-align:center;}
+div#contentDiv {font-size:9pt; overflow:auto; text-align:center; background-position:center center; background-size:contain;}
 #totalCount {text-shadow:2px 2px 2px white;}
 #debug      {text-shadow:2px 2px 2px yellow; margin-left:10px;}
 #bgimg      {text-shadow:2px 2px 2px yellow; float:right;}

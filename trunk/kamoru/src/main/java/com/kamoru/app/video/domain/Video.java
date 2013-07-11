@@ -339,6 +339,10 @@ public class Video implements Comparable<Object>, Serializable {
 		return this.videoFileList != null && this.videoFileList.size() > 0;  
 	}
 
+	public boolean isExistOverview() {
+		return this.overview != null && this.overview.trim().length() > 0;
+	}
+	
 	/**
 	 * actress를 추가한다. 기존actress가 발견되면 ref를 갱신.
 	 * @param actress

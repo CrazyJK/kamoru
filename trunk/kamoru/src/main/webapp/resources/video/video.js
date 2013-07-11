@@ -13,7 +13,6 @@ var selectedNumber = Math.floor(Math.random() * bgImageCount);
 function setBackgroundImage() {
 	currBGImageUrl = context + "image/" + selectedNumber;
 	$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
-	$("#contentDiv").css("background-size", "contain");
 }
 /**
  * background-size:contain; Scale the image to the largest size such that both its width and its height can fit inside the content area
