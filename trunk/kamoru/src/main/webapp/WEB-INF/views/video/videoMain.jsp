@@ -72,13 +72,13 @@ var bgImageCount = ${bgImageCount};
 	</div>
 	<div id="studioDiv" class="boxDiv roundBorderL">
 	<c:forEach var="studio" items="${studioList}"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
-		<span onclick="fnSearchText('${studio.name}')" class="${countByStudio > 9 ? 'spanSize10' : countByStudio > 4 ? 'spanSize5' : ''}" 
+		<span onclick="fnSearchText('${studio.name}')" class="${countByStudio > 9 ? 'spanSize10' : countByStudio > 4 ? 'spanSize5' : 'spanSize1'}" 
 			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">${studio.name}(${countByStudio})</span>
 	</c:forEach>
 	</div>
 	<div id="actressDiv" class="boxDiv roundBorderL">
 	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<span onclick="fnSearchText('${actress.name}')" class="${countByActress > 9 ? 'spanSize10' : countByActress > 4 ? 'spanSize5' : ''}" >${actress.name}(${countByActress})</span>
+		<span onclick="fnSearchText('${actress.name}')" class="${countByActress > 9 ? 'spanSize10' : countByActress > 4 ? 'spanSize5' : 'spanSize1'}" >${actress.name}(${countByActress})</span>
 	</c:forEach>
 	</div>
 </div>
@@ -92,26 +92,26 @@ var bgImageCount = ${bgImageCount};
 			<li id="${video.opus}" class="boxLI roundBorderM">
 				<div class="cardDiv roundBorderM">
 					<table>
-						<tr>
-							<td height="20px" colspan="2"><div style="height:20px;" class="bgSpan" onclick="fnVideoDetail('${video.opus}')">${video.title}</div></td>
+						<tr height="20px">
+							<td colspan="2"><div style="height:20px;" class="bgSpan" onclick="fnVideoDetail('${video.opus}')">${video.title}</div></td>
 						</tr>
-						<tr valign="top" height="160px">
+						<tr valign="top" height="120px">
 							<td width="70px" class="cardBG" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">
 								&nbsp;
 							</td>
 							<td>
 								<dl>
-									<dt><c:forEach items="${video.actressList}" var="actress">
+									<dd><c:forEach items="${video.actressList}" var="actress">
 										<span class="bgSpan" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
-										</c:forEach></dt>
-									<dd><span class="bgSpan" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span> 
-										<span class="bgSpan">${video.opus}</span></dd>
-									<dd><span class="bgSpan ${video.existVideoFileList ? 'existFile' : 'nonExistFile'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span>
-										<span class="bgSpan ${video.existCoverFile ? 'existFile' : 'nonExistFile'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
-									<dd><span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}" onclick="fnEditSubtitles('${video.opus}')">smi</span>
-										<span class="bgSpan ${video.existOverview ? 'existFile' : 'nonExistFile'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
-										<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>
-									 	<span id="DEL-${video.opus}" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')">Del</span></dd>
+										</c:forEach></dd>
+									<dd><span class="bgSpan" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></dd> 
+									<dd><span class="bgSpan">${video.opus}</span></dd>
+									<dd><span class="bgSpan ${video.existVideoFileList ? 'existFile' : 'nonExistFile'}" onclick="fnPlay('${video.opus}')">V</span>
+										<span class="bgSpan ${video.existCoverFile ? 'existFile' : 'nonExistFile'}" onclick="fnImageView('${video.opus}')">C</span>
+										<span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
+										<span class="bgSpan ${video.existOverview ? 'existFile' : 'nonExistFile'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
+										<span id="DEL-${video.opus}" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')">D</span></dd>
+									<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
 								</dl>
 							</td>
 						</tr>
@@ -163,8 +163,8 @@ var bgImageCount = ${bgImageCount};
 					<span class="bgSpan ${video.existCoverFile ? 'existFile' : 'nonExistFile'}" onclick="fnImageView('${video.opus}')">C</span>
 					<span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 					<span class="bgSpan ${video.existOverview ? 'existFile' : 'nonExistFile'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
+					<span id="DEL-${video.opus}" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')">D</span>
 					<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>
-					<span id="DEL-${video.opus}" style="display:none;" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')">Del</span>
 				</div>
 			</li>
 			</c:forEach>
@@ -172,9 +172,6 @@ var bgImageCount = ${bgImageCount};
 		</c:when>
 		<c:when test="${videoSearch.listViewType eq 'T'}">
 		<table class="listTable roundBorderL">
-			<tr>
-				<th>Studio</th><th>Opus</th><th>Title</th><th>Actress</th><th>Info</th>
-			</tr>
 			<c:forEach items="${videoList}" var="video">
 			<tr>
 				<td><span class="bgSpan" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></td>		
@@ -188,9 +185,8 @@ var bgImageCount = ${bgImageCount};
 					<span class="bgSpan ${video.existCoverFile ? 'existFile' : 'nonExistFile'}" onclick="fnImageView('${video.opus}')">C</span>
 					<span class="bgSpan ${video.existSubtitlesFileList ? 'existFile' : 'nonExistFile'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 					<span class="bgSpan ${video.existOverview ? 'existFile' : 'nonExistFile'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
-					<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>
-					<span id="DEL-${video.opus}" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')">Del</span>
-				</td>
+					<span id="DEL-${video.opus}" class="bgSpan" onclick="fnDeleteOpus('${video.opus}')">D</span></td>
+				<td><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></td>
 			</tr>
 			</c:forEach>
 		</table>

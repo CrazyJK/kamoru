@@ -495,7 +495,7 @@ public class Video implements Comparable<Object>, Serializable {
 
 		String opus = infoData.getString("opus");
 		if (!this.opus.equalsIgnoreCase(opus)) 
-			throw new VideoException("invalid info file");
+			throw new VideoException("invalid info file. " + this.opus + " != " + opus);
 		String rank = infoData.getString("rank");
 		this.rank = NumberUtils.toInt(rank, 0);
 		

@@ -24,7 +24,7 @@ $(document).ready(function(){
 <script src="<c:url value="/resources/common.js" />"></script>
 <script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
-<body style="background-image:url('<c:url value="/video/${video.opus}/cover" />'); background-position:center center;">
+<body style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 <%-- <img src="<c:url value="/video/${video.opus}/cover" />" /> --%>
 <dl>
 	<dt><span class="bgSpan">${video.title}</span></dt>
@@ -34,16 +34,16 @@ $(document).ready(function(){
 	<dd><c:forEach items="${video.actressList}" var="actress">
 			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
 		</c:forEach></dd>
-	<dd><span class="bgSpan">DATE : ${video.videoDate}</span></dd>
-	<dd><span class="bgSpan">ETC : ${video.etcInfo}</span></dd>
+	<dd><span class="bgSpan">Download DATE : ${video.videoDate}</span></dd>
+	<dd><span class="bgSpan">Release Date : ${video.etcInfo}</span></dd>
 	<dd><span class="bgSpan" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
 	<dd><span class="bgSpan">COVER : ${video.coverFilePath}</span></dd>
 	<dd><span class="bgSpan">WEBP : ${video.coverWebpFilePath}</span></dd>
 	<dd><span class="bgSpan" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
 	<dd><span class="bgSpan">INFOFILE : ${video.infoFilePath}</span></dd>
 	<dd><span class="bgSpan">ETCFILE : ${video.etcFileListPath}</span></dd>
-	<dd><span class="bgSpan">HISTORY : <pre>${video.historyText}</pre></span></dd>
-	<dd><span class="bgSpan" onclick="opener.fnEditOverview('${video.opus}')" >OVERVIEW : <pre>${video.overviewText}</pre></span></dd>
+	<dd><pre  class="bgSpan">${video.historyText}</pre></dd>
+	<dd><pre  class="bgSpan" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
 </dl>
 </body>
 </html>

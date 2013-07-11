@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 /* Dom elements */
-* {font-family: 'Comic Sans MS' '나눔고딕코딩' '맑은 고딕';}
+* {font-family: 'Comic Sans MS', '나눔고딕코딩', '맑은 고딕';}
 input {width:20px;}
 input[type=range] { background-color: silver; opacity: 0.75; width: 100px; height:10px;
 	-webkit-appearance: none; -webkit-border-radius: 5px; -webkit-box-shadow: inset 0 0 5px #333;}
@@ -12,7 +12,7 @@ li {font-size:9pt;}
 dl {margin:0px;}
 dt {font-size:10pt; height:30px; vertical-align:middle;}
 dd {font-size:9pt; margin:5px 0px 0px 5px; text-align:left;}
-tr:hover {background-color:rgba(255, 255, 255, 0.75);}
+
 /* class */
 .boxDiv {border: 1px solid #888; background-color: #eee; padding: 10px; margin: 10px;
 	        box-shadow: 10px 10px 5px #588; -moz-box-shadow: 10px 10px 5px #588; -webkit-box-shadow: 10px 10px 5px #588;}
@@ -20,46 +20,48 @@ tr:hover {background-color:rgba(255, 255, 255, 0.75);}
 .groupSpan     {display:inline-block; padding:3px; margin:2px; border: 1px solid orange;}
 .separatorSpan {font-weight:bold; color:blue;}				
 .checkbox    {cursor:pointer; padding:0px; margin:0px;}
-.checkbox-on {background-color:lightblue;}
+.checkbox-on {background-color:orange; border-radius:5px;}
 .radio       {cursor:pointer; padding:0px; margin:0px;}
-.radio-on    {background-color:lightblue;}
+.radio-on    {background-color:orange; border-radius:5px;}
 .button       {color:royalblue; font-weight:bold;}
-.button:hover {background-color:lightblue;}
+.button:hover {background-color:orange; border-radius:5px;}
 
 .boxLI       {display:inline-block;}
 .boxLIselect {background-color:snow;}
 .boxLIplayed {background-color:cyan;}
 .opusBoxDiv {width:300px; height:200px; padding: 5px; margin:5px; border: 1px solid orange;}
 .opusBoxDL  {height:200px; background-repeat:no-repeat; background-position:right center; background-size:contain;}
-.bgSpan       {overflow:hidden; background-color:rgba(255, 255, 255, 0.75); color:black; text-shadow:1px 1px 1px white; padding:0px 5px 0px 5px;
+.bgSpan       {overflow:hidden; background-color:rgba(255, 255, 255, 0.5); color:black; text-shadow:1px 1px 1px white; padding:0px 5px 0px 5px;
 				border-bottom:1px solid orange; border-right:1px solid orange; border-radius:5px;}
 .existFile    {color:blue;}
 .nonExistFile {color:gray;}
 
 .onclick       {cursor:pointer;}
-.onclick:hover {color:green; text-decoration:underline;}
+.onclick:hover {color:orange; text-decoration:none; text-shadow:1px 1px 1px black;}
 
 .spanSize10 {font-size:13pt; text-shadow:2px 2px 2px cyan;}
 .spanSize5  {font-size:11pt; text-shadow:2px 2px 2px yellow;}
+.spanSize1  {font-size:9pt; text-shadow:2px 2px 2px white;}
 
 .roundBorderS  {border-radius:  5px; -moz-border-radius:  5px; -webkit-border-radius:  5px;}
 .roundBorderM  {border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
 .roundBorderL  {border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;}
 
 .opusSBoxDiv {background-color:transparent; padding: 5px; margin:5px; border: 1px solid orange;}
-.cardDiv {width:200px; height:150px; padding: 5px; margin:5px; border: 1px solid orange;}
-.cardBG  {background-repeat:no-repeat; background-position:right center; background-size:100px;}
+.cardDiv {width:200px; padding: 5px; margin:5px; border: 1px solid orange;}
+.cardBG  {background-repeat:no-repeat; background-position:right center; background-size:155px;}
 .listTable {width:100%; background-color:transparent; opacity: 0.75; padding:0; margin:0;}
+.listTable tr:hover {background-color:rgba(255, 255, 255, 0.75);}
 
 /* id */
-div#searchDiv  {text-align:center;}
+div#searchDiv  {font-size:11pt; text-align:center;}
 div#studioDiv  {display:none;}
-div#studioDiv  span {font-size:9pt; color:blue; margin-left:10px;}
+div#studioDiv  span {color:blue; margin-left:10px;}
 div#studioDiv  span:hover {color:orange;}
 div#actressDiv {display:none;}
-div#actressDiv span {font-size:9pt; color:blue; margin-left:10px;}
+div#actressDiv span {color:blue; margin-left:10px;}
 div#actressDiv span:hover {color:orange;}
 div#contentDiv {font-size:9pt; overflow:auto; text-align:center; background-position:center center; background-size:contain;}
-#totalCount {text-shadow:2px 2px 2px white;}
-#debug      {text-shadow:2px 2px 2px yellow; margin-left:10px;}
-#bgimg      {text-shadow:2px 2px 2px yellow; float:right;}
+#totalCount {font-size:10pt; text-shadow:2px 2px 2px yellow;}
+#debug      {font-size:10pt; text-shadow:2px 2px 2px yellow; margin-left:10px;}
+#bgimg      {font-size:10pt; text-shadow:2px 2px 2px yellow; float:right;}

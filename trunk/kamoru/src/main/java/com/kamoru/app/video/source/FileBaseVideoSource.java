@@ -36,7 +36,6 @@ public class FileBaseVideoSource implements VideoSource {
 	private String video_extensions;
 	private String cover_extensions;
 	private String subtitles_extensions;
-	private String overview_extensions;
 	private boolean webp_mode;
 	private String webp_exec;
 
@@ -48,7 +47,7 @@ public class FileBaseVideoSource implements VideoSource {
 	@Inject Provider<Studio> studioProvider;
 	@Inject Provider<Actress> actressProvider;
 		
-	private boolean bLoading;
+	static private boolean bLoading;
 	
 	// setter
 	public void setPaths(String[] paths) {
@@ -62,9 +61,6 @@ public class FileBaseVideoSource implements VideoSource {
 	}
 	public void setSubtitles_extensions(String subtitles_extensions) {
 		this.subtitles_extensions = subtitles_extensions;
-	}
-	public void setOverview_extensions(String overview_extensions) {
-		this.overview_extensions = overview_extensions;
 	}
 	public void setWebp_mode(boolean webp_mode) {
 		this.webp_mode = webp_mode;
@@ -224,7 +220,7 @@ public class FileBaseVideoSource implements VideoSource {
 		}
 		String command = webp_exec + " \"" + file.getAbsolutePath() + "\" -q 80 -o \"" + webpfile.getAbsolutePath() + "\"";
 //		String[] command = {webp_exec, file.getAbsolutePath(), "-q 80 -o", webpfile.getAbsolutePath()};
-		logger.debug(command);
+		logger.info(command);
 		try {
 			Runtime.getRuntime().exec(command);
 		} catch (IOException e) {
