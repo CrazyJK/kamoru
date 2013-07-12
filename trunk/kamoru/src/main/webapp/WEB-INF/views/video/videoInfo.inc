@@ -1,10 +1,29 @@
-<dl style="background-image:url('<c:url value="/video/${video.opus}/cover" />'); background-size:300px 200px; height:200px;">
-	<dt><span class="bgSpan" onclick="fnViewVideoDetail('${video.opus}')">${video.title}</span></dt>
-	<dd><span class="bgSpan" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
-	<dd><span class="bgSpan">${video.opus}</span></dd>
-	<dd><c:forEach items="${video.actressList}" var="actress">
-			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
-		</c:forEach></dd>
-	<dd><span class="bgSpan">${video.etcInfo}</span></dd>
-	<dd><span class="bgSpan">${video.videoDate}</span></dd>
-</dl>
+			<li id="${video.opus}" class="li-box">
+				<div class="video-card">
+					<table>
+						<tr>
+							<td colspan="2"><div style="height:20px;" class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</div></td>
+						</tr>
+						<tr valign="top" height="120px">
+							<td width="70px" class="video-card-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">
+								&nbsp;
+							</td>
+							<td>
+								<dl>
+									<dd><c:forEach items="${video.actressList}" var="actress">
+										<span class="label" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
+										</c:forEach></dd>
+									<dd><span class="label" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></dd> 
+									<dd><span class="label">${video.opus}</span></dd>
+									<dd><span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">V</span>
+										<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
+										<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
+										<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
+										<span id="DEL-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span></dd>
+									<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
+								</dl>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</li>

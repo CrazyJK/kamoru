@@ -16,8 +16,11 @@
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
 var bgImageCount = 0;
-$(document).ready(function(){
-	//fnRank('${video.opus}');
+$(document).ready(function() {
+	// Add class : elements in onclick attribute add class
+	$("*[onclick]").addClass("onclick");
+	// set rank color
+	fnRankColor($("#Rank-${video.opus}"));
 });
 </script>
 <script src="<c:url value="/resources/video/video.js" />" type="text/javascript"></script>
@@ -25,25 +28,29 @@ $(document).ready(function(){
 <script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
 <body style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
-<%-- <img src="<c:url value="/video/${video.opus}/cover" />" /> --%>
 <dl>
-	<dt><span class="bgSpan">${video.title}</span></dt>
+	<dt><span class="label">${video.title}</span></dt>
 	<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
-	<dd><span class="bgSpan" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
-	<dd><span class="bgSpan">${video.opus}</span></dd>
+	<dd><span class="label" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
+	<dd><span class="label">${video.opus}</span></dd>
 	<dd><c:forEach items="${video.actressList}" var="actress">
-			<span class="bgSpan actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
+			<span class="label actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
+			<ul>
+			<c:forEach items="${actress.videoList}" var="video">
+				<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
+			</c:forEach>
+			</ul>
 		</c:forEach></dd>
-	<dd><span class="bgSpan">Download DATE : ${video.videoDate}</span></dd>
-	<dd><span class="bgSpan">Release Date : ${video.etcInfo}</span></dd>
-	<dd><span class="bgSpan" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
-	<dd><span class="bgSpan">COVER : ${video.coverFilePath}</span></dd>
-	<dd><span class="bgSpan">WEBP : ${video.coverWebpFilePath}</span></dd>
-	<dd><span class="bgSpan" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
-	<dd><span class="bgSpan">INFOFILE : ${video.infoFilePath}</span></dd>
-	<dd><span class="bgSpan">ETCFILE : ${video.etcFileListPath}</span></dd>
-	<dd><pre  class="bgSpan">${video.historyText}</pre></dd>
-	<dd><pre  class="bgSpan" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
+	<dd><span class="label">Download DATE : ${video.videoDate}</span></dd>
+	<dd><span class="label">Release Date : ${video.etcInfo}</span></dd>
+	<dd><span class="label" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
+	<dd><span class="label">COVER : ${video.coverFilePath}</span></dd>
+	<dd><span class="label">WEBP : ${video.coverWebpFilePath}</span></dd>
+	<dd><span class="label" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
+	<dd><span class="label">INFOFILE : ${video.infoFilePath}</span></dd>
+	<dd><div  class="label">ETCFILE : ${video.etcFileListPath}</div></dd>
+	<dd><pre  class="label">${video.historyText}</pre></dd>
+	<dd><pre  class="label" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
 </dl>
 </body>
 </html>

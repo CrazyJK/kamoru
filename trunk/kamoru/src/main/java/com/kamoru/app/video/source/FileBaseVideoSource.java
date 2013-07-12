@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.util.Assert;
 
 
 public class FileBaseVideoSource implements VideoSource {
@@ -39,6 +40,7 @@ public class FileBaseVideoSource implements VideoSource {
 	private boolean webp_mode;
 	private String webp_exec;
 
+	// data source
 	private Map<String, Video> videoMap;
 	private Map<String, Studio> studioMap;
 	private Map<String, Actress> actressMap;
@@ -46,20 +48,22 @@ public class FileBaseVideoSource implements VideoSource {
 	@Inject Provider<Video> videoProvider;
 	@Inject Provider<Studio> studioProvider;
 	@Inject Provider<Actress> actressProvider;
-		
-	static private boolean bLoading;
-	
+
 	// setter
 	public void setPaths(String[] paths) {
+		Assert.notNull(paths, "base paths must not be null");
 		this.paths = paths;
 	}
 	public void setVideo_extensions(String video_extensions) {
+		Assert.notNull(video_extensions, "video ext must not be null");
 		this.video_extensions = video_extensions;
 	}
 	public void setCover_extensions(String cover_extensions) {
+		Assert.notNull(cover_extensions, "cover ext must not be null");
 		this.cover_extensions = cover_extensions;
 	}
 	public void setSubtitles_extensions(String subtitles_extensions) {
+		Assert.notNull(subtitles_extensions, "subtitles ext must not be null");
 		this.subtitles_extensions = subtitles_extensions;
 	}
 	public void setWebp_mode(boolean webp_mode) {
@@ -81,7 +85,6 @@ public class FileBaseVideoSource implements VideoSource {
 	 */
 	private void load() {
 		logger.info(new String());
-		bLoading = true;
 		
 		Collection<File> files = new ArrayList<File>();
 		for(String path : paths) {
@@ -203,7 +206,6 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			
 		}
-		bLoading = false;
 		logger.debug("total found video size : " + videoMap.size());
 	}
 
@@ -254,20 +256,14 @@ public class FileBaseVideoSource implements VideoSource {
 				actressList.add(actress);
 			}
 		}
-		
 		return actressList;
 	}
 	
 	@Override
 	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
-	public void reload() {
+	public synchronized void reload() {
 		logger.info(new String());
-		if (bLoading) {
-			logger.info("Currently loaded because it will pass");
-		} 
-		else {
-			load();
-		}
+		load();
 	}
 	@Override
 	public Map<String, Video> getVideoMap() {

@@ -56,16 +56,14 @@ $(document).ready(function(){
 			$(this).animate({
 				opacity: 0.75
 				}, 500, function(){
-					$(this).addClass("boxLIselect");
-					//$(this).css("background-color", "lightgreen");
+					$(this).addClass("li-box-select");
 					$("#DEL-"+$(this).attr("id")).css("display", "");
 				});
 		}, function() {
 			$(this).animate({
 				opacity: 1
 				}, 500, function(){
-					$(this).removeClass("boxLIselect");
-					//$(this).css("background-color", "");
+					$(this).removeClass("li-box-select");
 					$("#DEL-"+$(this).attr("id")).css("display", "none");
 				});
 		});

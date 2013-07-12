@@ -14,9 +14,13 @@
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
+<script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
 var context = '<s:url value="/"/>';
+$(document).ready(function() {
+	// Add class : elements in onclick attribute add class
+	$("*[onclick]").addClass("onclick");
+});
 </script>
 </head>
 <body>
@@ -31,11 +35,7 @@ var context = '<s:url value="/"/>';
 <div>
 	<ul>
 	<c:forEach items="${actress.videoList}" var="video">
-		<li id="<c:out value="${actress.name}"/>" class="boxLI">
-			<div class="opusBoxDiv">                   
-				<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
-			</div>
-		</li>
+		<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
 	</c:forEach>
 	</ul>
 </div>

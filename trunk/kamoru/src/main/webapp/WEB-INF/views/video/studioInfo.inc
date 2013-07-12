@@ -2,17 +2,17 @@
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <dl>
-	<dt onclick="fnViewStudioDetail('${studio.name}')">${studio.name}</dt>
-	<dd>Homepage : ${studio.homepage}</dd>
-	<dd>Company : ${studio.companyName}</dd>
-	<dd>Actress(${fn:length(studio.actressList)}) :
+	<dt class="label" onclick="fnViewStudioDetail('${studio.name}')">${studio.name}</dt>
+	<dd class="label">Homepage : ${studio.homepage}</dd>
+	<dd class="label">Company : ${studio.companyName}</dd>
+	<dd class="label">Actress(${fn:length(studio.actressList)}) :
 		<c:forEach items="${studio.actressList}" var="actress">
-			<span class="bgSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}(${fn:length(actress.videoList)})</span>
+			<span class="label" onclick="fnViewActressDetail('${actress.name}')">${actress.name}(${fn:length(actress.videoList)})</span>
 		</c:forEach>
 	</dd>
-	<dd>Video(${fn:length(studio.videoList)}) : 
+	<dd class="label">Video(${fn:length(studio.videoList)}) : 
 		<c:forEach items="${studio.videoList}" var="video">
-			<span class="bgSpan" title="${video.title} ${video.actressList}" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span>
+			<span class="label" title="${video.title} ${video.actressList}" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span>
 		</c:forEach>
 	</dd>
 </dl>

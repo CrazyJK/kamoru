@@ -1,3 +1,5 @@
+var currBGImageUrl;
+var selectedNumber = Math.floor(Math.random() * bgImageCount);
 
 function resizeDivHeight() {
 	var windowHeight = $(window).height();
@@ -8,8 +10,6 @@ function resizeDivHeight() {
 	$("#contentDiv").height(resizeContentDivHeight);
 	//setBackgroundImage();
 }
-var currBGImageUrl;
-var selectedNumber = Math.floor(Math.random() * bgImageCount);
 function setBackgroundImage() {
 	currBGImageUrl = context + "image/" + selectedNumber;
 	$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
@@ -17,7 +17,6 @@ function setBackgroundImage() {
 /**
  * background-size:contain; Scale the image to the largest size such that both its width and its height can fit inside the content area
  * 이 설정과 같이 움직이도록 하는 함수 
- */
 function resizeBackgroundImage() {
 	currBGImageUrl = context + "image/" + selectedNumber;
 	
@@ -49,7 +48,7 @@ function resizeBackgroundImage() {
 				height = divHeight;
 			}
 		}
-		//$("#debug").html("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
+		//debug("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
 		$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
 		$("#contentDiv").css("background-size", width + "px " + height + "px");
 	});
@@ -58,15 +57,17 @@ function resizeBackgroundImage() {
 function ratioSize(numerator1, numerator2, denominator) {
 	return parseInt(numerator1 * numerator2 / denominator);
 }
+ */
+
 function fnStudioDivToggle() {
 	$("#studioDiv").toggle();
 	resizeDivHeight();
-	$("#debug").html("fnStudioDivToggle");
+	debug("fnStudioDivToggle");
 }
 function fnActressDivToggle() {
 	$("#actressDiv").toggle();
 	resizeDivHeight();
-	$("#debug").html("fnActressDivToggle");
+	debug("fnActressDivToggle");
 }
 function fnStudioSearch(studio) {
 	$("input:text").each(function(){
@@ -93,7 +94,7 @@ function fnDetailSearch() {
 function fnDeleteOpus(selectedOpus) {
 	if(confirm("Really? Are you sure to delete this opus?")) {
 		if(confirm("Are you kidding? D.E.L.E.T.E [" + selectedOpus + "]?")) {
-			$("#debug").html("delete " + selectedOpus);
+			debug("delete " + selectedOpus);
 			$("#hiddenHttpMethod").val("delete");
 			// hide it's box
 			$("#" + selectedOpus).hide();
@@ -111,16 +112,16 @@ function fnDeleteOpus(selectedOpus) {
 	}
 }
 function fnEditSubtitles(selectedOpus) {
-	$("#debug").html("edit subtitles " + selectedOpus);
+	debug("edit subtitles " + selectedOpus);
 	$("#actionIframe").attr("src", context + "video/" + selectedOpus + "/subtitles");
 }
 function fnPlay(selectedOpus) {
-	$("#debug").html("Video play " + selectedOpus);
+	debug("Video play " + selectedOpus);
 	$("#actionIframe").attr("src", context + "video/" + selectedOpus + "/play");
 	fnVideoDetail(selectedOpus);
 }
 function fnRandomPlay() {
-	$("#debug").html("Random play start");
+	debug("Random play start");
 	if(opusArray.length == 0) {
 		alert("다 봤슴당");
 		return;
@@ -135,30 +136,26 @@ function fnOpusFocus(opus) {
 	$("#" + opus).animate({
 		opacity: 0.5,
 	}, 1000, function(){
-		$(this).addClass("boxLIplayed");
-		//$(this).css("background-color", "cyan");
+		$(this).addClass("li-box-played");
 	});
 	var topValue = $("#" + opus).position().top - $("#headerDiv").outerHeight() - 20;
 	$("#contentDiv").scrollTop(topValue);
 }
 function fnBGImageView() {
-//	popupImage(currBGImageUrl);
 	popup(context + "image?n=" + selectedNumber, "ImageView" + selectedNumber, 800, 600);
 }
 function fnImageView(opus) {
-	$("#debug").html("Cover image view : " + opus);
+	debug("Cover image view : " + opus);
 	popupImage(context + "video/" + opus + "/cover");
 }
 function fnEditOverview(opus) {
-	$("#debug").html("Overview Popup : " + opus);
+	debug("Overview Popup : " + opus);
     popup(context + "video/" + opus + "/overview", "overview-"+opus, 400, 300, 'Mouse');
 }
 function fnVideoDetail(opus) {
     popup(context + "video/" + opus, "detailview-"+opus, 850, 800);
 }
 function fnRank(opus) {
-//	alert(opus + " : " + obj.value);
-//	$("#actionIframe").attr("src", context + "video/" + opus + "/rank/" + rank);
 	var rank = $("#Rank-"+opus);
 	fnRankColor(rank);
 	var frm;
@@ -185,7 +182,6 @@ function fnRankColor(rank) {
 	else {
 		rank.css("background-color", "blue");
 	}
-//	alert(rank.val());
 }
 function popupImage(url) {
 	var img = $("<img />");
@@ -207,4 +203,8 @@ function fnViewStudioDetail(name) {
 
 function fnViewVideoDetail(opus) {
 	popup(context + "video/" + opus, "videoDetail-" + opus, 800, 600);
+}
+
+function debug(msg) {
+	$("#debug").html(msg);
 }
