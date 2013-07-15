@@ -40,7 +40,7 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private static final Log logger = LogFactory.getLog(Video.class);
 
-	private final Sort DEFAULT_SORTMETHOD = Sort.O;
+	private final static Sort DEFAULT_SORTMETHOD = Sort.T;
 
 	// TITLE
 	private Studio studio;
@@ -65,7 +65,7 @@ public class Video implements Comparable<Object>, Serializable {
 
 	private Integer playCount;
 	
-	private Sort sortMethod = DEFAULT_SORTMETHOD;
+	private static Sort sortMethod = DEFAULT_SORTMETHOD;
 
 
 	public Video() {
@@ -117,7 +117,7 @@ public class Video implements Comparable<Object>, Serializable {
 		
 		}
 		String[] s = {thisStr, compStr};
-//		logger.info(this.opus + " : " + ArrayUtils.toString(s));
+		logger.debug(this.opus + " : " + ArrayUtils.toString(s));
 		Arrays.sort(s);
 		return s[0].equals(thisStr) ? -1 : 1;
 	}

@@ -27,11 +27,11 @@ public interface VideoService {
 
 	void playVideo(String opus);
 
-	File getVideoCoverFile(String opus);
+	File getVideoCoverFile(String opus, boolean isChrome);
 
 	byte[] getDefaultCoverFileByteArray();
 	
-	byte[] getVideoCoverByteArray(String opus);
+	byte[] getVideoCoverByteArray(String opus, boolean isChrome);
 	
 	void saveVideoOverview(String opus, String overViewTxt);
 

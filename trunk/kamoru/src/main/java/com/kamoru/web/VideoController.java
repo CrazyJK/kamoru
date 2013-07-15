@@ -31,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,14 +98,15 @@ public class VideoController {
 	}
 
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> image(@PathVariable String opus, HttpServletResponse response) throws IOException {
-		logger.info(opus + " - " + response);
-		File imageFile = videoService.getVideoCoverFile(opus);
+	public HttpEntity<byte[]> image(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
+		logger.info(opus + " - agent:" + agent);
+		boolean isChrome = agent.indexOf("Chrome") > -1;
+		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
 		if(imageFile == null) {
 			response.sendRedirect("../no/cover");
 			return null;
 		}
-		return httpEntity(videoService.getVideoCoverByteArray(opus), VideoUtils.getFileExtension(imageFile));
+		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), VideoUtils.getFileExtension(imageFile));
 	}
 
 	@RequestMapping(value="/no/cover", method=RequestMethod.GET)

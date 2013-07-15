@@ -138,18 +138,18 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public File getVideoCoverFile(String opus) {
+	public File getVideoCoverFile(String opus, boolean isChrome) {
 		logger.info(opus);
-		if(webpMode)
+		if(webpMode && isChrome)
 			return videoDao.getVideo(opus).getCoverWebpFile();
 		else
 			return videoDao.getVideo(opus).getCoverFile();
 	}
 
 	@Override
-	public byte[] getVideoCoverByteArray(String opus) {
+	public byte[] getVideoCoverByteArray(String opus, boolean isChrome) {
 		logger.info(opus);
-		if(webpMode)
+		if(webpMode && isChrome)
 			return videoDao.getVideo(opus).getCoverWebpByteArray();
 		else 
 			return videoDao.getVideo(opus).getCoverByteArray();
