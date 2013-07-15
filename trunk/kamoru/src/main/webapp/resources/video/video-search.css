@@ -1,3 +1,17 @@
 @CHARSET "UTF-8";
 
-#newVideo {position:float; left:0px; bottom:400px; width:90%; height:400px; overflow:auto;}
+em {
+	background-color:yellow;
+	font-style: normal;
+	font-size: 12px;
+}
+#newVideo {
+	position:float; 
+	left:0px; 
+	bottom:400px; 
+	height:400px; 
+	overflow:auto;
+}
+.highlighted {
+	background-color:yellow;
+}

@@ -94,7 +94,7 @@ var bgImageCount = ${bgImageCount};
 				<div class="video-card">
 					<table>
 						<tr>
-							<td colspan="2"><div style="height:20px;" class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</div></td>
+							<td colspan="2"><span style="height:20px" class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></td>
 						</tr>
 						<tr valign="top" height="120px">
 							<td width="70px" class="video-card-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">

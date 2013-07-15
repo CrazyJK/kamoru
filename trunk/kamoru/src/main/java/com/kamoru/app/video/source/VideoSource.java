@@ -29,7 +29,34 @@ public interface VideoSource {
 	Map<String, Actress> getActressMap();
 
 	/**
+	 * @return total video list
+	 */
+	List<Video> getVideoList();
+	
+	/**
+	 * @return total studio list
+	 */
+	List<Studio> getStudioList();
+
+	/**
+	 * @return total actress list
+	 */
+	List<Actress> getActressList();
+
+	
+	/**
 	 * 비디오 리로드.
 	 */
 	void reload();
+	
+	/**
+	 * 비디오 삭제
+	 */
+	void removeVideo(String opus);
+	
+	Video getVideo(String opus);
+	
+	Studio getStudio(String name);
+	
+	Actress getActress(String name);
 }

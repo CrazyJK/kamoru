@@ -204,7 +204,7 @@ public class VideoUtils {
 		for(String part : nameArr) {
 			retName += part + " ";
 		}
-		return retName.trim();
+		return retName.toLowerCase().trim();
 	}
 
 	/**

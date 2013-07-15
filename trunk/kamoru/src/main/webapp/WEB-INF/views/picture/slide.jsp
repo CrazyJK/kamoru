@@ -150,9 +150,9 @@ function fnDisplayThumbnail() {
 <body>
 <span id="debug" style="display:none;"></span>
 <div id="navDiv">
-	<span class="bgSpan" onclick="fnPrevImageView();">&lt;<span id="leftNo"></span></span>
-	<span class="bgSpan" onclick="fnFullyImageView();"><span id="currNo"></span></span>
-	<span class="bgSpan" onclick="fnNextImageView();"><span id="rightNo"></span>&gt;</span>
+	<span class="label" onclick="fnPrevImageView();">&lt;<span id="leftNo"></span></span>
+	<span class="label" onclick="fnFullyImageView();"><span id="currNo"></span></span>
+	<span class="label" onclick="fnNextImageView();"><span id="rightNo"></span>&gt;</span>
 </div>
 <div id="imageThumbnailDiv"><ul id="imageThumbnailUL"></ul></div>
 <div id="imageDiv" class="centerBG"></div>

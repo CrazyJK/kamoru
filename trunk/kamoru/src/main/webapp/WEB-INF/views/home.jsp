@@ -15,6 +15,7 @@
 Application List
 <ul>
 	<li><a href="./video">Video Main</a>
+	<li><a href="./video/search">Video search</a>
 	<li><a href="./video/list">Video list</a>
 	<li><a href="./video/actress">Actress list</a>
 	<li><a href="./video/studio">Studio List</a>

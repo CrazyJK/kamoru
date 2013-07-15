@@ -31,7 +31,6 @@ ul {
 	margin:0;
 }
 li {
-	display:inline-block;
 }
 dl {
 	margin:0;
@@ -64,7 +63,7 @@ div#contentDiv {
 #debug,
 #bgimg {
 	font-size:15px; 
-	text-shadow:2px 2px 2px yellow;
+	text-shadow:1px 1px 1px yellow;
 }
 #debug {
 	margin-left:10px;
@@ -81,11 +80,13 @@ div#contentDiv {
 	-webkit-border-radius: 15px;
 }
 /* border-radius 10 */
+li,
 .group,
 .video-card,
 .video-box,
 .video-box-bg,
-.video-sbox {
+.video-sbox,
+.video-table {
 	border-radius:10px; 
 	-moz-border-radius:10px; 
 	-webkit-border-radius:10px;
@@ -165,17 +166,22 @@ div#contentDiv {
 .item1 {
 	color:blue; 
 	margin-left:10px;
+	display:inline-block; 
 }
 .item10 {
-	font-size:20px;
+	font-size:18px;
+	text-shadow:2px 2px 2px cyan;
 }
 .item5 {
 	font-size:15px;
+	text-shadow:2px 2px 2px yellow;
 }
 .item1 {
 	font-size:10px;
+	text-shadow:2px 2px 2px white;
 }
 .li-box {
+	display:inline-block;
 }
 .li-box-select {
 	background-color:snow;
@@ -184,6 +190,8 @@ div#contentDiv {
 	background-color:cyan;
 }
 .label {
+	display:inline-block; 
+	text-overflow:ellipsis;
 	font-size: 12px;
 	overflow:hidden; 
 	background-color:rgba(255, 255, 255, 0.5); 
@@ -208,7 +216,8 @@ div#contentDiv {
 	text-shadow:1px 1px 1px black;
 }
 .video-card {
-	width:200px; 
+	width:200px;
+	background-color:rgba(255, 255, 255, 0.25);
 }
 .video-card-bg {
 	background-repeat:no-repeat; 
@@ -235,4 +244,33 @@ div#contentDiv {
 }
 .video-table tr:hover {
 	background-color:rgba(255, 255, 255, 0.75);
+}
+/* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */
+::-webkit-scrollbar {
+	width: 8px; 
+	height: 8px; 
+	border: 0px solid #fff; 
+	background-color: rgba(255,255,255,0);
+}
+::-webkit-scrollbar-button:start:decrement, 
+::-webkit-scrollbar-button:end:increment {
+	display: block; 
+	height: 10px; 
+	/* background: url('./images/bg.png') #efefef; */
+	background-color: rgba(255,255,255,0);
+}
+::-webkit-scrollbar-track {
+	background-color: rgba(255,255,255,0);
+	/* background: #efefef; */ 
+	-webkit-border-radius: 10px; 
+	border-radius:10px; 
+	-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0);
+}
+::-webkit-scrollbar-thumb {
+	height: 50px; 
+	width: 50px; 
+	background: rgba(255,140,0,.5); 
+	-webkit-border-radius: 8px; 
+	border-radius: 8px; 
+	-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,.1);
 }

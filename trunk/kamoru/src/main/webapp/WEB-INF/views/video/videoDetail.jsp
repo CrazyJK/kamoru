@@ -33,14 +33,6 @@ $(document).ready(function() {
 	<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
 	<dd><span class="label" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
 	<dd><span class="label">${video.opus}</span></dd>
-	<dd><c:forEach items="${video.actressList}" var="actress">
-			<span class="label actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
-			<ul>
-			<c:forEach items="${actress.videoList}" var="video">
-				<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
-			</c:forEach>
-			</ul>
-		</c:forEach></dd>
 	<dd><span class="label">Download DATE : ${video.videoDate}</span></dd>
 	<dd><span class="label">Release Date : ${video.etcInfo}</span></dd>
 	<dd><span class="label" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
@@ -51,6 +43,14 @@ $(document).ready(function() {
 	<dd><div  class="label">ETCFILE : ${video.etcFileListPath}</div></dd>
 	<dd><pre  class="label">${video.historyText}</pre></dd>
 	<dd><pre  class="label" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
+	<dd><c:forEach items="${video.actressList}" var="actress">
+			<span class="label actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
+			<ul>
+			<c:forEach items="${actress.videoList}" var="video">
+				<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
+			</c:forEach>
+			</ul>
+		</c:forEach></dd>
 </dl>
 </body>
 </html>

@@ -15,12 +15,21 @@
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
+<script src="<c:url value="/resources/video/video.js" />"></script>
+<script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
 </script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/video/studioInfo.inc" %>
+<div>
+	<ul>
+	<c:forEach items="${studio.videoList}" var="video">
+		<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
+	</c:forEach>
+	</ul>
+</div>
+
 </body>
 </html>

@@ -1,5 +1,7 @@
-var currBGImageUrl;
-var selectedNumber = Math.floor(Math.random() * bgImageCount);
+$(document).ready(function(){
+	// Add class : elements in onclick attribute add class
+	$("*[onclick]").addClass("onclick");
+});
 
 function resizeDivHeight() {
 	var windowHeight = $(window).height();

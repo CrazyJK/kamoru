@@ -59,4 +59,5 @@ public interface VideoDao {
 	 */
 	List<Video> searchVideo(VideoSearch videoSearch);
 
+	void reload();
 }

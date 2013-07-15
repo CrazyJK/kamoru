@@ -61,11 +61,14 @@ public class Image {
 		try {
 			switch(type) {
 			case MASTER:
-				return masterBytes == null ? masterBytes = FileUtils.readFileToByteArray(file) : masterBytes;
+//				return masterBytes == null ? masterBytes = FileUtils.readFileToByteArray(file) : masterBytes;
+				return FileUtils.readFileToByteArray(file);
 			case WEB:
-				return webBytes == null ? webBytes = toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500)) : webBytes;
+//				return webBytes == null ? webBytes = toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500)) : webBytes;
+				return toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
 			case THUMBNAIL:
-				return thumbBytes == null ? thumbBytes = toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER)) : thumbBytes;
+//				return thumbBytes == null ? thumbBytes = toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER)) : thumbBytes;
+				return toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
 			default:
 				throw new RuntimeException("잘못된 타입");
 			}

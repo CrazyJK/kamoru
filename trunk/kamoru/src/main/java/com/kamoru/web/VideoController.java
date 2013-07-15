@@ -20,8 +20,8 @@ import com.kamoru.app.video.domain.VideoSearch;
 import com.kamoru.app.video.service.VideoService;
 import com.kamoru.app.video.util.VideoUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/video")
 public class VideoController {
 
-	private static final Logger logger = LoggerFactory.getLogger(VideoController.class);
+	protected static final Log logger = LogFactory.getLog(VideoController.class);
 	
 	@Autowired
 	private VideoService videoService;
@@ -55,6 +55,7 @@ public class VideoController {
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String av(Model model, @ModelAttribute VideoSearch videoSearch) {
+		logger.info(videoSearch + " - " + model);
 		List<Video> videoList =  videoService.searchVideo(videoSearch);
 
 		model.addAttribute("views", View.values());
@@ -69,6 +70,7 @@ public class VideoController {
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String showVideoList(Model model) {
+		logger.info(model);
 		model.addAttribute("videoList", videoService.getVideoList());
 		return "video/videoList";
 	}
@@ -76,11 +78,13 @@ public class VideoController {
 	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void videoPost() {
+		logger.info(new String());
 		logger.info("POST do not something yet");
 	}
 
 	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
 	public String showAVOpus(Model model, @PathVariable String opus) {
+		logger.info(opus + " - " + model);
 		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/videoDetail";
 	}
@@ -94,6 +98,7 @@ public class VideoController {
 
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> image(@PathVariable String opus, HttpServletResponse response) throws IOException {
+		logger.info(opus + " - " + response);
 		File imageFile = videoService.getVideoCoverFile(opus);
 		if(imageFile == null) {
 			response.sendRedirect("../no/cover");
@@ -104,6 +109,7 @@ public class VideoController {
 
 	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> noimage() {
+		logger.info(new String());
 		return httpEntity(videoService.getDefaultCoverFileByteArray(), "jpg");
 	}
 
@@ -123,23 +129,27 @@ public class VideoController {
 	
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.GET)
 	public String showOverview(Model model, @PathVariable("opus") String opus) {
+		logger.info(opus + " - " + model);
 		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/videoOverview";
 	}
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.POST) //	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String doSaveOverview(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
+		logger.info(opus + " - " + overViewTxt);
 		videoService.saveVideoOverview(opus, overViewTxt);
 		return "video/videoOverviewSave";
 	}
 	@RequestMapping(value="/{opus}/play", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void doPlayVideo(@PathVariable String opus) {
+		logger.info(opus);
 		videoService.playVideo(opus);
 	}
 
 	@RequestMapping(value="/{opus}/subtitles", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void doEditSubtitles(@PathVariable String opus) {
+		logger.info(opus);
 		videoService.editVideoSubtitles(opus);
 	}
 	
@@ -152,24 +162,28 @@ public class VideoController {
 	
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
 	public String showActressList(Model model) {
+		logger.info(model);
 		model.addAttribute(videoService.getActressList());
 		return "video/actressList";
 	}
 	
 	@RequestMapping(value="/actress/{actress}", method=RequestMethod.GET)
 	public String showActress(Model model, @PathVariable String actress) {
+		logger.info(actress + " - " + model);
 		model.addAttribute(videoService.getActress(actress));
 		return "video/actressDetail";
 	}
 	
 	@RequestMapping(value="/studio", method=RequestMethod.GET)
 	public String showStudioList(Model model) {
+		logger.info(model);
 		model.addAttribute(videoService.getStudioList());
 		return "video/studioList";
 	}
 	
 	@RequestMapping(value="/studio/{studio}", method=RequestMethod.GET)
 	public String showStudio(Model model, @PathVariable String studio) {
+		logger.info(studio + " - " + model);
 		model.addAttribute(videoService.getStudio(studio));
 		return "video/studioDetail";
 	}

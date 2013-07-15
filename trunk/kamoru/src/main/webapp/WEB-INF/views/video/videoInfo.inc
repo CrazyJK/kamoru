@@ -1,3 +1,5 @@
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+
 			<li id="${video.opus}" class="li-box">
 				<div class="video-card">
 					<table>

@@ -1,3 +1,7 @@
+
+var currBGImageUrl;
+var selectedNumber = Math.floor(Math.random() * bgImageCount);
+
 $(document).ready(function(){
 	
 	// Add listener : if window resize, contentDiv height resize.

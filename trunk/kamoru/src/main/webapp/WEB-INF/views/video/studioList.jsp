@@ -14,20 +14,25 @@
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video-info-popup.js" />"></script>
+<script src="<c:url value="/resources/video/video.js" />"></script>
+<script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
 var context = '<spring:url value="/"/>';
 </script>
 </head>
 <body>
-<ul>
+Total actress : ${fn:length(studioList)}
+<table class="video-table" style="background-color:lightgray">
 <c:forEach items="${studioList}" var="studio">
-	<li id="<c:out value="${studio.name}"/>">
-		<div class="opusBoxDiv" style="width:99%;">                   
-			<%@ include file="/WEB-INF/views/video/studioInfo.inc" %>
-		</div>
-	</li>
+	<tr>
+		<td style="white-space:nowrap;" onclick="fnViewStudioDetail('${studio.name}')">${studio.name}</td>
+		<td style="white-space:nowrap">
+			<c:forEach items="${studio.videoList}" var="video">
+				<span class="label" title="${video.title}" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span>
+			</c:forEach>
+		</td>
+	</tr>
 </c:forEach>
-</ul>
+</table>
 </body>
 </html>

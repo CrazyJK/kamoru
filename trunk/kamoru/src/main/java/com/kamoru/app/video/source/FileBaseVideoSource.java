@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
  
+import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.domain.Actress;
 import com.kamoru.app.video.domain.Studio;
 import com.kamoru.app.video.domain.Video;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.Assert;
 
 
@@ -149,7 +151,7 @@ public class FileBaseVideoSource implements VideoSource {
 			Video video = null;
 			if((video = videoMap.get(opus.toLowerCase())) == null) {
 				video = this.videoProvider.get();
-				video.setOpus(opus);
+				video.setOpus(opus.toUpperCase());
 				video.setTitle(title);
 				video.setEtcInfo(etcInfo);
 				videoMap.put(opus.toLowerCase(), video);
@@ -178,11 +180,11 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			
 			Studio studio = null;
-			String lowerCasestudioName = studioName.toLowerCase();
-			if((studio = studioMap.get(lowerCasestudioName)) == null) {
+			String lowerCaseStudioName = studioName.toLowerCase();
+			if((studio = studioMap.get(lowerCaseStudioName)) == null) {
 				studio = this.studioProvider.get();
 				studio.setName(studioName);
-				studioMap.put(lowerCasestudioName, studio);
+				studioMap.put(lowerCaseStudioName, studio);
 			}
 
 			List<Actress> actressList = getActressList(actressName);
@@ -260,7 +262,6 @@ public class FileBaseVideoSource implements VideoSource {
 	}
 	
 	@Override
-	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
 	public synchronized void reload() {
 		logger.info(new String());
 		load();
@@ -282,6 +283,64 @@ public class FileBaseVideoSource implements VideoSource {
 		logger.info(new String());
 		createVideoSource();
 		return actressMap;
+	}
+	@Override
+	public void removeVideo(String opus) {
+		logger.info(opus);
+		createVideoSource();
+		videoMap.get(opus.toLowerCase()).removeVideo();
+		videoMap.remove(opus.toLowerCase());
+	}
+	@Override
+	public Video getVideo(String opus) {
+		logger.info(opus);
+		createVideoSource();
+		if (videoMap.containsKey(opus.toLowerCase())) {
+			return videoMap.get(opus.toLowerCase());
+		}
+		else {
+			throw new VideoException("Video not found : " + opus);
+		}
+	}
+	@Override
+	public Studio getStudio(String name) {
+		logger.info(name);
+		createVideoSource();
+		if (studioMap.containsKey(name.toLowerCase())) {
+			return studioMap.get(name.toLowerCase());
+		}
+		else {
+			throw new VideoException("Studio not found : " + name);
+		}
+	}
+	@Override
+	public Actress getActress(String name) {
+		logger.info(name);
+		createVideoSource();
+		if (actressMap.containsKey(VideoUtils.forwardNameSort(name))) {
+			return actressMap.get(VideoUtils.forwardNameSort(name));
+		}
+		else {
+			throw new VideoException("Actress not found : " + name);
+		}
+	}
+	@Override
+	public List<Video> getVideoList() {
+		logger.info(new String());
+		createVideoSource();
+		return new ArrayList<Video>(videoMap.values());
+	}
+	@Override
+	public List<Studio> getStudioList() {
+		logger.info(new String());
+		createVideoSource();
+		return new ArrayList<Studio>(studioMap.values());
+	}
+	@Override
+	public List<Actress> getActressList() {
+		logger.info(new String());
+		createVideoSource();
+		return new ArrayList<Actress>(actressMap.values());
 	}
 
 }

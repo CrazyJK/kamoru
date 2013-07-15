@@ -16,6 +16,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -39,7 +40,7 @@ public class Video implements Comparable<Object>, Serializable {
 	
 	private static final Log logger = LogFactory.getLog(Video.class);
 
-	private final Sort DEFAULT_SORTMETHOD = Sort.M;
+	private final Sort DEFAULT_SORTMETHOD = Sort.O;
 
 	// TITLE
 	private Studio studio;
@@ -83,34 +84,40 @@ public class Video implements Comparable<Object>, Serializable {
 	@Override
 	public int compareTo(Object o) {
 		Video comp = (Video)o;
-		String thisStr = null;
-		String compStr = null;
-		if (sortMethod == Sort.S) {
+		String thisStr = "";
+		String compStr = "";
+		
+		switch(sortMethod) {
+		case S:
 			thisStr = this.getStudio().getName();
 			compStr = comp.getStudio().getName();
-		} else if (sortMethod == Sort.O) {
+			break;
+		case O:
 			thisStr = this.getOpus();
 			compStr = comp.getOpus();
-		} else if (sortMethod == Sort.T) {
+			break;
+		case T:
 			thisStr = this.getTitle();
 			compStr = comp.getTitle();
-		} else if (sortMethod == Sort.A) {
+			break;
+		case A:
 			thisStr = this.getActress();
 			compStr = comp.getActress();
-		} else if (sortMethod == Sort.M) {
-			thisStr = String.valueOf(
-					this.isExistVideoFileList() ? this.getVideoFileList().get(0).lastModified() : 
-						(this.isExistCoverFile() ? this.getCoverFile().lastModified() : 0));
-			compStr = String.valueOf(
-					comp.isExistVideoFileList() ? comp.getVideoFileList().get(0).lastModified() : 
-						(comp.isExistCoverFile() ? comp.getCoverFile().lastModified() : 0));
-		} else if (sortMethod == Sort.P) {
+			break;
+		case M:
+			thisStr = String.valueOf(this.getDelegateFile() != null ? this.getDelegateFile().lastModified() : 0l);
+			compStr = String.valueOf(comp.getDelegateFile() != null ? comp.getDelegateFile().lastModified() : 0l);
+			break;
+		case P:
 			return this.getPlayCount() - comp.getPlayCount();
-		} else if (sortMethod == Sort.R) {
+		case R:
 			return this.getRank() - comp.getRank();
+		default:
+			break;
+		
 		}
 		String[] s = {thisStr, compStr};
-//		logger.info(ArrayUtils.toString(s));
+//		logger.info(this.opus + " : " + ArrayUtils.toString(s));
 		Arrays.sort(s);
 		return s[0].equals(thisStr) ? -1 : 1;
 	}
@@ -147,9 +154,10 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @return
 	 */
 	public byte[] getCoverByteArray() {
-		if(this.coverByteArray == null)
-			this.coverByteArray = VideoUtils.readFileToByteArray(coverFile);
-		return this.coverByteArray;
+//		if(this.coverByteArray == null)
+//			this.coverByteArray = VideoUtils.readFileToByteArray(coverFile);
+//		return this.coverByteArray;
+		return VideoUtils.readFileToByteArray(coverFile);
 	}
 
 	public File getCoverFile() {
@@ -167,9 +175,10 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @return
 	 */
 	public byte[] getCoverWebpByteArray() {
-		if(this.coverWebpByteArray == null)
-			this.coverWebpByteArray = VideoUtils.readFileToByteArray(coverWebpFile);
-		return this.coverWebpByteArray;
+//		if(this.coverWebpByteArray == null)
+//			this.coverWebpByteArray = VideoUtils.readFileToByteArray(coverWebpFile);
+//		return this.coverWebpByteArray;
+		return VideoUtils.readFileToByteArray(coverWebpFile);
 	}
 	public File getCoverWebpFile() {
 		return coverWebpFile;
@@ -388,8 +397,8 @@ public class Video implements Comparable<Object>, Serializable {
 	 */
 	public void setCoverFile(File coverFile) {
 		this.coverFile = coverFile;
-		if(coverFile.exists())
-			this.coverByteArray = VideoUtils.readFileToByteArray(coverFile);
+//		if(coverFile.exists())
+//			this.coverByteArray = VideoUtils.readFileToByteArray(coverFile);
 	}
 
 	/**
@@ -398,8 +407,8 @@ public class Video implements Comparable<Object>, Serializable {
 	 */
 	public void setCoverWebpFile(File coverWebpFile) {
 		this.coverWebpFile = coverWebpFile;
-		if(coverWebpFile.exists())
-			this.coverWebpByteArray = VideoUtils.readFileToByteArray(coverWebpFile);
+//		if(coverWebpFile.exists())
+//			this.coverWebpByteArray = VideoUtils.readFileToByteArray(coverWebpFile);
 	}
 
 	public void setEtcFile(File file) {
@@ -462,13 +471,15 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public void move(String WATCHED_PATH) {
 		for(File file : getFileAll())
-			if(file != null && file.exists())
+			if (file != null && file.exists() && !file.getParent().equals(WATCHED_PATH)) {
+				logger.info("move file from " + file.getAbsolutePath() + " to " + WATCHED_PATH);
 				try {
 					FileUtils.moveFileToDirectory(file, new File(WATCHED_PATH), true);
 				} catch (IOException e) {
 					logger.error(e);
 					e.printStackTrace();
 				}
+			}
 	}
 
 	public void setRank(int rank) {
@@ -558,5 +569,16 @@ public class Video implements Comparable<Object>, Serializable {
 			sb.append(his).append(System.getProperty("line.separator"));
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * 비디오 파일과 같은 위치에 나머지 파일을 모은다.
+	 */
+	public void arrange() {
+		logger.debug(new String());
+		if (this.videoFileList.size() > 0) {
+			move(this.videoFileList.get(0).getParent());
+		}
+		
 	}
 }

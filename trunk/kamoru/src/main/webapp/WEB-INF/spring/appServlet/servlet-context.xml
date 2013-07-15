@@ -64,4 +64,12 @@
     	<beans:property name="defaultErrorView" value="error/defaultError"/>
     </beans:bean>
     
+    <interceptors>
+    	<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    		<beans:property name="paramName" value="lang"/>
+    	</beans:bean>
+    </interceptors>
+    
+    <beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+    
 </beans:beans>
