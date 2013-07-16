@@ -7,13 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,70 +20,36 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.kamoru.app.video.VideoCore;
-import com.kamoru.app.video.VideoException;
 import com.kamoru.app.video.dao.VideoDao;
 import com.kamoru.app.video.domain.Action;
 import com.kamoru.app.video.domain.Actress;
 import com.kamoru.app.video.domain.Studio;
 import com.kamoru.app.video.domain.Video;
 import com.kamoru.app.video.domain.VideoSearch;
+import com.kamoru.app.video.util.VideoUtils;
 
 @Service
 public class VideoServiceImpl implements VideoService {
 	protected static final Log logger = LogFactory.getLog(VideoServiceImpl.class);
 
-	@Autowired private VideoDao videoDao;
+	private byte[] defaultCoverFileBytes;
 	
 	@Value("#{videoProp['defaultCoverFilePath']}") private String defaultCoverFilePath;
 	@Value("#{videoProp['editor']}") private String editor;
-	@Value("#{videoProp['player']}") private String player;
 	@Value("#{videoProp['mainBasePath']}") private String mainBasePath;
+	@Value("#{videoProp['player']}") private String player;
 	@Value("#{videoProp['webp.mode']}") private boolean webpMode;
 
-	private byte[] defaultCoverFileBytes;
+	@Autowired private VideoDao videoDao;
 	
-	@Override
-	public List<Video> searchVideo(VideoSearch videoSearch) {
-		logger.info(videoSearch);
-		return videoDao.searchVideo(videoSearch);
+	private File historyFile;
+	private List<String> historyList;
+	private boolean isChanged;
+	
+	public VideoServiceImpl() {
+		isChanged = true;
 	}
-
-	@Override
-	public List<Video> getVideoList() {
-		logger.info(new String());
-		return videoDao.getVideoList();
-	}
-
-	@Override
-	public List<Actress> getActressList() {
-		logger.info(new String());
-		return videoDao.getActressList();
-	}
-
-	@Override
-	public List<Studio> getStudioList() {
-		logger.info(new String());
-		return videoDao.getStudioList();
-	}
-
-	@Override
-	public Video getVideo(String opus) {
-		logger.info(opus);
-		try {
-			return videoDao.getVideo(opus);
-		}
-		catch(VideoException ve) {
-			logger.error(ve);
-			return null;
-		}
-	}
-
-	@Override
-	public void saveVideoOverview(String opus, String overViewText) {
-		logger.info(opus + " : " + overViewText);
-		videoDao.getVideo(opus).saveOverView(overViewText);
-	}
-
+	
 	@Override
 	public void deleteVideo(String opus) {
 		logger.info(opus);
@@ -95,19 +58,11 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public void playVideo(String opus) {
-		logger.info(opus);
-		executeCommand(getVideo(opus), Action.PLAY);
-		getVideo(opus).increasePlayCount();
-		saveHistory(getVideo(opus), Action.PLAY);
-	}
-
-	@Override
 	public void editVideoSubtitles(String opus) {
 		logger.info(opus);
 		executeCommand(getVideo(opus), Action.SUBTITLES);
 	}
-	
+
 	@Async
 	private void executeCommand(Video video, Action action) {
 		logger.info(video.getOpus() + " : " + action);
@@ -138,6 +93,107 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
+	public List<Video> findVideoList(String query) {
+		logger.info(query);
+		List<Video> found = new ArrayList<Video>();
+		if(query == null || query.trim().length() == 0)
+			return found;
+
+		query = query.toLowerCase();
+		for(Video video : videoDao.getVideoList()) {
+			if(StringUtils.containsIgnoreCase(video.getOpus(), query)
+				|| StringUtils.containsIgnoreCase(video.getStudio().getName(), query)
+				|| StringUtils.containsIgnoreCase(video.getTitle(), query)
+				|| StringUtils.containsIgnoreCase(video.getActress(), query)) {
+				found.add(video);
+			} 
+		}
+		Collections.sort(found);
+		return found;
+	}
+
+	@Override
+	public Actress getActress(String actressName) {
+		logger.info(actressName);
+		return videoDao.getActress(actressName);
+	}
+
+	@Override
+	public List<Actress> getActressList() {
+		logger.info(new String());
+		List<Actress> list = videoDao.getActressList();
+		Collections.sort(list);
+		return list;
+	}
+
+	@Override
+	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
+		logger.info("size : " + videoList.size());
+		List<Actress> actressList = new ArrayList<Actress>();
+		for(Video video : videoList) {
+			for(Actress actress : video.getActressList()) {
+				if(!actressList.contains(actress))
+					actressList.add(actress);
+			}
+		}
+		Collections.sort(actressList);
+		return actressList;
+	}
+
+	@Override
+	public byte[] getDefaultCoverFileByteArray() {
+		logger.info(new String());
+		if(defaultCoverFileBytes == null)
+			try {
+				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCoverFilePath));
+			} catch (IOException e) {
+				logger.error(e);
+			}
+		return defaultCoverFileBytes;
+	}
+
+	@Override
+	public Studio getStudio(String studioName) {
+		logger.info(studioName);
+		return videoDao.getStudio(studioName);
+	}
+	
+	@Override
+	public List<Studio> getStudioList() {
+		logger.info(new String());
+		List<Studio> list = videoDao.getStudioList(); 
+		Collections.sort(list);
+		return list;
+	}
+
+	@Override
+	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
+		logger.info("size : " + videoList.size());
+		List<Studio> studioList = new ArrayList<Studio>();
+		for(Video video : videoList) {
+			if(!studioList.contains(video.getStudio()))
+				studioList.add(video.getStudio());
+		}
+		Collections.sort(studioList);
+		return studioList;
+	}
+
+	@Override
+	public Video getVideo(String opus) {
+		logger.info(opus);
+		return videoDao.getVideo(opus);
+	}
+	
+	@Override
+	public byte[] getVideoCoverByteArray(String opus, boolean isChrome) {
+		logger.info(opus);
+		if(webpMode && isChrome)
+			return videoDao.getVideo(opus).getCoverWebpByteArray();
+		else 
+			return videoDao.getVideo(opus).getCoverByteArray();
+	}
+
+	@Override
 	public File getVideoCoverFile(String opus, boolean isChrome) {
 		logger.info(opus);
 		if(webpMode && isChrome)
@@ -147,15 +203,27 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public byte[] getVideoCoverByteArray(String opus, boolean isChrome) {
-		logger.info(opus);
-		if(webpMode && isChrome)
-			return videoDao.getVideo(opus).getCoverWebpByteArray();
-		else 
-			return videoDao.getVideo(opus).getCoverByteArray();
+	public List<Video> getVideoList() {
+		logger.info(new String());
+		List<Video> list = videoDao.getVideoList(); 
+		Collections.sort(list);
+		return list;
 	}
-	
-	// action method
+
+	@Override
+	public void playVideo(String opus) {
+		logger.info(opus);
+		executeCommand(videoDao.getVideo(opus), Action.PLAY);
+		videoDao.getVideo(opus).increasePlayCount();
+		saveHistory(videoDao.getVideo(opus), Action.PLAY);
+	}
+
+	@Override
+	public void rankVideo(String opus, int rank) {
+		logger.info(opus + " : " + rank);
+		videoDao.getVideo(opus).setRank(rank);
+	}
+
 	private void saveHistory(Video video, Action action) {
 		logger.info(video.getOpus() + " : " + action);
 		String files = null; 
@@ -187,87 +255,73 @@ public class VideoServiceImpl implements VideoService {
 		if(action != Action.DELETE)
 			video.addHistory(historymsg);
 		try {
-			FileUtils.writeStringToFile(new File(mainBasePath, "history.log"), historymsg, VideoCore.FileEncoding, true);
+			FileUtils.writeStringToFile(getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
+			isChanged = true;
 		} catch (IOException e) {
 			logger.error(historymsg, e);
 		}
 	}
 
 	@Override
-	public Actress getActress(String actressName) {
-		logger.info(actressName);
-		return videoDao.getActress(actressName);
+	public void saveVideoOverview(String opus, String overViewText) {
+		logger.info(opus + " : " + overViewText);
+		videoDao.getVideo(opus).saveOverView(overViewText);
 	}
 
 	@Override
-	public Studio getStudio(String studioName) {
-		logger.info(studioName);
-		return videoDao.getStudio(studioName);
+	public List<Video> searchVideo(VideoSearch search) {
+		logger.info(search);
+		List<Video> list = new ArrayList<Video>();
+		for (Video video : videoDao.getVideoList()) {
+			if ((VideoUtils.equals(video.getStudio().getName(), search.getSearchText()) 
+					|| VideoUtils.equals(video.getOpus(), search.getSearchText()) 
+					|| VideoUtils.containsName(video.getTitle(), search.getSearchText()) 
+					|| VideoUtils.containsActress(video, search.getSearchText())) 
+				&& (search.isNeverPlay() ? (video.getPlayCount() == 0) : true)
+				&& (search.isAddCond()   
+						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList()) 
+							&& (search.isExistSubtitles() ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList())) 
+						: true)) {
+				video.setSortMethod(search.getSortMethod());
+				list.add(video);
+			}
+		}
+		if (search.isSortReverse())
+			Collections.sort(list, Collections.reverseOrder());
+		else
+			Collections.sort(list);
+		logger.info("found video length : " + list.size());
+		return list;
 	}
 
 	@Override
-	public List<Video> findVideoList(String query) {
+	public List<String> findHistory(String query) {
 		logger.info(query);
-		List<Video> found = new ArrayList<Video>();
+		List<String> found = new ArrayList<String>();
+
 		if(query == null || query.trim().length() == 0)
 			return found;
-
-		query = query.toLowerCase();
-		for(Video video : videoDao.getVideoList()) {
-			if(StringUtils.containsIgnoreCase(video.getOpus(), query)
-				|| StringUtils.containsIgnoreCase(video.getStudio().getName(), query)
-				|| StringUtils.containsIgnoreCase(video.getTitle(), query)
-				|| StringUtils.containsIgnoreCase(video.getActress(), query)) {
-				found.add(video);
-			} 
+		
+		try {
+			if(isChanged || historyFile == null) {
+				historyList = FileUtils.readLines(getHistoryFile(), VideoCore.FileEncoding);
+				isChanged = false;
+			}
+			for (String history : historyList) {
+				logger.info(history);
+				if (StringUtils.indexOfIgnoreCase(history, query) > -1)
+					found.add(history);
+			}
+		} catch (IOException e) {
+			logger.error("read error", e);
 		}
 		return found;
 	}
 
-	@Override
-	public byte[] getDefaultCoverFileByteArray() {
-		logger.info(new String());
-		if(defaultCoverFileBytes == null)
-			try {
-				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCoverFilePath));
-			} catch (IOException e) {
-				logger.error(e);
-			}
-		return defaultCoverFileBytes;
+	private File getHistoryFile() {
+		if(historyFile == null)
+			historyFile = new File(mainBasePath, "history.log");
+		return historyFile;
 	}
-
-	@Override
-	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
-		logger.info("size : " + videoList.size());
-		List<Actress> actressList = new ArrayList<Actress>();
-		for(Video video : videoList) {
-			for(Actress actress : video.getActressList()) {
-				if(!actressList.contains(actress))
-					actressList.add(actress);
-			}
-		}
-		Collections.sort(actressList);
-		return actressList;
-	}
-
-	@Override
-	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
-		logger.info("size : " + videoList.size());
-		List<Studio> studioList = new ArrayList<Studio>();
-		for(Video video : videoList) {
-			if(!studioList.contains(video.getStudio()))
-				studioList.add(video.getStudio());
-		}
-		Collections.sort(studioList);
-		return studioList;
-	}
-
-	@Override
-	public void rankVideo(String opus, int rank) {
-		logger.info(opus + " : " + rank);
-		videoDao.getVideo(opus).setRank(rank);
-		
-	}
-
 }
 

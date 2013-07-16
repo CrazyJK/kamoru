@@ -1,14 +1,5 @@
 package com.kamoru.app.video.source;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.kamoru.app.video.VideoCore;
 import com.kamoru.app.video.dao.VideoDao;
 import com.kamoru.app.video.domain.Video;
-import com.kamoru.app.video.source.VideoSource;
 
 @Component
 public class VideoBatch {
@@ -35,7 +24,6 @@ public class VideoBatch {
 	@Value("#{videoProp['removeLowerRankVideo']}") private boolean REMOVE_LOWER_RANK_VIDEO;
 	@Value("#{videoProp['lowerRankVideoBaselineScore']}")  private int LOWER_RANK_VIDEO_BASELINE_SCORE;
 
-	private static boolean first = true;
 
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {

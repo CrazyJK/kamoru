@@ -5,9 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -100,7 +98,7 @@ public class Actress implements Serializable, Comparable<Object> {
 		return s[0].equals(thisStr) ? -1 : 1;
 	}
 	public boolean contains(String actressName) {
-		return this.name.toLowerCase().indexOf(actressName.toLowerCase()) > -1;
+		return VideoUtils.equalsName(name, actressName);
 	}
 	
 	public List<URL> getWebImage() {

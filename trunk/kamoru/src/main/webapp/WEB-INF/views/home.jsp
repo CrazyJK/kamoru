@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page session="false" %>
 <html>
 <head>
@@ -10,7 +11,7 @@
 	<spring:message code="application.title"/> learning project using by SpringFramework
 </h1>
 <h2>
-	<spring:message code="application.author"/>
+	Hello <security:authentication property="principal.username" />
 </h2>
 Application List
 <ul>
@@ -21,6 +22,8 @@ Application List
 	<li><a href="./video/studio">Studio List</a>
 	<li><a href="./image">Image view</a>
 	<li><a href="./requestMappingList">request mapping list</a>
+	<li><a href="./jsp/util/sessionView.jsp">Web Session</a>
+	<li><a href="./jsp/colors.jsp">Standard Colors</a>
 </ul>
 
 <P>  The time on the server is ${serverTime}. </P>

@@ -148,6 +148,7 @@ public class VideoSearch implements Serializable {
 						sortMethod, sortReverse, viewStudioDiv, viewActressDiv);
 	}
 
+	@SuppressWarnings("rawtypes")
 	String getParam(HttpServletRequest request) {
 		StringBuffer sb = new StringBuffer();
 		Enumeration enu = request.getParameterNames();

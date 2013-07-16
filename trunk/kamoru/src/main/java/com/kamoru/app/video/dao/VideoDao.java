@@ -1,12 +1,10 @@
 package com.kamoru.app.video.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import com.kamoru.app.video.domain.Actress;
 import com.kamoru.app.video.domain.Studio;
 import com.kamoru.app.video.domain.Video;
-import com.kamoru.app.video.domain.VideoSearch;
 
 public interface VideoDao {
 
@@ -51,13 +49,6 @@ public interface VideoDao {
 	 * @param opus
 	 */
 	void deleteVideo(String opus);
-
-	/**
-	 * find video by videoSearch DTO
-	 * @param videoSearch
-	 * @return
-	 */
-	List<Video> searchVideo(VideoSearch videoSearch);
 
 	void reload();
 }

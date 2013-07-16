@@ -20,6 +20,8 @@ import com.kamoru.app.video.domain.VideoSearch;
 import com.kamoru.app.video.service.VideoService;
 import com.kamoru.app.video.util.VideoUtils;
 
+import org.apache.bcel.generic.NEW;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,70 +51,31 @@ public class VideoController {
 
 	protected static final Log logger = LogFactory.getLog(VideoController.class);
 	
-	@Autowired
-	private VideoService videoService;
-	@Autowired
-	private ImageService imageService;
+	@Autowired private ImageService imageService;
+	@Autowired private VideoService videoService;
 
-	@RequestMapping(method=RequestMethod.GET)
-	public String av(Model model, @ModelAttribute VideoSearch videoSearch) {
-		logger.info(videoSearch + " - " + model);
-		List<Video> videoList =  videoService.searchVideo(videoSearch);
-
-		model.addAttribute("views", View.values());
-		model.addAttribute("sorts", Sort.values());
-		model.addAttribute("videoList", videoList);
-		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
-		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
-		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
-		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
-		return "video/videoMain";
-	}
-
-	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String showVideoList(Model model) {
-		logger.info(model);
-		model.addAttribute("videoList", videoService.getVideoList());
-		return "video/videoList";
-	}
-
-	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void videoPost() {
+	@RequestMapping(value="/actress", method=RequestMethod.GET)
+	public String actress(Model model) {
 		logger.info(new String());
-		logger.info("POST do not something yet");
+		model.addAttribute(videoService.getActressList());
+		return "video/actressList";
 	}
 
-	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
-	public String showAVOpus(Model model, @PathVariable String opus) {
-		logger.info(opus + " - " + model);
-		model.addAttribute("video", videoService.getVideo(opus));
-		return "video/videoDetail";
+	@RequestMapping(value="/actress/{actress}", method=RequestMethod.GET)
+	public String actressName(Model model, @PathVariable String actress) {
+		logger.info(actress);
+		model.addAttribute(videoService.getActress(actress));
+		return "video/actressDetail";
 	}
 
-	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void doDeleteVideo(@PathVariable("opus") String opus) {
-		logger.info(opus);
-		videoService.deleteVideo(opus);
+	@RequestMapping("/error")
+	public void error() {
+		throw new RuntimeException("error");
 	}
 
-	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> image(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
-		logger.info(opus + " - agent:" + agent);
-		boolean isChrome = agent.indexOf("Chrome") > -1;
-		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
-		if(imageFile == null) {
-			response.sendRedirect("../no/cover");
-			return null;
-		}
-		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), VideoUtils.getFileExtension(imageFile));
-	}
-
-	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> noimage() {
-		logger.info(new String());
-		return httpEntity(videoService.getDefaultCoverFileByteArray(), "jpg");
+	@RequestMapping("/videoError")
+	public void errorVideo() {
+		throw new VideoException("error");
 	}
 
 	private HttpEntity<byte[]> httpEntity(byte[] imageBytes, String suffix) {
@@ -128,74 +91,92 @@ public class VideoController {
 		
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
+
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	public String list(Model model) {
+		logger.info(new String());
+		model.addAttribute("videoList", videoService.getVideoList());
+		return "video/videoList";
+	}
+
+	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
+	public HttpEntity<byte[]> noCover() {
+		logger.info(new String());
+		return httpEntity(videoService.getDefaultCoverFileByteArray(), "jpg");
+	}
+
+	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
+	public String opus(Model model, @PathVariable String opus) {
+		logger.info(opus);
+		model.addAttribute("video", videoService.getVideo(opus));
+		return "video/videoDetail";
+	}
 	
+	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
+	public HttpEntity<byte[]> opusCover(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
+		logger.info(opus + " - agent:" + agent);
+		boolean isChrome = agent.indexOf("Chrome") > -1;
+		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
+		if(imageFile == null) {
+			response.sendRedirect("../no/cover");
+			return null;
+		}
+		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), VideoUtils.getFileExtension(imageFile));
+	}
+	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusDelete(@PathVariable("opus") String opus) {
+		logger.info(opus);
+		videoService.deleteVideo(opus);
+	}
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.GET)
-	public String showOverview(Model model, @PathVariable("opus") String opus) {
-		logger.info(opus + " - " + model);
+	public String opusOverview(Model model, @PathVariable("opus") String opus) {
+		logger.info(opus);
 		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/videoOverview";
 	}
+
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.POST) //	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public String doSaveOverview(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
+	public String opusOverviewPost(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
 		logger.info(opus + " - " + overViewTxt);
 		videoService.saveVideoOverview(opus, overViewTxt);
 		return "video/videoOverviewSave";
 	}
+	
 	@RequestMapping(value="/{opus}/play", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void doPlayVideo(@PathVariable String opus) {
+	public void opusPlay(@PathVariable String opus) {
 		logger.info(opus);
 		videoService.playVideo(opus);
 	}
-
-	@RequestMapping(value="/{opus}/subtitles", method=RequestMethod.GET)
+	
+	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void doEditSubtitles(@PathVariable String opus) {
-		logger.info(opus);
-		videoService.editVideoSubtitles(opus);
+	public void opusPost() {
+		logger.info(new String());
+		logger.info("POST do not something yet");
 	}
 	
 	@RequestMapping(value="/{opus}/rank/{rank}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void doRankVideo(@PathVariable String opus, @PathVariable int rank) {
+	public void opusRank(@PathVariable String opus, @PathVariable int rank) {
 		logger.info(opus + " : " + rank);
 		videoService.rankVideo(opus, rank);
 	}
 	
-	@RequestMapping(value="/actress", method=RequestMethod.GET)
-	public String showActressList(Model model) {
-		logger.info(model);
-		model.addAttribute(videoService.getActressList());
-		return "video/actressList";
-	}
-	
-	@RequestMapping(value="/actress/{actress}", method=RequestMethod.GET)
-	public String showActress(Model model, @PathVariable String actress) {
-		logger.info(actress + " - " + model);
-		model.addAttribute(videoService.getActress(actress));
-		return "video/actressDetail";
-	}
-	
-	@RequestMapping(value="/studio", method=RequestMethod.GET)
-	public String showStudioList(Model model) {
-		logger.info(model);
-		model.addAttribute(videoService.getStudioList());
-		return "video/studioList";
-	}
-	
-	@RequestMapping(value="/studio/{studio}", method=RequestMethod.GET)
-	public String showStudio(Model model, @PathVariable String studio) {
-		logger.info(studio + " - " + model);
-		model.addAttribute(videoService.getStudio(studio));
-		return "video/studioDetail";
+	@RequestMapping(value="/{opus}/subtitles", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusSubtitles(@PathVariable String opus) {
+		logger.info(opus);
+		videoService.editVideoSubtitles(opus);
 	}
 	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public String queryVideo(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
+	public String search(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
 		List<Video> foundVideoList = videoService.findVideoList(query);
 		logger.info("query=" + query + " found count=" + foundVideoList.size());
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
-		for(Video video : foundVideoList) {
+		for (Video video : foundVideoList) {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("opus", video.getOpus());
 			map.put("title", video.getTitle());
@@ -209,13 +190,54 @@ public class VideoController {
 		model.addAttribute("videoList", foundMapList);
         return "video/search";		
 	}
-
-	@RequestMapping("/error")
-	public void error() {
-		throw new RuntimeException("error");
+	
+	@RequestMapping(value="/studio", method=RequestMethod.GET)
+	public String studio(Model model) {
+		logger.info(new String());
+		model.addAttribute(videoService.getStudioList());
+		return "video/studioList";
 	}
-	@RequestMapping("/videoError")
-	public void errorVideo() {
-		throw new VideoException("error");
+
+	@RequestMapping(value="/studio/{studio}", method=RequestMethod.GET)
+	public String studioName(Model model, @PathVariable String studio) {
+		logger.info(studio);
+		model.addAttribute(videoService.getStudio(studio));
+		return "video/studioDetail";
+	}
+	@RequestMapping(method=RequestMethod.GET)
+	public String video(Model model, @ModelAttribute VideoSearch videoSearch) {
+		logger.info(videoSearch);
+		List<Video> videoList =  videoService.searchVideo(videoSearch);
+
+		model.addAttribute("views", View.values());
+		model.addAttribute("sorts", Sort.values());
+		model.addAttribute("videoList", videoList);
+		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
+		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
+		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
+		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
+		return "video/videoMain";
+	}
+	
+	@RequestMapping(value="/history", method=RequestMethod.GET)
+	public String history(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
+		List<String> foundHistoryList = videoService.findHistory(query);
+		logger.info("query=" + query + " found count=" + foundHistoryList.size());
+		
+		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
+		for (String history : foundHistoryList) {
+			String[] hisStrings = StringUtils.split(history, ",", 4);
+			
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("date", hisStrings[0]);
+			map.put("opus", hisStrings[1]);
+			map.put("act", hisStrings[2]);
+			map.put("desc", hisStrings[3]);
+			foundMapList.add(map);
+		}
+
+		
+		model.addAttribute("historyList", foundMapList);
+		return "video/history";
 	}
 }

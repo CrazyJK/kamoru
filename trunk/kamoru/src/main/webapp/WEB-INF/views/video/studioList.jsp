@@ -21,7 +21,7 @@ var context = '<spring:url value="/"/>';
 </script>
 </head>
 <body>
-Total actress : ${fn:length(studioList)}
+Total Studio : ${fn:length(studioList)}
 <table class="video-table" style="background-color:lightgray">
 <c:forEach items="${studioList}" var="studio">
 	<tr>
