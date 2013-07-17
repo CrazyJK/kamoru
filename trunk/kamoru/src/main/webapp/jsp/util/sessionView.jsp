@@ -11,9 +11,11 @@
 .value {
 	color: teal;
 }
+.clazz {
+	color: navy;
+}
 </style>
 </head>
-<h1>Web session list</h1>
 <body>
 <ol>
 <%
@@ -21,7 +23,11 @@
 	while (names.hasMoreElements()) {
 		String name = (String)names.nextElement();
 		Object value = session.getAttribute(name);
-		out.println("<li><code class='name'>" + name + "</code> = <code class='value'>" + value + "</code>");
+		String clazz = value.getClass().getName();
+		out.println(
+				"<li><code class='name'>" + name + "</code>&nbsp;"
+				  + "<code class='value'>" + value + "</code>&nbsp;"
+				  + "<code class='clazz'>" + clazz + "</code>");
 	}
 %>
 </ol>

@@ -1,17 +1,7 @@
 package com.kamoru.web;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
-import java.util.Random;
 
-import com.kamoru.app.image.domain.PictureType;
-import com.kamoru.app.image.service.ImageService;
-import com.kamoru.app.image.source.ImageSource;
-import com.kamoru.app.video.VideoCore;
-
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.kamoru.app.image.domain.PictureType;
+import com.kamoru.app.image.service.ImageService;
+import com.kamoru.app.video.VideoCore;
 
 @Controller
 @RequestMapping("/image")

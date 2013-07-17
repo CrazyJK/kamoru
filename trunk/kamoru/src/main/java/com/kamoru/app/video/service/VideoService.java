@@ -2,6 +2,7 @@ package com.kamoru.app.video.service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import com.kamoru.app.video.domain.Actress;
 import com.kamoru.app.video.domain.Studio;
@@ -14,7 +15,9 @@ public interface VideoService {
 
 	void editVideoSubtitles(String opus);
 
-	List<Video> findVideoList(String query);
+	List<Map<String, String>> findHistory(String query);
+
+	List<Map<String, String>> findVideoList(String query);
 
 	Actress getActress(String actressName);
 
@@ -27,11 +30,11 @@ public interface VideoService {
 	Studio getStudio(String studioName);
 
 	List<Studio> getStudioList();
-
+	
 	List<Studio> getStudioListOfVideoes(List<Video> videoList);
 	
 	Video getVideo(String opus);
-	
+
 	byte[] getVideoCoverByteArray(String opus, boolean isChrome);
 
 	File getVideoCoverFile(String opus, boolean isChrome);
@@ -45,7 +48,5 @@ public interface VideoService {
 	void saveVideoOverview(String opus, String overViewTxt);
 
 	List<Video> searchVideo(VideoSearch videoSearch);
-
-	List<String> findHistory(String query);
 
 }

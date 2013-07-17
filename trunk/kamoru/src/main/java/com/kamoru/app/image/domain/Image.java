@@ -21,9 +21,9 @@ public class Image {
 	private long lastModified;
 	private File file;
 	
-	private byte[] masterBytes;
-	private byte[] webBytes;
-	private byte[] thumbBytes;
+//	private byte[] masterBytes;
+//	private byte[] webBytes;
+//	private byte[] thumbBytes;
 	
 	public Image(File file) {
 		this.file = file;

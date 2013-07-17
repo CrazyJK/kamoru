@@ -118,13 +118,14 @@ function searchAndHighlight(searchTerm) {
 <body>
 <div id="debugDiv"></div>
 <div id="queryDiv" class="div-box">
-	Search<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
+	Video Search
+	<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
 	<span class="label">new 
-	S<input type="text" name="studio"  id="studio"   style="width:80px;" />
-	O<input type="text" name="opus"    id="opus"     style="width:80px;" readonly="readonly"/>
-	T<input type="text" name="title"   id="title"    style="width:100px;" />
-	A<input type="text" name="actress" id="actress"  style="width:100px;" />
-	E<input type="text" name="etcInfo" id="etcInfo"  style="width:100px;" />
+	S<input type="text" name="studio"  id="studio"   style="width:80px;" class="searchInput"/>
+	O<input type="text" name="opus"    id="opus"     style="width:80px;" class="searchInput" readonly="readonly"/>
+	T<input type="text" name="title"   id="title"    style="width:100px;" class="searchInput"/>
+	A<input type="text" name="actress" id="actress"  style="width:100px;" class="searchInput"/>
+	E<input type="text" name="etcInfo" id="etcInfo"  style="width:100px;" class="searchInput"/>
 	<span id="addVideoBtn">Add</span>
 	</span>
 </div>

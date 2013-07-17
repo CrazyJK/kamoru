@@ -55,7 +55,7 @@ $(document).ready(function(){
 		});
 
 	// Add listener : video box click. add border, opacity
-	$("li").toggle(
+	$("li[id^='opus-']").toggle(
 		function() {
 			$(this).animate({
 				opacity: 0.75

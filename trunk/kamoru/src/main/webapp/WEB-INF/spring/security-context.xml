@@ -10,6 +10,7 @@
 	<http auto-config="true" use-expressions="true" access-denied-page="/login?denied=true">
 
 		<intercept-url pattern="/resources/**" 	access="permitAll" />
+		<intercept-url pattern="/jsp/**" 		access="permitAll" />
 		<intercept-url pattern="/login" 		access="permitAll" />
 		<intercept-url pattern="/**" 			access="hasRole('ROLE_USER')" />
 
@@ -17,7 +18,7 @@
 			authentication-success-handler-ref="loginSuccessHandler"
 			authentication-failure-handler-ref="loginFailureHandler" />
 
-		<logout logout-success-url="/login"/>
+		<logout logout-success-url="/"/>
 		
 		<remember-me key="kamoruRememberme" token-validity-seconds="600000" />
 		
@@ -26,11 +27,13 @@
 	<authentication-manager>
 		<authentication-provider user-service-ref="kamoruUserService"/>
 	</authentication-manager>
+	
 	<beans:bean id="kamoruUserService" class="com.kamoru.security.KamoruUserService"/>
 
 	<beans:bean id="loginSuccessHandler" class="com.kamoru.security.KamoruAuthenticationSuccessHandler">
 	 	<beans:property name="defaultTargetUrl" value="/home"/>
 	</beans:bean>
+	
 	<beans:bean id="loginFailureHandler" class="com.kamoru.security.KamoruAuthenticationFailureHandler">
 	 	<beans:property name="defaultFailureUrl" value="/login?login_error=true"/>
 	</beans:bean>

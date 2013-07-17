@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+#deco_nav {
+	position: absolute;
+	top: 0;
+	right: 20px;
+	margin: 0;
+	padding: 0;
+}
+#deco_nav li {
+	font-size: 12px;
+	display: inline-block;
+	padding: 0px 3px 0px 3px;
+	margin-top: 5px;
+	margin-right: 5px;
+	border-radius: 5px;
+	border: 1px solid #888;
+	background-color: white;
+}
+#deco_nav li a {
+	margin: 0;
+	padding: 0;
+	font-size: 10px;
+	color: navy;
+	text-decoration: none;
+}
+#deco_nav li a:hover {
+	text-decoration: none;
+	color: orange;
+	text-shadow: 1px 1px 1px navy;
+}

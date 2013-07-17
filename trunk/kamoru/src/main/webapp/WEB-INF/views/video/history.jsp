@@ -89,7 +89,8 @@ function searchAndHighlight(searchTerm) {
 <body>
 <div id="debugDiv"></div>
 <div id="queryDiv" class="div-box">
-	Search<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
+	History Search
+	<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
 	<span id="debug"></span>
 </div>
 

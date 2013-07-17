@@ -20,7 +20,6 @@ div {
 </style>
 </head>
 <body>
-<h1>The 17 Standard colors</h1>
 <h2>If you see custom color, input parameter by ?rgba(123, 123, 123, 0.5)</h2>
 <ul>
 <%	for (String color : colors) { %>

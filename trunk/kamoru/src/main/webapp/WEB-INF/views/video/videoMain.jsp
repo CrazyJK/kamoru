@@ -90,7 +90,7 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'C' }">
 		<ul>
 			<c:forEach items="${videoList}" var="video">
-			<li id="${video.opus}" class="li-box">
+			<li id="opus-${video.opus}" class="li-box">
 				<div class="video-card">
 					<table>
 						<tr>
@@ -125,7 +125,7 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'B'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video" varStatus="status">
-			<li id="${video.opus}" class="li-box">
+			<li id="opus-${video.opus}" class="li-box">
 				<div class="video-box">     <!-- ${status.count} -->             
 					<dl class="video-box-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 						<dt><span class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
@@ -152,7 +152,7 @@ var bgImageCount = ${bgImageCount};
 		<c:when test="${videoSearch.listViewType eq 'SB'}">
 		<ul>
 			<c:forEach items="${videoList}" var="video">
-			<li id="${video.opus}" class="li-box">
+			<li id="opus-${video.opus}" class="li-box">
 				<div class="video-sbox">
 					<span class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span>
 					<span class="label" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span>

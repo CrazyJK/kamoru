@@ -12,21 +12,24 @@
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#identity").focus();
+});
+</script>
 </head>
-<body onload='document.f.j_username.focus();'>
-<!-- <p><font color='red'>Your login attempt was not successful, try again.<br/><br/>Reason: Bad credentials</font></p> -->
-<h3>Login </h3>
-<form name='f' action='/kamoru/j_spring_security_check' method='POST'>
+<body>
+<h3>Login</h3>
+<form name='f' action='<c:url value="/j_spring_security_check"/>' method='POST'>
  <table>
-    <tr><td>User:</td><td><input type='text' name='j_username' value=''></td></tr>
-    <tr><td>Password:</td><td><input type='password' name='j_password'/></td></tr>
+    <tr><td>Identity</td><td><input type='text' name='j_username' id="identity"/></td></tr>
+    <tr><td>Password</td><td><input type='password' name='j_password'/></td></tr>
     <tr><td colspan='2'>
     	<input id="remember_me" name="_spring_security_remember_me" type="checkbox">
     	<label for="remember_me">Remember me</label>
     </td></tr>
-    <tr><td colspan='2'><input name="submit" type="submit" value="Login"/></td></tr>
+    <tr><td colspan='2'><input name="submit" type="submit" value="Login"/><span style="color:red">${msg}</span></td></tr>
   </table>
-  <b>${SPRING_SECURITY_LAST_EXCEPTION}</b>
 </form>
 </body>
 </html>

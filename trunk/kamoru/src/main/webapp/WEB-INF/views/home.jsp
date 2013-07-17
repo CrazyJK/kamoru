@@ -25,8 +25,11 @@ Application List
 	<li><a href="./requestMappingList">request mapping list</a>
 	<li><a href="./jsp/util/sessionView.jsp">Web Session</a>
 	<li><a href="./jsp/colors.jsp">Standard Colors</a>
+	<li><a href="./jsp/util/threaddump.jsp">Thread dump</a>
+	<li><a href="./jsp/pic/imgView.html">HTML5 Canvas Image view</a>
+	
 </ul>
-
+<p><a href="<spring:url value="/j_spring_security_logout"/>">Logout!</a></p>
 <P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>

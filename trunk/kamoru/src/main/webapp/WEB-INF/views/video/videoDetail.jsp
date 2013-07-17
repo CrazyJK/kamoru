@@ -21,13 +21,16 @@ $(document).ready(function() {
 	$("*[onclick]").addClass("onclick");
 	// set rank color
 	fnRankColor($("#Rank-${video.opus}"));
+	
+	$("body").css("background-image","url('<c:url value="/video/${video.opus}/cover" />')");
+	$("body").css("background-color","rgba(0,0,0,.5)");
 });
 </script>
 <script src="<c:url value="/resources/video/video.js" />" type="text/javascript"></script>
 <script src="<c:url value="/resources/common.js" />"></script>
 <script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
-<body style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
+<body>
 <dl>
 	<dt><span class="label">${video.title}</span></dt>
 	<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>

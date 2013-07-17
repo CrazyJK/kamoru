@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -34,18 +36,19 @@ public class VideoServiceImpl implements VideoService {
 
 	private byte[] defaultCoverFileBytes;
 	
-	@Value("#{videoProp['defaultCoverFilePath']}") private String defaultCoverFilePath;
-	@Value("#{videoProp['editor']}") private String editor;
-	@Value("#{videoProp['mainBasePath']}") private String mainBasePath;
-	@Value("#{videoProp['player']}") private String player;
-	@Value("#{videoProp['webp.mode']}") private boolean webpMode;
+	@Value("#{videoProp['defaultCoverFilePath']}") 	private String defaultCoverFilePath;
+	@Value("#{videoProp['editor']}") 				private String editor;
+	@Value("#{videoProp['mainBasePath']}") 			private String mainBasePath;
+	@Value("#{videoProp['player']}") 				private String player;
+	@Value("#{videoProp['webp.mode']}") 			private boolean webpMode;
 
 	@Autowired private VideoDao videoDao;
-	
+
 	private File historyFile;
 	private List<String> historyList;
-	private boolean isChanged;
 	
+	private static boolean isChanged;
+
 	public VideoServiceImpl() {
 		isChanged = true;
 	}
@@ -93,23 +96,70 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public List<Video> findVideoList(String query) {
+	public List<Map<String, String>> findHistory(String query) {
 		logger.info(query);
-		List<Video> found = new ArrayList<Video>();
+		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
+
 		if(query == null || query.trim().length() == 0)
-			return found;
+			return foundMapList;
+		
+		try {
+			if(isChanged || historyFile == null) {
+				historyList = FileUtils.readLines(getHistoryFile(), VideoCore.FileEncoding);
+				isChanged = false;
+				logger.info("read history.log size=" + historyList.size());
+			}
+			for (String history : historyList) {
+				if (StringUtils.indexOfIgnoreCase(history, query) > -1) {
+					String[] hisStrings = StringUtils.split(history, ",", 4);
+					int length = hisStrings.length;
+					if (length > 0) {
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("date", hisStrings[0].trim());
+						if (length > 1)
+							map.put("opus", hisStrings[1].trim());
+						if (length > 2)
+							map.put("act", hisStrings[2].trim());
+						if (length > 3)
+							map.put("desc", hisStrings[3].trim());
+						foundMapList.add(map);
+					}
+				}
+			}
+		} 
+		catch (IOException e) {
+			logger.error("read error", e);
+		}
+		logger.info("q=" + query + " foundLength=" + foundMapList.size());
+		return foundMapList;
+	}
+
+	@Override
+	public List<Map<String, String>> findVideoList(String query) {
+		logger.info(query);
+		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
+		if(query == null || query.trim().length() == 0)
+			return foundMapList;
 
 		query = query.toLowerCase();
 		for(Video video : videoDao.getVideoList()) {
 			if(StringUtils.containsIgnoreCase(video.getOpus(), query)
-				|| StringUtils.containsIgnoreCase(video.getStudio().getName(), query)
-				|| StringUtils.containsIgnoreCase(video.getTitle(), query)
-				|| StringUtils.containsIgnoreCase(video.getActress(), query)) {
-				found.add(video);
+					|| StringUtils.containsIgnoreCase(video.getStudio().getName(), query)
+					|| StringUtils.containsIgnoreCase(video.getTitle(), query)
+					|| StringUtils.containsIgnoreCase(video.getActress(), query)) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("opus", video.getOpus());
+				map.put("title", video.getTitle());
+				map.put("studio", video.getStudio().getName());
+				map.put("actress", video.getActress());
+				map.put("existVideo", String.valueOf(video.isExistVideoFileList()));
+				map.put("existCover", String.valueOf(video.isExistCoverFile()));
+				map.put("existSubtitles", String.valueOf(video.isExistSubtitlesFileList()));
+				foundMapList.add(map);
 			} 
 		}
-		Collections.sort(found);
-		return found;
+		logger.info("q=" + query + " foundLength=" + foundMapList.size());
+		return foundMapList;
 	}
 
 	@Override
@@ -151,13 +201,19 @@ public class VideoServiceImpl implements VideoService {
 			}
 		return defaultCoverFileBytes;
 	}
+	
+	private File getHistoryFile() {
+		if(historyFile == null)
+			historyFile = new File(mainBasePath, "history.log");
+		return historyFile;
+	}
 
 	@Override
 	public Studio getStudio(String studioName) {
 		logger.info(studioName);
 		return videoDao.getStudio(studioName);
 	}
-	
+
 	@Override
 	public List<Studio> getStudioList() {
 		logger.info(new String());
@@ -165,7 +221,7 @@ public class VideoServiceImpl implements VideoService {
 		Collections.sort(list);
 		return list;
 	}
-
+	
 	@Override
 	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
 		logger.info("size : " + videoList.size());
@@ -183,7 +239,7 @@ public class VideoServiceImpl implements VideoService {
 		logger.info(opus);
 		return videoDao.getVideo(opus);
 	}
-	
+
 	@Override
 	public byte[] getVideoCoverByteArray(String opus, boolean isChrome) {
 		logger.info(opus);
@@ -292,36 +348,6 @@ public class VideoServiceImpl implements VideoService {
 			Collections.sort(list);
 		logger.info("found video length : " + list.size());
 		return list;
-	}
-
-	@Override
-	public List<String> findHistory(String query) {
-		logger.info(query);
-		List<String> found = new ArrayList<String>();
-
-		if(query == null || query.trim().length() == 0)
-			return found;
-		
-		try {
-			if(isChanged || historyFile == null) {
-				historyList = FileUtils.readLines(getHistoryFile(), VideoCore.FileEncoding);
-				isChanged = false;
-			}
-			for (String history : historyList) {
-				logger.info(history);
-				if (StringUtils.indexOfIgnoreCase(history, query) > -1)
-					found.add(history);
-			}
-		} catch (IOException e) {
-			logger.error("read error", e);
-		}
-		return found;
-	}
-
-	private File getHistoryFile() {
-		if(historyFile == null)
-			historyFile = new File(mainBasePath, "history.log");
-		return historyFile;
 	}
 }
 

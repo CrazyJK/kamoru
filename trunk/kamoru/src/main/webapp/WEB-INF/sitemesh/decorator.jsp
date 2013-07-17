@@ -7,9 +7,9 @@ String dateString = DateFormatUtils.format(new java.util.Date(), "yyyy-MM-dd");
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="shortcut icon" type="image/x-icon" href="favicon_kamoru.ico">
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/favicon_kamoru.ico"/>">
 <title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
-<link rel="stylesheet" href="<c:url value="/css/deco.css" />" />
+<link rel="stylesheet" href="<c:url value="/resources/deco.css" />" />
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
@@ -24,7 +24,7 @@ function resizeSectionHeight() {
 	var headerHeight = $("#deco_header").outerHeight();
 	var navHeight    = $("#deco_nav").outerHeight();
 	var footerHeight = $("#deco_footer").outerHeight();
-	var resizeSectionHeight = windowHeight - headerHeight - navHeight - footerHeight - 16 - 20 - 20; 
+	var resizeSectionHeight = windowHeight - headerHeight - navHeight - footerHeight; 
 	$("#deco_section").height(resizeSectionHeight);
 }
 </script>
@@ -34,9 +34,9 @@ function resizeSectionHeight() {
 
 	<header id="deco_header">
 		<h1 id="deco_h1">
-			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> 
+			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
 			<span style='float:right;font-size:10px;text-decoration:none'>
-			<img alt="kamoru.mail" src="<c:url value="/img/kamoru_gmail.png"/>">
+			<img alt="kamoru.mail" src="<c:url value="/resources/kamoru_gmail.png"/>">
 			</span>
 			
 		</h1>
