@@ -8,7 +8,7 @@ body#deco_body {
 	margin:0;
 }
 #deco_h1 {
-	width:1000px;
+	width:900px;
 	margin:0 auto;
 }
 #deco_h1 a {
@@ -22,7 +22,7 @@ body#deco_body {
 #deco_section {
 	padding:0;
 	margin:auto;
-	width: 1000px;
+	width: 900px;
 	overflow:auto;
 /* 	display: block; */
 /* 	float: right; */
@@ -41,7 +41,7 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	color:#123;
+	color: orange;
 	text-decoration: none;
-	text-shadow: 2px 2px 5px #333;
+	text-shadow: 2px 2px 2px #123;
 }
