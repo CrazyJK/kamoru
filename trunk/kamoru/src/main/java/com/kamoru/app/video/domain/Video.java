@@ -58,6 +58,8 @@ public class Video implements Comparable<Object>, Serializable {
 	private String title;
 	private List<File> videoFileList;
 
+	private String releaseDate;
+
 
 	public Video() {
 		videoFileList 		= new ArrayList<File>();
@@ -767,5 +769,13 @@ public class Video implements Comparable<Object>, Serializable {
 		sb.append("info : ").append(this.getInfoFilePath()).append(",");
 		sb.append("etc : ").append(this.getEtcFileListPath());
 		return sb.toString();
+	}
+
+	public String getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
 	}
 }

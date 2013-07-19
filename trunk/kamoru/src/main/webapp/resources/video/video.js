@@ -1,16 +1,8 @@
-$(document).ready(function(){
-	// Add class : elements in onclick attribute add class
-	$("*[onclick]").addClass("onclick");
-});
-
-function resizeDivHeight() {
+function resizeContentDivHeight() {
 	var windowHeight = $(window).height();
-	//var documentHeight = $(document).outerHeight();
 	var searchDivHeight = $("#headerDiv").outerHeight();
 	var resizeContentDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
-	//alert(resizeContentDivHeight);
-	$("#contentDiv").height(resizeContentDivHeight);
-	//setBackgroundImage();
+	$("#contentDiv").height(resizeContentDivHeight); //alert(resizeContentDivHeight);
 }
 function setBackgroundImage() {
 	currBGImageUrl = context + "image/" + selectedNumber;
@@ -63,43 +55,26 @@ function ratioSize(numerator1, numerator2, denominator) {
 
 function fnStudioDivToggle() {
 	$("#studioDiv").toggle();
-	resizeDivHeight();
+	resizeContentDivHeight();
 	debug("fnStudioDivToggle");
 }
 function fnActressDivToggle() {
 	$("#actressDiv").toggle();
-	resizeDivHeight();
+	resizeContentDivHeight();
 	debug("fnActressDivToggle");
 }
-function fnStudioSearch(studio) {
-	$("input:text").each(function(){
-		$(this).val("");
-	});
-	$("#studio").val(studio);
-	fnDetailSearch();
-}
-function fnActressSearch(actress) {
-	$("input:text").each(function(){
-		$(this).val("");
-	});
-	$("#actress").val(actress);
-	fnDetailSearch();
-}
-function fnSearchText(txt) {
-	$("#searchText").val(txt);
-	fnDetailSearch();
-}
-function fnDetailSearch() {
+function fnSearch(txt) {
+	if(txt)
+		$("#searchText").val(txt);
 	var frm = document.forms[0];
 	frm.submit();
 }
 function fnDeleteOpus(selectedOpus) {
-	if(confirm("Really? Are you sure to delete this opus?")) {
+	if(confirm("Really? Are you sure to delete this opus?")) 
 		if(confirm("Are you kidding? D.E.L.E.T.E [" + selectedOpus + "]?")) {
-			debug("delete " + selectedOpus);
 			$("#hiddenHttpMethod").val("delete");
 			// hide it's box
-			$("#" + selectedOpus).hide();
+			$("#opus-" + selectedOpus).hide();
 			// remove element
 			for(var i=0; i<opusArray.length; i++) 
 				if(selectedOpus == opusArray[i]) {
@@ -110,8 +85,9 @@ function fnDeleteOpus(selectedOpus) {
 			var frm = document.forms["actionFrm"];
 			frm.action = context + "video/" + selectedOpus;
 			frm.submit();
+			debug("delete " + selectedOpus);
 		}
-	}
+	
 }
 function fnEditSubtitles(selectedOpus) {
 	debug("edit subtitles " + selectedOpus);
@@ -135,12 +111,12 @@ function fnRandomPlay() {
 	fnPlay(selectedOpus);
 }
 function fnOpusFocus(opus) {
-	$("#" + opus).animate({
+	$("#opus-" + opus).animate({
 		opacity: 0.5,
 	}, 1000, function(){
 		$(this).addClass("li-box-played");
 	});
-	var topValue = $("#" + opus).position().top - $("#headerDiv").outerHeight() - 20;
+	var topValue = $("#opus-" + opus).position().top - $("#headerDiv").outerHeight() - 20;
 	$("#contentDiv").scrollTop(topValue);
 }
 function fnBGImageView() {
@@ -185,16 +161,6 @@ function fnRankColor(rank) {
 		rank.css("background-color", "blue");
 	}
 }
-function popupImage(url) {
-	var img = $("<img />");
-	img.hide();
-	img.attr("src", url);
-	img.bind('load', function(){
-		mw_image_window(this);
-	});
-	return img;
-}
-
 function fnViewActressDetail(name) {
 	popup(context + "video/actress/" + name, "actressDetail-" + name, 800, 600);
 }

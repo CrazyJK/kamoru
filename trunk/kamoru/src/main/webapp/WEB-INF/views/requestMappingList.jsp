@@ -14,7 +14,7 @@ li {display:;}
 dl {border-bottom: 1px solid orange; border-radius: 10px;}
 dt {font-size:10pt; color:lightgray;}
 dd {color:gray; font-size:9pt;}
-.highlighted {color:red; font-size:11pt;}
+em {color:red; font-size:9pt;}
 </style>
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -26,8 +26,8 @@ $(document).ready(function() {// /[/gi
 //	$("body").html($('body').html().replace(/\]/g,"</span>]"));
 	
 	$("dt").each(function() {
-		$(this).html($(this).html().replace(/\[/g,"[<span class='highlighted'>"));
-		$(this).html($(this).html().replace(/\]/g,"</span>]"));
+		$(this).html($(this).html().replace(/\[/g,"[<em>"));
+		$(this).html($(this).html().replace(/\]/g,"</em>]"));
 	});
 	
 });

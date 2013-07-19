@@ -6,21 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>History Search :: Video collection</title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
-<link rel="stylesheet" href="<c:url value="/resources/video/video-search.css" />" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video.js" />"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
-var context = '<spring:url value="/"/>';
-
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
 	

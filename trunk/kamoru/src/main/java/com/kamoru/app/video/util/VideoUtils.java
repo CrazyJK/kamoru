@@ -387,17 +387,28 @@ public class VideoUtils {
 	}
 
 	/**
-	 * 공백, [ 제거
+	 * 앞 뒤 공백, [ 제거. null이나 공백이면 "" 리턴
 	 * @param str
 	 * @return
 	 */
 	public static String removeUnnecessaryCharacter(String str) {
-		// 공백, [ 제거  
+		return removeUnnecessaryCharacter(str, "");
+	}
+	
+	/**
+	 * 앞 뒤 공백, [ 제거
+	 * @param str
+	 * @param defaultString
+	 * @return
+	 */
+	public static String removeUnnecessaryCharacter(String str, String defaultString) {
+		if (str == null || str.trim().length() == 0)
+			return defaultString;
+
 		str = str.trim();
 		str = str.startsWith("[") ? str.substring(1) : str;
-		return str.trim();
+		return str.trim().length() == 0 ? defaultString : str.trim();
 	}
-
 	/**
 	 * list를 컴마(,)로 구분한 string반환
 	 * @param list

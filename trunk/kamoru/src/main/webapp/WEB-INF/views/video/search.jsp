@@ -6,21 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>Search :: Video collection</title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
-<link rel="stylesheet" href="<c:url value="/resources/video/video-search.css" />" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video.js" />"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
 <script type="text/javascript">
-var context = '<spring:url value="/"/>';
-
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
 	
@@ -44,13 +31,13 @@ $(document).ready(function(){
 				var li  = $("<li>");
 				var div = $("<div>");
 
-				var studioDom 		  = $("<span>").addClass("label").attr("onclick", "fnViewStudioDetail('" + studio +"')").html(studio);				
-				var opusDom 		  = $("<span>").addClass("label").html(opus);
-				var titleDom 		  = $("<span>").addClass("label").attr("onclick", "fnViewVideoDetail('" + opus +"')").html(title);
-				var actressDom 		  = $("<span>").addClass("label").attr("onclick", "fnViewActressDetail('" + actress +"')").html(actress);
-				var existVideoDom 	  = $("<span>").addClass("label").addClass((existVideo == "true" ? "exist" : "nonexist" )).html("V");
-				var existCoverDom 	  = $("<span>").addClass("label").addClass((existCover == "true" ? "exist" : "nonexist" )).html("C");
-				var existSubtitlesDom = $("<span>").addClass("label").addClass((existSubtitles == "true" ? "exist" : "nonexist" )).html("S");
+				var studioDom 		  = $("<span>").addClass("search-item").attr("onclick", "fnViewStudioDetail('" + studio +"')").html(studio);				
+				var opusDom 		  = $("<span>").addClass("search-item").html(opus);
+				var titleDom 		  = $("<span>").addClass("search-item").attr("onclick", "fnViewVideoDetail('" + opus +"')").html(title);
+				var actressDom 		  = $("<span>").addClass("search-item").attr("onclick", "fnViewActressDetail('" + actress +"')").html(actress);
+				var existVideoDom 	  = $("<span>").addClass("search-item").addClass((existVideo == "true" ? "exist" : "nonexist" )).html("V");
+				var existCoverDom 	  = $("<span>").addClass("search-item").addClass((existCover == "true" ? "exist" : "nonexist" )).html("C");
+				var existSubtitlesDom = $("<span>").addClass("search-item").addClass((existSubtitles == "true" ? "exist" : "nonexist" )).html("S");
 				
 				var html = '<li>[' + entry['studio'] + '][' + entry['opus'] + '][' + entry['title'] + '][' + entry['actress'] + "]";
 				html += '&nbsp;V:' + entry['existVideo'] + '&nbsp;C:' + entry['existCover'] + '&nbsp;S:' + entry['existSubtitles'];

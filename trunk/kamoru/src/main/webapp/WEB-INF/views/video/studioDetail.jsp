@@ -5,31 +5,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>${studio.name} Info</title>
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<title>Studio List</title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video.js" />"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
-<script type="text/javascript">
-var context = '<spring:url value="/"/>';
-</script>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/video/studioInfo.inc" %>
-<div>
-	<ul>
+
+<dl>
+	<dt><span class="label">${studio.name}</span></dt>
+	<dd><span class="label">Homepage : ${studio.homepage}</span></dd>
+	<dd><span class="label">Company : ${studio.companyName}</span></dd>
+	<dd><span class="label">Actress(${fn:length(studio.actressList)})</span>
+		<c:forEach items="${studio.actressList}" var="actress">
+			<span class="label" onclick="fnViewActressDetail('${actress.name}')">${actress.name}(${fn:length(actress.videoList)})</span>
+		</c:forEach>
+	</dd>
+	<dd><span class="label">Video(${fn:length(studio.videoList)})</span></dd>
+</dl>
+<ul>
 	<c:forEach items="${studio.videoList}" var="video">
 		<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
 	</c:forEach>
-	</ul>
-</div>
-
+</ul>
 </body>
 </html>

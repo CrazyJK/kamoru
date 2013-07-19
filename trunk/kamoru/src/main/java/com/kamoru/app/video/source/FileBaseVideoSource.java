@@ -30,7 +30,7 @@ public class FileBaseVideoSource implements VideoSource {
 	private final String UNKNOWN = "_Unknown";
 	private final String unclassifiedStudio = UNKNOWN;
 	private final String unclassifiedOpus = UNKNOWN;
-	private final String unclassifiedActress = UNKNOWN;
+	private final String unclassifiedActress = "Amateur";
 
 	// property
 	private String[] paths;
@@ -113,23 +113,28 @@ public class FileBaseVideoSource implements VideoSource {
 			if("history.log".equals(filename))
 				continue;
 			
+			//   1      2     3       4       5     6
+			//[studio][opus][title][actress][date][etc...]
 			String[] names = StringUtils.split(name, "]");
 			String studioName  = UNKNOWN;
 			String opus    = UNKNOWN;
 			String title   = filename;
 			String actressName = UNKNOWN;
+			String releaseDate = "";
 			String etcInfo = "";
 			
 			switch(names.length) {
+			case 6:
+				etcInfo 	= VideoUtils.removeUnnecessaryCharacter(names[5]);
 			case 5:
-				etcInfo 	= VideoUtils.removeUnnecessaryCharacter(names[4]);
+				releaseDate 	= VideoUtils.removeUnnecessaryCharacter(names[4]);
 			case 4:
-				actressName = VideoUtils.removeUnnecessaryCharacter(names[3]);
+				actressName = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
 			case 3:
-				title 		= VideoUtils.removeUnnecessaryCharacter(names[2]);
+				title 		= VideoUtils.removeUnnecessaryCharacter(names[2], UNKNOWN);
 			case 2:
-				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1]);
-				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0]);
+				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1], unclassifiedOpus);
+				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0], unclassifiedStudio);
 				break;
 			case 1:
 				studioName 	= unclassifiedStudio;
@@ -138,12 +143,13 @@ public class FileBaseVideoSource implements VideoSource {
 				actressName = unclassifiedActress;
 				break;
 			default: // if names length is over 6
-				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0]);
-				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1]);
-				title 		= VideoUtils.removeUnnecessaryCharacter(names[2]);
-				actressName = VideoUtils.removeUnnecessaryCharacter(names[3]);
-				for(int i=4, iEnd=names.length; i<iEnd; i++)
-					etcInfo = VideoUtils.removeUnnecessaryCharacter(etcInfo + " " + names[i]);
+				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0], unclassifiedStudio);
+				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1], unclassifiedOpus);
+				title 		= VideoUtils.removeUnnecessaryCharacter(names[2], UNKNOWN);
+				actressName = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
+				releaseDate = VideoUtils.removeUnnecessaryCharacter(names[4]);
+				for(int i=5, iEnd=names.length; i<iEnd; i++)
+					etcInfo = etcInfo + " " + VideoUtils.removeUnnecessaryCharacter(names[i]);
 			}
 			
 			Video video = null;
@@ -151,6 +157,7 @@ public class FileBaseVideoSource implements VideoSource {
 				video = this.videoProvider.get();
 				video.setOpus(opus.toUpperCase());
 				video.setTitle(title);
+				video.setReleaseDate(releaseDate);
 				video.setEtcInfo(etcInfo);
 				videoMap.put(opus.toLowerCase(), video);
 			}

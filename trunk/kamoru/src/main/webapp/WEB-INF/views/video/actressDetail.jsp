@@ -5,40 +5,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>${actress.name}</title>
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/video/video.js" />"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
-<script type="text/javascript">
-var context = '<s:url value="/"/>';
-$(document).ready(function() {
-	// Add class : elements in onclick attribute add class
-	$("*[onclick]").addClass("onclick");
-});
-</script>
 </head>
 <body>
-<div id="actressImage">
-<c:forEach items="${actress.webImage}" var="url">
-	<img src="${url}" width="185px" onclick="fnViewFullImage(this)"/>
-</c:forEach>
-</div>
+
 <div>
-	<%@ include file="/WEB-INF/views/video/actressInfo.inc" %>
+	<c:forEach items="${actress.webImage}" var="url">
+		<img src="${url}" width="185px" onclick="popupImage('${url}')"/>
+	</c:forEach>
 </div>
-<div>
-	<ul>
+
+<dl>
+	<dt><span class="label">${actress.name}</span></dt>
+	<dd><span class="label">
+			Birth : ${actress.birth} 
+			Size : ${actress.bodySize}
+			Debut : ${actress.debut}</span></dd>
+	<dd><span class="label">Studio(${fn:length(actress.studioList)})</span>
+		<c:forEach items="${actress.studioList}" var="studio">
+			<span class="label" onclick="fnViewStudioDetail('${studio.name}')">${studio.name}(${fn:length(studio.videoList)})</span>
+		</c:forEach>
+	</dd>
+	<dd><span class="label">Video(${fn:length(actress.videoList)})</span></dd>
+</dl>
+
+<ul>
 	<c:forEach items="${actress.videoList}" var="video">
 		<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
 	</c:forEach>
-	</ul>
-</div>
+</ul>
+
 </body>
 </html>

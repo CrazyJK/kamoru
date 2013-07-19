@@ -209,6 +209,10 @@ li,
 }
 .onclick {
 	cursor:pointer;
+/* 	background-image: url('/kamoru/resources/link.png');
+	background-repeat:no-repeat; 
+	background-position:right center; 
+	padding-right: 15px; */
 }
 .onclick:hover {
 	color:orange; 
@@ -245,6 +249,11 @@ li,
 .video-table tr:hover {
 	background-color:rgba(255, 255, 255, 0.75);
 }
+
+.video-table td {
+	white-space:nowrap;
+}
+
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */
 ::-webkit-scrollbar {
 	width: 8px; 

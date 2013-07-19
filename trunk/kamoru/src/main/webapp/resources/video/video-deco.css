@@ -14,17 +14,36 @@
 	margin-right: 5px;
 	border-radius: 5px;
 	border: 1px solid #888;
-	background-color: white;
 }
 #deco_nav li a {
 	margin: 0;
 	padding: 0;
 	font-size: 10px;
-	color: navy;
 	text-decoration: none;
 }
 #deco_nav li a:hover {
-	text-decoration: none;
 	color: orange;
+	text-decoration: none;
 	text-shadow: 1px 1px 1px navy;
+}
+.menu {
+	background-color: white;
+}
+.menu a {
+ 	color: navy;
+}
+.menu-selected {
+	background-color: orange;
+}
+.menu-selected a {
+	color: white;
+}
+
+* [onclick] {
+	cursor:pointer;
+}
+* [onclick]:hover {
+	color:orange; 
+	text-decoration:none; 
+	text-shadow:1px 1px 1px black;
 }

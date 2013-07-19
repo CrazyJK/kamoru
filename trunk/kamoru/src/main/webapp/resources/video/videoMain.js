@@ -5,10 +5,7 @@ var selectedNumber = Math.floor(Math.random() * bgImageCount);
 $(document).ready(function(){
 	
 	// Add listener : if window resize, contentDiv height resize.
-	$(window).bind("resize", resizeDivHeight);
-	
-	// Add class : elements in onclick attribute add class
-	$("*[onclick]").addClass("onclick");
+	$(window).bind("resize", resizeContentDivHeight);
 	
 	// Add listener : if labal click, empty input text value
 	$("label").bind("click", function(){
@@ -83,7 +80,7 @@ $(document).ready(function(){
  	// Add listener : input text enter
  	$("input.schTxt").live('keypress', function(e) {
  		if(e.which == 13) {
- 			fnDetailSearch();
+ 			fnSearch();
  		}
  	});
  	
@@ -101,12 +98,8 @@ $(document).ready(function(){
  		$("#actressDiv").css("display", "block");
  	}
  	
- 	//rank coloring
- 	$('input[type="range"]').each(function() {
- 		fnRankColor($(this));
- 	});
- 	
  	// resize contentDiv height
-	resizeDivHeight();
+	resizeContentDivHeight();
+	// set background image
 	setBackgroundImage();
 });

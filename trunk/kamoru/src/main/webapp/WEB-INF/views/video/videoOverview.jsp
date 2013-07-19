@@ -3,17 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<title>Overview[${video.opus}] - AV World</title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
+<title>Overview[${video.opus}]</title>
 <style type="text/css">
 .overviewTxt {width:100%; height:275px;}
 </style>
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
 function overviewSave()
 {

@@ -6,23 +6,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title><spring:message code="title" text="video"/></title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
-var context = '<spring:url value="/"/>';
 var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
 </script>
 <script src="<c:url value="/resources/video/videoMain.js" />" type="text/javascript"></script>
-<script src="<c:url value="/resources/video/video.js" />" type="text/javascript"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
 </head>
 <body>
 <div id="headerDiv">
@@ -47,7 +36,7 @@ var bgImageCount = ${bgImageCount};
 			<span class="checkbox" id="checkbox-neverPlay" title="<spring:message code="msg.title.unseenVideo" text="unseen video?"/>">P</span>			
 				<form:hidden path="neverPlay"/>
 			<span class="separator">|</span>
-			<span class="button" onclick="fnDetailSearch()"><spring:message code="btn.search" text="Search video"/></span>
+			<span class="button" onclick="fnSearch()"><spring:message code="btn.search" text="Search video"/></span>
 		</span>
 		<span class="group">
 			<c:forEach items="${views}" var="view">
@@ -73,13 +62,13 @@ var bgImageCount = ${bgImageCount};
 	</div>
 	<div id="studioDiv" class="div-box">
 	<c:forEach var="studio" items="${studioList}"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
-		<span onclick="fnSearchText('${studio.name}')" class="${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
+		<span onclick="fnSearch('${studio.name}')" class="${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
 			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">${studio.name}(${countByStudio})</span>
 	</c:forEach>
 	</div>
 	<div id="actressDiv" class="div-box">
 	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<span onclick="fnSearchText('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" >${actress.name}(${countByActress})</span>
+		<span onclick="fnSearch('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" >${actress.name}(${countByActress})</span>
 	</c:forEach>
 	</div>
 </div>
@@ -94,7 +83,7 @@ var bgImageCount = ${bgImageCount};
 				<div class="video-card">
 					<table>
 						<tr>
-							<td colspan="2"><span style="height:20px" class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></td>
+							<td colspan="2"><span style="height:20px" class="label" onclick="fnVideoDetail('${video.opus}')" title="${video.title}">${video.title}</span></td>
 						</tr>
 						<tr valign="top" height="120px">
 							<td width="70px" class="video-card-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">
@@ -102,12 +91,14 @@ var bgImageCount = ${bgImageCount};
 							</td>
 							<td>
 								<dl>
-									<dd><c:forEach items="${video.actressList}" var="actress">
-										<span class="label" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
+									<dd><c:forEach items="${video.actressList}" var="actress" varStatus="status">
+										<span class="label" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+										<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 										</c:forEach></dd>
-									<dd><span class="label" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></dd> 
+									<dd><span class="label" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+										<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd> 
 									<dd><span class="label">${video.opus}</span></dd>
-									<dd><span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">V</span>
+									<dd><span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')" title="play ${video.playCount}">V</span>
 										<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
 										<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 										<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
@@ -129,11 +120,13 @@ var bgImageCount = ${bgImageCount};
 				<div class="video-box">     <!-- ${status.count} -->             
 					<dl class="video-box-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 						<dt><span class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
-						<dd><span class="label" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></dd>
+						<dd><span class="label" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+							<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
 						<dd><span class="label">${video.opus}</span></dd>
 						<dd>
-							<c:forEach items="${video.actressList}" var="actress">
-							<span class="label" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
+							<c:forEach items="${video.actressList}" var="actress" varStatus="status">
+							<span class="label" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+							<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 							</c:forEach>
 						</dd>
 						<dd><span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span></dd>
@@ -151,14 +144,16 @@ var bgImageCount = ${bgImageCount};
 		</c:when>
 		<c:when test="${videoSearch.listViewType eq 'SB'}">
 		<ul>
-			<c:forEach items="${videoList}" var="video">
+			<c:forEach items="${videoList}" var="video" varStatus="status">
 			<li id="opus-${video.opus}" class="li-box">
 				<div class="video-sbox">
 					<span class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span>
-					<span class="label" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span>
+					<span class="label" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+					<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')">
 					<span class="label">${video.opus}</span>
 					<c:forEach items="${video.actressList}" var="actress">
-					<span class="label" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
+					<span class="label" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+					<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 					</c:forEach>
 					<span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">V</span>
 					<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
@@ -173,13 +168,15 @@ var bgImageCount = ${bgImageCount};
 		</c:when>
 		<c:when test="${videoSearch.listViewType eq 'T'}">
 		<table class="video-table">
-			<c:forEach items="${videoList}" var="video">
-			<tr>
-				<td><span class="label" onclick="fnSearchText('${video.studio.name}')">${video.studio.name}</span></td>		
+			<c:forEach items="${videoList}" var="video" varStatus="status">
+			<tr id="opus-${video.opus}">
+				<td><span class="label" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+					<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></td>		
 				<td><span class="label">${video.opus}</span></td>		
 				<td><span class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></td>		
 				<td><c:forEach items="${video.actressList}" var="actress">
-					<span class="label" onclick="fnSearchText('${actress.name}')">${actress.name}</span>
+					<span class="label" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+					<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 					</c:forEach></td>	
 				<td>
 					<span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">V</span>
@@ -201,9 +198,6 @@ var bgImageCount = ${bgImageCount};
 		</c:otherwise>
 	</c:choose>
 </div>
-
-<form name="actionFrm" target="ifrm" method="post"><input type="hidden" name="_method" id="hiddenHttpMethod"/></form>
-<iframe id="actionIframe" name="ifrm" style="display:none; width:100%;"></iframe>
 
 </body>
 </html>
