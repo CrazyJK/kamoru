@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 /* Dom elements */
 * {
-	font-family: 'Comic Sans MS', '나눔고딕코딩', '맑은 고딕';
+	font-family: '나눔고딕', '맑은 고딕', 'Comic Sans MS', '나눔고딕코딩';
 	font-size:15px; 
 }
 input[type=range] { 
@@ -66,6 +66,7 @@ div#contentDiv {
 	text-shadow:1px 1px 1px yellow;
 }
 #debug {
+	margin-right:10px;
 	margin-left:10px;
 }
 #bgimg {
@@ -93,8 +94,9 @@ li,
 }
 /* border-radius 5 */
 .checkbox-on, 
+.checkbox:hover, 
 .radio-on, 
-.button:hover,
+.radio:hover, 
 .label {
 	border-radius:5px; 
 	-moz-border-radius:5px; 
@@ -143,16 +145,22 @@ li,
 	padding:0; 
 	margin:0;
 }
+.checkbox:hover, 
+.radio:hover {
+	background-color:orange;
+	color: white;
+	text-shadow: 1px 1px 1px black;
+}
 .button {
 	color:royalblue; 
 	font-weight:bold;
 }
 .checkbox-on, 
-.radio-on, 
-.button:hover {
+.radio-on {
 	background-color:orange; 
 	text-shadow:1px 1px 1px white;
 }
+
 .searchInput {
 	width:100px; 
 	border:0; 
@@ -252,6 +260,7 @@ li,
 
 .video-table td {
 	white-space:nowrap;
+	font-size: 13px;
 }
 
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */

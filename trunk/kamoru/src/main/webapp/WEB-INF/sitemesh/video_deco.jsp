@@ -25,7 +25,13 @@ $(document).ready(function() {
  	$('input[type="range"]').each(function() {
  		fnRankColor($(this));
  	});
-	
+
+	// Add listener : if labal click, empty input text value
+	$("label").bind("click", function(){
+		var id = $(this).attr("for");
+		$("#" + id).val("");
+	});
+
  	showNav();
 });
 

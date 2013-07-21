@@ -7,12 +7,6 @@ $(document).ready(function(){
 	// Add listener : if window resize, contentDiv height resize.
 	$(window).bind("resize", resizeContentDivHeight);
 	
-	// Add listener : if labal click, empty input text value
-	$("label").bind("click", function(){
-		var id = $(this).attr("for");
-		$("#" + id).val("");
-	});
-	
 	// Add listener : implement checkbox element
 	$('span[id^="checkbox"]')
 		.bind("click", function(){

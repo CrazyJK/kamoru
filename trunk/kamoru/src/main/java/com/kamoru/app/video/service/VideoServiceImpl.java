@@ -333,9 +333,10 @@ public class VideoServiceImpl implements VideoService {
 					|| VideoUtils.equals(video.getOpus(), search.getSearchText()) 
 					|| VideoUtils.containsName(video.getTitle(), search.getSearchText()) 
 					|| VideoUtils.containsActress(video, search.getSearchText())) 
-				&& (search.isNeverPlay() ? (video.getPlayCount() == 0) : true)
+				&& (search.isNeverPlay() ? video.getPlayCount() == 0 : true)
+				&& (search.isZeroRank()  ? video.getRank() == 0 : true)
 				&& (search.isAddCond()   
-						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList()) 
+						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList())
 							&& (search.isExistSubtitles() ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList())) 
 						: true)) {
 				video.setSortMethod(search.getSortMethod());

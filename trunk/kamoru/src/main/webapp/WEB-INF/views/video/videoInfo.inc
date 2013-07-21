@@ -4,7 +4,7 @@
 	<div class="video-card">
 		<table>
 			<tr>
-				<td colspan="2"><div style="height:20px;" class="label" onclick="fnVideoDetail('${video.opus}')">${video.title}</div></td>
+				<td colspan="2"><div style="height:17px;" class="label" onclick="fnVideoDetail('${video.opus}')" title="${video.title}">${video.title}</div></td>
 			</tr>
 			<tr valign="top" height="120px">
 				<td width="70px" class="video-card-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">

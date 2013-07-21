@@ -7,24 +7,75 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>Local Image Viewer</title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
 <style type="text/css">
-	* {margin:0px; padding:0px;}
-	body {}
-	li {display:inline-block;}
-	#navDiv {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}
-	#imageThumbnailDiv {position:absolute; bottom:0px; height:100px; width:100%; margin:10px 5px 0px 0px; text-align:center; overflow:hidden;}
-	#imageDiv {text-align:center;}
-	.otherThumbnails  {opacity:0.5; border: solid 0px green;}
-	.currentThumbnail {opacity:1.0; border: solid 2px cyan;}
-	.thumbDiv {width:150px; height:100px;}
-	.centerBG {background-size:contain; background-repeat:no-repeat; background-position:center center;}
-	.opacity10 {opacity:1;}
-	.opacity05 {opacity:0.5;}
+* {
+	font-family: 'Comic Sans MS', '나눔고딕코딩', '맑은 고딕';
+	margin:0px; 
+	padding:0px;
+}
+li {
+	display:inline-block;
+}
+#navDiv {
+	position:absolute; 
+	right:0px; 
+	top:0px; 
+	margin:10px 5px 0px 0px; 
+	cursor:pointer;
+}
+#imageThumbnailDiv {
+	position:absolute; 
+	bottom:0px; 
+	height:100px; 
+	width:100%; 
+	margin:10px 5px 0px 0px; 
+	text-align:center; 
+	overflow:hidden;
+}
+#imageDiv {
+	text-align:center;
+}
+.otherThumbnails  {
+	opacity:0.5; 
+	border: solid 0px green;
+}
+.currentThumbnail {
+	opacity:1.0; 
+	border: solid 2px cyan;
+}
+.thumbDiv {
+	width:150px; 
+	height:100px;
+}
+.centerBG {
+	background-size:contain; 
+	background-repeat:no-repeat; 
+	background-position:center center;
+}
+.opacity10 {
+	opacity:1;
+}
+.opacity05 {
+	opacity:0.5;
+}
+.label {
+	display:inline-block; 
+	text-overflow:ellipsis;
+	font-size: 12px;
+	overflow:hidden; 
+	background-color:rgba(255, 255, 255, 0.5); 
+	color:black; 
+	text-shadow:1px 1px 1px white; 
+	padding:0px 5px 0px 5px;
+	border:1px solid orange; 
+	border-radius:5px; 
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+}
 </style>
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="<c:url value="/resources/image-popup.js" />"></script>
+<script src="<c:url value="/resources/common.js" />"></script>
 <script type="text/javascript">
 var imagepath = '<s:url value="/image/" />';
 var selectedNumber = ${selectedNumber};

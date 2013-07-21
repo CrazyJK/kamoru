@@ -105,7 +105,7 @@ function searchAndHighlight(searchTerm) {
 <body>
 <div id="debugDiv"></div>
 <div id="queryDiv" class="div-box">
-	Video Search
+	<label for="query">Video Search</label>
 	<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
 	<span class="label">new 
 	S<input type="text" name="studio"  id="studio"   style="width:80px;" class="searchInput"/>

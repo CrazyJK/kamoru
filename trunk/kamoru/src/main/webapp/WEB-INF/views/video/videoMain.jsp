@@ -35,8 +35,12 @@ var bgImageCount = ${bgImageCount};
 			<span class="separator">|</span>
 			<span class="checkbox" id="checkbox-neverPlay" title="<spring:message code="msg.title.unseenVideo" text="unseen video?"/>">P</span>			
 				<form:hidden path="neverPlay"/>
+			<span class="checkbox" id="checkbox-zeroRank" title="<spring:message code="msg.title.zeroRankVideo" text="0 Rank video?"/>">R</span>			
+				<form:hidden path="zeroRank"/>
 			<span class="separator">|</span>
-			<span class="button" onclick="fnSearch()"><spring:message code="btn.search" text="Search video"/></span>
+			<span class="button" onclick="fnSearch()"><spring:message code="btn.search" text="Search video"/>
+				(<c:out value="${fn:length(videoList)}"/>)
+			</span>
 		</span>
 		<span class="group">
 			<c:forEach items="${views}" var="view">
@@ -58,6 +62,10 @@ var bgImageCount = ${bgImageCount};
 		<span class="group">
 			<span class="button" onclick="fnRandomPlay()"><spring:message code="btn.random" text="Random play"/></span>
 		</span>
+		<span class="group">
+			<span class="button" onclick="fnBGImageView();"><spring:message code="btn.bgimage" text="Show bg-image"/></span>
+		</span>
+		<span id="debug" style="display:none"></span>
 	</form:form>
 	</div>
 	<div id="studioDiv" class="div-box">
@@ -74,7 +82,6 @@ var bgImageCount = ${bgImageCount};
 </div>
 
 <div id="contentDiv" class="div-box" ><!-- onclick="fnBGImageView();" -->
-	<span id="totalCount">Total <c:out value="${fn:length(videoList)}"/></span><span id="debug"></span><span id="bgimg" onclick="fnBGImageView();">BG</span>
 	<c:choose>
 		<c:when test="${videoSearch.listViewType eq 'C' }">
 		<ul>
@@ -83,7 +90,7 @@ var bgImageCount = ${bgImageCount};
 				<div class="video-card">
 					<table>
 						<tr>
-							<td colspan="2"><span style="height:20px" class="label" onclick="fnVideoDetail('${video.opus}')" title="${video.title}">${video.title}</span></td>
+							<td colspan="2"><span style="height:16px" class="label" onclick="fnVideoDetail('${video.opus}')" title="${video.title}">${video.title}</span></td>
 						</tr>
 						<tr valign="top" height="120px">
 							<td width="70px" class="video-card-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">

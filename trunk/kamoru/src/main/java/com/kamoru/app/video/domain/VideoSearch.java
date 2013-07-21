@@ -11,72 +11,81 @@ public class VideoSearch implements Serializable {
 
 	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
 
-	String studio;
-	String opus;
-	String title;
 	String actress;
-	String searchText;
 	boolean addCond;
-	boolean existVideo;
 	boolean existSubtitles;
-	boolean neverPlay = true;
+	boolean existVideo;
 	View listViewType = View.B;
+	boolean neverPlay = true;
+	String opus;
+	String searchText;
 	Sort sortMethod = Sort.M;
 	boolean sortReverse = true;
+	String studio;
 
-	boolean viewStudioDiv = false;
+	String title;
+
 	boolean viewActressDiv = false;
+	boolean viewStudioDiv = false;
+	boolean zeroRank = true;
 
-	public String getStudio() {
-		return studio;
+	public String getActress() {
+		return actress;
+	}
+	public View getListViewType() {
+		return listViewType;
 	}
 
 	public String getOpus() {
 		return opus;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getSearchText() {
+		return searchText;
 	}
 
-	public String getActress() {
-		return actress;
+	public Sort getSortMethod() {
+		return sortMethod;
+	}
+
+	public String getStudio() {
+		return studio;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public boolean isAddCond() {
 		return addCond;
 	}
 
+	public boolean isExistSubtitles() {
+		return existSubtitles;
+	}
+
 	public boolean isExistVideo() {
 		return existVideo;
 	}
 
-	public boolean isExistSubtitles() {
-		return existSubtitles;
+	public boolean isNeverPlay() {
+		return neverPlay;
 	}
 
 	public boolean isSortReverse() {
 		return sortReverse;
 	}
 
-	public boolean isViewStudioDiv() {
-		return viewStudioDiv;
-	}
-
 	public boolean isViewActressDiv() {
 		return viewActressDiv;
 	}
 
-	public void setStudio(String studio) {
-		this.studio = studio;
+	public boolean isViewStudioDiv() {
+		return viewStudioDiv;
 	}
 
-	public void setOpus(String opus) {
-		this.opus = opus;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+	public boolean isZeroRank() {
+		return zeroRank;
 	}
 
 	public void setActress(String actress) {
@@ -87,65 +96,56 @@ public class VideoSearch implements Serializable {
 		this.addCond = addCond;
 	}
 
-	public void setExistVideo(boolean existVideo) {
-		this.existVideo = existVideo;
-	}
-
 	public void setExistSubtitles(boolean existSubtitles) {
 		this.existSubtitles = existSubtitles;
 	}
 
-	public void setSortReverse(boolean sortReverse) {
-		this.sortReverse = sortReverse;
-	}
-
-	public void setViewStudioDiv(boolean viewStudioDiv) {
-		this.viewStudioDiv = viewStudioDiv;
-	}
-
-	public void setViewActressDiv(boolean viewActressDiv) {
-		this.viewActressDiv = viewActressDiv;
-	}
-
-	public boolean isNeverPlay() {
-		return neverPlay;
-	}
-
-	public void setNeverPlay(boolean neverPlay) {
-		this.neverPlay = neverPlay;
-	}
-
-	public Sort getSortMethod() {
-		return sortMethod;
-	}
-
-	public void setSortMethod(Sort sortMethod) {
-		this.sortMethod = sortMethod;
-	}
-
-	public View getListViewType() {
-		return listViewType;
+	public void setExistVideo(boolean existVideo) {
+		this.existVideo = existVideo;
 	}
 
 	public void setListViewType(View listViewType) {
 		this.listViewType = listViewType;
 	}
 
-	public String getSearchText() {
-		return searchText;
+	public void setNeverPlay(boolean neverPlay) {
+		this.neverPlay = neverPlay;
+	}
+
+	public void setOpus(String opus) {
+		this.opus = opus;
 	}
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
 
-	@Override
-	public String toString() {
-		return String
-				.format("VideoSearch [studio=%s, opus=%s, title=%s, actress=%s, searchText=%s, addCond=%s, existVideo=%s, existSubtitles=%s, neverPlay=%s, listViewType=%s, sortMethod=%s, sortReverse=%s, viewStudioDiv=%s, viewActressDiv=%s]",
-						studio, opus, title, actress, searchText, addCond,
-						existVideo, existSubtitles, neverPlay, listViewType,
-						sortMethod, sortReverse, viewStudioDiv, viewActressDiv);
+	public void setSortMethod(Sort sortMethod) {
+		this.sortMethod = sortMethod;
+	}
+
+	public void setSortReverse(boolean sortReverse) {
+		this.sortReverse = sortReverse;
+	}
+
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setViewActressDiv(boolean viewActressDiv) {
+		this.viewActressDiv = viewActressDiv;
+	}
+
+	public void setViewStudioDiv(boolean viewStudioDiv) {
+		this.viewStudioDiv = viewStudioDiv;
+	}
+
+	public void setZeroRank(boolean zeroRank) {
+		this.zeroRank = zeroRank;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -159,5 +159,16 @@ public class VideoSearch implements Serializable {
 		}
 		return sb.toString();
 	}
+	
+	@Override
+	public String toString() {
+		return String
+				.format("VideoSearch [actress=%s, addCond=%s, existSubtitles=%s, existVideo=%s, listViewType=%s, neverPlay=%s, opus=%s, searchText=%s, sortMethod=%s, sortReverse=%s, studio=%s, title=%s, viewActressDiv=%s, viewStudioDiv=%s, zeroRank=%s]",
+						actress, addCond, existSubtitles, existVideo,
+						listViewType, neverPlay, opus, searchText, sortMethod,
+						sortReverse, studio, title, viewActressDiv,
+						viewStudioDiv, zeroRank);
+	}
+
 
 }
