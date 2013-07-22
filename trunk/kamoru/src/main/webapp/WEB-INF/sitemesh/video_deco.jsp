@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,13 +62,13 @@ function showNav() {
  
 <nav id="deco_nav">
 <ul>
-	<li><a href="<c:url value="/video"/>">Main</a>
-	<li><a href="<c:url value="/video/search"/>">Search</a>
-	<li><a href="<c:url value="/video/history"/>">History</a>
-	<li><a href="<c:url value="/video/list"/>">Video</a>
-	<li><a href="<c:url value="/video/actress"/>">Actress</a>
-	<li><a href="<c:url value="/video/studio"/>">Studio</a>
-	<li><a href="<c:url value="/"/>">Home</a>
+	<li><a href="<c:url value="/video"/>"><spring:message code="text.main"/></a>
+	<li><a href="<c:url value="/video/search"/>"><spring:message code="text.search"/></a>
+	<li><a href="<c:url value="/video/history"/>"><spring:message code="text.history"/></a>
+	<li><a href="<c:url value="/video/list"/>"><spring:message code="text.video"/></a>
+	<li><a href="<c:url value="/video/actress"/>"><spring:message code="text.actress"/></a>
+	<li><a href="<c:url value="/video/studio"/>"><spring:message code="text.studio"/></a>
+	<li><a href="<c:url value="/"/>"><spring:message code="text.home"/></a>
 </ul>
 </nav>
 

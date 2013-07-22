@@ -41,6 +41,6 @@ String lang = locale.getLanguage();
 	</select>
 </form>
 <p><a href="<spring:url value="/j_spring_security_logout"/>"><spring:message code="text.logout"/></a></p>
-<P><spring:message code="server.time" arguments="${serverTime}"/></P>
+<P><spring:message code="server.time"/>&nbsp;${serverTime}</P>
 </body>
 </html>
