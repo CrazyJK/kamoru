@@ -5,10 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Video List</title>
+<title><spring:message code="text.video"/> <spring:message code="text.list"/></title>
 </head>
 <body>
-Total Video : ${fn:length(videoList)}
+<spring:message code="text.total"/> <spring:message code="text.video"/> : ${fn:length(videoList)}
 <table class="video-table" style="background-color:lightgray">
 <c:forEach items="${videoList}" var="video">
 	<tr>

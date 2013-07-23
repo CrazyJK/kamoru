@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>History Search :: Video collection</title>
+<title><spring:message code="text.history"/> <spring:message code="text.search"/></title>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
@@ -76,7 +76,7 @@ function searchAndHighlight(searchTerm) {
 <body>
 <div id="debugDiv"></div>
 <div id="queryDiv" class="div-box">
-	<label for="query">History Search</label>
+	<label for="query"><spring:message code="text.history"/> <spring:message code="text.search"/></label>
 	<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
 	<span id="debug"></span>
 </div>

@@ -147,9 +147,9 @@ li,
 }
 .checkbox:hover, 
 .radio:hover {
-	background-color:orange;
+	/* background-color:orange; */
 	color: white;
-	text-shadow: 1px 1px 1px black;
+	text-shadow: 1px 1px 2px black;
 }
 .button {
 	color:royalblue; 

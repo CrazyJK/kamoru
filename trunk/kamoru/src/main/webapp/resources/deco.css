@@ -18,6 +18,21 @@ body#deco_body {
 /* 	display: block; */
 /* 	float: left; */
 	background-color:lightgreen;
+	/* width:900px;
+	margin:0 auto; */
+	text-align:center;
+}
+#deco_nav ul {
+	margin: 0;
+	padding: 0;
+}
+#deco_nav li {
+	display: inline-block;
+	margin:0 10px 0 0;
+}
+#deco_nav li a {
+	/* border:1px solid orange; */
+	font-size: 11px;
 }
 #deco_section {
 	padding:0;
@@ -44,4 +59,11 @@ a:hover {
 	color: orange;
 	text-decoration: none;
 	text-shadow: 2px 2px 2px #123;
+}
+.menu-selected {
+	font-weight:bold;
+	text-shadow: 1px 1px 2px orange;
+}
+.menu {
+	
 }
