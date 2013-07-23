@@ -45,9 +45,12 @@ public class VideoBatch {
 				videoDao.deleteVideo(video.getOpus());
 			}
 
+			// video file move to same folder
+			video.arrange();
+
 			// watched video move
 			if (MOVE_WATCHED_VIDEO) {
-				if (video.getPlayCount() > 0) { // && video.getVideoFileListPath().startsWith("E")) {
+				if (video.getPlayCount() > 0) {// && video.getVideoFileListPath().startsWith("E")) {
 					if (video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0) {
 						if (count++ < 10) {
 							logger.info("video move " + count + " : " + video.getOpus() + " : " + video.toString());
@@ -63,8 +66,6 @@ public class VideoBatch {
 				}
 			}
 
-			// video file move to same folder
-			video.arrange();
 		}
 		
 

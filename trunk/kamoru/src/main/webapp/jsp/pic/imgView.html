@@ -4,19 +4,7 @@
 <meta charset="UTF-8" />
 <title>Image View</title>
 <style type="text/css">
-canvas {
-	border: 1px solid #888;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;	
-	background-color: #eee;
-}
-body {
-	width: 880px;
-	margin: 0px auto;
-}
-BUTTON {height:100%}
-nav ul {
+nav#img-nav ul {
 	list-style: none;
 	padding: 0px;
 	display: block;
@@ -26,37 +14,51 @@ nav ul {
 	height: 24px;
 	text-align: center;
 }
-nav ul li {
+nav#img-nav ul li {
 	display: inline;
 	padding: 0px 10px 5px 10px;
 	height: 24px;
 	border-right: 1px solid #ccc;
 }
-nav ul li a {
+nav#img-nav ul li a {
 	color: #EFD3D3;
 	text-decoration: none;
 	font-size: 13px;
 	font-weight: bold;
 }
-nav ul li a:hover {
+nav#img-nav ul li a:hover {
 	color: #fff;
 }
-nav ul li a.selected {
+nav#img-nav ul li a.selected {
 	color: #993333;
 	text-decoration: none;
 	font-size: 13px;
 	font-weight: bold;
 }
-footer p {
-	text-align: center;
-	font-size: 12px;
-	color: #888;
-	margin-top: 24px;
-}
 #goPage {
 	margin-bottom: 3px;
 	font-size: 12px;
 	width:15pt;
+}
+#cv {
+	border: 1px solid #888;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;	
+	background-color: #eee;
+}
+#img-section {
+	text-align:center;
+}
+#img-table {
+	width:100%;
+}
+.button {
+	height:100%
+}
+.
+.img-td-btn {
+	width:50px;
 }
 </style>	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -66,12 +68,13 @@ var images = new Array();
 var currIdx = 0;
 var contextPath = "/kamoru" /* 컨텍스트에 맞쳐 설정 할 것! */
 var imgPath = "/jsp/pic/sampleimage/";
+/* 사용안함 */
 var imgRealPath = "/home/kamoru/DevTools/springsource-e4.2/workspace-sts-3.1.0.RELEASE/kamoru/src/main/webapp/jsp/pic/sampleimage";
 
 $(document).ready(function(){
 	
 	$.ajax({
-		url: "imgViewAction.jsp?cmd=list&a1=" + imgPath,
+		url: "imgViewAction.jsp?p=" + imgPath,
 		success : function(data) {
 			images = eval(data);
 			//initNav();
@@ -141,7 +144,7 @@ function initNav(){
 		endIdx = startIdx + 10;
 	}
 	endIdx = endIdx < images.length ? endIdx : images.length;
-	ul.append("<input size=3 placeholder='GoPage' id='goPage'><li><a onclick='goPage()'>이동</a></li>")
+	ul.append("<input size=3 placeholder='GoPage' id='goPage'><li><a onclick='goPage()'>Move</a></li>")
 	
 	for(var i=startIdx; i<endIdx; i++){
 		ul.append("<li><a id='anker" + i + "' onclick='currIdx=" + i + "; loadImage();' href='#'>" + (i+1) + "</a></li>");
@@ -158,26 +161,26 @@ function goPage(){
 </head>
 <body>
 
-<header>
+<header id="img-header">
 	<hgroup>
 		<h1>HTML5 Canvas Image Viewer</h1>
 	</hgroup>
 </header>
 
-<nav>
+<nav id="img-nav">
 	<ul id="navUL">
 	</ul>
 </nav>
 
-<article>
-	<section>
-		<table>
+<article id="img-article">
+	<section id="img-section">
+		<table id="img-table">
 			<tr>
-				<td><button onclick="viewPrevImage()">이전</button></td>
+				<td class="img-td-btn"><button class="button" onclick="viewPrevImage()">Prev</button></td>
 				<td>
-					<canvas id="cv" width="800" height="600"></canvas>
+					<canvas id="cv" width="700" height="600"></canvas>
 				</td>
-				<td><button onclick="viewNextImage()">다음</button></td>
+				<td class="img-td-btn"><button class="button" onclick="viewNextImage()">Next</button></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -187,8 +190,5 @@ function goPage(){
 	</section>
 </article>
 
-<footer>
-	<p>남종관 &copy; 2011 Handysoft. All rights reserved.</p>
-</footer>
 </body>
 </html>

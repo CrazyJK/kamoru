@@ -515,13 +515,18 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param destDir
 	 */
 	public void move(String destDir) {
-		if (!new File(destDir).exists()) 
+		File destFile = new File(destDir);
+		if (!destFile.exists()) 
 			throw new VideoException(destDir + " is not exist!");
 		for (File file : getFileAll()) {
 			if (file != null && file.exists() && !file.getParent().equals(destDir)) {
+				if (destFile.getFreeSpace() < file.length()) {
+					logger.error("destination is small. size=" + destFile.getFreeSpace());
+					break;
+				}
 				logger.info("move file from " + file.getAbsolutePath() + " to " + destDir);
 				try {
-					FileUtils.moveFileToDirectory(file, new File(destDir), false);
+					FileUtils.moveFileToDirectory(file, destFile, false);
 				} catch (IOException e) {
 					logger.error("Fail move file", e);
 				}
