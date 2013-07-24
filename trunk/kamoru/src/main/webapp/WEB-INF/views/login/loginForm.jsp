@@ -30,10 +30,16 @@ input[type=submit]:hover {
 div {
 	margin:10px;
 }
+body {
+	background-image:url('<spring:url value="/resources/img/orgrimmar_horde_territory.jpg"/>');
+	background-repeat: repeat;
+	background-position: center center;
+}
 #sign-in {
 	margin:20px 20px 20px;
 	background-color:#f1f1f1; 
 	border:1px solid #e5e5e5;
+	border-radius:10px;
 	padding:20px 25px 15px; 
 	width:300px;
 	float:right;
@@ -45,6 +51,9 @@ div {
 }
 #lang-chooser {
 	text-align:right;
+}
+#deco_section {
+	background-color:rgba(255,255,255,0);
 }
 </style>
 <script type="text/javascript">
@@ -87,7 +96,7 @@ $(document).ready(function() {
 	</div>
 </div>
 <div>
-	<img src="<spring:url value="/resources/img/subterraneans_by_joe_maccer-d6bnuip-reverse.jpg"/>">
+	<%-- <img src="<spring:url value="/resources/img/subterraneans_by_joe_maccer-d6bnuip-reverse.jpg"/>"> --%>
 	<h1></h1>
 </div>
 </body>

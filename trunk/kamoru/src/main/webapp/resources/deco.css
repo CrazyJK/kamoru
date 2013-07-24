@@ -10,6 +10,7 @@ body#deco_body {
 #deco_h1 {
 	width:900px;
 	margin:0 auto;
+	font-size: 25px;
 }
 #deco_h1 a {
 	font-family: 'Comic Sans MS' 'Impact' '나눔손글씨 펜' '나눔손글씨 붓' 'URW Chancery L' 'Purisa';
@@ -35,21 +36,22 @@ body#deco_body {
 	font-size: 11px;
 }
 #deco_section {
-	padding:0;
 	margin:auto;
+	padding:10px;
 	width: 900px;
 	overflow:auto;
-/* 	display: block; */
-/* 	float: right; */
-/* 	background-color:green; */
+ 	background-color:rgba(255, 255, 255, .75); 
+}
+#deco_section_wapper {
+	width:100%;
 }
 #deco_footer {
-/* 	display: block; */
 	padding-top:10px; 
 	font: 10pt arial; 
 	text-align:center;
 	bottom: 0px;
 	width:100%;
+	background-color:rgba(255,255,255,.3)
 }
 a {
 	color:#123;

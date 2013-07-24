@@ -66,10 +66,13 @@ Twitter: greatkim91
 <meta http-equiv="Pragma" content="no-cache" />
 <style type="text/css">
 <!--
-body {
+/* body {
 	font: 12px sans-serif;
 }
-
+ */
+#body-wapper {
+	font: 12px sans-serif;
+}
 table {
 	border: 0px solid #DEDEDE;
 }
@@ -84,8 +87,16 @@ td, th {
 }
 -->
 </style>
+<script type="text/javascript">
+function fnSubmit() {
+	var val = document.forms[0].name.value;
+	alert(val.replace(/</gi, '&lt;'));
+	document.forms[0].submit();
+}
+</script>
 </head>
 <body>
+<div id="body-wapper">
 <%
 	String uri = request.getRequestURI();
 	String namePrefix = request.getParameter("name");
@@ -147,7 +158,7 @@ td, th {
 		<option value="<%=threadState%>"<%=selected ? " selected=\"true\"" : ""%>><%=threadState%></option>
 		<% } %>
 	</select>
-	<input type="submit" value="go!"/>
+	<input type="button" onclick="fnSubmit()" value="go!"/>
 </form>
 <% if(threadId != -1 || (namePrefix != null && namePrefix.trim().length() > 0)) { %>
 <a href="<%=uri%>">Show all threads</a>
@@ -194,6 +205,6 @@ td, th {
 <%
 	}
 %>
-
+</div>
 </body>
 </html>
