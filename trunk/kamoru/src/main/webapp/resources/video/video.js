@@ -111,13 +111,21 @@ function fnRandomPlay() {
 	fnPlay(selectedOpus);
 }
 function fnOpusFocus(opus) {
-	$("#opus-" + opus).animate({
-		opacity: 0.5,
-	}, 1000, function(){
-		$(this).addClass("li-box-played");
-	});
-	var topValue = $("#opus-" + opus).position().top - $("#headerDiv").outerHeight() - 20;
-	$("#contentDiv").scrollTop(topValue);
+	if (listViewType == 'S') {
+		var idx = $("#opus-" + opus).attr("tabindex");
+		fnHideVideoSlise(currentVideoIndex);
+		currentVideoIndex = idx;
+		fnShowVideoSlise();
+	}
+	else {
+		$("#opus-" + opus).animate({
+			opacity: 0.5,
+		}, 1000, function(){
+			$(this).addClass("li-box-played");
+		});
+		var topValue = $("#opus-" + opus).position().top - $("#headerDiv").outerHeight() - 20;
+		$("#contentDiv").scrollTop(topValue);
+	}
 }
 function fnBGImageView() {
 	popup(context + "image?n=" + selectedNumber, "ImageView" + selectedNumber, 800, 600);
@@ -198,11 +206,13 @@ function fnRandomVideoView() {
 	fnShowVideoSlise();
 }
 function fnShowVideoSlise() {
-	$("#slide_" + currentVideoIndex).fadeIn();
+	$("div[tabindex='" + currentVideoIndex + "']").fadeIn();
 	$("#slideNumber").html(currentVideoIndex + " / " + totalVideoSize);
 	
 	$("#video_slide_bar").empty();
-	for (var i=currentVideoIndex-1; i<=currentVideoIndex+1; i++) {
+	var startIdx = parseInt(currentVideoIndex) - 1;
+	var endIdx = parseInt(currentVideoIndex) + 1;
+	for (var i=startIdx; i<=endIdx; i++) {
 		var previewIndex = i;
 		if (previewIndex == 0)
 			previewIndex = totalVideoSize;
@@ -210,14 +220,15 @@ function fnShowVideoSlise() {
 			previewIndex = 1;
 		
 		var item = $("<div class='video-box' style='display:inline-block;'>");
-		item.append($("#slide_" + previewIndex).html());
+		item.append($("div[tabindex='" + previewIndex + "']").html());
 		item.children("dl").removeClass("video-slide-bg").addClass("video-box-bg");
 		item.children().children().children().each(function() {
 			$(this).removeClass("label-large").addClass("label");
 		});
+		//item.append("<span style='color:red;'>" + startIdx + ":" + previewIndex + ":" + i + ":" + endIdx + "</span>");
 		$("#video_slide_bar").append(item);
 	}
 }
 function fnHideVideoSlise(idx) {
-	$("#slide_" + idx).hide();
+	$("div[tabindex='" + idx + "']").hide();
 }

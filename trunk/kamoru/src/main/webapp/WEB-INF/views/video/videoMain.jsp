@@ -202,7 +202,7 @@ var listViewType = '${videoSearch.listViewType}';
 		<c:when test="${videoSearch.listViewType eq 'S'}">
 		<div id="video-slide-wrapper">
 			<c:forEach items="${videoList}" var="video" varStatus="status">
-				<div id="slide_${status.count}" class="video-slide" style="display:none;">             
+				<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 					<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 						<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
 						<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
