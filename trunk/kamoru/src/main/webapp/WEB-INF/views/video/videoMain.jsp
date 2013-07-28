@@ -10,6 +10,9 @@
 <script type="text/javascript">
 var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
+var totalVideoSize = parseInt('${fn:length(videoList)}');
+var currentVideoIndex = Math.floor(Math.random() * totalVideoSize) + 1;
+var listViewType = '${videoSearch.listViewType}';
 </script>
 <script src="<c:url value="/resources/video/videoMain.js" />" type="text/javascript"></script>
 </head>
@@ -195,6 +198,34 @@ var bgImageCount = ${bgImageCount};
 			</tr>
 			</c:forEach>
 		</table>
+		</c:when>
+		<c:when test="${videoSearch.listViewType eq 'S'}">
+		<div id="video-slide-wrapper">
+			<c:forEach items="${videoList}" var="video" varStatus="status">
+				<div id="slide_${status.count}" class="video-slide" style="display:none;">             
+					<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
+						<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
+						<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+							<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
+						<dd><span class="label-large">${video.opus}</span></dd>
+						<dd>
+							<c:forEach items="${video.actressList}" var="actress" varStatus="status">
+							<span class="label-large" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+							<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
+							</c:forEach>
+						</dd>
+						<dd><span class="label-large ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span></dd>
+						<dd><span class="label-large ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
+						<dd><span class="label-large ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span></dd>
+						<dd><span class="label-large ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
+							<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>	
+						</dd>
+					</dl>
+				</div>
+			</c:forEach>
+			<div><span id="slideNumber" class="label-large"></span></div>
+			<div id="video_slide_bar" style=""></div>
+		</div>
 		</c:when>
 		<c:otherwise>
 		<ol>

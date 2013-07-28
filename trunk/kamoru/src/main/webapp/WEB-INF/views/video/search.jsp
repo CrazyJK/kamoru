@@ -38,6 +38,7 @@ $(document).ready(function(){
 				var existVideoDom 	  = $("<span>").addClass("search-item").addClass((existVideo == "true" ? "exist" : "nonexist" )).html("V");
 				var existCoverDom 	  = $("<span>").addClass("search-item").addClass((existCover == "true" ? "exist" : "nonexist" )).html("C");
 				var existSubtitlesDom = $("<span>").addClass("search-item").addClass((existSubtitles == "true" ? "exist" : "nonexist" )).html("S");
+				var addButton		  = $("<span>").addClass("button").html(" add").attr("onclick", "fnAddResult(this)");
 				
 				var html = '<li>[' + entry['studio'] + '][' + entry['opus'] + '][' + entry['title'] + '][' + entry['actress'] + "]";
 				html += '&nbsp;V:' + entry['existVideo'] + '&nbsp;C:' + entry['existCover'] + '&nbsp;S:' + entry['existSubtitles'];
@@ -51,6 +52,7 @@ $(document).ready(function(){
 				div.append(existVideoDom);
 				div.append(existCoverDom);
 				div.append(existSubtitlesDom);
+				div.append(addButton);
 				li.append(div);
 				$('#foundList').append(li);
 			});
@@ -66,7 +68,12 @@ $(document).ready(function(){
 	
 	resizeDivHeight();
 });
-
+function fnAddResult(dom) {
+	var html = dom.parentNode.parentNode.innerHTML;
+	var li = $("<li>").html(html);
+	$("#newVideo > ol").append(li);
+	$("div#newVideo.div-box ol li div span").last().css("display", "none");
+}
 function resizeDivHeight() {
 	var windowHeight = $(window).height();
 	var debugDivHeight = $("#debugDiv").outerHeight();
@@ -123,6 +130,8 @@ function searchAndHighlight(searchTerm) {
 </div>
 
 <div id="newVideo" class="div-box">
+<ol>
+</ol>
 </div>
 </body>
 </html>

@@ -6,9 +6,28 @@
 <html>
 <head>
 <title><spring:message code="text.studio"/> <spring:message code="text.list"/></title>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(window).bind("resize", resizeDivHeight);
+	
+	resizeDivHeight();
+});
+
+function resizeDivHeight() {
+	var windowHeight = $(window).height();
+	var header = $("#header_div").outerHeight();
+	var calculatedDivHeight = windowHeight - header - 20 * 2; 
+	$("#list_div").outerHeight(calculatedDivHeight);	
+}
+</script>
 </head>
 <body>
+
+<div id="header_div" class="div-box">
 <spring:message code="text.total"/> <spring:message code="text.studio"/> : ${fn:length(studioList)}
+</div>
+
+<div id="list_div" class="div-box" style="overflow:auto;">
 <table class="video-table" style="background-color:lightgray">
 <c:forEach items="${studioList}" var="studio">
 	<tr>
@@ -21,5 +40,6 @@
 	</tr>
 </c:forEach>
 </table>
+</div>
 </body>
 </html>

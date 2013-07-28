@@ -96,4 +96,46 @@ $(document).ready(function(){
 	resizeContentDivHeight();
 	// set background image
 	setBackgroundImage();
+	
+	// for slide view
+	if(listViewType == 'S') {
+		fnShowVideoSlise();
+		$("#video-slide-wrapper").bind("mousewheel DOMMouseScroll", function(e) {
+			var delta = 0;
+			var event = window.event || e;
+			if (event.wheelDelta) {
+				delta = event.wheelDelta/120;
+				if (window.opera) delta = -delta;
+			}
+			else if (event.detail)  
+				delta = -event.detail/3;
+			else
+				delta = parseInt(event.originalEvent.wheelDelta || -event.originalEvent.detail);
+			if (delta) {
+				if (delta > 0) 
+					fnPrevVideoView(); //alert("마우스 휠 위로~");
+			    else 	
+					fnNextVideoView(); //alert("마우스 휠 아래로~");
+			}
+		});
+		
+		$(window).bind("keyup", function(e) {
+			var event = window.event || e;
+			//alert(event.keyCode);
+			switch(event.keyCode) {
+			case 37: // left
+			case 40: // down
+				fnPrevVideoView(); break;
+			case 39: // right
+			case 38: // up
+				fnNextVideoView(); break;
+			case 32: // space
+				fnRandomVideoView(); break;
+			case 13: // enter
+				break;
+			}
+		});
+
+	}
+
 });

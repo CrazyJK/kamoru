@@ -100,8 +100,8 @@ public class VideoServiceImpl implements VideoService {
 		logger.info(query);
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
 
-		if(query == null || query.trim().length() == 0)
-			return foundMapList;
+//		if(query == null || query.trim().length() == 0)
+//			return foundMapList;
 		
 		try {
 			if(isChanged || historyFile == null) {

@@ -68,9 +68,9 @@ function showNav() {
 	<header id="deco_header">
 		<h1 id="deco_h1">
 			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
-			<span style='float:right;font-size:10px;text-decoration:none; margin:10px 0 0;'>
-				[<spring:message code="text.hello"/>&nbsp;
-				<security:authentication property="principal.username" />]
+			<span style='float:right;font-size:12px;text-decoration:none; margin:10px 0 0;'>
+				<spring:message code="text.hello"/>&nbsp;
+				<security:authentication property="principal.username" />
 				<img alt="kamoru.mail" src="<c:url value="/resources/kamoru_gmail.png"/>">
 			</span>
 			

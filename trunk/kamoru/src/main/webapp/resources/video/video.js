@@ -176,3 +176,48 @@ function fnViewVideoDetail(opus) {
 function debug(msg) {
 	$("#debug").html(msg);
 }
+
+// for slide
+function fnPrevVideoView() {
+	fnHideVideoSlise(currentVideoIndex);
+	if (currentVideoIndex == 1)
+		currentVideoIndex = totalVideoSize + 1;
+	currentVideoIndex--;
+	fnShowVideoSlise();
+}
+function fnNextVideoView() {
+	fnHideVideoSlise(currentVideoIndex);
+	if (currentVideoIndex == totalVideoSize)
+		currentVideoIndex = 0;
+	currentVideoIndex++;
+	fnShowVideoSlise();
+}
+function fnRandomVideoView() {
+	fnHideVideoSlise(currentVideoIndex);
+	currentVideoIndex = Math.floor(Math.random() * totalVideoSize);
+	fnShowVideoSlise();
+}
+function fnShowVideoSlise() {
+	$("#slide_" + currentVideoIndex).fadeIn();
+	$("#slideNumber").html(currentVideoIndex + " / " + totalVideoSize);
+	
+	$("#video_slide_bar").empty();
+	for (var i=currentVideoIndex-1; i<=currentVideoIndex+1; i++) {
+		var previewIndex = i;
+		if (previewIndex == 0)
+			previewIndex = totalVideoSize;
+		else if (previewIndex == totalVideoSize + 1)
+			previewIndex = 1;
+		
+		var item = $("<div class='video-box' style='display:inline-block;'>");
+		item.append($("#slide_" + previewIndex).html());
+		item.children("dl").removeClass("video-slide-bg").addClass("video-box-bg");
+		item.children().children().children().each(function() {
+			$(this).removeClass("label-large").addClass("label");
+		});
+		$("#video_slide_bar").append(item);
+	}
+}
+function fnHideVideoSlise(idx) {
+	$("#slide_" + idx).hide();
+}

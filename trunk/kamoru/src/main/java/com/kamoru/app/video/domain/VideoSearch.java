@@ -15,8 +15,9 @@ public class VideoSearch implements Serializable {
 	boolean addCond;
 	boolean existSubtitles;
 	boolean existVideo;
-	View listViewType = View.B;
-	boolean neverPlay = true;
+	View listViewType = View.S;
+	boolean neverPlay = false;
+	boolean zeroRank = true;
 	String opus;
 	String searchText;
 	Sort sortMethod = Sort.M;
@@ -27,7 +28,6 @@ public class VideoSearch implements Serializable {
 
 	boolean viewActressDiv = false;
 	boolean viewStudioDiv = false;
-	boolean zeroRank = true;
 
 	public String getActress() {
 		return actress;

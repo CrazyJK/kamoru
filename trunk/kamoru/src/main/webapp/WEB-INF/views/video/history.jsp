@@ -11,7 +11,7 @@
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
 	
-	$("#query").bind("keyup", function(event) {
+	$("#query").bind("keyup click", function(event) {
 		var queryUrl = context + 'video/history.json?q=' + $(this).val(); 
 		$("#debug").html(queryUrl);
 		$("#opus").val($(this).val());
@@ -51,7 +51,7 @@ $(document).ready(function(){
 		var html = "<p>["+$("#studio").val()+"]["+$("#opus").val().toUpperCase()+"]["+$("#title").val()+"]["+$("#actress").val()+"]["+$("#etcInfo").val()+"]</p>";
 		$("#newVideo").append(html);
 	});	
-	
+	$("#query").click();
 	resizeDivHeight();
 });
 

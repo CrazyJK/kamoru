@@ -72,7 +72,14 @@ div#contentDiv {
 #bgimg {
 	float:right;
 }
-
+#video-slide-wrapper {
+	text-align: center;
+	float:center;
+	height: 100%;
+}
+#video_slide_bar {
+	margin-top: 10px;
+}
 /* class */
 /* border-radius 15 */
 .div-box {
@@ -86,6 +93,8 @@ li,
 .video-card,
 .video-box,
 .video-box-bg,
+.video-slide,
+.video-slide-bg,
 .video-sbox,
 .video-table {
 	border-radius:10px; 
@@ -97,7 +106,8 @@ li,
 .checkbox:hover, 
 .radio-on, 
 .radio:hover, 
-.label {
+.label,
+.label-large {
 	border-radius:5px; 
 	-moz-border-radius:5px; 
 	-webkit-border-radius:5px;
@@ -106,6 +116,7 @@ li,
 .group,
 .video-card,
 .video-box,
+.video-slide,
 .video-sbox {
 	border:1px solid orange;
 }
@@ -113,6 +124,7 @@ li,
 .video-card,
 .video-box,
 .video-sbox,
+.video-slide,
 .video-table {
 	padding:5px; 
 	margin:5px; 
@@ -209,6 +221,15 @@ li,
 	border-bottom:1px solid orange; 
 	border-right:1px solid orange; 
 }
+.label-large {
+	font-size: 15px;
+	overflow:hidden; 
+	background-color:rgba(255, 255, 255, 0.5); 
+	color:black; 
+	text-shadow:1px 1px 1px white; 
+	padding:0px 5px 0px 5px;
+	border:1px solid orange; 
+}
 .exist {
 	color:blue;
 }
@@ -228,7 +249,7 @@ li,
 	text-shadow:1px 1px 1px black;
 }
 .video-card {
-	width:200px;
+	width:190px;
 	background-color:rgba(255, 255, 255, 0.25);
 }
 .video-card-bg {
@@ -237,14 +258,26 @@ li,
 	background-size:155px;
 }
 .video-box {
-	width:300px; 
-	height:200px; 
+	width:266px; 
+	height:177px; 
 }
 .video-box-bg {
-	height:200px; 
+	height:177px; 
 	background-repeat:no-repeat; 
 	background-position:right center; 
 	background-size:contain;
+}
+.video-slide {
+	width:800px; 
+	height:540px; 
+	display: inline-block;
+}
+.video-slide-bg {
+	height:540px; 
+	background-repeat:no-repeat; 
+	background-position:right center; 
+	background-size:contain;
+	background-color: rgba(255, 255, 255, 0.75);
 }
 .video-sbox {
 	background-color:transparent; 
