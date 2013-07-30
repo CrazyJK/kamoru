@@ -1,5 +1,7 @@
 package com.kamoru.app.video.source;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,9 @@ public class VideoBatch {
 
 	@Value("#{videoProp['moveWatchedVideo']}") private boolean MOVE_WATCHED_VIDEO;
 	@Value("#{videoProp['watchedVideoPath']}") private String WATCHED_PATH;
-	
+	/** 최소 공간 사이즈 5GB */
+	private final long MIN_FREE_SPAC = 1024*1024*1024*5l;
+	private final long SLEEP_TIME = 3000l;
 	
 	@Value("#{videoProp['removeLowerRankVideo']}") private boolean REMOVE_LOWER_RANK_VIDEO;
 	@Value("#{videoProp['lowerRankVideoBaselineScore']}")  private int LOWER_RANK_VIDEO_BASELINE_SCORE;
@@ -50,16 +54,19 @@ public class VideoBatch {
 
 			// watched video move
 			if (MOVE_WATCHED_VIDEO) {
-				if (video.getPlayCount() > 0) {// && video.getVideoFileListPath().startsWith("E")) {
-					if (video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0) {
-						if (count++ < 10) {
-							logger.info("video move " + count + " : " + video.getOpus() + " : " + video.toString());
-							video.move(WATCHED_PATH );
-							logger.info("move completed");
-							try {
-								Thread.sleep(3000l);
-							} catch (InterruptedException e) {
-								logger.error("", e);
+				File dir = new File(WATCHED_PATH);
+				if (dir.getFreeSpace() > MIN_FREE_SPAC) {
+					if (video.getPlayCount() > 0) {// && video.getVideoFileListPath().startsWith("E")) {
+						if (video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0) {
+							if (count++ < 10) {
+								logger.info("video move " + count + " : " + video.getOpus() + " : " + video.toString());
+								video.move(WATCHED_PATH);
+								logger.info("move completed");
+								try {
+									Thread.sleep(SLEEP_TIME);
+								} catch (InterruptedException e) {
+									logger.error("sleep error", e);
+								}
 							}
 						}
 					}
