@@ -50,6 +50,12 @@ li.slidesjs-pagination-item a.active {
 	padding: 5px;
 	margin: 3px;
 }
+.bg-image {
+	height: 600px; 
+	background-position: center center; 
+	background-size: contain; 
+	background-repeat: no-repeat;
+}
 </style>
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -57,7 +63,7 @@ li.slidesjs-pagination-item a.active {
 <script src="<c:url value="/resources/common.js" />"></script>
 <script type="text/javascript">
 var imagepath = '<s:url value="/image/" />';
-var selectedNumber = ${selectedNumber};
+var selectedNumber = <c:out value="${selectedNumber}" />;
 var selectedImgUrl;
 var imageCount = <c:out value="${imageCount}" />;
 var windowWidth  = $(window).width();
@@ -66,7 +72,7 @@ var windowHeight = $(window).height();
 $(document).ready(function(){
 	$(function() {
 		$('#slides').slidesjs({
-			start: selectedNumber,
+			start: selectedNumber == -1 ? getRandomInteger(0, imageCount) : selectedNumber,
 	        width: 800,
 	        height: 600,
 	        navigation: {active: true},
@@ -120,8 +126,19 @@ $(document).ready(function(){
 			fnRandomImageView(); break;
 		case 13: // enter
 			break;
-		}
+		};
 	});
+	$(".bg-image").bind("click", function(e){
+		var event = window.event || e;
+		//alert(event.type + " - " + event.button + ", keyValue=" + event.keyCode);
+		event.stopImmediatePropagation();
+		event.preventDefault();
+		event.stopPropagation();
+		if(event.button == 0) {
+			fnRandomImageView();
+		};
+	});
+
 
 });
 function fnRandomImageView() {
@@ -151,11 +168,13 @@ function debug(msg) {
 
 <div id="slides" class="slides">
 <c:forEach begin="0" end="${imageCount -1}" step="1" var="idx">
-<div style="background-image:url('<s:url value="/image/${idx}" />'); background-position:center center; height:600px; background-size:contain; background-repeat:no-repeat;">
-<img src="">
-</div>
+	<div class="bg-image" style="background-image:url('<s:url value="/image/${idx}" />'); display:none;">&nbsp;
+	</div>
+	<%-- <img src="<s:url value="/image/${idx}" />"> --%>
 </c:forEach>
 </div>
+
 <div id="debug"></div>
+
 </body>
 </html>

@@ -12,6 +12,6 @@
 	<li><a href="<c:url value="/jsp/colors.jsp"/>">Standard Colors</a>
 	<li><a href="<c:url value="/jsp/util/threaddump.jsp"/>">Thread dump</a>
 	<li><a href="<c:url value="/jsp/pic/imgView.html"/>">Canvas Image view</a>
+	<li><a href="<c:url value="/image/slides"/>">Slide Image view</a>
 	
 </ul>
-<c:url value=""/>

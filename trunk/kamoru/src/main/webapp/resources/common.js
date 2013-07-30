@@ -27,7 +27,6 @@ function popup(url, name, width, height, positionMethod, spec) {
 				var event = window.event || e;
 				left = event.pageX;
 				top  = event.pageY;
-				alert(left + " x " + top);
 			} catch(e) {}
 		}
 	}

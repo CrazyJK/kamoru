@@ -8,17 +8,12 @@
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <title>Local Image Viewer</title>
 <style type="text/css">
-* {
-	font-family: 'Comic Sans MS', '나눔고딕코딩', '맑은 고딕';
-	margin:0px; 
-	padding:0px;
-}
-li {
+#imageThumbnailUL li {
 	display:inline-block;
 }
 #navDiv {
 	position:absolute; 
-	right:0px; 
+	left:0px; 
 	top:0px; 
 	margin:10px 5px 0px 0px; 
 	cursor:pointer;
@@ -111,12 +106,13 @@ $(document).ready(function(){
 		case 37: // left
 		case 40: // down
 			fnPrevImageView(); break;
-		case 32: // space
 		case 39: // right
 		case 38: // up
 			fnNextImageView(); break;
+		case 32: // space
+			fnRandomImageView();
 		case 13: // enter
-			fnRandomImageView(); break;
+			break;
 		}
 	});
 	$("#imageDiv").bind("click", function(e){
@@ -145,8 +141,11 @@ function resizeImage() {
 function fnViewImage(current) {
 	selectedNumber = current;
 	selectedImgUrl = imagepath + selectedNumber;
-	
+
+	$("#imageDiv").hide();
 	$("#imageDiv").css("background-image", "url('" + selectedImgUrl + "')");
+	$("#imageDiv").fadeIn();
+
 	$("#leftNo").html(getPrevNumber());
 	$("#currNo").html(selectedNumber);
 	$("#rightNo").html(getNextNumber());

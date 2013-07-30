@@ -70,6 +70,7 @@ function showNav() {
 	<li><a href="<c:url value="/video/list"/>"><spring:message code="text.video"/></a>
 	<li><a href="<c:url value="/video/actress"/>"><spring:message code="text.actress"/></a>
 	<li><a href="<c:url value="/video/studio"/>"><spring:message code="text.studio"/></a>
+	<li><a href="<c:url value="/image"/>"><spring:message code="text.image"/></a>
 	<li><a href="<c:url value="/"/>"><spring:message code="text.home"/></a>
 </ul>
 </nav>

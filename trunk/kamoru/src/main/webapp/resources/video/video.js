@@ -111,11 +111,15 @@ function fnRandomPlay() {
 	fnPlay(selectedOpus);
 }
 function fnOpusFocus(opus) {
-	if (listViewType == 'S') {
+	if (listViewType == 'L') {
 		var idx = $("#opus-" + opus).attr("tabindex");
 		fnHideVideoSlise(currentVideoIndex);
 		currentVideoIndex = idx;
 		fnShowVideoSlise();
+	}
+	else if (listViewType == 'S') {
+		var idx = $("#opus-" + opus).attr("slidesjs-index");
+		$("a[data-slidesjs-item='" + idx + "']").click();
 	}
 	else {
 		$("#opus-" + opus).animate({opacity: 0.5}, 1000, function(){
@@ -237,11 +241,11 @@ function rePagination() {
     debug(index);
     $(".slidesjs-pagination-item").each(function() {
     	var itemIdx = parseInt($(this).children().attr("data-slidesjs-item"));
-    	if (itemIdx > index + 5 || itemIdx < index - 5) {
-    		$(this).hide();
+    	if (itemIdx < index + 5 && itemIdx > index - 5 || itemIdx == 0 || itemIdx == totalVideoSize-1) {
+    		$(this).show();
     	}
     	else {
-    		$(this).show();
+    		$(this).hide();
     	}
     });
 }

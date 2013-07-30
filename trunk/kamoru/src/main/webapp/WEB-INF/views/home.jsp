@@ -12,17 +12,25 @@ String lang = locale.getLanguage();
 <html>
 <head>
 <title><spring:message code="text.home"/></title>
+<style type="text/css">
+#menu-list-div > ul {
+	list-style:url('<c:url value="/resources/magnify0.png"/>');
+}
+</style>
 </head>
 <body>
 <h1><spring:message code="application.title"/></h1>
 <h2><spring:message code="text.hello"/>&nbsp;<security:authentication property="principal.username" /></h2>
-<spring:message code="application.list"/>
 
-<%@ include file="/WEB-INF/views/menu.inc" %>
+<div id="menu-list-div">
+	<spring:message code="application.list"/>
+	<%@ include file="/WEB-INF/views/menu.inc" %>
+</div>
 
 <p>
 	<a href="<spring:url value="/j_spring_security_logout"/>"><spring:message code="text.logout"/></a>
 </p>
+
 <P>
 	<spring:message code="server.time"/>&nbsp;${serverTime}
 </P>

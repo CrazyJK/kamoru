@@ -29,8 +29,8 @@ function resizeDivHeight() {
 
 <div id="list_div" class="div-box" style="overflow:auto;">
 <table class="video-table" style="background-color:lightgray">
-<c:forEach items="${studioList}" var="studio">
-	<tr>
+<c:forEach items="${studioList}" var="studio" varStatus="status">
+	<tr><td>${status.count}</td>
 		<td onclick="fnViewStudioDetail('${studio.name}')">${studio.name}</td>
 		<td>
 			<c:forEach items="${studio.videoList}" var="video">

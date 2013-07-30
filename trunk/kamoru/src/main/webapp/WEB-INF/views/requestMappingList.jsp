@@ -9,12 +9,12 @@
 <meta charset="UTF-8">
 <title>RequestMapping List</title>
 <style type="text/css">
-ol {}
-li {display:;}
-dl {border-bottom: 1px solid orange; border-radius: 10px;}
+ol {color: red; font-size:0.8em;}
+li {}
+dl {border-bottom: 1px solid orange; border-radius: 10px; margin: 0;}
 dt {font-size:10pt; color:lightgray;}
-dd {color:gray; font-size:9pt;}
-em {color:red; font-size:9pt;}
+dd {color:gray; font-size:9pt; display: none;}
+em {color:navy; font-size:1em; font-style: normal;}
 </style>
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -38,8 +38,8 @@ $(document).ready(function() {// /[/gi
 	<c:forEach items="${handlerMethodMap}" var="handlerMethod">
 	<li>
 		<dl>
-			<dt>${handlerMethod.key}</dt>
-			<dd><c:out value="${handlerMethod.value}" escapeXml="true"></c:out></dd>	
+			<dt title="<c:out value="${handlerMethod.value}" escapeXml="true"/>">${handlerMethod.key}</dt>
+			<dd><c:out value="${handlerMethod.value}" escapeXml="true"/></dd>	
 		</dl>
 	</c:forEach>
 </ol>

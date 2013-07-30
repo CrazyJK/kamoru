@@ -1,4 +1,7 @@
 @CHARSET "UTF-8";
+body {
+	margin:0;
+}
 #deco_nav {
 	position: absolute;
 	top: 0;
