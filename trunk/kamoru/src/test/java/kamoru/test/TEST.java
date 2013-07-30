@@ -1,6 +1,7 @@
 package kamoru.test;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -13,10 +14,96 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class TEST {
 
     public static byte cElectronicDocFlag; 
 
+    
+    String makeOrderbySQL(HttpServletRequest request) {
+    	StringBuffer orderbySQL = new StringBuffer();
+
+    	Enumeration names = request.getParameterNames();
+    	while (names.hasMoreElements()) {
+			String name = (String) names.nextElement();
+			if (name.endsWith("orderby")) {
+				String[] parts = name.split("_");
+				orderbySQL.append("ORDER BY ").append(parts[1]).append(" ").append(request.getParameter(name));
+				break;
+			}
+		}
+    	return orderbySQL.toString();
+    }
+    
+    String makeSearchSQL(HttpServletRequest request) throws UnsupportedEncodingException {
+    	StringBuffer searchSQL = new StringBuffer();
+    	String substr = "";
+
+    	Enumeration names = request.getParameterNames();
+    	while (names.hasMoreElements()) {
+			String name = (String) names.nextElement();
+			String[] parts = name.split("_");
+			if (parts.length >= 4) {
+				String value = request.getParameter(name);
+				value = new String(value.getBytes(), "euc-kr");
+				
+				if (parts[1].endsWith("ID")) {
+					String[] vals = value.split(".");
+					
+					if (vals.length == 2) {
+						while(vals[0].length() < 10) vals[0] = "0" + vals[0];
+						while(vals[1].length() < 10) vals[1] = "0" + vals[1];
+						value = vals[0] + vals[1];
+					}
+				}
+
+				
+				if (value != null && value.trim().length() > 0) {
+					if ("s".equals(parts[2])) {
+						if ("eq".equals(parts[3])) {
+							searchSQL.append(" AND ").append(parts[0]).append(".").append(parts[1]);
+							searchSQL.append(" = '").append(value).append("' ").append("\n");
+						}
+						else if ("like".equals(parts[3])) {
+							searchSQL.append(" AND ").append(parts[0]).append(".").append(parts[1]);
+							searchSQL.append(" like '%").append(value).append("%' ").append("\n");
+						}
+						else if (parts[3].startsWith("substr")) {
+//							searchSQL.append(" OR substr(").append(parts[0]).append(".").append(parts[1]).append(", 6, 1) = ").append(value).append("\n");
+							substr +=  " substr("+parts[0]+"."+parts[1]+",6,1) = " + value + " AND";
+						}
+					}
+					else if ("i".equals(parts[2])) {
+						if ("eq".equals(parts[3])) {
+							searchSQL.append(" AND ").append(parts[0]).append(".").append(parts[1]);
+							searchSQL.append(" = ").append(value).append("\n");
+						}
+					}
+					else if ("t".equals(parts[2])) {
+						if ("between".equals(parts[3])) {
+							if ("0".equals(parts[4])) {
+								searchSQL.append(" AND ").append(parts[0]).append(".").append(parts[1]);
+								searchSQL.append(" >= to_date('").append(value).append("', 'yyyy.mm.dd')").append("\n");
+							}
+							else if ("1".equals(parts[4])) {
+								searchSQL.append(" AND ").append(parts[0]).append(".").append(parts[1]);
+								searchSQL.append(" <= to_date('").append(value).append("', 'yyyy.mm.dd')").append("\n");
+							}
+							
+						}
+					}
+				}
+			}
+    	}
+    	if (substr.length() > 0) {
+    		searchSQL.append(" AND (").append(substr.substring(0, substr.length()-3)).append(")\n");
+    	}
+    	return searchSQL.toString();
+    }
+
+    
+    
 	public String getFormID(String strdate) throws ParseException, SQLException {
 		StringBuffer loadDataBuffer = new StringBuffer();
 		String dataValueBuffer = "";
