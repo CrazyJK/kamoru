@@ -104,7 +104,7 @@ function fnRandomPlay() {
 		alert("다 봤슴당");
 		return;
 	}
-	var selectedNumber = Math.floor(Math.random() * opusArray.length);
+	var selectedNumber = getRandomInteger(0, opusArray.length); // Math.floor(Math.random() * opusArray.length);
 	var selectedOpus = opusArray[selectedNumber];
 	opusArray.splice(selectedNumber, 1);
 	fnOpusFocus(selectedOpus);
@@ -118,9 +118,7 @@ function fnOpusFocus(opus) {
 		fnShowVideoSlise();
 	}
 	else {
-		$("#opus-" + opus).animate({
-			opacity: 0.5,
-		}, 1000, function(){
+		$("#opus-" + opus).animate({opacity: 0.5}, 1000, function(){
 			$(this).addClass("li-box-played");
 		});
 		var topValue = $("#opus-" + opus).position().top - $("#headerDiv").outerHeight() - 20;
@@ -185,7 +183,7 @@ function debug(msg) {
 	$("#debug").html(msg);
 }
 
-// for slide
+// for large view
 function fnPrevVideoView() {
 	fnHideVideoSlise(currentVideoIndex);
 	if (currentVideoIndex == 1)
@@ -202,7 +200,7 @@ function fnNextVideoView() {
 }
 function fnRandomVideoView() {
 	fnHideVideoSlise(currentVideoIndex);
-	currentVideoIndex = Math.floor(Math.random() * totalVideoSize);
+	currentVideoIndex = getRandomInteger(1, totalVideoSize);
 	fnShowVideoSlise();
 }
 function fnShowVideoSlise() {
@@ -231,4 +229,23 @@ function fnShowVideoSlise() {
 }
 function fnHideVideoSlise(idx) {
 	$("div[tabindex='" + idx + "']").hide();
+}
+
+// for slides view
+function rePagination() {
+    var index = parseInt($(".active").attr("data-slidesjs-item"));
+    debug(index);
+    $(".slidesjs-pagination-item").each(function() {
+    	var itemIdx = parseInt($(this).children().attr("data-slidesjs-item"));
+    	if (itemIdx > index + 5 || itemIdx < index - 5) {
+    		$(this).hide();
+    	}
+    	else {
+    		$(this).show();
+    	}
+    });
+}
+function fnRandomVideoView_Slide() {
+	selectedNumber = getRandomInteger(1, totalVideoSize);
+	$("a[data-slidesjs-item='" + selectedNumber + "']").click();
 }

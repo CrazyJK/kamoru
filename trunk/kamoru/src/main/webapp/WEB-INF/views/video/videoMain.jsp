@@ -11,10 +11,11 @@
 var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
 var totalVideoSize = parseInt('${fn:length(videoList)}');
-var currentVideoIndex = Math.floor(Math.random() * totalVideoSize) + 1;
+var currentVideoIndex = getRandomInteger(1, totalVideoSize);
 var listViewType = '${videoSearch.listViewType}';
 </script>
 <script src="<c:url value="/resources/video/videoMain.js" />" type="text/javascript"></script>
+<script src="http://slidesjs.com/examples/standard/js/jquery.slides.min.js"></script>
 </head>
 <body>
 <div id="headerDiv">
@@ -112,7 +113,7 @@ var listViewType = '${videoSearch.listViewType}';
 										<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
 										<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 										<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
-										<span id="DEL-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span></dd>
+										<span id="DEL-opus-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span></dd>
 									<dd><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
 								</dl>
 							</td>
@@ -143,9 +144,8 @@ var listViewType = '${videoSearch.listViewType}';
 						<dd><span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
 						<dd><span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span></dd>
 						<dd><span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
-							<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>	
-							<span id="DEL-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">Del</span>
-						</dd>
+							<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>	
+						<dd id="DEL-opus-${video.opus}" style="display:none;"><span class="label" onclick="fnDeleteOpus('${video.opus}')">Del</span></dd>
 					</dl>
 				</div>
 			</li>
@@ -169,7 +169,7 @@ var listViewType = '${videoSearch.listViewType}';
 					<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
 					<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 					<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
-					<span id="DEL-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span>
+					<span id="DEL-opus-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span>
 					<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>
 				</div>
 			</li>
@@ -193,7 +193,7 @@ var listViewType = '${videoSearch.listViewType}';
 					<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
 					<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 					<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
-					<span id="DEL-${video.opus}" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span></td>
+					<span id="DEL-opus-${video.opus}" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span></td>
 				<td><input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></td>
 			</tr>
 			</c:forEach>
@@ -201,6 +201,7 @@ var listViewType = '${videoSearch.listViewType}';
 		</c:when>
 		<c:when test="${videoSearch.listViewType eq 'S'}">
 		<div id="video-slide-wrapper">
+			<div id="slides" class="slides">
 			<c:forEach items="${videoList}" var="video" varStatus="status">
 				<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 					<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
@@ -223,6 +224,37 @@ var listViewType = '${videoSearch.listViewType}';
 					</dl>
 				</div>
 			</c:forEach>
+			</div>
+			<!-- <div><span id="slideNumber" class="label-large"></span></div> -->
+			<!-- <div id="video_slide_bar" style=""></div> -->
+		</div>
+		</c:when>
+		<c:when test="${videoSearch.listViewType eq 'L'}">
+		<div id="video-slide-wrapper">
+			<div id="slides" class="slides">
+			<c:forEach items="${videoList}" var="video" varStatus="status">
+				<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
+					<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
+						<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
+						<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+							<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
+						<dd><span class="label-large">${video.opus}</span></dd>
+						<dd>
+							<c:forEach items="${video.actressList}" var="actress" varStatus="status">
+							<span class="label-large" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+							<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
+							</c:forEach>
+						</dd>
+						<dd><span class="label-large ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span></dd>
+						<dd><span class="label-large ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
+						<dd><span class="label-large ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span></dd>
+						<dd><span class="label-large ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
+							<input type="range" id="Rank-${video.opus}" name="points" min="-5" max="5" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>	
+						</dd>
+					</dl>
+				</div>
+			</c:forEach>
+			</div>
 			<div><span id="slideNumber" class="label-large"></span></div>
 			<div id="video_slide_bar" style=""></div>
 		</div>

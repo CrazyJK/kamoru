@@ -31,6 +31,14 @@ public class PictureController {
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
 		return "/picture/slide";
 	}
+
+	@RequestMapping(value="/slides", method=RequestMethod.GET)
+	public String slides(Model model, @RequestParam(value="n", required=false, defaultValue="-1") int n) {
+		int count = imageService.getImageSourceSize();
+		model.addAttribute("imageCount", count);
+		model.addAttribute("selectedNumber", n > count ? count -1 : n);
+		return "/picture/slidesjs";
+	}
 	
 	@RequestMapping(value="/{idx}/thumbnail")
 	public HttpEntity<byte[]> viewImageThumbnail(@PathVariable int idx) {

@@ -1,6 +1,6 @@
 
 var currBGImageUrl;
-var selectedNumber = Math.floor(Math.random() * bgImageCount);
+var selectedNumber = getRandomInteger(0, bgImageCount); //Math.floor(Math.random() * bgImageCount);
 
 $(document).ready(function(){
 	
@@ -46,23 +46,24 @@ $(document).ready(function(){
 		});
 
 	// Add listener : video box click. add border, opacity
-	$("li[id^='opus-']").toggle(
-		function() {
-			$(this).animate({
-				opacity: 0.75
-				}, 500, function(){
-					$(this).addClass("li-box-select");
-					$("#DEL-"+$(this).attr("id")).css("display", "");
-				});
-		}, function() {
-			$(this).animate({
-				opacity: 1
-				}, 500, function(){
-					$(this).removeClass("li-box-select");
-					$("#DEL-"+$(this).attr("id")).css("display", "none");
-				});
-		});
-
+	$("li[id^='opus-']").click(function() {
+		var clicked = $(this).attr("clicked");
+		if (!clicked || clicked == 'false') {
+			$(this).attr("clicked", "true");
+			$(this).children().animate({"height": "+=20px"}, "slow", function() {
+				$("#DEL-"+$(this).parent().attr("id")).css("display", "");
+				$(this).parent().addClass("li-box-select");
+			});
+		}
+		else {
+			$(this).attr("clicked", "false");
+			$(this).children().animate({"height": "-=20px"}, "slow", function() {
+				$("#DEL-"+$(this).parent().attr("id")).css("display", "none");
+				$(this).parent().removeClass("li-box-select");
+			});
+		}
+	});
+	
 	// Add listener : addCond click if its child clicked
  	$('span[id^="checkbox-exist"]').bind("click", function(){
  		if($("#addCond").val() == "false") {
@@ -72,7 +73,7 @@ $(document).ready(function(){
 	});
 
  	// Add listener : input text enter
- 	$("input.schTxt").live('keypress', function(e) {
+ 	$("input.schTxt").bind('keypress', function(e) {
  		if(e.which == 13) {
  			fnSearch();
  		}
@@ -99,6 +100,66 @@ $(document).ready(function(){
 	
 	// for slide view
 	if(listViewType == 'S') {
+		$(function() {
+			$('#slides').slidesjs({
+				start: currentVideoIndex,
+		        width: 800,
+		        height: 550,
+		        navigation: {active: true},
+		        /* pagination: false, */
+		        play: {active: true, interval:5000, auto: false},
+		        callback: {
+		        	loaded: function(number) {
+		        		debug("loaded callback : " + number);	 
+		        		rePagination();
+		        	},
+		        	start: function(number) {
+		        		debug("start callback : " + number);	        
+		        		rePagination();
+		        	},
+		        	complete: function(number) {
+		        		debug("complete callback : " + number);
+		        	}
+		        }
+			});
+		});
+		$(window).bind("mousewheel DOMMouseScroll", function(e) {
+			var delta = 0;
+			var event = window.event || e;
+			if (event.wheelDelta) {
+				delta = event.wheelDelta/120;
+				if (window.opera) delta = -delta;
+			} 
+			else if (event.detail)  
+				delta = -event.detail/3;
+			else
+				delta = parseInt(event.originalEvent.wheelDelta || -event.originalEvent.detail);
+			if (delta) {
+				if (delta > 0) 
+					$(".slidesjs-previous").click(); //alert("마우스 휠 위로~");
+			    else 	
+			    	$(".slidesjs-next").click(); //alert("마우스 휠 아래로~");
+			}
+		});
+		$(window).bind("keyup", function(e) {
+			var event = window.event || e;
+			//alert(event.keyCode);
+			switch(event.keyCode) {
+			case 37: // left
+			case 40: // down
+				$(".slidesjs-previous").click(); break;
+			case 39: // right
+			case 38: // up
+				$(".slidesjs-next").click(); break;
+			case 32: // space
+				fnRandomVideoView_Slide(); break;
+			case 13: // enter
+				break;
+			}
+		});
+	}
+	if(listViewType == 'L') {
+		
 		fnShowVideoSlise();
 		$("#video-slide-wrapper").bind("mousewheel DOMMouseScroll", function(e) {
 			var delta = 0;
@@ -135,7 +196,6 @@ $(document).ready(function(){
 				break;
 			}
 		});
-
 	}
 
 });

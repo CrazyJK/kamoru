@@ -1,7 +1,7 @@
 package com.kamoru.app.video.domain;
 
 public enum View {
-	C("Card"), B("Box"), SB("SmallBox"), T("Table"), S("Slide");
+	C("Card"), B("Box"), SB("SmallBox"), T("Table"), S("Slide"), L("Large");
 	
 	private String desc;
 	

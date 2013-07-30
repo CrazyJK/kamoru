@@ -116,7 +116,7 @@ li,
 .group,
 .video-card,
 .video-box,
-.video-slide,
+/* .video-slide, */
 .video-sbox {
 	border:1px solid orange;
 }
@@ -124,7 +124,7 @@ li,
 .video-card,
 .video-box,
 .video-sbox,
-.video-slide,
+/* .video-slide, */
 .video-table {
 	padding:5px; 
 	margin:5px; 

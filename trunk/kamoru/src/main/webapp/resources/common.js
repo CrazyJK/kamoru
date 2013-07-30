@@ -1,3 +1,12 @@
+/**
+ * 팝업창을 띄운다. 
+ * @param url
+ * @param name '-'글자는 ''으로 바뀜
+ * @param width if null, 화면 절반 크기
+ * @param height if null, 화면 절반 크기
+ * @param positionMethod if null, default is <code>Window.Center</code>. 1.<code>Window.Center</code> 화면 가운데 2.<code>Mouse</code> 마우스 위치. 
+ * @param spec if null, default is <code>toolbar=0,location=0,directories=0,titlebar=0,status=0,menubar=0,scrollbars=1,resizable=1</code>
+ */
 function popup(url, name, width, height, positionMethod, spec) {
 	var vUrl = url;
 	var vName = name.replace(/-/gi, '');
@@ -15,8 +24,10 @@ function popup(url, name, width, height, positionMethod, spec) {
 		} 
 		else if (positionMethod == 'Mouse') {
 			try {
-				left = window.event.x;
-				top  = window.event.y;
+				var event = window.event || e;
+				left = event.pageX;
+				top  = event.pageY;
+				alert(left + " x " + top);
 			} catch(e) {}
 		}
 	}
@@ -28,8 +39,9 @@ function popup(url, name, width, height, positionMethod, spec) {
 		specs = spec;
 	}
 	specs = "width="+width+",height="+height+",top="+top+", left="+left + "," + specs;
-//	alert(vUrl + "\n" + vName + "\n" + specs);
-	window.open(vUrl, vName, specs);
+
+	var popupWindow = window.open(vUrl, vName, specs);
+	popupWindow.focus();
 }
 function popupImage(url) {
 	var img = $("<img />");
@@ -49,7 +61,12 @@ function fnViewFullImage(image) {
 		mw_image_window(image, imgWidth, imgHeight);
 	});
 }
-
+/**
+ * 이미지 팝업을 띄운다. 화면보다 큰 이미지는 마우스 드래그 가능하게 함.
+ * @param img 이미지 객체
+ * @param w 이미지 가로 길이
+ * @param h 이미지 세로 길이
+ */
 function mw_image_window(img, w, h)
 {
 	if (!w || !h)
@@ -159,4 +176,13 @@ function mw_image_window(img, w, h)
 
 	if(parseInt(navigator.appVersion) >= 4){win.window.focus();} 
 
+}
+/**
+ * startInt부터 range사이의 random 정수 반환
+ * @param startInt
+ * @param range
+ * @returns
+ */
+function getRandomInteger(startInt, range) {
+	return Math.floor(Math.random() * parseInt(range)) + parseInt(startInt);
 }
