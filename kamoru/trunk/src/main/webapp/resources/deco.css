@@ -1,0 +1,71 @@
+@CHARSET "UTF-8";
+body#deco_body {
+	margin:0 auto; 
+	font-family:'Comic Sans MS' '나눔고딕코딩' '맑은 고딕';
+}
+#deco_header {
+	background-color:#588;
+	margin:0;
+}
+#deco_h1 {
+	width:900px;
+	margin:0 auto;
+	font-size: 25px;
+}
+#deco_h1 a {
+	font-family: 'Comic Sans MS' 'Impact' '나눔손글씨 펜' '나눔손글씨 붓' 'URW Chancery L' 'Purisa';
+}
+#deco_nav {
+/* 	display: block; */
+/* 	float: left; */
+	background-color:lightgreen;
+	/* width:900px;
+	margin:0 auto; */
+	text-align:center;
+}
+#deco_nav ul {
+	margin: 0;
+	padding: 0;
+}
+#deco_nav li {
+	display: inline-block;
+	margin:0 10px 0 0;
+}
+#deco_nav li a {
+	/* border:1px solid orange; */
+	font-size: 11px;
+}
+#deco_section {
+	margin:auto;
+	padding:10px;
+	width: 900px;
+	overflow:auto;
+ 	background-color:rgba(255, 255, 255, .75); 
+}
+#deco_section_wapper {
+	width:100%;
+}
+#deco_footer {
+	padding-top:10px; 
+	font: 10pt arial; 
+	text-align:center;
+	bottom: 0px;
+	width:100%;
+	background-color:rgba(255,255,255,.3)
+}
+a {
+	color:#123;
+	text-decoration: none;
+}
+a:hover {
+	color: orange;
+	text-decoration: none;
+	text-shadow: 2px 2px 2px #123;
+}
+.menu-selected {
+	font-weight:bold;
+	text-shadow: 1px 1px 2px orange;
+}
+.menu {
+	
+}
