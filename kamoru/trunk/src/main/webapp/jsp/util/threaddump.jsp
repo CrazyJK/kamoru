@@ -90,7 +90,7 @@ td, th {
 <script type="text/javascript">
 function fnSubmit() {
 	var val = document.forms[0].name.value;
-	alert(val.replace(/</gi, '&lt;'));
+	//alert(val.replace(/</gi, '&lt;'));
 	document.forms[0].submit();
 }
 </script>

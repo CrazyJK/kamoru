@@ -51,3 +51,15 @@ body {
 	text-decoration:none; 
 	text-shadow:1px 1px 1px black;
 }
+.code-view {
+	font-size:9pt;
+}
+.code-name {
+	color:blue;
+}
+.code-value {
+	color: teal;
+}
+.code-clazz {
+	color: navy;
+}

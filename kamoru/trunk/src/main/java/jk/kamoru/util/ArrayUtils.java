@@ -24,4 +24,9 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 		}
 		return length;
 	}
+	
+	public static String toStringComma(Object[] array) {
+		return StringUtils.replaceEach(toString(array), new String[] {"{", "}"}, new String[] {"", ""});
+	}
+
 }

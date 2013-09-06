@@ -24,6 +24,9 @@ function resizeDivHeight() {
 <body>
 <div id="header_div" class="div-box">
 <spring:message code="text.total"/> <spring:message code="text.video"/> : ${fn:length(videoList)}
+
+<input type="search" name="search" id="search" style="width:200px;" class="searchInput" placeHolder="Search" onkeyup="searchContent(this.value)"/>
+
 </div>
 
 <div id="list_div" class="div-box" style="overflow:auto;">

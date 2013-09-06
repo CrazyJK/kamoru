@@ -12,9 +12,10 @@ $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
 	
 	$("#query").bind("keyup", function(event) {
-		var queryUrl = context + 'video/search.json?q=' + $(this).val(); 
+		var keyword = $(this).val();
+		var queryUrl = context + 'video/search.json?q=' + keyword; 
 		$("#debug").html(queryUrl);
-		$("#opus").val($(this).val());
+		$("#opus").val(keyword);
 		$.getJSON(queryUrl ,function(data) {
 			$('#foundList').empty();
 			var row = data['videoList'];
@@ -56,7 +57,7 @@ $(document).ready(function(){
 				li.append(div);
 				$('#foundList').append(li);
 			});
-			$('#foundList').append("<li><div>EOF</div>");
+			$('#foundList').append("<li><div>EOF-" + keyword + "</div>");
 			searchAndHighlight($("#query").val());
 			resizeDivHeight();
 		});

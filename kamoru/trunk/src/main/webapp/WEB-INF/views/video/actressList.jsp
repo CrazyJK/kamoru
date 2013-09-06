@@ -19,11 +19,15 @@ function resizeDivHeight() {
 	var calculatedDivHeight = windowHeight - header - 20 * 2; 
 	$("#list_div").outerHeight(calculatedDivHeight);	
 }
+
 </script>
 </head>
 <body>
 <div id="header_div" class="div-box">
 <spring:message code="text.total"/> <spring:message code="text.actress"/> : ${fn:length(actressList)}
+
+<input type="search" name="search" id="search" style="width:200px;" class="searchInput" placeHolder="Search" onkeyup="searchContent(this.value)"/>
+
 </div>
 
 <div id="list_div" class="div-box" style="overflow:auto;">

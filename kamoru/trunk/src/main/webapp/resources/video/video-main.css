@@ -2,7 +2,7 @@
 /* Dom elements */
 * {
 	font-family: '나눔고딕', '맑은 고딕', 'Comic Sans MS', '나눔고딕코딩';
-	font-size:15px; 
+	/* font-size:15px;  */
 }
 input[type=range] { 
 	background-color: silver; 
@@ -320,6 +320,7 @@ li,
 .center {
 	text-align:center;
 }
+
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */
 ::-webkit-scrollbar {
 	width: 8px; 

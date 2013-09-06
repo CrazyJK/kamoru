@@ -1,35 +1,93 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.net.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.util.concurrent.*" %>
+<%@ page import="jk.kamoru.util.*" %>
 <% 
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
+String ip = WebUtils.getParameter(request, "ip", "127.0.0.1");
+int port_s = WebUtils.getParameterInt(request, "ports", 0);
+int port_e = WebUtils.getParameterInt(request, "porte", 0);
+String[] portArr = WebUtils.getParameterArray(request, "portArr", ",");
 
-int[] ports = {40001, 41001, 42001, 43001, 44001, 45001, 46001, 47001,
-			   40006, 41006, 42006, 43006, 44006, 45006, 46006, 47006,
-			   9030,  9130,  9230,  9330,  9430,  9530,  9630,  9730,
-			   6759,  6758,  6756,  6300,  6400,  6500,  6771,  7300,
-			   1521};  
+List<Integer> ports = new ArrayList<Integer>(); 
+if (port_s > 0 && port_e > port_s) {
+	for(int port=port_s; port<= port_e; port++) {
+		ports.add(port);
+	}
+}
+else if (portArr != null) {
+	for(String port : portArr) {
+		if (port.trim().length() > 0) {
+			ports.add(Integer.parseInt(port.trim()));
+		}
+	}
+}
+
+final List<Future<Object[]>> futures = new ArrayList<Future<Object[]>>(); 
+if (ports.size() > 0) {
+	final ExecutorService es = Executors.newFixedThreadPool(50);
+	final int timeout = 200;
+	for(int port : ports) {
+		futures.add(NetUtils.portIsOpen(es, ip, port, timeout));
+	}
+	es.shutdown();
+}
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Port Sacn</title>
+<style type="text/css">
+#postScan-container {
+}
+.result-li {
+	display: inline-block;
+	border:1px solid orange;
+	font-size: 9pt;
+	color: gray;
+	border-radius: 5px;
+	padding:2px;
+}
+.result-listen {
+	color: red;
+}
+.result-close {
+	display: none;
+}
+</style>
 </head>
 <body>
-<h2>Simple port scan</h2> 
+
+<div id="postScan-container">
+	<h2>port scan</h2>
+ 
+ 	<form>
+ 		<input name="ip" size="11" value="<%=ip %>" placeHolder="ip address">
+ 		<input name="ports" size="5" value="<%=port_s %>" placeHolder="port">
+ 		~
+ 		<input name="porte" size="5" value="<%=port_e %>" placeHolder="port">
+ 		<input type="submit">
+ 		<br/>
+ 		<textarea name="portArr" style="width:600px; height:100px;" placeHolder="ex. 8080, 8081, 8082"><%=ArrayUtils.toStringComma(portArr) %></textarea>
+ 	</form>
+ 	
+	<label>Result : <span class="result-listen">LISTEN</span></label>
+ 	<ol>
 <%
-for(int i=0; i<ports.length; i++) {
-	try {
-		out.print("<li>");
-		java.net.ServerSocket ss = new java.net.ServerSocket(ports[i]);
-		ss.close();
-		out.println(ports[i] + " not used");
-	} catch(Exception e) {
-		System.out.println(ports[i] + " port LISTEN<br/>");
-		out.println(ports[i] + " port LISTEN<br/>");
-	}
+for (final Future<Object[]> f : futures) {
+	Object[] result = f.get();
+	//System.out.println(String.format("%s : %s : %s", result[0], result[1], result[2]));
+%> 	
+		<li class="result-li <%=Boolean.valueOf(result[2].toString()) ? "result-listen" : "result-close" %>"><%=String.format("%s", result[1]) %></li>
+<%	
 }
-%>
+%> 	
+	</ol>
+</div>
+
 </body>
 </html>
+<%! 
+%>

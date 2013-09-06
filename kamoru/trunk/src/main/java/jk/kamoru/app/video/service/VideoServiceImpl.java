@@ -103,8 +103,8 @@ public class VideoServiceImpl implements VideoService {
 		logger.trace(query);
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
 
-//		if(query == null || query.trim().length() == 0)
-//			return foundMapList;
+		if(query == null || query.trim().length() == 0)
+			return foundMapList;
 		
 		try {
 			if(isChanged || historyFile == null) {
@@ -112,6 +112,9 @@ public class VideoServiceImpl implements VideoService {
 				isChanged = false;
 				logger.debug("read history.log size={}", historyList.size());
 			}
+			if(query == null || query.trim().length() == 0)
+				return foundMapList;
+
 			for (String history : historyList) {
 				if (StringUtils.indexOfIgnoreCase(history, query) > -1) {
 					String[] hisStrings = StringUtils.split(history, ",", 4);
@@ -129,12 +132,13 @@ public class VideoServiceImpl implements VideoService {
 					}
 				}
 			}
+			logger.debug("q={} foundLength={}", query, foundMapList.size());
+			return foundMapList;
 		} 
 		catch (IOException e) {
 			logger.error("history file read error", e);
+			throw new VideoException("history file read error", e);
 		}
-		logger.debug("q={} foundLength={}", query, foundMapList.size());
-		return foundMapList;
 	}
 
 	@Override

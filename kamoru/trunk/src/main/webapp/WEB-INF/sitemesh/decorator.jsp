@@ -79,7 +79,6 @@ function showNav() {
  
 	<nav id="deco_nav">
 		<%@ include file="/WEB-INF/views/menu.inc" %>
-		<%-- <jsp:include page="/WEB-INF/views/menu.inc"></jsp:include> --%>
 	</nav>
 
 	<section id="deco_section">

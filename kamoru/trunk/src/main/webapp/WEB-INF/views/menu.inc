@@ -15,5 +15,6 @@
 	<li><a href="<c:url value="/jsp/pic/imgView.html"/>">Canvas Image view</a>
 	<li><a href="<c:url value="/image/slides"/>">Slide Image view</a>
 	<li><a href="<c:url value="/jsp/util/logView.jsp"/>">Log view</a>
+	<li><a href="<c:url value="/jsp/util/portScan.jsp"/>">Port scan</a>
 	
 </ul>

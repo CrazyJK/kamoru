@@ -69,3 +69,15 @@ a:hover {
 .menu {
 	
 }
+.code-view {
+	font-size:9pt;
+}
+.code-name {
+	color:blue;
+}
+.code-value {
+	color: teal;
+}
+.code-clazz {
+	color: navy;
+}

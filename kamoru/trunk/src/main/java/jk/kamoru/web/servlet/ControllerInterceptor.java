@@ -46,10 +46,12 @@ public class ControllerInterceptor implements HandlerInterceptor {
 						request.getRemoteAddr()
 			);
 		}
+		/* static resources
 		else if (handler instanceof org.springframework.web.servlet.resource.ResourceHttpRequestHandler) {
 			ResourceHttpRequestHandler requestHandler = (ResourceHttpRequestHandler)handler;
 			logger.info("{} elapsedtime={}", requestHandler, elapsedtime);
 		}
+		*/
 	}
 
 }

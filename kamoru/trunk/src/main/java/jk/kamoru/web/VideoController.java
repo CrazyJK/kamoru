@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +51,11 @@ public class VideoController {
 	@Autowired private ImageService imageService;
 	@Autowired private VideoService videoService;
 
+	@ModelAttribute
+	public Locale locale(Locale locale) {
+		return locale;
+	}
+	
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
 	public String actress(Model model) {
 		logger.trace("actress");

@@ -12,9 +12,10 @@ $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
 	
 	$("#query").bind("keyup click", function(event) {
-		var queryUrl = context + 'video/history.json?q=' + $(this).val(); 
+		var keyword = $(this).val();
+		var queryUrl = context + 'video/history.json?q=' + keyword; 
 		$("#debug").html(queryUrl);
-		$("#opus").val($(this).val());
+		$("#opus").val(keyword);
 		$.getJSON(queryUrl ,function(data) {
 			$('#foundList').empty();
 			var row = data['historyList'];
@@ -42,6 +43,7 @@ $(document).ready(function(){
 
 				$('#foundList').append(li);
 			}); 
+ 			$('#foundList').append("<LI><DIV>EOF-" + keyword + "</DIV></LI>");
 			searchAndHighlight($("#query").val());
 			resizeDivHeight();
 		});

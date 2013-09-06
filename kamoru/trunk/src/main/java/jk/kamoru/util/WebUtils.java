@@ -17,8 +17,8 @@ public class WebUtils {
 	 * @param name
 	 * @return
 	 */
-	public static String getParameter(HttpServletRequest req, String name) {
-		return getParameter(req, name, null);
+	public static String getParameter(HttpServletRequest request, String name) {
+		return getParameter(request, name, null);
 	}
 	
 	/**
@@ -28,14 +28,14 @@ public class WebUtils {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static String getParameter(HttpServletRequest req, String name, String defaultValue) {
+	public static String getParameter(HttpServletRequest request, String name, String defaultValue) {
 		String value = null;
-		String method = req.getMethod();
+		String method = request.getMethod();
 		try {
 			if(POST.equalsIgnoreCase(method)) {
-				req.setCharacterEncoding(UTF8);
+				request.setCharacterEncoding(UTF8);
 			}
-			value = req.getParameter(name);
+			value = request.getParameter(name);
 			if(value == null)
 				value = defaultValue;
 			else if(GET.equalsIgnoreCase(method))
@@ -47,4 +47,26 @@ public class WebUtils {
 		}
 	}
 
+	public static int getParameterInt(HttpServletRequest request, String name, int defaultValue) {
+		try {
+			return Integer.parseInt(getParameter(request, name, String.valueOf(defaultValue)));
+		}
+		catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+	
+	public static int getParameterInt(HttpServletRequest request, String name) {
+		return getParameterInt(request, name, 0);
+	}
+
+	public static String[] getParameterArray(HttpServletRequest request, String name, String separator) {
+		String value = getParameter(request, name, "");
+		if (value.trim().length() > 0) {
+			return StringUtils.splitByWholeSeparator(value, separator);
+		}
+		else {
+			return null;
+		}
+	}
 }

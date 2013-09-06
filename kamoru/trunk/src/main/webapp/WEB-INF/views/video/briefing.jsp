@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="s"  uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
-<html>
+<html lang="${locale }">
 <head>
 <title><s:message code="text.title.briefing" text="Video Briefing"/></title>
 <style type="text/css">
