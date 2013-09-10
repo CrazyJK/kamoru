@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 
 import jk.kamoru.app.video.dao.VideoDao;
 import jk.kamoru.app.video.domain.Video;
+import jk.kamoru.app.video.service.VideoService;
 
 @Component
 public class VideoBatch {
 
 	private static final Logger logger = LoggerFactory.getLogger(VideoBatch.class);
 
-	@Autowired VideoDao videoDao;
+	@Autowired VideoService videoService;
 
 	@Value("#{videoProp['moveWatchedVideo']}") private boolean MOVE_WATCHED_VIDEO;
 	@Value("#{videoProp['watchedVideoPath']}") private String WATCHED_PATH;
@@ -35,41 +36,41 @@ public class VideoBatch {
 
 		if (REMOVE_LOWER_RANK_VIDEO) {
 			logger.info("batch : remove lower rank video periodically");
-			for (Video video : videoDao.getVideoList()) {
+			for (Video video : videoService.getVideoList()) {
 				if (video.getRank() < LOWER_RANK_VIDEO_BASELINE_SCORE) {
 					logger.debug("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
-					videoDao.deleteVideo(video.getOpus());
+					videoService.deleteVideo(video.getOpus());
 				}
 			}
 		}
 		
 		logger.info("batch : delete garbage file");
-		for (Video video : videoDao.getVideoList()) {
+		for (Video video : videoService.getVideoList()) {
 			if (!video.isExistVideoFileList() 
 					&& !video.isExistCoverFile()
 					&& !video.isExistCoverWebpFile() 
 					&& !video.isExistSubtitlesFileList()) {
 				logger.debug("delete garbage file - {}", video);
-				videoDao.deleteVideo(video.getOpus());
+				videoService.deleteVideo(video.getOpus());
 			}
 		}
 		
 		logger.info("batch : move video file to same folder");
-		for (Video video : videoDao.getVideoList()) {
+		for (Video video : videoService.getVideoList()) {
 			logger.trace("arrange video {}", video.getOpus());
-			videoDao.arrangeVideo(video.getOpus());
+			videoService.arrangeVideo(video.getOpus());
 		}
 		
 		if (MOVE_WATCHED_VIDEO) {
 			logger.info("batch : move watched video");
 			int count = 0;
-			for (Video video : videoDao.getVideoList()) {
+			for (Video video : videoService.getVideoList()) {
 				if (video.getPlayCount() > 0
 						&& video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0
 						&& count++ < 10
 						&& new File(WATCHED_PATH).getFreeSpace() > MIN_FREE_SPAC) {
 					logger.debug("move video {} : {}", count, video);
-					videoDao.moveVideo(video.getOpus(), WATCHED_PATH);
+					videoService.moveVideo(video.getOpus(), WATCHED_PATH);
 					try {
 						Thread.sleep(SLEEP_TIME);
 					} catch (InterruptedException e) {
@@ -80,7 +81,7 @@ public class VideoBatch {
 		}
 
 		logger.info("batch : reload");
-		videoDao.reload();
+		videoService.reload();
 		logger.info("batch END");
 	}
 	

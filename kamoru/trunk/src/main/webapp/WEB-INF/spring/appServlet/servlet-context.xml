@@ -12,11 +12,6 @@
 	<context:component-scan base-package="jk.kamoru" >
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-
-	
-	<interceptors>
-		<beans:bean class="jk.kamoru.web.servlet.ControllerInterceptor" />
-	</interceptors>
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -68,13 +63,20 @@
     	<beans:property name="exceptionAttribute" value="exceptionMsg"/>
     	<beans:property name="defaultErrorView" value="error/defaultError"/>
     </beans:bean>
-    
+
+	<!-- LocaleChangeInterceptor -->    
     <interceptors>
     	<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
     		<beans:property name="paramName" value="lang"/>
     	</beans:bean>
     </interceptors>
-    
+    <!-- Locale Resolver -->
     <beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+
+	<!-- Controller Interceptor -->
+	<interceptors>
+		<beans:bean class="jk.kamoru.web.servlet.ControllerInterceptor" />
+	</interceptors>
+	
     
 </beans:beans>

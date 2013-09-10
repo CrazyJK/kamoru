@@ -412,7 +412,7 @@
 		</repository>
 	</repositories>
 	<build>
-		<finalName>kamoru</finalName>
+		<finalName>crazy</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>

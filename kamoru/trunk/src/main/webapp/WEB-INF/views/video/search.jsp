@@ -57,7 +57,7 @@ $(document).ready(function(){
 				li.append(div);
 				$('#foundList').append(li);
 			});
-			$('#foundList').append("<li><div>EOF-" + keyword + "</div>");
+			$('#foundList').append("<li><div>EOF : " + keyword + "</div>");
 			searchAndHighlight($("#query").val());
 			resizeDivHeight();
 		});
@@ -115,7 +115,7 @@ function searchAndHighlight(searchTerm) {
 <div id="debugDiv"></div>
 <div id="queryDiv" class="div-box">
 	<label for="query"><spring:message code="text.video"/> <spring:message code="text.search"/></label>
-	<input type="text" name="query" id="query" style="width:100px;" class="searchInput"/>
+	<input type="search" name="query" id="query" style="width:100px;" class="searchInput" placeHolder="Search"/>
 	<span class="label">new 
 	S<input type="text" name="studio"  id="studio"   style="width:80px;" class="searchInput"/>
 	O<input type="text" name="opus"    id="opus"     style="width:80px;" class="searchInput" readonly="readonly"/>

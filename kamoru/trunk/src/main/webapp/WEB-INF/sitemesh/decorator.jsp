@@ -22,7 +22,8 @@ try {
 <link rel="stylesheet" href="<c:url value="/resources/deco.css" />" />
 <style type="text/css">
 body {
-	background-image:url('<c:url value="/resources/img/orgrimmar_horde_territory.jpg"/>');
+	/* background-image:url('<c:url value="/resources/img/orgrimmar_horde_territory.jpg"/>'); */
+	background-image:url('<c:url value="http://fc03.deviantart.net/fs71/i/2013/249/5/1/freckly_by_tanyashatseva-d6l9s2t.jpg"/>');
 	background-repeat: repeat;
 	background-position: center center;
 }

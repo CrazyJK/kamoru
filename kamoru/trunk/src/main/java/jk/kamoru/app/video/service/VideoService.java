@@ -58,6 +58,12 @@ public interface VideoService {
 	Map<Integer, List<Video>> groupByRank();
 	
 	Map<Integer, List<Video>> groupByPlay();
+
+	void arrangeVideo(String opus);
+
+	void moveVideo(String opus, String path);
+
+	void reload();
 	
 	
 

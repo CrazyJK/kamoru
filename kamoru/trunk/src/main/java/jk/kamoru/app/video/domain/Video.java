@@ -548,9 +548,9 @@ public class Video implements Comparable<Object>, Serializable {
 					logger.warn("destination is small. size=" + destFile.getFreeSpace());
 					break;
 				}
-				logger.debug("move file from {} to {}", file.getAbsolutePath(), destDir);
 				try {
 					FileUtils.moveFileToDirectory(file, destFile, false);
+					logger.info("move file from {} to {}", file.getAbsolutePath(), destDir);
 				} catch (FileExistsException fe) {
 					logger.warn("File exist, then delete ");
 					FileUtils.deleteQuietly(file);
@@ -585,7 +585,7 @@ public class Video implements Comparable<Object>, Serializable {
 		for(File file : getFileAll())
 			if(file != null && file.exists()) 
 				if(FileUtils.deleteQuietly(file))
-					logger.debug(file.getAbsolutePath());
+					logger.info(file.getAbsolutePath());
 				else
 					logger.error("delete fail : {}", file.getAbsolutePath());
 	}
@@ -608,11 +608,11 @@ public class Video implements Comparable<Object>, Serializable {
 		
 		File file = this.getInfoFile();
 		try {
+			logger.info("{} {}", opus, root);
 			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FileEncoding);
 		} catch (IOException e) {
 			logger.error("info save error", e);
 		}
-		logger.info("{} {}", opus, root.toString());
 	}
 
 	/**
@@ -620,7 +620,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param overViewText
 	 */
 	public void saveOverView(String overViewText) {
-		logger.info("{} [{}]", opus, overViewText);
+		logger.trace("{} [{}]", opus, overViewText);
 		this.overview = overViewText;
 		this.saveInfo();
 	}
@@ -730,7 +730,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param rank
 	 */
 	public void setRank(int rank) {
-		logger.info("{} rank is {}", opus, rank);
+		logger.trace("{} rank is {}", opus, rank);
 		this.rank = rank;
 		this.saveInfo();
 	}

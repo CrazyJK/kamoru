@@ -266,25 +266,11 @@ function fnRandomVideoView_Slide() {
 
 function searchContent(keyword) {
 	$("div#list_div table tr td:nth-child(2)").each(function() {
-		if ($(this).html().toLowerCase().indexOf(keyword) > -1) {
+		if ($(this).html().toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
 			$(this).parent().show();
 		}
 		else {
 			$(this).parent().hide();
 		}
 	});
-/*	$("div#list_div table tr").each(function() {
-		var found = false;
-		$(this).children().each(function() {
-			if ($(this).html().indexOf(keyword) > -1) {
-				found = true;
-			}
-		});
-		if (found) {
-			$(this).show();
-		}
-		else {
-			$(this).hide();
-		}
-	});*/
 }

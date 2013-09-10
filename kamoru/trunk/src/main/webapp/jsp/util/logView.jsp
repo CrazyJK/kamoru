@@ -138,13 +138,18 @@ List<String[]> readLines(String logpath, String delimeter, String search, String
 	
 	List<String[]> lineArrayList = new ArrayList<String[]>();
 	String[] searchArray = trimArray(StringUtils.splitByWholeSeparator(search, ","));
+	int count = 0;
+	System.out.println("logView readLines Start");
 	for (String line : FileUtils.readLines(file)) {
 		if (searchArray.length == 0 || containsAny(line, searchArray, searchOper)) {
 			line = StringUtils.replaceEach(line, new String[]{"<", ">"}, new String[]{"&lt;", "&gt;"});
 			line = StringUtils.replaceEach(line, searchArray, wrapString(searchArray, "<em>", "</em>"));
 			lineArrayList.add(delimeter.length() > 0 ? StringUtils.splitByWholeSeparator(line, delimeter) : new String[]{line});
+			if (++count % 100 == 0)
+				System.out.println("logView readLines " + count);
 		}
 	}
+	System.out.println("logView readLines End");
 	return lineArrayList;
 }
 String[] wrapString(String[] strArr, String str1, String str2) {

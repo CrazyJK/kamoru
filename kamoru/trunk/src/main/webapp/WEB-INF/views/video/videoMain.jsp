@@ -29,7 +29,7 @@ var listViewType = '${videoSearch.listViewType}';
 			<form:label path="title"  >Title  </form:label><form:input path="title"   cssClass="schTxt"/>
 			<form:label path="actress">Actress</form:label><form:input path="actress" cssClass="schTxt"/> --%>
 			<form:label path="searchText"><s:message code="msg.search" text="Search"/></form:label>
-			<form:input path="searchText" cssClass="searchInput"/>
+			<form:input path="searchText" cssClass="searchInput" placeHolder="Search"/>
 			
 			<span class="checkbox" id="checkbox-addCond" title="<s:message code="msg.title.addCondition" text="Add additional conditions"/>">
 				<s:message code="msg.addCondition" text="Add"/>

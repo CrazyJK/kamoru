@@ -455,4 +455,22 @@ public class VideoServiceImpl implements VideoService {
 		return map;
 	}
 
+	@Override
+	public void arrangeVideo(String opus) {
+		logger.trace(opus);
+		videoDao.arrangeVideo(opus);
+	}
+
+	@Override
+	public void moveVideo(String opus, String path) {
+		logger.trace("{} move to {}", opus, path);
+		videoDao.moveVideo(opus, path);
+	}
+
+	@Override
+	public void reload() {
+		logger.trace("reload");
+		videoDao.reload();
+	}
+
 }

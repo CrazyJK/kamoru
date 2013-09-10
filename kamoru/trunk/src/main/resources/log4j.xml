@@ -58,6 +58,9 @@
 	<logger name="jk.kamoru.util.RuntimeUtils">
 		<level value="trace" />
 	</logger>
+	<logger name="jk.kamoru.app.video.domain.Video">
+		<level value="info" />
+	</logger>
 
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework">
