@@ -13,7 +13,7 @@
 		<import resource="security-context.xml" />
 		<import resource="ehcache-context.xml" />
 
-		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<bean id="messageSource" class="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
 			<property name="basenames">
 				<list>
 					<value>/WEB-INF/spring/messages/videoMessage</value>
@@ -23,7 +23,6 @@
 			<property name="cacheSeconds" value="0" /> 
 		</bean>
 
-	
 		<context:component-scan base-package="jk.kamoru" >
 			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		</context:component-scan>

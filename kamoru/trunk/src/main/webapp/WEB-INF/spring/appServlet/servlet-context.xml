@@ -54,7 +54,7 @@
 	</beans:bean>
     
     <!-- Exception Resolver -->
-    <beans:bean id="exceptionResolver" class="jk.kamoru.web.servlet.handler.DebugMappingExceptionResolver">
+    <beans:bean id="exceptionResolver" class="jk.springframework.web.servlet.handler.DebugMappingExceptionResolver">
     	<beans:property name="exceptionMappings">
     		<beans:props>
     			<beans:prop key="jk.kamoru.app.video.VideoException">error/videoError</beans:prop>
@@ -75,7 +75,7 @@
 
 	<!-- Controller Interceptor -->
 	<interceptors>
-		<beans:bean class="jk.kamoru.web.servlet.ControllerInterceptor" />
+		<beans:bean class="jk.springframework.web.servlet.ControllerInterceptor" />
 	</interceptors>
 	
     

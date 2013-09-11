@@ -1,4 +1,4 @@
-package jk.kamoru.security.web.authentication;
+package jk.springframework.security.web.authentication;
 
 import java.io.IOException;
 

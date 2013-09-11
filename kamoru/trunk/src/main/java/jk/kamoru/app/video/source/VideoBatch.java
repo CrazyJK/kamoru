@@ -2,16 +2,15 @@ package jk.kamoru.app.video.source;
 
 import java.io.File;
 
+import jk.kamoru.app.video.domain.Video;
+import jk.kamoru.app.video.service.VideoService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import jk.kamoru.app.video.dao.VideoDao;
-import jk.kamoru.app.video.domain.Video;
-import jk.kamoru.app.video.service.VideoService;
 
 @Component
 public class VideoBatch {
@@ -22,7 +21,7 @@ public class VideoBatch {
 
 	@Value("#{videoProp['moveWatchedVideo']}") private boolean MOVE_WATCHED_VIDEO;
 	@Value("#{videoProp['watchedVideoPath']}") private String WATCHED_PATH;
-	/** 최소 공간 사이즈 5GB */
+	/** 최소 공간 사이즈 */
 	private final long MIN_FREE_SPAC = 1024*1024*1024*10l;
 	private final long SLEEP_TIME = 3000l;
 	

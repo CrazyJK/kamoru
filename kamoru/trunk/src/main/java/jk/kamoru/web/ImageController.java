@@ -19,7 +19,7 @@ import jk.kamoru.app.video.VideoCore;
 
 @Controller
 @RequestMapping("/image")
-public class PictureController {
+public class ImageController {
 
 	@Autowired
 	private ImageService imageService;

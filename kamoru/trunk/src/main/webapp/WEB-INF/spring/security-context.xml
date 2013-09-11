@@ -28,13 +28,13 @@
 		<authentication-provider user-service-ref="kamoruUserService"/>
 	</authentication-manager>
 	
-	<beans:bean id="kamoruUserService" class="jk.kamoru.security.core.userdetails.KamoruUserService"/>
+	<beans:bean id="kamoruUserService" class="jk.springframework.security.core.userdetails.KamoruUserService"/>
 
-	<beans:bean id="loginSuccessHandler" class="jk.kamoru.security.web.authentication.KamoruAuthenticationSuccessHandler">
+	<beans:bean id="loginSuccessHandler" class="jk.springframework.security.web.authentication.KamoruAuthenticationSuccessHandler">
 	 	<beans:property name="defaultTargetUrl" value="/home"/>
 	</beans:bean>
 	
-	<beans:bean id="loginFailureHandler" class="jk.kamoru.security.web.authentication.KamoruAuthenticationFailureHandler">
+	<beans:bean id="loginFailureHandler" class="jk.springframework.security.web.authentication.KamoruAuthenticationFailureHandler">
 	 	<beans:property name="defaultFailureUrl" value="/login?login_error=true"/>
 	</beans:bean>
 

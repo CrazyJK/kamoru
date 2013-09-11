@@ -50,7 +50,7 @@
     </appender>  -->
     
 	<!-- Application Loggers -->
-	<logger name="jk.kamoru">
+	<logger name="jk">
 		<level value="info" />
 		<appender-ref ref="app" />
 		<appender-ref ref="console" />
@@ -60,6 +60,9 @@
 	</logger>
 	<logger name="jk.kamoru.app.video.domain.Video">
 		<level value="info" />
+	</logger>
+	<logger name="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<level value="trace" />
 	</logger>
 
 	<!-- 3rdparty Loggers -->

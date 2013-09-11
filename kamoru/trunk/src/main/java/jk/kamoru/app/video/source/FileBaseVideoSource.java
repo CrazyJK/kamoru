@@ -1,7 +1,6 @@
 package jk.kamoru.app.video.source;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,10 +10,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.domain.Actress;
@@ -23,6 +18,11 @@ import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
+import jk.kamoru.util.WebpUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 
 public class FileBaseVideoSource implements VideoSource {
@@ -230,16 +230,8 @@ public class FileBaseVideoSource implements VideoSource {
 	private File convertWebpFile(File file) {
 		logger.trace("{}", file.getAbsolutePath());
 		File webpfile = new File(file.getParent(), VideoUtils.getFileName(file) + ".webp");
-		if(webpfile.exists()) {
-			return webpfile;
-		}
-		String command = webp_exec + " \"" + file.getAbsolutePath() + "\" -q 80 -o \"" + webpfile.getAbsolutePath() + "\"";
-//		String[] command = {webp_exec, file.getAbsolutePath(), "-q 80 -o", webpfile.getAbsolutePath()};
-		logger.trace(command);
-		try {
-			Runtime.getRuntime().exec(command);
-		} catch (IOException e) {
-			logger.error("Fail to convert webp - " + command, e);
+		if(!webpfile.exists()) {
+			WebpUtils.convert(webp_exec, file);
 		}
 		return webpfile;
 	}

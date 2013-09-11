@@ -34,7 +34,6 @@
 	<aop:config>
 		<aop:advisor advice-ref="elapsedTimeAdvice" pointcut="execution(* jk.kamoru.*..*Source.reload())"/>
 	</aop:config>
-	<bean id="elapsedTimeAdvice" class="jk.kamoru.aop.intercept.ElapsedTimeAdvice" />
-	
+	<bean id="elapsedTimeAdvice" class="jk.aopalliance.intercept.ElapsedTimeAdvice" />
 	
 </beans>

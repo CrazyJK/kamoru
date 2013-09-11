@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jk.kamoru.app.image.domain.Image;
+import jk.kamoru.util.FileUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
-
-import jk.kamoru.app.image.domain.Image;
-import jk.kamoru.util.FileUtils;
 
 @Repository
 public class LocalImageSource implements ImageSource {
@@ -20,35 +20,35 @@ public class LocalImageSource implements ImageSource {
 	private static final Logger logger = LoggerFactory.getLogger(LocalImageSource.class);
 
 	private List<Image> imageList;
-	
-	@Value("#{videoProp['backgroundImagePoolPath']}") 
+
+	@Value("#{videoProp['backgroundImagePoolPath']}")
 	private String[] backgroundImagePoolPath;
 
 	private void listImages() {
 		List<File> imageFileList = new ArrayList<File>();
-		for(String path : this.backgroundImagePoolPath) {
+		for (String path : this.backgroundImagePoolPath) {
 			File dir = new File(path);
-			if(dir.isDirectory()) {
+			if (dir.isDirectory()) {
 				logger.debug("directory scanning : {}", dir);
-				Collection<File> found = FileUtils.listFiles(dir, new String[]{"jpg", "jpeg", "gif", "png"}, true);
+				Collection<File> found = FileUtils.listFiles(dir, new String[] {"jpg", "jpeg", "gif", "png" }, true);
 				imageFileList.addAll(found);
 			}
 		}
-		
+
 		imageList = new ArrayList<Image>();
-		for(File file : imageFileList) {
+		for (File file : imageFileList) {
 			imageList.add(new Image(file));
 		}
 		logger.debug("total found image size : {}", imageList.size());
 	}
-	
+
 	private List<Image> createImageSource() {
-		if(imageList == null)
+		if (imageList == null)
 			reload();
-		
+
 		return imageList;
 	}
-	
+
 	@Override
 	public Image getImage(int idx) {
 		return createImageSource().get(idx);
@@ -65,7 +65,7 @@ public class LocalImageSource implements ImageSource {
 	}
 
 	@Override
-	@Scheduled(cron="0 */7 * * * *")
+	@Scheduled(cron = "0 */7 * * * *")
 	public void reload() {
 		listImages();
 	}

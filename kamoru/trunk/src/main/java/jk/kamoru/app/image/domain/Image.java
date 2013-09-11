@@ -7,11 +7,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.imgscalr.Scalr;
-import org.imgscalr.Scalr.Method;
-
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
+
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
 
 public class Image {
 
@@ -20,11 +20,7 @@ public class Image {
 	private long size;
 	private long lastModified;
 	private File file;
-	
-//	private byte[] masterBytes;
-//	private byte[] webBytes;
-//	private byte[] thumbBytes;
-	
+
 	public Image(File file) {
 		this.file = file;
 		init();
@@ -59,33 +55,40 @@ public class Image {
 
 	public byte[] getImageBytes(PictureType type) {
 		try {
-			switch(type) {
+			switch (type) {
 			case MASTER:
-//				return masterBytes == null ? masterBytes = FileUtils.readFileToByteArray(file) : masterBytes;
 				return FileUtils.readFileToByteArray(file);
 			case WEB:
-//				return webBytes == null ? webBytes = toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500)) : webBytes;
-				return toByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
+				return readBufferedImageToByteArray(Scalr.resize(
+						ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
 			case THUMBNAIL:
-//				return thumbBytes == null ? thumbBytes = toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER)) : thumbBytes;
-				return toByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
+				return readBufferedImageToByteArray(Scalr.resize(
+						ImageIO.read(file), Method.SPEED, 100,
+						Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
 			default:
-				throw new RuntimeException("잘못된 타입");
+				throw new IllegalArgumentException("잘못된 타입");
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	private byte[] toByteArray(BufferedImage bi) {
+
+	private byte[] readBufferedImageToByteArray(BufferedImage bi) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ImageIO.setUseCache(false);
 		try {
 			ImageIO.write(bi, "gif", outputStream);
+			return outputStream.toByteArray();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} finally {
+			if (outputStream != null)
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					// nothing
+				}
 		}
-		return outputStream.toByteArray();
 	}
-	
+
 }

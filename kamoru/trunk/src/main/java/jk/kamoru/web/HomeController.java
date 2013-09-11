@@ -24,36 +24,36 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @Controller
 public class HomeController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping("/")
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
+
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
+
+		model.addAttribute("serverTime", dateFormat.format(new Date()));
 		return "home";
 	}
-	
-	@RequestMapping(value="/requestMappingList")
+
+	@RequestMapping(value = "/requestMappingList")
 	public String requestMapping(HttpServletRequest request, Model model) {
-		Map<String, String> handlerMethodMap = new TreeMap<String, String>();
-		
-		ConfigurableApplicationContext cac = (ConfigurableApplicationContext)request.getSession().getServletContext().getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "appServlet");
+		logger.trace("Request mapping list");
+		Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = new TreeMap<RequestMappingInfo, HandlerMethod>();
+
+		ConfigurableApplicationContext cac = (ConfigurableApplicationContext) request
+				.getSession()
+				.getServletContext()
+				.getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "appServlet");
 		RequestMappingHandlerMapping rmhm = cac.getBean(RequestMappingHandlerMapping.class);
-		
-		for(Map.Entry<RequestMappingInfo, HandlerMethod> hm : rmhm.getHandlerMethods().entrySet())
-			handlerMethodMap.put(hm.getKey().toString(), hm.getValue().toString());
-		
+
+		for (Map.Entry<RequestMappingInfo, HandlerMethod> hm : rmhm.getHandlerMethods().entrySet())
+			handlerMethodMap.put(hm.getKey(), hm.getValue());
+
 		model.addAttribute("handlerMethodMap", handlerMethodMap);
 		return "requestMappingList";
 	}

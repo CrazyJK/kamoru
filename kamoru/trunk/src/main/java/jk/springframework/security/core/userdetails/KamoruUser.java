@@ -1,4 +1,4 @@
-package jk.kamoru.security.core.userdetails;
+package jk.springframework.security.core.userdetails;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package jk.kamoru.security.core.userdetails;
+package jk.springframework.security.core.userdetails;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
