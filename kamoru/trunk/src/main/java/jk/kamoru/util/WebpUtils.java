@@ -2,9 +2,9 @@ package jk.kamoru.util;
 
 import java.io.File;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 public class WebpUtils {
 
@@ -18,8 +18,8 @@ public class WebpUtils {
 	 */
 	public static void convert(String cwebp, File imageFile, File destPath) {
 		logger.trace("{} {} {}", cwebp, imageFile.getPath(), destPath.getPath());
-		Assert.assertTrue("image is not file!", imageFile.isFile());
-		Assert.assertTrue("destination path is not exist!", destPath.exists());
+		Assert.isTrue(imageFile.isFile(), "image is not file!");
+		Assert.isTrue(destPath.exists(), "destination path is not exist!");
 		
 		String command = String.format("%s \"%s\" -q 80 -o \"%s\"", 
 				cwebp,  

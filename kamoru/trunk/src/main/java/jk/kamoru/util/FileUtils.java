@@ -2,7 +2,8 @@ package jk.kamoru.util;
 
 import java.io.File;
 
-import junit.framework.Assert;
+import org.springframework.util.Assert;
+
 
 /**
  * commons.io.FileUtils 상속하고 필요한 기능 추가
@@ -17,7 +18,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @param basepath
 	 */
 	public static void renameToFoldername(File basepath) {
-		Assert.assertTrue("It is not directory! ", basepath.isDirectory());
+		Assert.isTrue(basepath.isDirectory(), "It is not directory! ");
 		File[] files = basepath.listFiles();
 		int digit = String.valueOf(files.length).length();
 		int count = 0;
@@ -34,7 +35,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	}
 	
 	public static String getNameExceptExtension(File file) {
-		Assert.assertTrue("It is not file!", file.isFile());
+		Assert.isTrue(file.isFile(), "It is not file!");
 		return StringUtils.substringBeforeLast(file.getName(), ".");
 	}
 
