@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import jk.kamoru.app.image.ImageException;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 
@@ -66,10 +67,10 @@ public class Image {
 						ImageIO.read(file), Method.SPEED, 100,
 						Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
 			default:
-				throw new IllegalArgumentException("잘못된 타입");
+				throw new IllegalArgumentException("잘못된 타입 type=" + type);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ImageException(e);
 		}
 	}
 

@@ -19,7 +19,7 @@ import jk.kamoru.app.video.util.VideoUtils;
 @Scope("prototype")
 public class Actress implements Serializable, Comparable<Object> {
 
-	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
 	private String birth;
 

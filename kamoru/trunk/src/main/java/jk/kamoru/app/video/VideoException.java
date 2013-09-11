@@ -1,15 +1,30 @@
 package jk.kamoru.app.video;
 
-public class VideoException extends RuntimeException {
+import jk.kamoru.KamoruException;
 
-	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
+public class VideoException extends KamoruException {
 
-	public VideoException(String msg) {
-		super(msg);
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+
+	public VideoException() {
+		super();
 	}
-	
-	public VideoException(String msg, Throwable e) {
-		super(msg, e);
+
+	public VideoException(String message, Throwable cause,
+			boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+	public VideoException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public VideoException(String message) {
+		super(message);
+	}
+
+	public VideoException(Throwable cause) {
+		super(cause);
 	}
 	
 }

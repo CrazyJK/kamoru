@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jk.kamoru.app.image.ImageException;
 import jk.kamoru.app.image.domain.Image;
 import jk.kamoru.util.FileUtils;
 
@@ -51,7 +52,12 @@ public class LocalImageSource implements ImageSource {
 
 	@Override
 	public Image getImage(int idx) {
-		return createImageSource().get(idx);
+		try {
+			return createImageSource().get(idx);
+		}
+		catch(IndexOutOfBoundsException  e) {
+			throw new ImageException("Image not found", e);
+		}
 	}
 
 	@Override

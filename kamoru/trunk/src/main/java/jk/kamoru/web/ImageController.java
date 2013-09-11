@@ -65,12 +65,12 @@ public class ImageController {
 		long today = new Date().getTime();
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setCacheControl("max-age=" + VideoCore.WebCacheTime_sec);
+		headers.setCacheControl("max-age=" + VideoCore.WEBCACHETIME_SEC);
 		headers.setContentLength(imageBytes.length);
 		headers.setContentType(type);
-		headers.setDate(today + VideoCore.WebCacheTime_Mili);
-		headers.setExpires(today + VideoCore.WebCacheTime_Mili);
-		headers.setLastModified(today - VideoCore.WebCacheTime_Mili);
+		headers.setDate(today + VideoCore.WEBCACHETIME_MILI);
+		headers.setExpires(today + VideoCore.WEBCACHETIME_MILI);
+		headers.setLastModified(today - VideoCore.WEBCACHETIME_MILI);
 
 		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}

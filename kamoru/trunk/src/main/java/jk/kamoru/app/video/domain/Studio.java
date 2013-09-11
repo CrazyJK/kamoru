@@ -14,7 +14,7 @@ import jk.kamoru.app.video.VideoCore;
 @Scope("prototype")
 public class Studio implements Serializable, Comparable<Object>{
 
-	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
 	private String name;
 	private String homepage;

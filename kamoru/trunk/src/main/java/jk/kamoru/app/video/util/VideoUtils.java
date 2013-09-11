@@ -366,7 +366,7 @@ public class VideoUtils {
 	public static String readFileToString(File file) {
 		if(file == null || !file.exists()) return "";
 		try {
-			return FileUtils.readFileToString(file, VideoCore.FileEncoding);
+			return FileUtils.readFileToString(file, VideoCore.FILE_ENCODING);
 		}catch(IOException ioe){
 			logger.error("Fail to read file to string", ioe);
 			return "";
@@ -435,7 +435,7 @@ public class VideoUtils {
 	 */
 	public static void writeStringToFile(File file, String data) {
 		try {
-			FileUtils.writeStringToFile(file, data, VideoCore.FileEncoding);
+			FileUtils.writeStringToFile(file, data, VideoCore.FILE_ENCODING);
 		} catch (IOException e) {
 			logger.error("file write error ", e);
 		}
@@ -479,7 +479,7 @@ public class VideoUtils {
 		if (file != null && file.exists()) {
 			try {
 				logger.info("readFile : {}", file.getAbsolutePath());
-				List<String> strList = FileUtils.readLines(file, VideoCore.FileEncoding);
+				List<String> strList = FileUtils.readLines(file, VideoCore.FILE_ENCODING);
 				for (String str : strList) {
 					String[] strs = StringUtils.split(str, "=", 2);
 					if (strs.length > 1)
@@ -498,7 +498,7 @@ public class VideoUtils {
 			sb.append(String.format("%s=%s%n", entry.getKey().toUpperCase(), entry.getValue()));
 		}
 		try {
-			FileUtils.writeStringToFile(file, sb.toString(), VideoCore.FileEncoding);
+			FileUtils.writeStringToFile(file, sb.toString(), VideoCore.FILE_ENCODING);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}

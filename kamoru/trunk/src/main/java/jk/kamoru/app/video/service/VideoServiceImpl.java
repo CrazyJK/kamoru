@@ -108,7 +108,7 @@ public class VideoServiceImpl implements VideoService {
 		
 		try {
 			if(isChanged || historyFile == null) {
-				historyList = FileUtils.readLines(getHistoryFile(), VideoCore.FileEncoding);
+				historyList = FileUtils.readLines(getHistoryFile(), VideoCore.FILE_ENCODING);
 				isChanged = false;
 				logger.debug("read history.log size={}", historyList.size());
 			}
@@ -321,7 +321,7 @@ public class VideoServiceImpl implements VideoService {
 		if(action != Action.DELETE)
 			video.addHistory(historymsg);
 		try {
-			FileUtils.writeStringToFile(getHistoryFile(), historymsg, VideoCore.FileEncoding, true);
+			FileUtils.writeStringToFile(getHistoryFile(), historymsg, VideoCore.FILE_ENCODING, true);
 			isChanged = true;
 		} catch (IOException e) {
 			logger.error(historymsg, e);

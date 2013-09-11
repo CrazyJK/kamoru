@@ -9,6 +9,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import jk.kamoru.KamoruException;
+import jk.kamoru.app.image.service.ImageService;
+import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.domain.Sort;
+import jk.kamoru.app.video.domain.Video;
+import jk.kamoru.app.video.domain.VideoSearch;
+import jk.kamoru.app.video.domain.View;
+import jk.kamoru.app.video.service.VideoService;
+import jk.kamoru.app.video.util.VideoUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import jk.kamoru.app.image.service.ImageService;
-import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.VideoException;
-import jk.kamoru.app.video.domain.Sort;
-import jk.kamoru.app.video.domain.Video;
-import jk.kamoru.app.video.domain.VideoSearch;
-import jk.kamoru.app.video.domain.View;
-import jk.kamoru.app.video.service.VideoService;
-import jk.kamoru.app.video.util.VideoUtils;
 
 /**
  * Video Collection controller<br>
@@ -84,7 +84,7 @@ public class VideoController {
 
 	@RequestMapping("/videoError")
 	public void errorVideo() {
-		throw new VideoException("error");
+		throw new KamoruException("error");
 	}
 
 	@RequestMapping(value="/history", method=RequestMethod.GET)
@@ -98,12 +98,12 @@ public class VideoController {
 		long today = new Date().getTime();
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setCacheControl("max-age=" + VideoCore.WebCacheTime_sec);
+		headers.setCacheControl("max-age=" + VideoCore.WEBCACHETIME_SEC);
 		headers.setContentLength(imageBytes.length);
 		headers.setContentType(MediaType.parseMediaType("image/" + suffix));
-		headers.setDate(		today + VideoCore.WebCacheTime_Mili);
-		headers.setExpires(		today + VideoCore.WebCacheTime_Mili);
-		headers.setLastModified(today - VideoCore.WebCacheTime_Mili);
+		headers.setDate(		today + VideoCore.WEBCACHETIME_MILI);
+		headers.setExpires(		today + VideoCore.WEBCACHETIME_MILI);
+		headers.setLastModified(today - VideoCore.WEBCACHETIME_MILI);
 		
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}

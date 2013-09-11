@@ -42,7 +42,7 @@ public class Video implements Comparable<Object>, Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(Video.class);
 	
-	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
 	private static Sort sortMethod = VideoCore.DEFAULT_SORTMETHOD;
 	
@@ -609,7 +609,7 @@ public class Video implements Comparable<Object>, Serializable {
 		File file = this.getInfoFile();
 		try {
 			logger.info("{} {}", opus, root);
-			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FileEncoding);
+			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FILE_ENCODING);
 		} catch (IOException e) {
 			logger.error("info save error", e);
 		}
@@ -682,7 +682,7 @@ public class Video implements Comparable<Object>, Serializable {
 		
 		JSONObject json = null;
 		try {
-			json = JSONObject.fromObject(FileUtils.readFileToString(infoFile, VideoCore.FileEncoding));
+			json = JSONObject.fromObject(FileUtils.readFileToString(infoFile, VideoCore.FILE_ENCODING));
 		} catch (IOException e1) {
 			logger.error("info read error", e1);
 			return;

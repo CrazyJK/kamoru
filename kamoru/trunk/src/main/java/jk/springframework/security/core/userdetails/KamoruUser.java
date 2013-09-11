@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jk.kamoru.core.KAMORU;
-
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class KamoruUser implements UserDetails {
 
-	private static final long serialVersionUID = KAMORU.Serial_Version_UID;
+	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 	
 	private String username;
 	private List<GrantedAuthority> authorites = new ArrayList<GrantedAuthority>();

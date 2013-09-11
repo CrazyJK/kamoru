@@ -9,7 +9,7 @@ import jk.kamoru.app.video.VideoCore;
 
 public class VideoSearch implements Serializable {
 
-	private static final long serialVersionUID = VideoCore.Serial_Version_UID;
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
 	String actress;
 	boolean addCond;
