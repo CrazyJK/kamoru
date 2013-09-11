@@ -8,6 +8,8 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jk.springframework.context.support.ReloadableResourceBundleMessageSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -43,7 +45,7 @@ public class HomeController {
 	@RequestMapping(value = "/requestMappingList")
 	public String requestMapping(HttpServletRequest request, Model model) {
 		logger.trace("Request mapping list");
-		Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = new TreeMap<RequestMappingInfo, HandlerMethod>();
+		Map<String, String> handlerMethodMap = new TreeMap<String, String>();
 
 		ConfigurableApplicationContext cac = (ConfigurableApplicationContext) request
 				.getSession()
@@ -52,9 +54,15 @@ public class HomeController {
 		RequestMappingHandlerMapping rmhm = cac.getBean(RequestMappingHandlerMapping.class);
 
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> hm : rmhm.getHandlerMethods().entrySet())
-			handlerMethodMap.put(hm.getKey(), hm.getValue());
+			handlerMethodMap.put(hm.getKey().toString(), hm.getValue().toString());
 
 		model.addAttribute("handlerMethodMap", handlerMethodMap);
 		return "requestMappingList";
+	}
+	
+	@RequestMapping("/hitMessageCodeList")
+	public String hitMessageCodeList(Model model) {
+		model.addAttribute("hitMessageCodeMap", ReloadableResourceBundleMessageSource.hitMessageCodeMap);
+		return "hitMessageCodeList";
 	}
 }

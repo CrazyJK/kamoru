@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,9 @@ public class ReloadableResourceBundleMessageSource extends
 
 	/** Cache to hold merged loaded properties per locale */
 	private final Map<Locale, PropertiesHolder> cachedMergedProperties = new HashMap<Locale, PropertiesHolder>();
+
+
+	public static Map<String, String> hitMessageCodeMap = new TreeMap<String, String>();
 
 	/**
 	 * Set a single basename, following the basic ResourceBundle convention of
@@ -218,6 +222,7 @@ public class ReloadableResourceBundleMessageSource extends
 			PropertiesHolder propHolder = getMergedProperties(locale);
 			String result = propHolder.getProperty(code);
 			if (result != null) {
+				hitMessageCodeMap.put(code + "_" + locale, result);
 				logger.trace("code={}, locale={} value={}", code, locale, result);
 				return result;
 			}
@@ -228,16 +233,18 @@ public class ReloadableResourceBundleMessageSource extends
 					PropertiesHolder propHolder = getProperties(filename);
 					String result = propHolder.getProperty(code);
 					if (result != null) {
+						hitMessageCodeMap.put(code + "_" + locale, result);
 						logger.trace("code={}, locale={} value={}", code, locale, result);
 						return result;
 					}
 				}
 			}
 		}
+		hitMessageCodeMap.put(code + "_" + locale, null);
 		logger.trace("code={}, locale={} value=null", code, locale);
 		return null;
 	}
-
+	
 	/**
 	 * Resolves the given message code as key in the retrieved bundle files,
 	 * using a cached MessageFormat instance per message code.
@@ -248,6 +255,7 @@ public class ReloadableResourceBundleMessageSource extends
 			PropertiesHolder propHolder = getMergedProperties(locale);
 			MessageFormat result = propHolder.getMessageFormat(code, locale);
 			if (result != null) {
+				hitMessageCodeMap.put(code + "_" + locale, result.toString());
 				logger.trace("code={}, locale={} value={}", code, locale, result);
 				return result;
 			}
@@ -259,12 +267,14 @@ public class ReloadableResourceBundleMessageSource extends
 					MessageFormat result = propHolder.getMessageFormat(code,
 							locale);
 					if (result != null) {
+						hitMessageCodeMap.put(code + "_" + locale, result.toPattern());
 						logger.trace("code={}, locale={} value={}", code, locale, result);
 						return result;
 					}
 				}
 			}
 		}
+		hitMessageCodeMap.put(code + "_" + locale, null);
 		logger.trace("code={}, locale={} value=null", code, locale);
 		return null;
 	}

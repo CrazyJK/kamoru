@@ -9,6 +9,7 @@
 	<li><a href="<c:url value="/video/briefing"/>">Video briefing</a>
 	<li><a href="<c:url value="/image"/>">Image view</a>
 	<li><a href="<c:url value="/requestMappingList"/>">request mapping list</a>
+	<li><a href="<c:url value="/hitMessageCodeList"/>">hit messageCode List</a>
 	<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>
 	<li><a href="<c:url value="/jsp/colors.jsp"/>">Standard Colors</a>
 	<li><a href="<c:url value="/jsp/util/threaddump.jsp"/>">Thread dump</a>

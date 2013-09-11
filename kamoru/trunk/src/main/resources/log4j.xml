@@ -61,9 +61,9 @@
 	<logger name="jk.kamoru.app.video.domain.Video">
 		<level value="info" />
 	</logger>
-	<logger name="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
+	<!-- <logger name="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<level value="trace" />
-	</logger>
+	</logger> -->
 
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework">
