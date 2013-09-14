@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix='form'   uri='http://www.springframework.org/tags/form'%>
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="text.login"/></title>
+<title><s:message code="default.login"/></title>
 <style type="text/css">
 input[type=text],
 input[type=password] {
@@ -31,7 +31,7 @@ div {
 	margin:10px;
 }
 body {
-	background-image:url('<spring:url value="/resources/img/orgrimmar_horde_territory.jpg"/>');
+	background-image:url('<s:url value="/resources/img/orgrimmar_horde_territory.jpg"/>');
 	background-repeat: repeat;
 	background-position: center center;
 }
@@ -45,7 +45,7 @@ body {
 	float:right;
 }
 #sign-in-box {
-	background-image: url('<spring:url value="/resources/favicon_kamoru.ico"/>');
+	background-image: url('<s:url value="/resources/favicon_kamoru.ico"/>');
 	background-repeat: no-repeat;
 	background-position: right top;
 }
@@ -65,38 +65,38 @@ $(document).ready(function() {
 <body>
 <div id="sign-in">
 	<div id="sign-in-box">
-		<h3><spring:message code="text.login"/></h3>
+		<h3><s:message code="default.login"/></h3>
 		<form name='f' action='<c:url value="/j_spring_security_check"/>' method='POST'>
 			<div>
-				<label for="identity"><spring:message code="text.identify"/></label>
+				<label for="identity"><s:message code="default.identify"/></label>
 		    	<input type='text' name='j_username' id="identity"/>
 		    </div>
 		    <div>
-		    	<label for="passwd"><spring:message code="text.password"/></label>
+		    	<label for="passwd"><s:message code="default.password"/></label>
 		    	<input type='password' name='j_password' id="passwd"/>
 		    </div>
 		    <div>
-		    	<input name="submit" type="submit" value="<spring:message code="text.login"/>"/>
+		    	<input name="submit" type="submit" value="<s:message code="default.login"/>"/>
 			    <input id="remember_me" name="_spring_security_remember_me" type="checkbox">
-		    	<label for="remember_me"><spring:message code="text.rememberme"/></label>
+		    	<label for="remember_me"><s:message code="default.rememberme"/></label>
 		    </div>
 		    <div style="text-align:center">
-		    	<span style="color:red">${msg}</span>
+		    	<span style="color:red">${login_msg} ${access_msg}</span>
 		    </div>
 		</form>
 	</div>
 	<div id="lang-chooser">
-		<form><spring:message code="text.language"/> 
+		<form><s:message code="default.language"/> 
 			<select name="lang" onchange="document.forms[1].submit();">
-				<option value="ko" ${locale eq "ko" ? "selected" : "" }><spring:message code="text.korean"/></option>
-				<option value="en" ${locale eq "en" ? "selected" : "" }><spring:message code="text.english"/></option>
-				<option value="ja" ${locale eq "ja" ? "selected" : "" }><spring:message code="text.japanese"/></option>
+				<option value="ko" ${locale eq "ko" ? "selected" : "" }><s:message code="default.korean"/></option>
+				<option value="en" ${locale eq "en" ? "selected" : "" }><s:message code="default.english"/></option>
+				<option value="ja" ${locale eq "ja" ? "selected" : "" }><s:message code="default.japanese"/></option>
 			</select>
 		</form>
 	</div>
 </div>
 <div>
-	<%-- <img src="<spring:url value="/resources/img/subterraneans_by_joe_maccer-d6bnuip-reverse.jpg"/>"> --%>
+	<%-- <img src="<s:url value="/resources/img/subterraneans_by_joe_maccer-d6bnuip-reverse.jpg"/>"> --%>
 	<h1></h1>
 </div>
 </body>

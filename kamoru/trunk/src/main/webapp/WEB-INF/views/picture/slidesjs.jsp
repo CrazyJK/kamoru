@@ -4,9 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Image Slide by SlidesJS</title>
+<title><s:message code="image.image-viewer"/> by SlidesJS</title>
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<title>Local Image Viewer</title>
 <style type="text/css">
 .slides {
 	width:800px;

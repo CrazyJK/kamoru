@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><s:message code="hitMessageCodeList" text="Hit Message Code List" /></title>
+<title><s:message code="default.hitMessageCodeList"/></title>
 <style type="text/css">
 ol {
 	color: red; font-size:0.8em;
@@ -24,7 +24,7 @@ li {
 
 	<div>
 		<h3>
-			<s:message code="_title" text="Hit Message Code List" />
+			<s:message code="default.hitMessageCodeList"/>
 			<span style="float: right" onclick='$(".exist").toggle()'>Filter
 				: no value code</span>
 		</h3>

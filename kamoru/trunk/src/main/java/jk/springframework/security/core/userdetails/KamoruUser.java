@@ -19,6 +19,7 @@ public class KamoruUser implements UserDetails {
 	public KamoruUser(String username) {
 		this.username = username;
 		this.authorites.add(new SimpleGrantedAuthority("ROLE_USER"));
+		this.authorites.add(new SimpleGrantedAuthority("ROLE_CRAZY"));
 	}
 
 	@Override

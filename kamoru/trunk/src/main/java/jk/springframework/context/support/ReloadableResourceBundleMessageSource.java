@@ -218,23 +218,25 @@ public class ReloadableResourceBundleMessageSource extends
 	 */
 	@Override
 	protected String resolveCodeWithoutArguments(String code, Locale locale) {
+		logger.trace("\n\n");
 		if (this.cacheMillis < 0) {
 			PropertiesHolder propHolder = getMergedProperties(locale);
 			String result = propHolder.getProperty(code);
 			if (result != null) {
 				hitMessageCodeMap.put(code + "_" + locale, result);
-				logger.trace("code={}, locale={} value={}", code, locale, result);
+				logger.trace("code={}, locale={} value={} cacheMillis={}", code, locale, result, cacheMillis);
 				return result;
 			}
 		} else {
 			for (String basename : this.basenames) {
 				List<String> filenames = calculateAllFilenames(basename, locale);
+				logger.trace("basename={} locale={} filenames={}", basename, locale, filenames);
 				for (String filename : filenames) {
 					PropertiesHolder propHolder = getProperties(filename);
 					String result = propHolder.getProperty(code);
 					if (result != null) {
 						hitMessageCodeMap.put(code + "_" + locale, result);
-						logger.trace("code={}, locale={} value={}", code, locale, result);
+						logger.trace("code={}, locale={} value={} filename={}", code, locale, result, filename);
 						return result;
 					}
 				}
@@ -326,30 +328,34 @@ public class ReloadableResourceBundleMessageSource extends
 	 * @see #calculateFilenamesForLocale
 	 */
 	protected List<String> calculateAllFilenames(String basename, Locale locale) {
+		logger.trace("basename={}, locale={}", basename, locale);
 		synchronized (this.cachedFilenames) {
-			Map<Locale, List<String>> localeMap = this.cachedFilenames
-					.get(basename);
+			Map<Locale, List<String>> localeMap = this.cachedFilenames.get(basename);
 			if (localeMap != null) {
 				List<String> filenames = localeMap.get(locale);
+				logger.trace("found in localeMap - filenames={}", filenames);
 				if (filenames != null) {
 					return filenames;
 				}
 			}
 			List<String> filenames = new ArrayList<String>(7);
 			filenames.addAll(calculateFilenamesForLocale(basename, locale));
-			if (this.fallbackToSystemLocale
-					&& !locale.equals(Locale.getDefault())) {
-				List<String> fallbackFilenames = calculateFilenamesForLocale(
-						basename, Locale.getDefault());
+			logger.trace("calculate filenames={}", filenames);
+			logger.trace("fallbackToSystemLocale={}, Locale.getDefault={} ", filenames, Locale.getDefault());
+			if (this.fallbackToSystemLocale && !locale.equals(Locale.getDefault())) {
+				List<String> fallbackFilenames = calculateFilenamesForLocale(basename, Locale.getDefault());
+				logger.trace("fallback Filenames={}", fallbackFilenames);
 				for (String fallbackFilename : fallbackFilenames) {
 					if (!filenames.contains(fallbackFilename)) {
 						// Entry for fallback locale that isn't already in
 						// filenames list.
 						filenames.add(fallbackFilename);
+						logger.trace("add fallback basename - fallbackFilename={}", fallbackFilename);
 					}
 				}
 			}
 			filenames.add(basename);
+			logger.trace("add default basename - basename={}", basename);
 			if (localeMap != null) {
 				localeMap.put(locale, filenames);
 			} else {
@@ -357,6 +363,7 @@ public class ReloadableResourceBundleMessageSource extends
 				localeMap.put(locale, filenames);
 				this.cachedFilenames.put(basename, localeMap);
 			}
+			logger.trace("return filenames={}", filenames);
 			return filenames;
 		}
 	}
@@ -375,8 +382,7 @@ public class ReloadableResourceBundleMessageSource extends
 	 *            the locale
 	 * @return the List of filenames to check
 	 */
-	protected List<String> calculateFilenamesForLocale(String basename,
-			Locale locale) {
+	protected List<String> calculateFilenamesForLocale(String basename, Locale locale) {
 		List<String> result = new ArrayList<String>(3);
 		String language = locale.getLanguage();
 		String country = locale.getCountry();
@@ -387,20 +393,23 @@ public class ReloadableResourceBundleMessageSource extends
 		if (language.length() > 0) {
 			temp.append(language);
 			result.add(0, temp.toString());
+			logger.trace("1 {}", temp);
 		}
 
 		temp.append('_');
 		if (country.length() > 0) {
 			temp.append(country);
 			result.add(0, temp.toString());
+			logger.trace("2 {}", temp);
 		}
 
 		if (variant.length() > 0
 				&& (language.length() > 0 || country.length() > 0)) {
 			temp.append('_').append(variant);
 			result.add(0, temp.toString());
+			logger.trace("3 {}", temp);
 		}
-
+		logger.trace("result {}", result);
 		return result;
 	}
 
@@ -416,9 +425,8 @@ public class ReloadableResourceBundleMessageSource extends
 		synchronized (this.cachedProperties) {
 			PropertiesHolder propHolder = this.cachedProperties.get(filename);
 			if (propHolder != null
-					&& (propHolder.getRefreshTimestamp() < 0 || propHolder
-							.getRefreshTimestamp() > System.currentTimeMillis()
-							- this.cacheMillis)) {
+					&& (propHolder.getRefreshTimestamp() < 0 
+							|| propHolder.getRefreshTimestamp() > System.currentTimeMillis() - this.cacheMillis)) {
 				// up to date
 				return propHolder;
 			}
@@ -437,13 +445,10 @@ public class ReloadableResourceBundleMessageSource extends
 	 * @param propHolder
 	 *            the current PropertiesHolder for the bundle
 	 */
-	protected PropertiesHolder refreshProperties(String filename,
-			PropertiesHolder propHolder) {
-		long refreshTimestamp = (this.cacheMillis < 0) ? -1 : System
-				.currentTimeMillis();
+	protected PropertiesHolder refreshProperties(String filename, PropertiesHolder propHolder) {
+		long refreshTimestamp = (this.cacheMillis < 0) ? -1 : System.currentTimeMillis();
 
-		Resource resource = this.resourceLoader.getResource(filename
-				+ PROPERTIES_SUFFIX);
+		Resource resource = this.resourceLoader.getResource(filename + PROPERTIES_SUFFIX);
 		if (!resource.exists()) {
 			resource = this.resourceLoader.getResource(filename + XML_SUFFIX);
 		}
@@ -468,10 +473,7 @@ public class ReloadableResourceBundleMessageSource extends
 				} catch (IOException ex) {
 					// Probably a class path resource: cache it forever.
 					if (logger.isDebugEnabled()) {
-						logger.debug(
-								resource
-										+ " could not be resolved in the file system - assuming that is hasn't changed",
-								ex);
+						logger.debug(resource + " could not be resolved in the file system - assuming that is hasn't changed", ex);
 					}
 					fileTimestamp = -1;
 				}
@@ -481,9 +483,7 @@ public class ReloadableResourceBundleMessageSource extends
 				propHolder = new PropertiesHolder(props, fileTimestamp);
 			} catch (IOException ex) {
 				if (logger.isWarnEnabled()) {
-					logger.warn(
-							"Could not parse properties file ["
-									+ resource.getFilename() + "]", ex);
+					logger.warn("Could not parse properties file [" + resource.getFilename() + "]", ex);
 				}
 				// Empty holder representing "not valid".
 				propHolder = new PropertiesHolder();
@@ -516,15 +516,13 @@ public class ReloadableResourceBundleMessageSource extends
 	 * @throws IOException
 	 *             if properties loading failed
 	 */
-	protected Properties loadProperties(Resource resource, String filename)
-			throws IOException {
+	protected Properties loadProperties(Resource resource, String filename) throws IOException {
 		InputStream is = resource.getInputStream();
 		Properties props = new Properties();
 		try {
 			if (resource.getFilename().endsWith(XML_SUFFIX)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Loading properties ["
-							+ resource.getFilename() + "]");
+					logger.debug("Loading properties [" + resource.getFilename() + "]");
 				}
 				this.propertiesPersister.loadFromXml(props, is);
 			} else {
@@ -537,16 +535,12 @@ public class ReloadableResourceBundleMessageSource extends
 				}
 				if (encoding != null) {
 					if (logger.isDebugEnabled()) {
-						logger.debug("Loading properties ["
-								+ resource.getFilename() + "] with encoding '"
-								+ encoding + "'");
+						logger.debug("Loading properties [" + resource.getFilename() + "] with encoding '" + encoding + "'");
 					}
-					this.propertiesPersister.load(props, new InputStreamReader(
-							is, encoding));
+					this.propertiesPersister.load(props, new InputStreamReader(is, encoding));
 				} else {
 					if (logger.isDebugEnabled()) {
-						logger.debug("Loading properties ["
-								+ resource.getFilename() + "]");
+						logger.debug("Loading properties [" + resource.getFilename() + "]");
 					}
 					this.propertiesPersister.load(props, is);
 				}

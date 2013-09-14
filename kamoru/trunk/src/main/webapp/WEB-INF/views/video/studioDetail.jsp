@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>${studio.name} Info</title>
+<title>${studio.name}</title>
 </head>
 <body>
 

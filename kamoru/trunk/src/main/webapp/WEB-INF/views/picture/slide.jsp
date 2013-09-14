@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<title>Local Image Viewer</title>
+<title><s:message code="image.image-viewer"/></title>
 <style type="text/css">
 #imageThumbnailUL li {
 	display:inline-block;

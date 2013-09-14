@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ page import="org.springframework.web.servlet.support.RequestContext" %>
 <!DOCTYPE html>
 <html lang="<%=new RequestContext(request).getLocale().getLanguage()%>">
@@ -64,15 +64,14 @@ function showNav() {
  
 <nav id="deco_nav">
 <ul>
-	<li><a href="<c:url value="/video"/>"><spring:message code="text.main"/></a>
-	<li><a href="<c:url value="/video/search"/>"><spring:message code="text.search"/></a>
-	<li><a href="<c:url value="/video/history"/>"><spring:message code="text.history"/></a>
-	<li><a href="<c:url value="/video/list"/>"><spring:message code="text.video"/></a>
-	<li><a href="<c:url value="/video/actress"/>"><spring:message code="text.actress"/></a>
-	<li><a href="<c:url value="/video/studio"/>"><spring:message code="text.studio"/></a>
-	<li><a href="<c:url value="/image"/>"><spring:message code="text.image"/></a>
-	<li><a href="<c:url value="/video/briefing"/>"><spring:message code="text.briefing"/></a>
-	<li><a href="<c:url value="/"/>"><spring:message code="text.home"/></a>
+	<li><a href="<c:url value="/video"/>"><s:message code="video.main"/></a>
+	<li><a href="<c:url value="/video/search"/>"><s:message code="video.search"/></a>
+	<li><a href="<c:url value="/video/list"/>"><s:message code="video.video"/></a>
+	<li><a href="<c:url value="/video/actress"/>"><s:message code="video.actress"/></a>
+	<li><a href="<c:url value="/video/studio"/>"><s:message code="video.studio"/></a>
+	<li><a href="<c:url value="/image"/>"><s:message code="video.image"/></a>
+	<li><a href="<c:url value="/video/briefing"/>"><s:message code="video.briefing"/></a>
+	<li><a href="<c:url value="/"/>"><s:message code="default.home"/></a>
 </ul>
 </nav>
 

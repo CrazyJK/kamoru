@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="${locale }">
 <head>
-<title><s:message code="text.title.briefing" text="Video Briefing"/></title>
+<title><s:message code="video.briefing"/></title>
 <style type="text/css">
 div#contentDiv.div-box section {
 	margin: 2px;
@@ -60,18 +60,18 @@ function resizeDivHeight() {
 <body>
 
 <div id="header_div" class="div-box">
-	<s:message code="text.title.briefing" text="Video Briefing"/>
+	<s:message code="video.briefing"/>
 </div>
 
 <div id="contentDiv" class="div-box" style="overflow:auto; text-align:left;">
 
 <section>
-	<h3><s:message code="text.video-by-folder" text="Video by folder"/></h3>
+	<h3><s:message code="video.video-by-folder"/></h3>
 	<article>
 		<table class="video-table" style="background-color:lightgray">
 			<tr>
-				<th style="text-align:left;"><s:message code="text.folder" text="Folder"/></th>
-				<th style="text-align:right;"><s:message code="text.size"   text="size"/></th>
+				<th style="text-align:left;"><s:message code="video.folder"/></th>
+				<th style="text-align:right;"><s:message code="video.size"/></th>
 			</tr>
 			<c:forEach items="${pathMap}" var="path" varStatus="status">
 			<tr>
@@ -84,13 +84,13 @@ function resizeDivHeight() {
 </section>
 
 <section>
-	<h3><s:message code="text.video-by-date" text="Video by date"/></h3>
+	<h3><s:message code="video.video-by-date"/></h3>
 	<article>
 		<table class="video-table" style="background-color:lightgray">
 			<tr>
-				<th><s:message code="text.date"   text="Date"/></th>
-				<th><s:message code="text.length"   text="length"/></th>
-				<th><s:message code="text.video"   text="Video"/></th>
+				<th class="nowrap"><s:message code="video.date"/></th>
+				<th class="nowrap"><s:message code="video.size"/></th>
+				<th class="nowrap"><s:message code="video.video"/></th>
 			</tr>
 			<c:forEach items="${dateMap}" var="date" varStatus="status">
 			<tr>
@@ -108,13 +108,13 @@ function resizeDivHeight() {
 </section>
 
 <section>
-	<h3><s:message code="text.video-by-rank" text="Video by rank"/></h3>
+	<h3><s:message code="video.video-by-rank"/></h3>
 	<article>
 		<table class="video-table" style="background-color:lightgray">
 			<tr>
-				<th><s:message code="text.rank"   text="Rank"/></th>
-				<th><s:message code="text.length"   text="length"/></th>
-				<th><s:message code="text.video"   text="Video"/></th>
+				<th class="nowrap"><s:message code="video.rank"/></th>
+				<th class="nowrap"><s:message code="video.size"/></th>
+				<th class="nowrap"><s:message code="video.video"/></th>
 			</tr>
 			<c:forEach items="${rankMap}" var="rank" varStatus="status">
 			<tr>
@@ -132,13 +132,13 @@ function resizeDivHeight() {
 </section>
 
 <section>
-	<h3><s:message code="text.video-by-play" text="Video by play"/></h3>
+	<h3><s:message code="video.video-by-play"/></h3>
 	<article>
 		<table class="video-table" style="background-color:lightgray">
 			<tr>
-				<th><s:message code="text.play"   text="Play"/></th>
-				<th><s:message code="text.length"   text="length"/></th>
-				<th><s:message code="text.video"   text="Video"/></th>
+				<th class="nowrap"><s:message code="video.play"/></th>
+				<th class="nowrap"><s:message code="video.size"/></th>
+				<th class="nowrap"><s:message code="video.video"/></th>
 			</tr>
 			<c:forEach items="${playMap}" var="play" varStatus="status">
 			<tr>
@@ -156,7 +156,7 @@ function resizeDivHeight() {
 </section>
 
 <section>
-	<h3><s:message code="text.total"/> <s:message code="text.video"/> : ${fn:length(videoList)}</h3>
+	<h3><s:message code="video.total"/> <s:message code="video.video"/> : ${fn:length(videoList)}</h3>
 	<article id="videoDiv" class="div-box">
 		<c:forEach items="${videoList}" var="video" varStatus="status">
 		<span class="label" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span>
@@ -165,7 +165,7 @@ function resizeDivHeight() {
 </section>
 
 <section>
-	<h3><s:message code="text.total"/> <s:message code="text.studio"/> : ${fn:length(studioList)}</h3>
+	<h3><s:message code="video.total"/> <s:message code="video.studio"/> : ${fn:length(studioList)}</h3>
 	<article id="studioDiv" class="div-box">
 	<c:forEach var="studio" items="${studioList}"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
 		<span onclick="fnViewStudioDetail('${studio.name}')" class="${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
@@ -175,7 +175,7 @@ function resizeDivHeight() {
 </section>
 
 <section>
-	<h3><s:message code="text.total"/> <s:message code="text.actress"/> : ${fn:length(actressList)}</h3>
+	<h3><s:message code="video.total"/> <s:message code="video.actress"/> : ${fn:length(actressList)}</h3>
 	<article id="actressDiv" class="div-box">
 	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
 		<span onclick="fnViewActressDetail('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" >${actress.name}(${countByActress})</span>

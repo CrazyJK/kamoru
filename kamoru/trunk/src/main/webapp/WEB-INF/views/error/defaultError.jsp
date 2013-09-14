@@ -1,18 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Error</title>
+<title><s:message code="default.error"/></title>
 </head>
 <body>
 
-<h1>Error</h1>
+<h1><s:message code="default.error"/></h1>
 <h2 style="color:red;">${exceptionMsg.message}</h2>
 
 <div>
-	<span class="label" onclick="$('#stack-trace').toggle()">StackTrace</span>
-	<span class="label" onclick="$('#request-attribute').toggle()">request Attribute</span>
+	<span class="label" onclick="$('#stack-trace').toggle()"><s:message code="default.stacktrace"/></span>
+	<span class="label" onclick="$('#request-attribute').toggle()"><s:message code="default.request-attribute"/></span>
 </div>
 
 <div id="stack-trace" style="display:none;">
@@ -25,7 +26,7 @@
 </div>
 
 <div id="request-attribute" style="display:none;">
-	<h4>request attribute</h4>
+	<h4><s:message code="default.request-attribute"/></h4>
 	<ol class="code-view">
 <%
 java.util.Enumeration e = request.getAttributeNames();

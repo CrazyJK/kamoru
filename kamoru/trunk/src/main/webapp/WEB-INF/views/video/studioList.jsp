@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="text.studio"/> <spring:message code="text.list"/></title>
+<title><s:message code="video.studio"/> <s:message code="video.list"/></title>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
@@ -24,9 +24,9 @@ function resizeDivHeight() {
 <body>
 
 <div id="header_div" class="div-box">
-<spring:message code="text.total"/> <spring:message code="text.studio"/> : ${fn:length(studioList)}
+<s:message code="video.total"/> <s:message code="video.studio"/> : ${fn:length(studioList)}
 
-<input type="search" name="search" id="search" style="width:200px;" class="searchInput" placeHolder="Search" onkeyup="searchContent(this.value)"/>
+<input type="search" name="search" id="search" style="width:200px;" class="searchInput" placeHolder="<s:message code="video.search"/>" onkeyup="searchContent(this.value)"/>
 
 </div>
 

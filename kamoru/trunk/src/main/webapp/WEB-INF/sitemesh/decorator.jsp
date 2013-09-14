@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"        uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s"        uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring"   uri="http://www.springframework.org/tags" %>
 <%@ page import="org.apache.commons.lang3.time.DateFormatUtils" %>
 <%@ page import="org.springframework.web.servlet.support.RequestContext" %>
 <%
@@ -70,9 +70,11 @@ function showNav() {
 		<h1 id="deco_h1">
 			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
 			<span style='float:right;font-size:12px;text-decoration:none; margin:10px 0 0;'>
-				<spring:message code="text.hello"/>&nbsp;
+				<s:message code="default.hello"/>&nbsp;
 				<security:authentication property="principal.username" />
-				<img alt="kamoru.mail" src="<c:url value="/resources/kamoru_gmail.png"/>">
+				<a href="mailto:<s:message code="default.mail.addr"/>" title="<s:message code="default.mail.reply"/>">
+					<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/resources/tag_crazyjk_gmail.png"/>">
+				</a>
 			</span>
 			
 		</h1>

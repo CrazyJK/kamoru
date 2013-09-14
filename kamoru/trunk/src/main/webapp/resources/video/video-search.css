@@ -1,16 +1,9 @@
 @CHARSET "UTF-8";
 
 em {
-	background-color:yellow;
+	background-color: rgba(0,127,0,.5);
 	font-style: normal;
 	font-size: 12px;
-}
-#newVideo {
-	position:float; 
-	left:0px; 
-	bottom:400px; 
-	height:400px; 
-	overflow:auto;
 }
 .highlighted {
 	background-color:yellow;
@@ -26,8 +19,19 @@ em {
 	border-radius:5px; 
 	-moz-border-radius:5px; 
 	-webkit-border-radius:5px;
-	padding:0px 5px 0px 5px;
+	padding:0px 5px 1px 5px;
 	overflow:hidden;
 	text-overflow:ellipsis;
 	white-space:nowrap;
+}
+h4.item-header {
+	margin: 0;
+}
+ol.items {
+	font-size:12px;
+	font-family:'나눔고딕코딩';
+	
+}
+ol.items li {
+	padding-bottom: 2px;
 }

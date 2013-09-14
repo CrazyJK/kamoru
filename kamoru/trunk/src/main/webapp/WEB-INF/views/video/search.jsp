@@ -1,25 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix='form'   uri='http://www.springframework.org/tags/form'%>
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="text.video"/> <spring:message code="text.search"/></title>
+<title><s:message code="video.video"/> <s:message code="video.search"/></title>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
+	resizeDivHeight();
 	
-	$("#query").bind("keyup", function(event) {
+	$("#query").bind("keyup", function(e) {
+		
+		var event = window.event || e;
+		$("#debug").html(event.keyCode);
+		
+		if (!(event.keyCode >= 48 && event.keyCode <= 57) // 0 ~ 9
+				&& !(event.keyCode >= 65 && event.keyCode <= 90) // a ~ z
+				&& !(event.keyCode >= 96 && event.keyCode <= 105) // keypad : 0 ~ 9
+				&& event.keyCode != 109 // keypad : -
+				&& event.keyCode != 189 // -
+				&& event.keyCode != 8 // backspace
+				&& event.keyCode != 13 // enter
+				) {
+			return;
+		}
+
+		
 		var keyword = $(this).val();
 		var queryUrl = context + 'video/search.json?q=' + keyword; 
-		$("#debug").html(queryUrl);
-		$("#opus").val(keyword);
+		$("#url").html(queryUrl);
+
 		$.getJSON(queryUrl ,function(data) {
-			$('#foundList').empty();
-			var row = data['videoList'];
-			$.each(row, function(entryIndex, entry) {
+			$('#foundVideoList').empty();
+			$('#foundHistoryList').empty();
+			$('#foundVideoList').slideUp();
+			$('#foundHistoryList').slideUp();
+			
+			var videoRow = data['videoList'];
+			$.each(videoRow, function(entryIndex, entry) {
 				
 				var studio 		   = entry['studio'];
 				var opus 		   = entry['opus'];
@@ -39,12 +60,6 @@ $(document).ready(function(){
 				var existVideoDom 	  = $("<span>").addClass("search-item").addClass((existVideo == "true" ? "exist" : "nonexist" )).html("V");
 				var existCoverDom 	  = $("<span>").addClass("search-item").addClass((existCover == "true" ? "exist" : "nonexist" )).html("C");
 				var existSubtitlesDom = $("<span>").addClass("search-item").addClass((existSubtitles == "true" ? "exist" : "nonexist" )).html("S");
-				var addButton		  = $("<span>").addClass("button").html(" add").attr("onclick", "fnAddResult(this)");
-				
-				var html = '<li>[' + entry['studio'] + '][' + entry['opus'] + '][' + entry['title'] + '][' + entry['actress'] + "]";
-				html += '&nbsp;V:' + entry['existVideo'] + '&nbsp;C:' + entry['existCover'] + '&nbsp;S:' + entry['existSubtitles'];
-				var span = $("<span>").addClass("label").html("["+entry['studio']+"]["+entry['opus']+"]["+entry['title']+"]["+entry['actress']+"]"
-						+ "&nbsp;V:" + entry['existVideo'] + "&nbsp;C:" + entry['existCover'] + "&nbsp;S:" + entry['existSubtitles']);
 
 				div.append(studioDom);
 				div.append(opusDom);
@@ -53,87 +68,73 @@ $(document).ready(function(){
 				div.append(existVideoDom);
 				div.append(existCoverDom);
 				div.append(existSubtitlesDom);
-				div.append(addButton);
 				li.append(div);
-				$('#foundList').append(li);
+				$('#foundVideoList').append(li);
 			});
-			$('#foundList').append("<li><div>EOF : " + keyword + "</div>");
-			searchAndHighlight($("#query").val());
+
+			var historyRow = data['historyList'];
+ 			$.each(historyRow, function(entryIndex, entry) {
+				
+				var date = entry['date'];
+				var opus = entry['opus'];
+				var act  = entry['act'];
+				var desc = entry['desc'];
+				
+				var li  = $("<li>");
+				var div = $("<div>");
+
+				var dateDom 		  = $("<span>").addClass("history-item").html(date);
+				var opusDom 		  = $("<span>").addClass("history-item").attr("onclick", "fnViewVideoDetail('" + opus +"')").html(opus);
+				var actDom	 		  = $("<span>").addClass("history-item").html(act);
+				var descDom 		  = $("<span>").addClass("history-item").html(desc);
+
+				div.append(dateDom);
+				div.append(opusDom);
+				div.append(actDom);
+				div.append(descDom);
+				li.append(div);
+				$('#foundHistoryList').append(li);
+			}); 
+
+ 		    var rexp = eval('/' + keyword + "/gi");
+ 		    $("div > ol > li > div > span").each(function() {
+ 				$(this).html($(this).html().replace(rexp,"<em>"+keyword+"</em>"));
+ 			});
+
+ 		    $('#foundVideoList').slideDown();
+ 			$('#foundHistoryList').slideDown();
 			resizeDivHeight();
 		});
 	});
-	
-	$("#addVideoBtn").css("cursor", "pointer").bind("click", function() {
-		var html = "<p>["+$("#studio").val()+"]["+$("#opus").val().toUpperCase()+"]["+$("#title").val()+"]["+$("#actress").val()+"]["+$("#etcInfo").val()+"]</p>";
-		$("#newVideo").append(html);
-	});	
-	
-	resizeDivHeight();
 });
-function fnAddResult(dom) {
-	var html = dom.parentNode.parentNode.innerHTML;
-	var li = $("<li>").html(html);
-	$("#newVideo > ol").append(li);
-	$("div#newVideo.div-box ol li div span").last().css("display", "none");
-}
 function resizeDivHeight() {
 	var windowHeight = $(window).height();
-	var debugDivHeight = $("#debugDiv").outerHeight();
 	var queryDivHeight = $("#queryDiv").outerHeight();
-	var resultDivHeight = $("#resultDiv").outerHeight();
-	var calculatedDivHeight = windowHeight - debugDivHeight - queryDivHeight - resultDivHeight - 20 * 3; 
-	/* 
-	$("#debug").html("windowHeight=" + windowHeight + ", debugDivHeight=" + debugDivHeight 
-			+ ", queryDivHeight=" + queryDivHeight + ", resultDivHeight=" + resultDivHeight 
-			+ ", calculatedDivHeight=" + calculatedDivHeight 
-			+ " : " + (debugDivHeight + queryDivHeight + resultDivHeight) );
-	 */
-	$("#newVideo").outerHeight(calculatedDivHeight);	
+	var calculatedDivHeight = (windowHeight - queryDivHeight) / 2 - 20; 
+
+	$("#resultVideoDiv").outerHeight(calculatedDivHeight);	
+	$("#resultHistoryDiv").outerHeight(calculatedDivHeight);	
 }
-function searchAndHighlight(searchTerm) {
-    //$('.highlighted').removeClass('highlighted');
-
-    var rexp = eval('/' + searchTerm + "/gi");
-	//$("#resultDiv:contains('"+searchTerm+"')").html($('#resultDiv').html().replace(rexp,"<span class='highlighted'>"+searchTerm+"</span>"));
-	$("#newVideo:contains('"+searchTerm+"')").html($('#newVideo').html().replace(rexp,"<em>"+searchTerm+"</em>"));
-
-	$("#resultDiv span.label").each(function() {
-		$(this).html($(this).html().replace(rexp,"<em>"+searchTerm+"</em>"));
-	});
-	
-   	//if($('em:first').length) {
-       	//$(window).scrollTop($('em:first').position().top);
-   	//}
-   	$(window).scrollTop(0);
-   	
-   	$("#foundList").html($("#foundList").html().replace(/true/gi, '<em>true</em>'));
-}
-
 </script>
 </head>
 <body>
-<div id="debugDiv"></div>
+
 <div id="queryDiv" class="div-box">
-	<label for="query"><spring:message code="text.video"/> <spring:message code="text.search"/></label>
-	<input type="search" name="query" id="query" style="width:100px;" class="searchInput" placeHolder="Search"/>
-	<span class="label">new 
-	S<input type="text" name="studio"  id="studio"   style="width:80px;" class="searchInput"/>
-	O<input type="text" name="opus"    id="opus"     style="width:80px;" class="searchInput" readonly="readonly"/>
-	T<input type="text" name="title"   id="title"    style="width:100px;" class="searchInput"/>
-	A<input type="text" name="actress" id="actress"  style="width:100px;" class="searchInput"/>
-	E<input type="text" name="etcInfo" id="etcInfo"  style="width:100px;" class="searchInput"/>
-	<span id="addVideoBtn">Add</span>
-	</span>
-</div>
-
-<div id="resultDiv" class="div-box">
+	<label for="query"><s:message code="video.video"/> <s:message code="video.search"/></label>
+	<input type="search" name="query" id="query" style="width:200px;" class="searchInput" placeHolder="<s:message code="video.search"/>"/>
+	<span id="url"></span>
 	<span id="debug"></span>
-	<ol id="foundList"></ol>
 </div>
 
-<div id="newVideo" class="div-box">
-<ol>
-</ol>
+<div id="resultVideoDiv" class="div-box" style="overflow:auto">
+	<h4 class="item-header"><s:message code="video.video"/></h4>
+	<ol id="foundVideoList" class="items"></ol>
 </div>
+
+<div id="resultHistoryDiv" class="div-box" style="overflow:auto">
+	<h4 class="item-header"><s:message code="video.history"/></h4>
+	<ol id="foundHistoryList" class="items"></ol>
+</div>
+
 </body>
 </html>

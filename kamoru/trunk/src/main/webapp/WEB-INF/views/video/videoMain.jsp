@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><s:message code="title" text="video"/></title>
+<title><s:message code="video.title"/></title>
 <script type="text/javascript">
 var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
@@ -28,51 +28,51 @@ var listViewType = '${videoSearch.listViewType}';
 			<form:label path="opus"   >Opus   </form:label><form:input path="opus"    cssClass="schTxt"/>
 			<form:label path="title"  >Title  </form:label><form:input path="title"   cssClass="schTxt"/>
 			<form:label path="actress">Actress</form:label><form:input path="actress" cssClass="schTxt"/> --%>
-			<form:label path="searchText"><s:message code="msg.search" text="Search"/></form:label>
+			<form:label path="searchText"><s:message code="video.search"/></form:label>
 			<form:input path="searchText" cssClass="searchInput" placeHolder="Search"/>
 			
-			<span class="checkbox" id="checkbox-addCond" title="<s:message code="msg.title.addCondition" text="Add additional conditions"/>">
-				<s:message code="msg.addCondition" text="Add"/>
+			<span class="checkbox" id="checkbox-addCond" title="<s:message code="video.addCondition"/>">
+				<s:message code="video.addCondition-short"/>
 			</span><form:hidden path="addCond"/>
-			<span class="checkbox" id="checkbox-existVideo" title="<s:message code="msg.title.existVideo" text="exist Video?"/>">V</span>			    
+			<span class="checkbox" id="checkbox-existVideo" title="<s:message code="video.existVideo"/>">V</span>			    
 				<form:hidden path="existVideo"/>
-			<span class="checkbox" id="checkbox-existSubtitles" title="<s:message code="msg.title.existSubtitles" text="exist Subtitles?"/>">S</span>			
+			<span class="checkbox" id="checkbox-existSubtitles" title="<s:message code="video.existSubtitles"/>">S</span>			
 				<form:hidden path="existSubtitles"/>
 			<span class="separator">|</span>
-			<span class="checkbox" id="checkbox-neverPlay" title="<s:message code="msg.title.unseenVideo" text="unseen video?"/>">P</span>			
+			<span class="checkbox" id="checkbox-neverPlay" title="<s:message code="video.unseenVideo"/>">P</span>			
 				<form:hidden path="neverPlay"/>
-			<span class="checkbox" id="checkbox-zeroRank" title="<s:message code="msg.title.zeroRankVideo" text="0 Rank video?"/>">R</span>			
+			<span class="checkbox" id="checkbox-zeroRank" title="<s:message code="video.zeroRankVideo"/>">R</span>			
 				<form:hidden path="zeroRank"/>
-			<span class="checkbox" id="checkbox-oldVideo" title="<s:message code="msg.title.oldVideo" text="old video?"/>">O</span>
+			<span class="checkbox" id="checkbox-oldVideo" title="<s:message code="video.oldVideo"/>">O</span>
 				<form:hidden path="oldVideo"/>
 			<span class="separator">|</span>
-			<span class="button" onclick="fnSearch()"><s:message code="btn.search" text="Search video"/>
+			<span class="button" onclick="fnSearch()"><s:message code="video.search"/>
 				(<c:out value="${fn:length(videoList)}"/>)
 			</span>
 		</span>
 		<span class="group">
 			<c:forEach items="${views}" var="view">
-				<span class="radio" id="radio-listViewType-${view}" title="<s:message code="msg.title.showViewTypeList" text="show view type list" arguments="${view.desc}"/>">${view}</span> 
+				<span class="radio" id="radio-listViewType-${view}" title="<s:message code="video.showViewTypeList" arguments="${view.desc}"/>">${view}</span> 
 			</c:forEach><form:hidden path="listViewType"/>
 		</span>
 		<span class="group">
 			<c:forEach items="${sorts}" var="sort">
-				<span class="radio" id="radio-sortMethod-${sort}" title="<s:message code="msg.title.sortBy" text="sort by this" arguments="${sort.desc}"/>">${sort}</span>
+				<span class="radio" id="radio-sortMethod-${sort}" title="<s:message code="video.sortBy" arguments="${sort.desc}"/>">${sort}</span>
 			</c:forEach><form:hidden path="sortMethod"/>
 			<span class="separator">|</span>
-			<span class="checkbox" id="checkbox-sortReverse" title="<s:message code="msg.title.reverseSort" text="reverse sort"/>">R</span><form:hidden path="sortReverse"/>
+			<span class="checkbox" id="checkbox-sortReverse" title="<s:message code="video.reverseSort"/>">R</span><form:hidden path="sortReverse"/>
 		</span>
 		<span class="group">
-			<span class="checkbox" id="checkbox-viewStudioDiv"  title="<s:message code="msg.title.viewStudioPanel"  text="view Studio panel"/>"  onclick="fnStudioDivToggle()">S</span>	
+			<span class="checkbox" id="checkbox-viewStudioDiv"  title="<s:message code="video.viewStudioPanel"/>"  onclick="fnStudioDivToggle()">S</span>	
 				<form:hidden path="viewStudioDiv"/> 
-			<span class="checkbox" id="checkbox-viewActressDiv" title="<s:message code="msg.title.viewActressPanel" text="view Actress panel"/>" onclick="fnActressDivToggle()">A</span>	
+			<span class="checkbox" id="checkbox-viewActressDiv" title="<s:message code="video.viewActressPanel"/>" onclick="fnActressDivToggle()">A</span>	
 				<form:hidden path="viewActressDiv"/>
 		</span>
 		<span class="group">
-			<span class="button" onclick="fnRandomPlay()"><s:message code="btn.random" text="Random play"/></span>
+			<span class="button" onclick="fnRandomPlay()"><s:message code="video.random-play"/></span>
 		</span>
 		<span class="group">
-			<span class="button" onclick="fnBGImageView();"><s:message code="btn.bgimage" text="Show bg-image"/></span>
+			<span class="button" onclick="fnBGImageView();"><s:message code="video.bgimage"/></span>
 		</span>
 		<span id="debug" style="display:none"></span>
 	</form:form>
@@ -272,7 +272,7 @@ var listViewType = '${videoSearch.listViewType}';
 		<c:forEach items="${videoList}" var="video" varStatus="status">
 			<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">    
 				<dl class="video-slide-bg" ><%-- style="background-image:url('<c:url value="/video/${video.opus}/cover" />');" --%>
-					<dt>
+					<dt style="height:40px;padding-top:3px;">
 						<span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
 						<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')">
 						<span class="label-large">${video.opus}</span>

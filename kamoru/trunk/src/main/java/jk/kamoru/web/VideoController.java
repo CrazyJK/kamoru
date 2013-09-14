@@ -190,6 +190,8 @@ public class VideoController {
 	public String search(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
 		logger.trace("query={}", query);
 		model.addAttribute("videoList", videoService.findVideoList(query));
+		model.addAttribute("historyList", videoService.findHistory(query));
+
         return "video/search";		
 	}
 

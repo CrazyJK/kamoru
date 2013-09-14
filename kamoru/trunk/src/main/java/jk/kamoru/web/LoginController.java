@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
 
 	@RequestMapping(value="/login") 
-	public String loginForm(@RequestParam(value="login_error", required=false, defaultValue="false") boolean login_error, 
+	public String loginForm(
+			@RequestParam(value="login_error", required=false, defaultValue="false") boolean login_error,
 			HttpSession session, Model model, Locale locale) {
 		if (login_error) {
 			AuthenticationException exception = (AuthenticationException)session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-			model.addAttribute("msg", exception.getMessage());
+			model.addAttribute("login_msg", exception.getMessage());
 		}
 		model.addAttribute("locale", locale);
 		return "login/loginForm";
 	}
 
+	@RequestMapping("/accessDenied")
+	public String accessDenied() {
+		return "login/accessDenied";
+	}
 }

@@ -46,6 +46,7 @@ body#deco_body {
 	width:100%;
 }
 #deco_footer {
+	position:absolute;
 	padding-top:10px; 
 	font: 10pt arial; 
 	text-align:center;

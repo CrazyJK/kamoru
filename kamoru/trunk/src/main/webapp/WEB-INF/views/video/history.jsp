@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix='form'   uri='http://www.springframework.org/tags/form'%>
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="text.history"/> <spring:message code="text.search"/></title>
+<title><s:message code="video.history"/> <s:message code="video.search"/></title>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(window).bind("resize", resizeDivHeight);
@@ -78,8 +78,8 @@ function searchAndHighlight(searchTerm) {
 <body>
 <div id="debugDiv"></div>
 <div id="queryDiv" class="div-box">
-	<label for="query"><spring:message code="text.history"/> <spring:message code="text.search"/></label>
-	<input type="search" name="query" id="query" style="width:200px;" class="searchInput" placeHolder="Search"/>
+	<label for="query"><s:message code="video.history"/> <s:message code="video.search"/></label>
+	<input type="search" name="query" id="query" style="width:200px;" class="searchInput" placeHolder="<s:message code="video.search"/>"/>
 	<span id="debug"></span>
 </div>
 

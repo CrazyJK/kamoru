@@ -288,11 +288,11 @@ li,
 }
 .video-slide {
 	width:800px; 
-	height:540px; 
+	height:560px; 
 	display: inline-block;
 }
 .video-slide-bg {
-	height:540px; 
+	height:555px; 
 	background-repeat:no-repeat; 
 	background-position:right center; 
 	background-size:contain;
@@ -314,6 +314,7 @@ li,
 .video-table td {
 	font-size: 13px;
 }
+.video-table th.nowrap,
 .video-table td.nowrap {
 	white-space:nowrap;
 }

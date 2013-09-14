@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Detail view [${video.opus}] ${video.title}</title>
+<title>[${video.opus}] ${video.title}</title>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("body").css("background-image","url('<c:url value="/video/${video.opus}/cover" />')");

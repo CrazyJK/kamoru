@@ -29,10 +29,15 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
+	@RequestMapping("/")
+	public String root() {
+		return "redirect:/home";
+	}
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping("/")
+	@RequestMapping("/home")
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 
