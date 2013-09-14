@@ -5,7 +5,6 @@
 	<security:authorize url="/video**">
 	<li><a href="<c:url value="/video"/>">Video Main</a>
 	<li><a href="<c:url value="/video/search"/>">Video search</a>
-	<li><a href="<c:url value="/video/history"/>">Video history</a>
 	<li><a href="<c:url value="/video/list"/>">Video list</a>
 	<li><a href="<c:url value="/video/actress"/>">Actress list</a>
 	<li><a href="<c:url value="/video/studio"/>">Studio List</a>
