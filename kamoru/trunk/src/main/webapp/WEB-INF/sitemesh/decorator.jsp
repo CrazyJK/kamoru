@@ -37,6 +37,7 @@ $(document).ready(function(){
 	$(window).bind("resize", resizeSectionHeight);
 	resizeSectionHeight();
 	showNav();
+	$("body").css("background-image", "url('<c:url value="/image/random"/>')");
 });
 function resizeSectionHeight() {
 	var windowHeight = $(window).height();

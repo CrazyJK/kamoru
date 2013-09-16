@@ -10,4 +10,6 @@ public interface ImageService {
 
 	void reload();
 
+	Image getImageByRandom();
+
 }

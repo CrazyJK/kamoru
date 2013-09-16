@@ -61,6 +61,13 @@ public class ImageController {
 		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
 	}
 	
+	@RequestMapping(value="/random")
+	public HttpEntity<byte[]> viewImageByRandom() {
+		byte[] imageBytes = imageService.getImageByRandom().getImageBytes(PictureType.MASTER);
+		
+		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
+	}
+	
 	private HttpEntity<byte[]> getImageEntity(byte[] imageBytes, MediaType type) {
 		long today = new Date().getTime();
 

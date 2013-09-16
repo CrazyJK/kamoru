@@ -27,4 +27,9 @@ public class ImageServiceImpl implements ImageService {
 		imageSource.reload();
 	}
 
+	@Override
+	public Image getImageByRandom() {
+		 return imageSource.getImage((int)Math.random() * imageSource.getImageSourceSize());
+	}
+
 }
