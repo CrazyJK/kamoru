@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,10 @@ import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.dao.VideoDao;
 import jk.kamoru.app.video.domain.Action;
 import jk.kamoru.app.video.domain.Actress;
+import jk.kamoru.app.video.domain.ActressSort;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.Studio;
+import jk.kamoru.app.video.domain.StudioSort;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.domain.VideoSearch;
 import jk.kamoru.app.video.util.VideoUtils;
@@ -133,6 +137,19 @@ public class VideoServiceImpl implements VideoService {
 				}
 			}
 			logger.debug("q={} foundLength={}", query, foundMapList.size());
+			Collections.sort(foundMapList, new Comparator<Map<String, String>>(){
+
+				@Override
+				public int compare(Map<String, String> o1, Map<String, String> o2) {
+					String thisStr = o1.get("date");
+					String compStr = o2.get("date");
+
+					String[] s = {thisStr, compStr};
+					Arrays.sort(s);
+					return s[0].equals(thisStr) ? 1 : -1;
+				}
+				
+			});
 			return foundMapList;
 		} 
 		catch (IOException e) {
@@ -166,6 +183,17 @@ public class VideoServiceImpl implements VideoService {
 			} 
 		}
 		logger.debug("q={} foundLength={}", query, foundMapList.size());
+		Collections.sort(foundMapList, new Comparator<Map<String, String>>() {
+
+			@Override
+			public int compare(Map<String, String> o1, Map<String, String> o2) {
+				String thisStr = o1.get("opus");
+				String compStr = o2.get("opus");
+
+				String[] s = {thisStr, compStr};
+				Arrays.sort(s);
+				return s[0].equals(thisStr) ? 1 : -1;
+			}});
 		return foundMapList;
 	}
 
@@ -309,7 +337,7 @@ public class VideoServiceImpl implements VideoService {
 				files = video.getSubtitlesFileListPath();
 				break;
 			case DELETE :
-				files = video.toString();
+				files = VideoUtils.toFileListToSimpleString(video.getFileAll());
 				break;
 			default:
 				throw new IllegalStateException("Undefined Action : " + action.toString());
@@ -352,7 +380,10 @@ public class VideoServiceImpl implements VideoService {
 				&& (search.isAddCond()   
 						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList())
 							&& (search.isExistSubtitles() ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList())) 
-						: true)) 
+						: true)
+				&& (search.getSelectedStudio() == null ? true : search.getSelectedStudio().contains(video.getStudio().getName()))
+				&& (search.getSelectedActress() == null ? true : VideoUtils.containsActress(video, search.getSelectedActress()))
+				) 
 			{
 				video.setSortMethod(search.getSortMethod());
 				foundList.add(video);
@@ -471,6 +502,69 @@ public class VideoServiceImpl implements VideoService {
 	public void reload() {
 		logger.trace("reload");
 		videoDao.reload();
+	}
+
+	@Override
+	public void saveStudioInfo(String studio, Map<String, String> params) {
+		logger.trace("name={}, params={}", studio, params);
+		VideoUtils.saveFileFromMap(new File(mainBasePath, studio + VideoCore.EXT_STUDIO), params);
+		videoDao.getStudio(studio).reloadInfo();
+	}
+	
+	@Override
+	public List<Actress> getActressList(final ActressSort sort) {
+		logger.trace("sort={}", sort);
+		List<Actress> list = videoDao.getActressList();
+		
+		Collections.sort(list, new Comparator<Actress>(){
+
+			@Override
+			public int compare(Actress o1, Actress o2) {
+				switch (sort) {
+				case NAME:
+					return StringUtils.compateTo(o1.getName(), o2.getName());
+				case BIRTH:
+					return StringUtils.compateTo(o2.getBirth(), o1.getBirth());
+				case BODY:
+					return StringUtils.compateTo(o2.getBodySize(), o1.getBodySize());
+				case HEIGHT:
+					return StringUtils.compateTo(o2.getHeight(), o1.getHeight());
+				case DEBUT:
+					return StringUtils.compateTo(o2.getDebut(), o1.getDebut());
+				case VIDEO:
+					return o2.getVideoList().size() - o1.getVideoList().size();
+				default:
+					return StringUtils.compateTo(o1.getName(), o2.getName());
+				}
+			}
+		});
+		return list;
+	}
+
+	@Override
+	public List<Studio> getStudioList(final StudioSort sort) {
+		logger.trace("sort={}", sort);
+		List<Studio> list = videoDao.getStudioList();
+		
+		Collections.sort(list, new Comparator<Studio>(){
+
+			@Override
+			public int compare(Studio o1, Studio o2) {
+				switch (sort) {
+				case NAME:
+					return StringUtils.compateTo(o1.getName(), o2.getName());
+				case HOMEPAGE:
+					return StringUtils.compateTo(o2.getHomepage(), o1.getHomepage());
+				case COMPANY:
+					return StringUtils.compateTo(o2.getCompanyName(), o1.getCompanyName());
+				case VIDEO:
+					return o2.getVideoList().size() - o1.getVideoList().size();
+				default:
+					return StringUtils.compateTo(o1.getName(), o2.getName());
+				}
+			}
+		});
+		return list;
 	}
 
 }

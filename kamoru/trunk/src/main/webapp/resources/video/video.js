@@ -274,3 +274,11 @@ function searchContent(keyword) {
 		}
 	});
 }
+
+function fnUnchecked(obj) {
+	$(obj).parent().children().each(function() {
+		if ($(this).is("label")) {
+			$(this).children(':checked').parent().click();
+		}
+	});
+}

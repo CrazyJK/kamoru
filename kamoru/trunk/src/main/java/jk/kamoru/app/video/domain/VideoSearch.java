@@ -1,7 +1,9 @@
 package jk.kamoru.app.video.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,32 +19,53 @@ public class VideoSearch implements Serializable {
 	boolean existVideo;
 	View listViewType = View.V;
 	boolean neverPlay = false;
-	boolean zeroRank = true;
 	boolean oldVideo = false;
 	String opus;
 	String searchText;
+	List<String> selectedActress;
+	List<String> selectedStudio;
 	Sort sortMethod = Sort.M;
 	boolean sortReverse = true;
+
 	String studio;
 
 	String title;
-
 	boolean viewActressDiv = false;
-	boolean viewStudioDiv = false;
 
+	boolean viewStudioDiv = false;
+	boolean zeroRank = true;
+	
+	
+	
 	public String getActress() {
 		return actress;
 	}
 	public View getListViewType() {
 		return listViewType;
 	}
-
 	public String getOpus() {
 		return opus;
 	}
-
+	@SuppressWarnings("rawtypes")
+	String getParam(HttpServletRequest request) {
+		StringBuffer sb = new StringBuffer();
+		Enumeration enu = request.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
+			String value = request.getParameter(name);
+			sb.append("&").append(name).append("=").append(value);
+		}
+		return sb.toString();
+	}
 	public String getSearchText() {
 		return searchText;
+	}
+	public List<String> getSelectedActress() {
+		return selectedActress;
+	}
+
+	public List<String> getSelectedStudio() {
+		return selectedStudio;
 	}
 
 	public Sort getSortMethod() {
@@ -71,6 +94,10 @@ public class VideoSearch implements Serializable {
 
 	public boolean isNeverPlay() {
 		return neverPlay;
+	}
+
+	public boolean isOldVideo() {
+		return oldVideo;
 	}
 
 	public boolean isSortReverse() {
@@ -113,12 +140,24 @@ public class VideoSearch implements Serializable {
 		this.neverPlay = neverPlay;
 	}
 
+	public void setOldVideo(boolean oldVideo) {
+		this.oldVideo = oldVideo;
+	}
+
 	public void setOpus(String opus) {
 		this.opus = opus;
 	}
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
+	}
+
+	public void setSelectedActress(List<String> selectedActress) {
+		this.selectedActress = selectedActress;
+	}
+
+	public void setSelectedStudio(List<String> selectedStudio) {
+		this.selectedStudio = selectedStudio;
 	}
 
 	public void setSortMethod(Sort sortMethod) {
@@ -140,41 +179,22 @@ public class VideoSearch implements Serializable {
 	public void setViewActressDiv(boolean viewActressDiv) {
 		this.viewActressDiv = viewActressDiv;
 	}
-
+	
 	public void setViewStudioDiv(boolean viewStudioDiv) {
 		this.viewStudioDiv = viewStudioDiv;
 	}
-
+	
 	public void setZeroRank(boolean zeroRank) {
 		this.zeroRank = zeroRank;
-	}
-
-	public boolean isOldVideo() {
-		return oldVideo;
-	}
-	
-	public void setOldVideo(boolean oldVideo) {
-		this.oldVideo = oldVideo;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	String getParam(HttpServletRequest request) {
-		StringBuffer sb = new StringBuffer();
-		Enumeration enu = request.getParameterNames();
-		while (enu.hasMoreElements()) {
-			String name = (String) enu.nextElement();
-			String value = request.getParameter(name);
-			sb.append("&").append(name).append("=").append(value);
-		}
-		return sb.toString();
 	}
 	
 	@Override
 	public String toString() {
 		return String
-				.format("VideoSearch [actress=%s, addCond=%s, existSubtitles=%s, existVideo=%s, listViewType=%s, neverPlay=%s, opus=%s, searchText=%s, sortMethod=%s, sortReverse=%s, studio=%s, title=%s, viewActressDiv=%s, viewStudioDiv=%s, zeroRank=%s]",
+				.format("VideoSearch [actress=%s, addCond=%s, existSubtitles=%s, existVideo=%s, listViewType=%s, neverPlay=%s, oldVideo=%s, opus=%s, searchText=%s, selectedActress=%s, selectedStudio=%s, sortMethod=%s, sortReverse=%s, studio=%s, title=%s, viewActressDiv=%s, viewStudioDiv=%s, zeroRank=%s]",
 						actress, addCond, existSubtitles, existVideo,
-						listViewType, neverPlay, opus, searchText, sortMethod,
+						listViewType, neverPlay, oldVideo, opus, searchText,
+						selectedActress, selectedStudio, sortMethod,
 						sortReverse, studio, title, viewActressDiv,
 						viewStudioDiv, zeroRank);
 	}

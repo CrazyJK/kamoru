@@ -17,7 +17,7 @@ import jk.kamoru.app.video.util.VideoUtils;
 
 @Component
 @Scope("prototype")
-public class Actress implements Serializable, Comparable<Object> {
+public class Actress implements Serializable, Comparable<Actress> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
@@ -51,8 +51,7 @@ public class Actress implements Serializable, Comparable<Object> {
 						name, birth, bodySize, debut, height, localName);
 	}
 	@Override
-	public int compareTo(Object o) {
-		Actress comp = (Actress)o;
+	public int compareTo(Actress comp) {
 		String thisStr = this.getName();
 		String compStr = comp.getName();
 		String[] s = {thisStr, compStr};

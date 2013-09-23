@@ -21,8 +21,8 @@ var listViewType = '${videoSearch.listViewType}';
 </head>
 <body>
 <div id="headerDiv">
+	<form:form method="POST" commandName="videoSearch">
 	<div id="searchDiv" class="div-box">
-	<form:form method="GET" commandName="videoSearch">
 		<span class="group">
 			<%-- <form:label path="studio" >Studio </form:label><form:input path="studio"  cssClass="schTxt"/>
 			<form:label path="opus"   >Opus   </form:label><form:input path="opus"    cssClass="schTxt"/>
@@ -63,7 +63,7 @@ var listViewType = '${videoSearch.listViewType}';
 			<span class="checkbox" id="checkbox-sortReverse" title="<s:message code="video.reverseSort"/>">R</span><form:hidden path="sortReverse"/>
 		</span>
 		<span class="group">
-			<span class="checkbox" id="checkbox-viewStudioDiv"  title="<s:message code="video.viewStudioPanel"/>"  onclick="fnStudioDivToggle()">S</span>	
+			<span class="checkbox" id="checkbox-viewStudioDiv"  title="<s:message code="video.viewStudioPanel"/>"  onclick="fnStudioDivToggle()">S</span>
 				<form:hidden path="viewStudioDiv"/> 
 			<span class="checkbox" id="checkbox-viewActressDiv" title="<s:message code="video.viewActressPanel"/>" onclick="fnActressDivToggle()">A</span>	
 				<form:hidden path="viewActressDiv"/>
@@ -75,19 +75,30 @@ var listViewType = '${videoSearch.listViewType}';
 			<span class="button" onclick="fnBGImageView();"><s:message code="video.bgimage"/></span>
 		</span>
 		<span id="debug" style="display:none"></span>
+	</div>
+	<div id="studioDiv" class="div-box">
+		<span onclick="fnUnchecked(this)">[${fn:length(studioList)}]</span>
+		<c:forEach items="${studioList}" var="studio"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
+		<label 
+			class="item ${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
+			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">
+			<form:checkbox path="selectedStudio" value="${studio.name}" cssClass="item-checkbox"/>
+			<span>${studio.name}(${countByStudio})</span>
+		</label>
+		</c:forEach>
+	</div>
+	<div id="actressDiv" class="div-box">
+		<span onclick="fnUnchecked(this)">[${fn:length(actressList)}]</span>
+		<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
+		<label
+			class="item ${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" 
+			title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut}">
+			<form:checkbox path="selectedActress" value="${actress.name}" cssClass="item-checkbox"/>
+			<span>${actress.name}(${countByActress})</span>
+		</label>
+		</c:forEach>
+	</div>
 	</form:form>
-	</div>
-	<div id="studioDiv" class="div-box">[${fn:length(studioList)}]
-	<c:forEach var="studio" items="${studioList}"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
-		<span onclick="fnSearch('${studio.name}')" class="${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
-			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">${studio.name}(${countByStudio})</span>
-	</c:forEach>
-	</div>
-	<div id="actressDiv" class="div-box">[${fn:length(actressList)}]
-	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<span onclick="fnSearch('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" >${actress.name}(${countByActress})</span>
-	</c:forEach>
-	</div>
 </div>
 
 <div id="contentDiv" class="div-box" ><!-- onclick="fnBGImageView();" -->

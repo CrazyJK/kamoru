@@ -33,7 +33,8 @@ function resizeDivHeight() {
 <table class="video-table" style="background-color:lightgray">
 <c:forEach items="${videoList}" var="video" varStatus="status">
 	<tr><td class="nowrap">${status.count}</td>
-		<td class="nowrap" onclick="fnViewVideoDetail('${video.opus}')"><span class="label">${video.opus}</span>${video.title}</td>
+		<td class="nowrap" onclick="fnViewVideoDetail('${video.opus}')"><span class="label">${video.opus}</span></td>
+		<td class="nowrap">${video.title}</td>
 		<td class="nowrap"><span class="label" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></td>
 		<td class="nowrap">
 			<c:forEach items="${video.actressList}" var="actress">

@@ -135,10 +135,11 @@ public class Video implements Comparable<Object>, Serializable {
 			break;
 		
 		}
-		String[] s = {thisStr, compStr};
-		logger.trace("{} : {}", this.opus, ArrayUtils.toString(s));
-		Arrays.sort(s);
-		return s[0].equals(thisStr) ? -1 : 1;
+//		String[] s = {thisStr, compStr};
+//		logger.trace("{} : {}", this.opus, ArrayUtils.toString(s));
+//		Arrays.sort(s);
+//		return s[0].equals(thisStr) ? -1 : 1;
+		return StringUtils.compateTo(thisStr, compStr);
 	}
 	
 	/**

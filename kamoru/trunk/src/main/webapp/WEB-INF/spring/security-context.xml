@@ -13,6 +13,7 @@
 		<intercept-url pattern="/jsp/**" 		access="permitAll" />
 		<intercept-url pattern="/login" 		access="permitAll" />
 		<intercept-url pattern="/hitMessageCodeList" 		access="permitAll" />
+		<intercept-url pattern="/image/random" 	access="permitAll" />
 		<intercept-url pattern="/video**" 		access="hasRole('ROLE_CRAZY')" />
 		<intercept-url pattern="/image**" 		access="hasRole('ROLE_CRAZY')" />
 		<intercept-url pattern="/**" 			access="hasRole('ROLE_USER')" />

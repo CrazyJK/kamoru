@@ -23,7 +23,7 @@ try {
 <style type="text/css">
 body {
 	/* background-image:url('<c:url value="/resources/img/orgrimmar_horde_territory.jpg"/>'); */
-	background-image:url('<c:url value="http://fc03.deviantart.net/fs71/i/2013/249/5/1/freckly_by_tanyashatseva-d6l9s2t.jpg"/>');
+	/* background-image:url('<c:url value="http://fc03.deviantart.net/fs71/i/2013/249/5/1/freckly_by_tanyashatseva-d6l9s2t.jpg"/>'); */
 	background-repeat: repeat;
 	background-position: center center;
 }
@@ -37,7 +37,8 @@ $(document).ready(function(){
 	$(window).bind("resize", resizeSectionHeight);
 	resizeSectionHeight();
 	showNav();
-	$("body").css("background-image", "url('<c:url value="/image/random"/>')");
+	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
+	$("body").css("background-image", "url(" + bgImgUrl + ")");
 });
 function resizeSectionHeight() {
 	var windowHeight = $(window).height();

@@ -7,6 +7,9 @@ $(document).ready(function(){
 	// Add listener : if window resize, contentDiv height resize.
 	$(window).bind("resize", resizeContentDivHeight);
 	
+//	$("input[type=checkbox]").css("display", "none");
+//	$("input[type=radio]").css("display", "none");
+	
 	// Add listener : implement checkbox element
 	$('span[id^="checkbox"]')
 		.bind("click", function(){

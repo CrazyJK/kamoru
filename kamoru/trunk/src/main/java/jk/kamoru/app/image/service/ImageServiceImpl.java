@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public Image getImageByRandom() {
-		 return imageSource.getImage((int)Math.random() * imageSource.getImageSourceSize());
+		return imageSource.getImage((int)(Math.random() * imageSource.getImageSourceSize()));
 	}
 
 }

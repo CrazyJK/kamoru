@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import jk.kamoru.KamoruException;
 import jk.kamoru.app.image.service.ImageService;
 import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.domain.ActressSort;
 import jk.kamoru.app.video.domain.Sort;
+import jk.kamoru.app.video.domain.StudioSort;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.domain.VideoSearch;
 import jk.kamoru.app.video.domain.View;
@@ -57,9 +59,11 @@ public class VideoController {
 	}
 	
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
-	public String actress(Model model) {
+	public String actress(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") ActressSort sort) {
 		logger.trace("actress");
-		model.addAttribute(videoService.getActressList());
+		model.addAttribute(videoService.getActressList(sort));
+		model.addAttribute("sorts", ActressSort.values());
+		model.addAttribute("sort", sort);
 		return "video/actressList";
 	}
 
@@ -196,9 +200,11 @@ public class VideoController {
 	}
 
 	@RequestMapping(value="/studio", method=RequestMethod.GET)
-	public String studio(Model model) {
+	public String studio(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
 		logger.trace("studio");
-		model.addAttribute(videoService.getStudioList());
+		model.addAttribute(videoService.getStudioList(sort));
+		model.addAttribute("sorts", StudioSort.values());
+		model.addAttribute("sort", sort);
 		return "video/studioList";
 	}
 	@RequestMapping(value="/studio/{studio}", method=RequestMethod.GET)
@@ -207,8 +213,15 @@ public class VideoController {
 		model.addAttribute(videoService.getStudio(studio));
 		return "video/studioDetail";
 	}
-	
-	@RequestMapping(method=RequestMethod.GET)
+
+	@RequestMapping(value="/studio/{studio}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void putStudioInfo(@PathVariable String studio, @RequestParam Map<String, String> params) {
+		logger.trace("{}", params);
+		videoService.saveStudioInfo(studio, params);
+	}
+
+	@RequestMapping
 	public String video(Model model, @ModelAttribute VideoSearch videoSearch) {
 		logger.trace("{}", videoSearch);
 		List<Video> videoList =  videoService.searchVideo(videoSearch);
@@ -219,6 +232,8 @@ public class VideoController {
 		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
 		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
 		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
+//		model.addAttribute("actressList", videoService.getActressList());
+//		model.addAttribute("studioList", videoService.getStudioList());
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
 		return "video/videoMain";
 	}

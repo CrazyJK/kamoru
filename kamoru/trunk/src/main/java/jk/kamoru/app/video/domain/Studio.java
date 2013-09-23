@@ -1,14 +1,20 @@
 package jk.kamoru.app.video.domain;
 
+import java.io.File;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.util.VideoUtils;
 
 @Component
 @Scope("prototype")
@@ -17,10 +23,14 @@ public class Studio implements Serializable, Comparable<Object>{
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
 	private String name;
-	private String homepage;
+	private URL homepage;
 	private String companyName;
 	private List<Video> videoList;
 	private List<Actress> actressList;
+
+	private boolean loaded;
+	@Value("#{videoProp['mainBasePath']}") 			
+	private String mainBasePath;
 	
 	public Studio() {
 		videoList = new ArrayList<Video>();
@@ -58,10 +68,12 @@ public class Studio implements Serializable, Comparable<Object>{
 	public String getName() {
 		return name;
 	}
-	public String getHomepage() {
+	public URL getHomepage() {
+		loadInfo();
 		return homepage;
 	}
 	public String getCompanyName() {
+		loadInfo();
 		return companyName;
 	}
 	public List<Actress> getActressList() {
@@ -74,7 +86,7 @@ public class Studio implements Serializable, Comparable<Object>{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setHomepage(String homepage) {
+	public void setHomepage(URL homepage) {
 		this.homepage = homepage;
 	}
 	public void setCompanyName(String companyName) {
@@ -95,6 +107,22 @@ public class Studio implements Serializable, Comparable<Object>{
 		String[] s = {thisStr, compStr};
 		Arrays.sort(s);
 		return s[0].equals(thisStr) ? -1 : 1;
+	}
+
+	private void loadInfo() {
+		if (!loaded) {
+			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + VideoCore.EXT_STUDIO));
+			try {
+				this.homepage = new URL(info.get("HOMEPAGE"));
+			} catch (MalformedURLException e) {
+				// do nothing!
+			}
+			this.companyName     = info.get("COMPANYNAME");
+			loaded = true;
+		}
+	}
+	public void reloadInfo() {
+		loaded = false;
 	}
 	
 }

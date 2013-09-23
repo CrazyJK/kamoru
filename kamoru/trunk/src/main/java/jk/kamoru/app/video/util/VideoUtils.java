@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.util.ArrayUtils;
 import jk.kamoru.util.FileUtils;
@@ -429,6 +430,22 @@ public class VideoUtils {
 	}
 
 	/**
+	 * file list를 컴마(,)로 구분한 string으로 반환
+	 * @param list
+	 * @return
+	 */
+	public static String toFileListToSimpleString(List<File> list) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0, e=list.size(); i<e; i++) {
+			File file = list.get(i);
+			sb.append(file.getAbsolutePath());
+			if(i < e-1)
+				sb.append(", ");
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * 문자열 저장
 	 * @param file
 	 * @param data
@@ -495,13 +512,27 @@ public class VideoUtils {
 	public static void saveFileFromMap(File file, Map<String, String> params) {
 		StringBuffer sb = new StringBuffer();
 		for (Map.Entry<String, String> entry : params.entrySet()) {
-			sb.append(String.format("%s=%s%n", entry.getKey().toUpperCase(), entry.getValue()));
+			sb.append(String.format("%s=%s%n", entry.getKey().toUpperCase().trim(), entry.getValue().trim()));
 		}
 		try {
 			FileUtils.writeStringToFile(file, sb.toString(), VideoCore.FILE_ENCODING);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
+	}
+	
+	/**
+	 * 파라미터로 선택된 이름에 비디오의 배우 이름이 포함되어 있는지
+	 * @param actressNameList
+	 * @param actressList
+	 * @return
+	 */
+	public static boolean containsActress(Video video, List<String> actressNameList) {
+		boolean ret = false;
+		for (String actress : actressNameList) {
+			ret = ret || containsActress(video, actress);
+		}
+		return ret;
 	}
 	
 }

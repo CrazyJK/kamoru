@@ -64,8 +64,13 @@ public class ImageController {
 	@RequestMapping(value="/random")
 	public HttpEntity<byte[]> viewImageByRandom() {
 		byte[] imageBytes = imageService.getImageByRandom().getImageBytes(PictureType.MASTER);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setCacheControl("max-age=1");
+		headers.setContentLength(imageBytes.length);
+		headers.setContentType(MediaType.IMAGE_JPEG);
 		
-		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
+		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}
 	
 	private HttpEntity<byte[]> getImageEntity(byte[] imageBytes, MediaType type) {

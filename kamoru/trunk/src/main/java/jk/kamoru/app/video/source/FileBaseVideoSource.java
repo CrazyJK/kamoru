@@ -112,7 +112,7 @@ public class FileBaseVideoSource implements VideoSource {
 			//연속 스페이스 제거
 			name = name.replaceAll("\\s{2,}", " ");
 			
-			if("history.log".equals(filename) || filename.endsWith(VideoCore.EXT_ACTRESS))
+			if("history.log".equals(filename) || filename.endsWith(VideoCore.EXT_ACTRESS) || filename.endsWith(VideoCore.EXT_STUDIO))
 				continue;
 			
 			//   1      2     3       4       5     6

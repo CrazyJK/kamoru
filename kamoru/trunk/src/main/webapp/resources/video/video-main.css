@@ -184,20 +184,49 @@ li,
 	padding:0px; 
 	text-align:center;
 }
+.studioInfo,
 .actressInfo {
 	font: 12px;
-	width:120px; 
 	border:0; 
 	color: navy; 
 	margin:0px; 
 	padding:0px; 
 }
-.item10,
-.item5,
-.item1 {
+.actressInfo {
+	width:120px; 
+}
+.studioInfo {
+	width:220px; 
+}
+
+.item-checkbox {
+	border:0;
+	margin:0;	
+	height:9px;
+	display:none;
+}
+:checked ~ span {
+   	background-color:rgba(255,165,0,0.75);
+	border: 0px solid orange;
+	border-radius: 5px;
+}
+:checked + label {
+   	background-color:rgba(123,0,123,0.5);
+	border: 0px solid orange;
+	border-radius: 5px;
+}
+
+.item {
 	color:blue; 
-	margin-left:10px;
-	display:inline-block; 
+	margin-left:5px;
+	display:inline-block;
+	border-radius: 5px;
+}
+.item:hover {
+	background-color:rgba(0, 127, 0, .5);
+}
+.sort-item {
+	font-size:.9em;
 }
 .item10 {
 	font-size:18px;

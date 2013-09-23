@@ -178,7 +178,8 @@ function resizeDivHeight() {
 	<h3><s:message code="video.total"/> <s:message code="video.actress"/> : ${fn:length(actressList)}</h3>
 	<article id="actressDiv" class="div-box">
 	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<span onclick="fnViewActressDetail('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" >${actress.name}(${countByActress})</span>
+		<span onclick="fnViewActressDetail('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" 
+			title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut}">${actress.name}(${countByActress})</span>
 	</c:forEach>
 	</article>
 </section>

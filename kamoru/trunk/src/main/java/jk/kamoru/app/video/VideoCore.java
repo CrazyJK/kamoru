@@ -17,4 +17,6 @@ public class VideoCore {
 
 	public static final String EXT_ACTRESS = ".actress";
 
+	public static final String EXT_STUDIO = ".studio";
+
 }
