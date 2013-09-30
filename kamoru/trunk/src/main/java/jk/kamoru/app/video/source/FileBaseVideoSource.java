@@ -33,6 +33,16 @@ public class FileBaseVideoSource implements VideoSource {
 	private final String unclassifiedOpus = UNKNOWN;
 	private final String unclassifiedActress = "Amateur";
 
+	// data source
+	private Map<String, Video> videoMap;
+	private Map<String, Studio> studioMap;
+	private Map<String, Actress> actressMap;
+	
+	// Domain provider
+	@Inject Provider<Video> videoProvider;
+	@Inject Provider<Studio> studioProvider;
+	@Inject Provider<Actress> actressProvider;
+
 	// property
 	private String[] paths;
 	private String video_extensions;
@@ -41,16 +51,7 @@ public class FileBaseVideoSource implements VideoSource {
 	private boolean webp_mode;
 	private String webp_exec;
 
-	// data source
-	private Map<String, Video> videoMap;
-	private Map<String, Studio> studioMap;
-	private Map<String, Actress> actressMap;
-	
-	@Inject Provider<Video> videoProvider;
-	@Inject Provider<Studio> studioProvider;
-	@Inject Provider<Actress> actressProvider;
-
-	// setter
+	// property setter
 	public void setPaths(String[] paths) {
 		Assert.notNull(paths, "base paths must not be null");
 		this.paths = paths;
@@ -71,6 +72,8 @@ public class FileBaseVideoSource implements VideoSource {
 		this.webp_mode = webp_mode;
 	}
 	public void setWebp_exec(String webp_exec) {
+		if (webp_mode)
+			Assert.notNull(webp_exec, "Webp mode is true. webp_exec must not be null");
 		this.webp_exec = webp_exec;
 	}
 	
@@ -87,30 +90,37 @@ public class FileBaseVideoSource implements VideoSource {
 	 */
 	private void load() {
 		logger.trace("load");
-		
+
+		// 1. data source initialize
+		videoMap = new HashMap<String, Video>();
+		studioMap = new HashMap<String, Studio>();
+		actressMap = new HashMap<String, Actress>();
+
+		// 2. file find
 		Collection<File> files = new ArrayList<File>();
-		for(String path : paths) {
+		for (String path : paths) {
 			File directory = new File(path);
+			logger.debug("directory scanning : {}", directory);
 			if(directory.isDirectory()) {
-				logger.debug("directory scanning : {}", directory);
 				Collection<File> found = FileUtils.listFiles(directory, null, true);
+				logger.debug("\tfound file size is {}", found.size());
 				files.addAll(found);
+			}
+			else {
+				logger.debug("\tIt is not directory. Pass!!!");
 			}
 		}
 		logger.debug("total found file size : {}", files.size());
 
-		videoMap = new HashMap<String, Video>();
-		studioMap = new HashMap<String, Studio>();
-		actressMap = new HashMap<String, Actress>();
-		
+		// 3. domain create & data source   
 		int unclassifiedNo = 1;
-		for(File file : files) {
+		for (File file : files) {
 			String filename = file.getName();
-			String name = VideoUtils.getFileName(file);
-			String ext  = VideoUtils.getFileExtension(file).toLowerCase();
+			String name = FileUtils.getNameExceptExtension(file);
+			String ext  = FileUtils.getExtension(file).toLowerCase();
 			
 			//연속 스페이스 제거
-			name = name.replaceAll("\\s{2,}", " ");
+			name = StringUtils.normalizeSpace(name);
 			
 			if("history.log".equals(filename) || filename.endsWith(VideoCore.EXT_ACTRESS) || filename.endsWith(VideoCore.EXT_STUDIO))
 				continue;
@@ -121,17 +131,17 @@ public class FileBaseVideoSource implements VideoSource {
 			String studioName  = UNKNOWN;
 			String opus    = UNKNOWN;
 			String title   = filename;
-			String actressName = UNKNOWN;
+			String actressNames = UNKNOWN;
 			String releaseDate = "";
 			String etcInfo = "";
 			
-			switch(names.length) {
+			switch (names.length) {
 			case 6:
 				etcInfo 	= VideoUtils.removeUnnecessaryCharacter(names[5]);
 			case 5:
 				releaseDate 	= VideoUtils.removeUnnecessaryCharacter(names[4]);
 			case 4:
-				actressName = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
+				actressNames = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
 			case 3:
 				title 		= VideoUtils.removeUnnecessaryCharacter(names[2], UNKNOWN);
 			case 2:
@@ -142,20 +152,20 @@ public class FileBaseVideoSource implements VideoSource {
 				studioName 	= unclassifiedStudio;
 				opus 		= unclassifiedOpus + unclassifiedNo++;
 				title 		= filename;
-				actressName = unclassifiedActress;
+				actressNames = unclassifiedActress;
 				break;
 			default: // if names length is over 6
 				studioName 	= VideoUtils.removeUnnecessaryCharacter(names[0], unclassifiedStudio);
 				opus 		= VideoUtils.removeUnnecessaryCharacter(names[1], unclassifiedOpus);
 				title 		= VideoUtils.removeUnnecessaryCharacter(names[2], UNKNOWN);
-				actressName = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
+				actressNames = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
 				releaseDate = VideoUtils.removeUnnecessaryCharacter(names[4]);
-				for(int i=5, iEnd=names.length; i<iEnd; i++)
+				for (int i=5, iEnd=names.length; i<iEnd; i++)
 					etcInfo = etcInfo + " " + VideoUtils.removeUnnecessaryCharacter(names[i]);
 			}
 			
-			Video video = null;
-			if((video = videoMap.get(opus.toLowerCase())) == null) {
+			Video video = videoMap.get(opus.toLowerCase());
+			if (video == null) {
 				video = this.videoProvider.get();
 				video.setOpus(opus.toUpperCase());
 				video.setTitle(title);
@@ -166,56 +176,56 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			
 			// set File
-			if(video_extensions.toLowerCase().indexOf(ext) > -1) {
+			if (video_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setVideoFile(file);
 			}
-			else if(cover_extensions.toLowerCase().indexOf(ext) > -1) {
-				if(webp_mode) {
+			else if (cover_extensions.toLowerCase().indexOf(ext) > -1) {
+				if (webp_mode) {
 					video.setCoverWebpFile(convertWebpFile(file));
 				}
 				video.setCoverFile(file);
 			}
-			else if(subtitles_extensions.toLowerCase().indexOf(ext) > -1) {
+			else if (subtitles_extensions.toLowerCase().indexOf(ext) > -1) {
 				video.setSubtitlesFile(file);
 			}
 			else if ("info".equalsIgnoreCase(ext)) {
 				video.setInfoFile(file);
 			}
-			else if("webp".equalsIgnoreCase(ext)) {
+			else if ("webp".equalsIgnoreCase(ext)) {
 				video.setCoverWebpFile(file);
 			}
 			else {
 				video.setEtcFile(file);
 			}
 			
-			Studio studio = null;
-			String lowerCaseStudioName = studioName.toLowerCase();
-			if((studio = studioMap.get(lowerCaseStudioName)) == null) {
+			Studio studio = studioMap.get(studioName.toLowerCase());
+			if (studio == null) {
 				studio = this.studioProvider.get();
 				studio.setName(studioName);
-				studioMap.put(lowerCaseStudioName, studio);
+				studioMap.put(studioName.toLowerCase(), studio);
 				logger.trace("add studio - {}", studio);
 			}
-
-			List<Actress> actressList = getActressList(actressName);
 
 			// inject reference
 			studio.putVideo(video);
 			
 			video.setStudio(studio);
 			
-			for(Actress actress : actressList) { 
-				Actress actressInMap = null;
-				String forwardActressName = VideoUtils.forwardNameSort(actress.getName());
-				if((actressInMap = actressMap.get(forwardActressName)) == null) {
+			for (String actressName : StringUtils.split(actressNames, ",")) { 
+				String forwardActressName = VideoUtils.forwardNameSort(actressName);
+				Actress actress = actressMap.get(forwardActressName);
+				if (actress == null) {
+					actress = actressProvider.get();
+					actress.setName(actressName);
+					
 					actressMap.put(forwardActressName, actress);
 					logger.trace("add actress - {}", actress);
-					actressInMap = actress;
 				}
-				actressInMap.putVideo(video);
-				actressInMap.putStudio(studio);
-				studio.putActress(actressInMap);
-				video.putActress(actressInMap);
+				actress.putVideo(video);
+				actress.putStudio(studio);
+
+				studio.putActress(actress);
+				video.putActress(actress);
 			}
 			
 		}
@@ -229,7 +239,7 @@ public class FileBaseVideoSource implements VideoSource {
 	 */
 	private File convertWebpFile(File file) {
 		logger.trace("{}", file.getAbsolutePath());
-		File webpfile = new File(file.getParent(), VideoUtils.getFileName(file) + ".webp");
+		File webpfile = new File(file.getParent(), FileUtils.getNameExceptExtension(file) + ".webp");
 		if(!webpfile.exists()) {
 			WebpUtils.convert(webp_exec, file);
 		}
@@ -240,8 +250,8 @@ public class FileBaseVideoSource implements VideoSource {
 	 * 컴마(,)로 구분된 이름을 <code>List&lt;Actress&gt;</code>로 반환
 	 * @param actressNames
 	 * @return
-	 */
-	private List<Actress> getActressList(String actressNames) {
+	 *//*
+	private List<Actress> makeActressList(String actressNames) {
 		logger.trace("getActressList {}", actressNames);
 		List<Actress> actressList = new ArrayList<Actress>();
 		
@@ -264,7 +274,7 @@ public class FileBaseVideoSource implements VideoSource {
 		logger.trace("found actress list - {}", actressList);
 		return actressList;
 	}
-	
+	*/
 	@Override
 	public synchronized void reload() {
 		logger.trace("reload");

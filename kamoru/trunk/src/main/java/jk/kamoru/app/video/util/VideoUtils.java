@@ -15,18 +15,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.domain.Video;
+import jk.kamoru.util.ArrayUtils;
+import jk.kamoru.util.FileUtils;
+import jk.kamoru.util.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.domain.Actress;
-import jk.kamoru.app.video.domain.Video;
-import jk.kamoru.util.ArrayUtils;
-import jk.kamoru.util.FileUtils;
-import jk.kamoru.util.StringUtils;
 
 public class VideoUtils {
 
@@ -54,8 +52,8 @@ public class VideoUtils {
 		int classified = -1;
 		for(File file : found) {
 			String name		= file.getName();
-			String filename = getFileName(file);
-			String extname  = getFileExtension(file);
+			String filename = FileUtils.getNameExceptExtension(file);
+			String extname  = FileUtils.getExtension(file);
 			
 //			if(ctrl.listBGImageName.equals(name) || ctrl.historyName.equals(name))
 //				continue;
@@ -138,7 +136,7 @@ public class VideoUtils {
 		return forwardNameSort(name1).equalsIgnoreCase(forwardNameSort(name2));
 	}
 	/**
-	 * 공백이 들어간 이름을 순차정렬해서 반환
+	 * 공백이 들어간 이름을 소문자 순차정렬해서 반환
 	 * @param name
 	 * @return
 	 */
@@ -146,31 +144,27 @@ public class VideoUtils {
 		if(name == null) return null;
 		String[] nameArr = StringUtils.split(name);
 		Arrays.sort(nameArr);
-		String retName = "";
-		for(String part : nameArr) {
-			retName += part + " ";
-		}
-		return retName.trim();
+		return StringUtils.join(nameArr, " ");
 	}
 	/**
 	 * 확장자 반환
 	 * @param file
 	 * @return 확장자. 없으면 공백 반환
 	 */
-	public static String getFileExtension(File file) {
+	/*public static String getFileExtension(File file) {
 		String filename = file.getName();
 		int index = filename.lastIndexOf(".");
 		return index < 0 ? "" : filename.substring(index + 1); 
-	}
+	}*/
 
 	/**
 	 * 파일 이름 반환
 	 * @param file
 	 * @return 확장자 뺀 이름만
 	 */
-	public static String getFileName(File file) {
+	/*public static String getFileName(File file) {
 		return getName(file.getName()); 
-	}
+	}*/
 	
 	/**
 	 * 주어진 이름을 구글 이미지 검색을 사용해 URL list로 반환.<br>
@@ -216,10 +210,10 @@ public class VideoUtils {
 	 * @param name
 	 * @return
 	 */
-	public static String getName(String name) {
+	/*public static String getName(String name) {
 		int index = name.lastIndexOf(".");
 		return index < 0 ? name : name.substring(0, index); 
-	}
+	}*/
 
 	/**
 	 * video list을 opus값 배열 스타일로 반환. [abs-123, avs-34]
@@ -534,7 +528,7 @@ public class VideoUtils {
 		}
 		return ret;
 	}
-	
+
 }
 
 

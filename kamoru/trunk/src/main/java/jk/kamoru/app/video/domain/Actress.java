@@ -109,6 +109,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 	}
 	public void reloadInfo() {
 		loaded = false;
+		loadInfo();
 	}
 	public void putStudio(Studio studio) {
 		if(!this.studioList.contains(studio))
@@ -142,6 +143,12 @@ public class Actress implements Serializable, Comparable<Actress> {
 	
 	public void setVideoList(List<Video> videoList) {
 		this.videoList = videoList;
+	}
+	public void setMainBasePath(String mainBasePath) {
+		this.mainBasePath = mainBasePath;
+	}
+	public void emptyVideo() {
+		videoList.clear();
 	}
 	
 }

@@ -1,6 +1,5 @@
 package jk.kamoru.util;
 
-import java.net.URL;
 
 /**
  * commons.lang3.StringUtils 상속하고 필요한 기능 추가

@@ -6,10 +6,14 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.VideoException;
+import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.util.FileUtils;
+import jk.kamoru.util.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -21,13 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.VideoException;
-import jk.kamoru.app.video.util.VideoUtils;
-import jk.kamoru.util.ArrayUtils;
-import jk.kamoru.util.FileUtils;
-import jk.kamoru.util.StringUtils;
 
 /**
  * AV Bean class<br>
@@ -247,21 +244,13 @@ public class Video implements Comparable<Object>, Serializable {
 		else 
 			throw new VideoException("No delegate video file : " + this.opus + " " + this.toString());
 	}
-	
-	/**
-	 * video 대표 파일 이름
-	 * @return
-	 */
-	private String getDelegateFilename() {
-		return this.getDelegateFile().getName();
-	}
 
 	/**
 	 * video 대표 파일 이름. 확장자를 뺀 대표이름
 	 * @return
 	 */
 	private String getDelegateFilenameWithoutSuffix() {
-		return VideoUtils.getName(getDelegateFilename());
+		return FileUtils.getNameExceptExtension(getDelegateFile());
 	}
 	
 	/**

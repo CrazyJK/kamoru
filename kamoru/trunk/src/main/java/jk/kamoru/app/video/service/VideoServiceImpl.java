@@ -214,16 +214,24 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
 		logger.trace("size : {}", videoList.size());
-		List<Actress> actressList = new ArrayList<Actress>();
+		Map<String, Actress> actressMap = new TreeMap<String, Actress>();
 		for(Video video : videoList) {
-			for(Actress actress : video.getActressList()) {
-				if(!actressList.contains(actress))
-					actressList.add(actress);
+			for (Actress actress : video.getActressList()) {
+				Actress actressInMap = actressMap.get(actress.getName());
+				if (actressInMap == null) {
+					actressInMap = videoDao.getActress(actress.getName());
+					actressInMap.emptyVideo();
+//					actressInMap = new Actress(actress.getName());
+//					actressInMap.setMainBasePath(mainBasePath);
+				}
+				actressInMap.putVideo(video);
+				actressMap.put(actress.getName(), actressInMap);
 			}
 		}
-		Collections.sort(actressList);
-		logger.debug("found actress list size {}", actressList.size());
-		return actressList;
+		List<Actress> list = new ArrayList<Actress>(actressMap.values());
+		Collections.sort(list);
+		logger.debug("found studio list size {}", list.size());
+		return list;
 	}
 
 	@Override
@@ -262,14 +270,23 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
 		logger.trace("size : {}", videoList.size());
-		List<Studio> studioList = new ArrayList<Studio>();
+		Map<String, Studio> studioMap = new TreeMap<String, Studio>();
 		for(Video video : videoList) {
-			if(!studioList.contains(video.getStudio()))
-				studioList.add(video.getStudio());
+			String studioName = video.getStudio().getName();
+			Studio studio = studioMap.get(studioName);
+			if (studio == null) {
+				studio = videoDao.getStudio(studioName);
+				studio.emptyVideo();
+//				studio = new Studio(studioName);
+//				studio.setMainBasePath(mainBasePath);
+			}
+			studio.putVideo(video);
+			studioMap.put(studioName, studio);
 		}
-		Collections.sort(studioList);
-		logger.debug("found studio list size {}", studioList.size());
-		return studioList;
+		List<Studio> list = new ArrayList<Studio>(studioMap.values());
+		Collections.sort(list);
+		logger.debug("found studio list size {}", list.size());
+		return list;
 	}
 
 	@Override
@@ -514,8 +531,8 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Actress> getActressList(final ActressSort sort) {
 		logger.trace("sort={}", sort);
-		List<Actress> list = videoDao.getActressList();
-		
+//		List<Actress> list = videoDao.getActressList();
+		List<Actress> list = getActressListOfVideoes(videoDao.getVideoList());
 		Collections.sort(list, new Comparator<Actress>(){
 
 			@Override
@@ -544,8 +561,8 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Studio> getStudioList(final StudioSort sort) {
 		logger.trace("sort={}", sort);
-		List<Studio> list = videoDao.getStudioList();
-		
+//		List<Studio> list = videoDao.getStudioList();
+		List<Studio> list = getStudioListOfVideoes(videoDao.getVideoList());
 		Collections.sort(list, new Comparator<Studio>(){
 
 			@Override

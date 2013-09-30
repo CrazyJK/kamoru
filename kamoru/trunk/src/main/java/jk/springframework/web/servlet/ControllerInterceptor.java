@@ -38,7 +38,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
 		long elapsedtime = System.currentTimeMillis() - startTime;
 		if ( handler instanceof org.springframework.web.method.HandlerMethod) {
 			HandlerMethod method = (HandlerMethod)handler;
-			logger.info("{}.{} Elapsed time {} ms - [{}] - uri {} - agent {} - sessionid {} - method {} - contentType {}",
+			logger.debug("{}.{} Elapsed time {} ms - [{}] - uri {} - agent {} - sessionid {} - method {} - contentType {}",
 						method.getBean().getClass().getSimpleName(), 
 						method.getMethod().getName(), 
 						elapsedtime,

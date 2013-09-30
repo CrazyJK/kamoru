@@ -1,7 +1,6 @@
 package jk.kamoru.app.video.domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class VideoSearch implements Serializable {
 	boolean addCond;
 	boolean existSubtitles;
 	boolean existVideo;
-	View listViewType = View.V;
+	View listViewType = View.L;
 	boolean neverPlay = false;
 	boolean oldVideo = false;
 	String opus;
@@ -35,8 +34,6 @@ public class VideoSearch implements Serializable {
 	boolean viewStudioDiv = false;
 	boolean zeroRank = true;
 	
-	
-	
 	public String getActress() {
 		return actress;
 	}
@@ -45,17 +42,6 @@ public class VideoSearch implements Serializable {
 	}
 	public String getOpus() {
 		return opus;
-	}
-	@SuppressWarnings("rawtypes")
-	String getParam(HttpServletRequest request) {
-		StringBuffer sb = new StringBuffer();
-		Enumeration enu = request.getParameterNames();
-		while (enu.hasMoreElements()) {
-			String name = (String) enu.nextElement();
-			String value = request.getParameter(name);
-			sb.append("&").append(name).append("=").append(value);
-		}
-		return sb.toString();
 	}
 	public String getSearchText() {
 		return searchText;

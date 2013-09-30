@@ -20,6 +20,7 @@ import jk.kamoru.app.video.domain.VideoSearch;
 import jk.kamoru.app.video.domain.View;
 import jk.kamoru.app.video.service.VideoService;
 import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.util.FileUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +141,7 @@ public class VideoController {
 			response.sendRedirect("../no/cover");
 			return null;
 		}
-		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), VideoUtils.getFileExtension(imageFile));
+		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), FileUtils.getExtension(imageFile));
 	}
 	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)

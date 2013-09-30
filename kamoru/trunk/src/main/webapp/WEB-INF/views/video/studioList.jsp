@@ -23,6 +23,10 @@ function resizeDivHeight() {
 	var calculatedDivHeight = windowHeight - header - 20 * 2; 
 	$("#list_div").outerHeight(calculatedDivHeight);	
 }
+
+$("#search").change(function(){
+	
+});
 </script>
 </head>
 <body>

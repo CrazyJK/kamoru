@@ -13,12 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import jk.kamoru.KamoruException;
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
 
 @Component
 @Scope("prototype")
-public class Studio implements Serializable, Comparable<Object>{
+public class Studio implements Serializable, Comparable<Object> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
@@ -123,6 +124,14 @@ public class Studio implements Serializable, Comparable<Object>{
 	}
 	public void reloadInfo() {
 		loaded = false;
+	}
+
+	public void setMainBasePath(String mainBasePath) {
+		this.mainBasePath = mainBasePath;
+	}
+
+	public void emptyVideo() {
+		videoList.clear();
 	}
 	
 }

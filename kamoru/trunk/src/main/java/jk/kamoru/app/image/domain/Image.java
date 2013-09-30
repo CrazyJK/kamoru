@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import jk.kamoru.app.image.ImageException;
-import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 
 import org.imgscalr.Scalr;
@@ -29,7 +28,7 @@ public class Image {
 
 	private void init() {
 		this.name = file.getName();
-		this.suffix = VideoUtils.getFileExtension(file);
+		this.suffix = FileUtils.getExtension(file);
 		this.size = file.length();
 		this.lastModified = file.lastModified();
 	}

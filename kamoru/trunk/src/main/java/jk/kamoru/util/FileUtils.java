@@ -12,6 +12,8 @@ import org.springframework.util.Assert;
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
 	
+	private static final String EXTENSION_SEPARATOR = ".";
+
 	
 	/**
 	 * 입력된 경로의 모든 파일명을 상위폴더명+일련번호로 변경
@@ -36,7 +38,12 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	
 	public static String getNameExceptExtension(File file) {
 		Assert.isTrue(file.isFile(), "It is not file!");
-		return StringUtils.substringBeforeLast(file.getName(), ".");
+		return StringUtils.substringBeforeLast(file.getName(), EXTENSION_SEPARATOR);
+	}
+
+	public static String getExtension(File file) {
+		Assert.isTrue(file.isFile(), "It is not file!");
+		return StringUtils.substringAfterLast(file.getName(), EXTENSION_SEPARATOR);
 	}
 
 }
