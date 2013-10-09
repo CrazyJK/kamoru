@@ -70,7 +70,7 @@ function showNav() {
 
 	<header id="deco_header">
 		<h1 id="deco_h1">
-			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
+			<a href="<c:url value="/home"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
 			<span style='float:right;font-size:12px;text-decoration:none; margin:10px 0 0;'>
 				<s:message code="default.hello"/>&nbsp;
 				<security:authentication property="principal.username" />

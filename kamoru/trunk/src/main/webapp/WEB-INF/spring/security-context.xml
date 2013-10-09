@@ -12,9 +12,11 @@
 		<intercept-url pattern="/resources/**" 	access="permitAll" />
 		<intercept-url pattern="/jsp/**" 		access="permitAll" />
 		<intercept-url pattern="/login" 		access="permitAll" />
-		<intercept-url pattern="/hitMessageCodeList" 		access="permitAll" />
 		<intercept-url pattern="/image/random" 	access="permitAll" />
-		<intercept-url pattern="/video**" 		access="hasRole('ROLE_CRAZY')" />
+		<intercept-url pattern="/" 				access="permitAll" />
+		<intercept-url pattern="/expiredSession" 		access="permitAll" />
+		<intercept-url pattern="/hitMessageCodeList" 	access="permitAll" />
+		<intercept-url pattern="/video**" 		access="hasRole('ROLE_CRAZY')" /><!--  or hasIpAddress('192.168.0.3') -->
 		<intercept-url pattern="/image**" 		access="hasRole('ROLE_CRAZY')" />
 		<intercept-url pattern="/**" 			access="hasRole('ROLE_USER')" />
 
@@ -26,6 +28,9 @@
 		
 		<remember-me key="kamoruRememberme" token-validity-seconds="600000" />
 		
+		<!-- <session-management>
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/jsp/expiredSession.jsp" />
+        </session-management> -->
 	</http>
 
 	<authentication-manager>

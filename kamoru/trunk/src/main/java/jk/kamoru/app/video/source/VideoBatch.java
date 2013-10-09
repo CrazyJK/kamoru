@@ -32,6 +32,7 @@ public class VideoBatch {
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
 		logger.info("batch START");
+		long startTime = System.currentTimeMillis();
 
 		if (REMOVE_LOWER_RANK_VIDEO) {
 			logger.info("batch : remove lower rank video periodically");
@@ -81,7 +82,9 @@ public class VideoBatch {
 
 		logger.info("batch : reload");
 		videoService.reload();
-		logger.info("batch END");
+		
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		logger.info("batch END. Elapsed time : {} ms", elapsedTime);
 	}
 	
 }

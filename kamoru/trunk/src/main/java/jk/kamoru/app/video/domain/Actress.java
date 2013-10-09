@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.util.StringUtils;
 
 @Component
 @Scope("prototype")
@@ -52,11 +53,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 	}
 	@Override
 	public int compareTo(Actress comp) {
-		String thisStr = this.getName();
-		String compStr = comp.getName();
-		String[] s = {thisStr, compStr};
-		Arrays.sort(s);
-		return s[0].equals(thisStr) ? -1 : 1;
+		return StringUtils.compateTo(this.getName(), comp.getName());
 	}
 	
 	public boolean contains(String actressName) {

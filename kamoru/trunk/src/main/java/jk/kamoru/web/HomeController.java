@@ -31,7 +31,7 @@ public class HomeController {
 
 	@RequestMapping("/")
 	public String root() {
-		return "redirect:/home";
+		return "root";
 	}
 	
 	/**
@@ -62,12 +62,13 @@ public class HomeController {
 			handlerMethodMap.put(hm.getKey().toString(), hm.getValue().toString());
 
 		model.addAttribute("handlerMethodMap", handlerMethodMap);
-		return "requestMappingList";
+		return "util/requestMappingList";
 	}
 	
 	@RequestMapping("/hitMessageCodeList")
 	public String hitMessageCodeList(Model model) {
+		logger.trace("hit Message Code List");
 		model.addAttribute("hitMessageCodeMap", ReloadableResourceBundleMessageSource.hitMessageCodeMap);
-		return "hitMessageCodeList";
+		return "util/hitMessageCodeList";
 	}
 }

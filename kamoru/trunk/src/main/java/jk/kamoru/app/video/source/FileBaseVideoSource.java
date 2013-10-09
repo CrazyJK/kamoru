@@ -34,9 +34,9 @@ public class FileBaseVideoSource implements VideoSource {
 	private final String unclassifiedActress = "Amateur";
 
 	// data source
-	private Map<String, Video> videoMap;
-	private Map<String, Studio> studioMap;
-	private Map<String, Actress> actressMap;
+	private Map<String, Video> videoMap = new HashMap<String, Video>();
+	private Map<String, Studio> studioMap = new HashMap<String, Studio>();
+	private Map<String, Actress> actressMap = new HashMap<String, Actress>();
 	
 	// Domain provider
 	@Inject Provider<Video> videoProvider;
@@ -51,6 +51,9 @@ public class FileBaseVideoSource implements VideoSource {
 	private boolean webp_mode;
 	private String webp_exec;
 
+	// logic variables
+	private boolean loaded = false;
+	
 	// property setter
 	public void setPaths(String[] paths) {
 		Assert.notNull(paths, "base paths must not be null");
@@ -82,19 +85,19 @@ public class FileBaseVideoSource implements VideoSource {
 	 */
 	public final void createVideoSource() {
 		logger.trace("createVideoSource");
-		if(videoMap == null || studioMap == null || actressMap == null)
+		if(!loaded)
 			load();
 	}
 	/**
 	 * video데이터를 로드한다.
 	 */
-	private void load() {
+	private synchronized void load() {
 		logger.trace("load");
 
 		// 1. data source initialize
-		videoMap = new HashMap<String, Video>();
-		studioMap = new HashMap<String, Studio>();
-		actressMap = new HashMap<String, Actress>();
+//		videoMap = new HashMap<String, Video>();
+//		studioMap = new HashMap<String, Studio>();
+//		actressMap = new HashMap<String, Actress>();
 
 		// 2. file find
 		Collection<File> files = new ArrayList<File>();
@@ -122,7 +125,7 @@ public class FileBaseVideoSource implements VideoSource {
 			//연속 스페이스 제거
 			name = StringUtils.normalizeSpace(name);
 			
-			if("history.log".equals(filename) || filename.endsWith(VideoCore.EXT_ACTRESS) || filename.endsWith(VideoCore.EXT_STUDIO))
+			if(filename.equals(VideoCore.HISTORY_LOG) || filename.endsWith(VideoCore.EXT_ACTRESS) || filename.endsWith(VideoCore.EXT_STUDIO))
 				continue;
 			
 			//   1      2     3       4       5     6
@@ -229,6 +232,7 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 			
 		}
+		loaded = true;
 		logger.debug("total found video size : {}", videoMap.size());
 	}
 
@@ -276,7 +280,7 @@ public class FileBaseVideoSource implements VideoSource {
 	}
 	*/
 	@Override
-	public synchronized void reload() {
+	public void reload() {
 		logger.trace("reload");
 		load();
 	}
@@ -366,6 +370,7 @@ public class FileBaseVideoSource implements VideoSource {
 	@Override
 	public void arrangeVideo(String opus) {
 		logger.trace(opus);
+		createVideoSource();
 		videoMap.get(opus.toLowerCase()).arrange();
 	}
 

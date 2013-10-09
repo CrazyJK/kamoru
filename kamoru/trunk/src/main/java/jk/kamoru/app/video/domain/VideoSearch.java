@@ -16,7 +16,7 @@ public class VideoSearch implements Serializable {
 	boolean addCond;
 	boolean existSubtitles;
 	boolean existVideo;
-	View listViewType = View.L;
+	View listViewType = View.S;
 	boolean neverPlay = false;
 	boolean oldVideo = false;
 	String opus;

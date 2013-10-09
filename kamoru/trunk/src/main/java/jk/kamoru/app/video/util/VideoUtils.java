@@ -21,6 +21,7 @@ import jk.kamoru.util.ArrayUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
@@ -180,7 +181,7 @@ public class VideoUtils {
 			name = URLEncoder.encode(name);
 			URL url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
 			        "v=1.0&q=" + name + "&userip=&safe=off");
-			logger.info("{}", url);
+			logger.debug("{}", url);
 			URLConnection connection = url.openConnection();
 			connection.addRequestProperty("Referer", "http://www.kamoru.com");
 	
@@ -199,9 +200,11 @@ public class VideoUtils {
 				String urlStr = results.getJSONObject(i).getString("url");
 				list.add(new URL(urlStr));
 			}
+		} catch (JSONException jsone) {
+			logger.error(jsone.getMessage());
 		} catch (Exception e) {
 			logger.error("Fail to get image url on google", e);
-		}
+		} 
 		return list;
 	}
 	
@@ -489,7 +492,7 @@ public class VideoUtils {
 		Map<String, String> map = new HashMap<String, String>();
 		if (file != null && file.exists()) {
 			try {
-				logger.info("readFile : {}", file.getAbsolutePath());
+				logger.debug("readFile : {}", file.getAbsolutePath());
 				List<String> strList = FileUtils.readLines(file, VideoCore.FILE_ENCODING);
 				for (String str : strList) {
 					String[] strs = StringUtils.split(str, "=", 2);

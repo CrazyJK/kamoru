@@ -71,7 +71,7 @@ function showNav() {
 	<li><a href="<c:url value="/video/studio"/>"><s:message code="video.studio"/></a>
 	<li><a href="<c:url value="/image"/>"><s:message code="video.image"/></a>
 	<li><a href="<c:url value="/video/briefing"/>"><s:message code="video.briefing"/></a>
-	<li><a href="<c:url value="/"/>"><s:message code="default.home"/></a>
+	<li><a href="<c:url value="/home"/>"><s:message code="default.home"/></a>
 </ul>
 </nav>
 

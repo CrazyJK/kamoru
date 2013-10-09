@@ -134,7 +134,7 @@ public class VideoController {
 	}
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> opusCover(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
-		logger.trace("{} - agent:{}", opus, agent);
+		logger.trace("{}", opus);
 		boolean isChrome = agent.indexOf("Chrome") > -1;
 		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
 		if(imageFile == null) {
@@ -231,10 +231,10 @@ public class VideoController {
 		model.addAttribute("sorts", Sort.values());
 		model.addAttribute("videoList", videoList);
 		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
-		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
-		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
-//		model.addAttribute("actressList", videoService.getActressList());
-//		model.addAttribute("studioList", videoService.getStudioList());
+//		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
+//		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
+		model.addAttribute("actressList", videoService.getActressList());
+		model.addAttribute("studioList", videoService.getStudioList());
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
 		return "video/videoMain";
 	}

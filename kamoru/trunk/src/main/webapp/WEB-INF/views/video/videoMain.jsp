@@ -221,7 +221,8 @@ var listViewType = '${videoSearch.listViewType}';
 		<c:forEach items="${videoList}" var="video" varStatus="status">
 			<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 				<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
-					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
+					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span><br/>
+						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dt>
 					<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
 						<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
 					<dd><span class="label-large">${video.opus}</span></dd>
@@ -231,14 +232,15 @@ var listViewType = '${videoSearch.listViewType}';
 						<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 						</c:forEach>
 					</dd>
+					<dd><span class="label-large">Download : ${video.videoDate}</span></dd>
+					<dd><span class="label-large">Release : ${video.releaseDate}</span></dd>
 					<dd><span class="label-large ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span></dd>
 					<dd><span class="label-large ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
 					<dd><span class="label-large ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span></dd>
-					<dd><span class="label-large ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
-						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>	
-					</dd>
-					<dd><span class="label-large">Download : ${video.videoDate}</span></dd>
-					<dd><span class="label-large">Release : ${video.releaseDate}</span></dd>
+					<dd><span class="label-large ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span></dd>
+					<dd><span class="label">${video.videoFileListPath}</span></dd>
+					<dd><span class="label">${video.coverFilePath}</span></dd>
+					<dd><span class="label">${video.subtitlesFileListPath}</span></dd>
 				</dl>
 			</div>
 		</c:forEach>
@@ -253,7 +255,8 @@ var listViewType = '${videoSearch.listViewType}';
 		<c:forEach items="${videoList}" var="video" varStatus="status">
 			<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 				<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
-					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span></dt>
+					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span><br/>
+						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dt>
 					<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
 						<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
 					<dd><span class="label-large">${video.opus}</span></dd>
@@ -263,12 +266,12 @@ var listViewType = '${videoSearch.listViewType}';
 						<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 						</c:forEach>
 					</dd>
-					<dd><span class="label-large ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span></dd>
-					<dd><span class="label-large ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
-					<dd><span class="label-large ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span></dd>
-					<dd><span class="label-large ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
-						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/>	
-					</dd>
+					<dd><span class="label-large">Download : ${video.videoDate}</span></dd>
+					<dd><span class="label-large">Release : ${video.releaseDate}</span></dd>
+					<dd><span class="label-large ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">Video (${video.playCount})</span>
+						<span class="label-large ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
+					<dd><span class="label-large ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span>
+						<span class="label-large ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span></dd>
 				</dl>
 			</div>
 		</c:forEach>

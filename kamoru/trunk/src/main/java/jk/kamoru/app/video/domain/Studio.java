@@ -16,10 +16,11 @@ import org.springframework.stereotype.Component;
 import jk.kamoru.KamoruException;
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.util.StringUtils;
 
 @Component
 @Scope("prototype")
-public class Studio implements Serializable, Comparable<Object> {
+public class Studio implements Serializable, Comparable<Studio> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
@@ -101,13 +102,8 @@ public class Studio implements Serializable, Comparable<Object> {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		Studio comp = (Studio)o;
-		String thisStr = this.getName().toLowerCase();
-		String compStr = comp.getName().toLowerCase();
-		String[] s = {thisStr, compStr};
-		Arrays.sort(s);
-		return s[0].equals(thisStr) ? -1 : 1;
+	public int compareTo(Studio comp) {
+		return StringUtils.compateTo(this.getName().toLowerCase(), comp.getName().toLowerCase());
 	}
 
 	private void loadInfo() {

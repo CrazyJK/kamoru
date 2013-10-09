@@ -218,7 +218,6 @@ public class ReloadableResourceBundleMessageSource extends
 	 */
 	@Override
 	protected String resolveCodeWithoutArguments(String code, Locale locale) {
-		logger.trace("\n\n");
 		if (this.cacheMillis < 0) {
 			PropertiesHolder propHolder = getMergedProperties(locale);
 			String result = propHolder.getProperty(code);

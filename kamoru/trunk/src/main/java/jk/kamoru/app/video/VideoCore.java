@@ -19,4 +19,6 @@ public class VideoCore {
 
 	public static final String EXT_STUDIO = ".studio";
 
+	public static final String HISTORY_LOG = "history.log";
+	
 }

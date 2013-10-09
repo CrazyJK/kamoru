@@ -212,7 +212,7 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public List<Actress> getActressListOfVideoes(List<Video> videoList) {
+	public List<Actress> getActressListInVideoList(List<Video> videoList) {
 		logger.trace("size : {}", videoList.size());
 		Map<String, Actress> actressMap = new TreeMap<String, Actress>();
 		for(Video video : videoList) {
@@ -268,7 +268,7 @@ public class VideoServiceImpl implements VideoService {
 	}
 	
 	@Override
-	public List<Studio> getStudioListOfVideoes(List<Video> videoList) {
+	public List<Studio> getStudioListInVideoList(List<Video> videoList) {
 		logger.trace("size : {}", videoList.size());
 		Map<String, Studio> studioMap = new TreeMap<String, Studio>();
 		for(Video video : videoList) {
@@ -422,21 +422,43 @@ public class VideoServiceImpl implements VideoService {
 	}
 	
 	@Override
-	public Map<String, String> groupByPath() {
+	public Map<String, Long[]> groupByPath() {
 		logger.trace("groupByPath");
+		/*
 		Map<String, String> map = new TreeMap<String, String>();
+		long total = 0;
 		for (String path : basePath) {
 			File dir = new File(path);
 			if (dir.exists()) {
-				int size = (int) (FileUtils.sizeOfDirectory(dir) / FileUtils.ONE_GB);
-				map.put(path, String.valueOf(size) + " GB");
+				long size = FileUtils.sizeOfDirectory(dir);
+				total += size;
+				map.put(path, String.valueOf((int)(size / FileUtils.ONE_GB)) + " GB");
 			}
 			else {
 				map.put(path, path + " does not exist");
 			}
 		}
+		map.put("Total", String.valueOf((int)(total / FileUtils.ONE_GB)) + " GB");
 		logger.debug("video group by path - {}", map);
 		return map;
+		*/
+		Map<String, Long[]> pathMap = new TreeMap<String, Long[]>();
+		Long[] total = new Long[]{0l, 0l};
+		for (Video video : videoDao.getVideoList()) {
+			String path = video.getDelegatePath();
+			long length = video.length();
+			Long[] data = pathMap.get(path);
+			if (data == null) {
+				data = new Long[]{0l, 0l};
+			}
+			total[0] += 1;
+			total[1] += length;
+			data[0] += 1;
+			data[1] += length; 
+			pathMap.put(path, data);
+		}
+		pathMap.put("Total", total);
+		return pathMap;
 	}
 
 	@Override
@@ -531,8 +553,8 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Actress> getActressList(final ActressSort sort) {
 		logger.trace("sort={}", sort);
-//		List<Actress> list = videoDao.getActressList();
-		List<Actress> list = getActressListOfVideoes(videoDao.getVideoList());
+		List<Actress> list = videoDao.getActressList();
+//		List<Actress> list = getActressListOfVideoes(videoDao.getVideoList());
 		Collections.sort(list, new Comparator<Actress>(){
 
 			@Override
@@ -561,8 +583,8 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Studio> getStudioList(final StudioSort sort) {
 		logger.trace("sort={}", sort);
-//		List<Studio> list = videoDao.getStudioList();
-		List<Studio> list = getStudioListOfVideoes(videoDao.getVideoList());
+		List<Studio> list = videoDao.getStudioList();
+//		List<Studio> list = getStudioListOfVideoes(videoDao.getVideoList());
 		Collections.sort(list, new Comparator<Studio>(){
 
 			@Override

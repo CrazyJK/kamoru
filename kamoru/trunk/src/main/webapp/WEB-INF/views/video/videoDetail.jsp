@@ -15,23 +15,23 @@ $(document).ready(function() {
 <body>
 <c:set var="opus" value="${video.opus}"/>
 <dl>
-	<dt><span class="label">${video.title}</span></dt>
-	<dd><input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
-	<dd><span class="label" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
-	<dd><span class="label">${video.opus}</span></dd>
-	<dd><span class="label">Download : ${video.videoDate}</span></dd>
-	<dd><span class="label">Release : ${video.releaseDate}</span></dd>
-	<dd><span class="label">ETC info : ${video.etcInfo}</span></dd>
-	<dd><span class="label" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
-	<dd><span class="label">COVER : ${video.coverFilePath}</span></dd>
-	<dd><span class="label">WEBP : ${video.coverWebpFilePath}</span></dd>
-	<dd><span class="label" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
-	<dd><span class="label">INFO : ${video.infoFilePath}</span></dd>
-	<dd><div  class="label">ETC : ${video.etcFileListPath}</div></dd>
-	<dd><pre  class="label">${video.historyText}</pre></dd>
-	<dd><pre  class="label" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
+	<dt><span class="label-large">${video.title}</span><br/>
+		<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dt>
+	<dd><span class="label-large" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
+	<dd><span class="label-large">${video.opus}</span></dd>
+	<dd><span class="label-large">Download : ${video.videoDate}</span></dd>
+	<dd><span class="label-large">Release : ${video.releaseDate}</span></dd>
+	<dd><span class="label-large">ETC info : ${video.etcInfo}</span></dd>
+	<dd><span class="label-large" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
+	<dd><span class="label-large">COVER : ${video.coverFilePath}</span></dd>
+	<dd><span class="label-large">WEBP : ${video.coverWebpFilePath}</span></dd>
+	<dd><span class="label-large" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
+	<dd><span class="label-large">INFO : ${video.infoFilePath}</span></dd>
+	<dd><div  class="label-large">ETC : ${video.etcFileListPath}</div></dd>
+	<dd><pre  class="label-large">${video.historyText}</pre></dd>
+	<dd><pre  class="label-large" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
 	<dd><c:forEach items="${video.actressList}" var="actress">
-			<span class="label actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
+			<span class="label-large actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name} (${fn:length(actress.videoList)})</span>
 			<ul>
 			<c:forEach items="${actress.videoList}" var="video">
 				<c:choose>

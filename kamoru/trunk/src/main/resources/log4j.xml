@@ -61,8 +61,11 @@
 	<logger name="jk.kamoru.app.video.domain.Video">
 		<level value="info" />
 	</logger>
-	<logger name="jk.kamoru.web.VideoController">
+	<!-- <logger name="jk.kamoru.web.VideoController">
 		<level value="trace" />
+	</logger> -->
+	<logger name="jk.springframework.web.servlet.ControllerInterceptor">
+		<level value="debug" />
 	</logger>
 	<!-- <logger name="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<level value="trace" />

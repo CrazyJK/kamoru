@@ -257,7 +257,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * video 대표 폴더 경로. video > cover > overview > subtitles > etc 순으로 찾는다.
 	 * @return
 	 */
-	private String getDelegatePath() {
+	public String getDelegatePath() {
 		return this.getDelegateFile().getParent();
 	}
 	
@@ -644,7 +644,8 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param file
 	 */
 	public void setEtcFile(File file) {
-		this.etcFileList.add(file);		
+		if (!this.etcFileList.contains(file))
+			this.etcFileList.add(file);		
 	}
 	
 	/**
@@ -690,6 +691,7 @@ public class Video implements Comparable<Object>, Serializable {
 
 		JSONArray hisArray = infoData.getJSONArray("history");
 		this.playCount = 0;
+		this.historyList.clear();
 		for (int i=0, e=hisArray.size(); i<e; i++){
 			String line = hisArray.getString(i);
 			this.historyList.add(line);
@@ -747,7 +749,8 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param file
 	 */
 	public void setSubtitlesFile(File file) {
-		this.subtitlesFileList.add(file);		
+		if (!this.subtitlesFileList.contains(file))
+			this.subtitlesFileList.add(file);		
 	}
 	
 	/**
@@ -771,7 +774,8 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param file
 	 */
 	public void setVideoFile(File file) {
-		this.videoFileList.add(file);
+		if (!this.videoFileList.contains(file))
+			this.videoFileList.add(file);
 	}
 
 	/**
@@ -812,5 +816,14 @@ public class Video implements Comparable<Object>, Serializable {
 
 	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
+	}
+
+	public long length() {
+		long length = 0l;
+		for (File file : this.getFileAll()) {
+			if (file != null)
+				length += file.length();
+		}
+		return length;
 	}
 }

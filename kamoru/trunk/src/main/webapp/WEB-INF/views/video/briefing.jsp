@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="s"  uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="s"   uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="${locale }">
 <head>
@@ -72,13 +73,29 @@ function resizeDivHeight() {
 			<tr>
 				<th style="text-align:left;"><s:message code="video.folder"/></th>
 				<th style="text-align:right;"><s:message code="video.size"/></th>
+				<th style="text-align:right;"><s:message code="video.length"/></th>
 			</tr>
+			<c:set var="ONE_GB" value="${1024*1024*1024}"/>
 			<c:forEach items="${pathMap}" var="path" varStatus="status">
+				<c:choose>
+					<c:when test="${path.key ne 'Total'}">
 			<tr>
 				<td style="text-align:left;">${path.key}</td>
-				<td style="text-align:right;">${path.value}</td>
+				<td style="text-align:right;"><fmt:formatNumber value="${path.value[0]}" groupingUsed="true" type="NUMBER"/></td>
+				<td style="text-align:right;"><fmt:formatNumber value="${path.value[1] / ONE_GB}" pattern="#,##0 GB"/></td>
 			</tr>
-			</c:forEach>		
+					</c:when>
+					<c:otherwise>
+						<c:set var="totalSize"   value="${path.value[0]}"/>
+						<c:set var="totalLength" value="${path.value[1]}"/>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<tr>
+				<td style="text-align:left; border-top:1px solid blue;"><s:message code="video.total"/></td>
+				<td style="text-align:right; border-top:1px solid blue;"><fmt:formatNumber value="${totalSize}" groupingUsed="true" type="NUMBER"/></td>
+				<td style="text-align:right; border-top:1px solid blue;"><fmt:formatNumber value="${totalLength / ONE_GB}" pattern="#,##0 GB"/></td>
+			</tr>
 		</table>
 	</article>
 </section>

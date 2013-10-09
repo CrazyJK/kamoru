@@ -25,7 +25,7 @@ public interface VideoService {
 
 	List<Actress> getActressList();
 
-	List<Actress> getActressListOfVideoes(List<Video> videoList);
+	List<Actress> getActressListInVideoList(List<Video> videoList);
 
 	byte[] getDefaultCoverFileByteArray();
 
@@ -33,7 +33,7 @@ public interface VideoService {
 
 	List<Studio> getStudioList();
 	
-	List<Studio> getStudioListOfVideoes(List<Video> videoList);
+	List<Studio> getStudioListInVideoList(List<Video> videoList);
 	
 	Video getVideo(String opus);
 
@@ -51,7 +51,7 @@ public interface VideoService {
 
 	List<Video> searchVideo(VideoSearch videoSearch);
 
-	Map<String, String> groupByPath();
+	Map<String, Long[]> groupByPath();
 
 	void saveActressInfo(String name, Map<String, String> params);
 
