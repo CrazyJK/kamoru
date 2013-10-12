@@ -1,10 +1,7 @@
 package jk.kamoru.app.video.domain;
 
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import jk.kamoru.app.video.VideoCore;
 

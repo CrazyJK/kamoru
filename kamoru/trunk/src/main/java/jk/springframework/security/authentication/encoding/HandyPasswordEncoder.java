@@ -10,13 +10,13 @@ public class HandyPasswordEncoder implements PasswordEncoder {
 
 	@Override
 	public String encodePassword(String rawPass, Object salt) {
-		logger.info(rawPass);
+		logger.trace(rawPass);
 		return rawPass;
 	}
 
 	@Override
 	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
-		logger.info("{} - {}", encPass, rawPass);
+		logger.trace("{} - {}", encPass, rawPass);
 		if (encPass == null)
 			return false;
 		return encPass.equals(encodePassword(rawPass, null));

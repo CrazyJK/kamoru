@@ -539,10 +539,10 @@ public class Video implements Comparable<Object>, Serializable {
 					break;
 				}
 				try {
-					FileUtils.moveFileToDirectory(file, destFile, false);
 					logger.info("move file from {} to {}", file.getAbsolutePath(), destDir);
+					FileUtils.moveFileToDirectory(file, destFile, false);
 				} catch (FileExistsException fe) {
-					logger.warn("File exist, then delete ");
+					logger.warn("File exist, then delete ", fe);
 					FileUtils.deleteQuietly(file);
 				} catch (IOException e) {
 					logger.error("Fail move file", e);
@@ -644,8 +644,9 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param file
 	 */
 	public void setEtcFile(File file) {
-		if (!this.etcFileList.contains(file))
-			this.etcFileList.add(file);		
+		if (this.etcFileList.contains(file))
+			this.etcFileList.remove(file);
+		this.etcFileList.add(file);		
 	}
 	
 	/**
@@ -749,8 +750,9 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param file
 	 */
 	public void setSubtitlesFile(File file) {
-		if (!this.subtitlesFileList.contains(file))
-			this.subtitlesFileList.add(file);		
+		if (this.subtitlesFileList.contains(file))
+			this.subtitlesFileList.remove(file);
+		this.subtitlesFileList.add(file);
 	}
 	
 	/**
@@ -774,8 +776,9 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @param file
 	 */
 	public void setVideoFile(File file) {
-		if (!this.videoFileList.contains(file))
-			this.videoFileList.add(file);
+		if (this.videoFileList.contains(file))
+			this.videoFileList.remove(file);
+		this.videoFileList.add(file);
 	}
 
 	/**

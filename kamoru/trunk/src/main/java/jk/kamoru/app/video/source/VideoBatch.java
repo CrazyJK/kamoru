@@ -4,6 +4,7 @@ import java.io.File;
 
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.service.VideoService;
+import jk.kamoru.util.FileUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,8 @@ public class VideoBatch {
 	@Value("#{videoProp['moveWatchedVideo']}") private boolean MOVE_WATCHED_VIDEO;
 	@Value("#{videoProp['watchedVideoPath']}") private String WATCHED_PATH;
 	/** 최소 공간 사이즈 */
-	private final long MIN_FREE_SPAC = 1024*1024*1024*10l;
-	private final long SLEEP_TIME = 3000l;
+	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;
+	private final long SLEEP_TIME = 30 * 1000;
 	
 	@Value("#{videoProp['removeLowerRankVideo']}") private boolean REMOVE_LOWER_RANK_VIDEO;
 	@Value("#{videoProp['lowerRankVideoBaselineScore']}")  private int LOWER_RANK_VIDEO_BASELINE_SCORE;
@@ -38,7 +39,7 @@ public class VideoBatch {
 			logger.info("batch : remove lower rank video periodically");
 			for (Video video : videoService.getVideoList()) {
 				if (video.getRank() < LOWER_RANK_VIDEO_BASELINE_SCORE) {
-					logger.debug("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
+					logger.info("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
 					videoService.deleteVideo(video.getOpus());
 				}
 			}
@@ -50,7 +51,7 @@ public class VideoBatch {
 					&& !video.isExistCoverFile()
 					&& !video.isExistCoverWebpFile() 
 					&& !video.isExistSubtitlesFileList()) {
-				logger.debug("delete garbage file - {}", video);
+				logger.info("delete garbage file - {}", video);
 				videoService.deleteVideo(video.getOpus());
 			}
 		}
@@ -67,9 +68,9 @@ public class VideoBatch {
 			for (Video video : videoService.getVideoList()) {
 				if (video.getPlayCount() > 0
 						&& video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0
-						&& count++ < 10
+						&& count++ < 5
 						&& new File(WATCHED_PATH).getFreeSpace() > MIN_FREE_SPAC) {
-					logger.debug("move video {} : {}", count, video);
+					logger.info("move video {} : {}", count, video);
 					videoService.moveVideo(video.getOpus(), WATCHED_PATH);
 					try {
 						Thread.sleep(SLEEP_TIME);
