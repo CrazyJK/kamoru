@@ -10,6 +10,7 @@ import java.util.Map;
 
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +23,17 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
+	@Value("#{videoProp['mainBasePath']}") 			
+	private String mainBasePath;
+
 	private String name;
-	private URL homepage;
+	private URL    homepage;
 	private String companyName;
+
 	private List<Video> videoList;
 	private List<Actress> actressList;
 
 	private boolean loaded;
-	@Value("#{videoProp['mainBasePath']}") 			
-	private String mainBasePath;
 	
 	public Studio() {
 		videoList = new ArrayList<Video>();
@@ -41,7 +44,6 @@ public class Studio implements Serializable, Comparable<Studio> {
 		this();
 		this.name = name;
 	}
-
 	
 	@Override
 	public String toString() {
@@ -49,16 +51,17 @@ public class Studio implements Serializable, Comparable<Studio> {
 				name, homepage, companyName);
 	}
 
-	public void putVideo(Video video) {
+	public void addVideo(Video video) {
 		if(!videoList.contains(video))
 			this.videoList.add(video);		
 	}
-	public void putActress(Actress actress) {
+	public void addActress(Actress actress) {
 		boolean found = false;
 		for(Actress actressInList : this.actressList) {
 			if(actressInList.getName().equalsIgnoreCase(actress.getName())) {
-				found = true;
 				actressInList = actress;
+				found = true;
+				break;
 			}
 		}
 		if(!found)
@@ -106,13 +109,13 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	private void loadInfo() {
 		if (!loaded) {
-			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + VideoCore.EXT_STUDIO));
+			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO));
 			try {
 				this.homepage = new URL(info.get("HOMEPAGE"));
 			} catch (MalformedURLException e) {
 				// do nothing!
 			}
-			this.companyName     = info.get("COMPANYNAME");
+			this.companyName = info.get("COMPANYNAME");
 			loaded = true;
 		}
 	}

@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 
 
 public class FileBaseVideoSource implements VideoSource {
+	
 	protected static final Logger logger = LoggerFactory.getLogger(FileBaseVideoSource.class);
 
 	private final String UNKNOWN = "_Unknown";
@@ -83,9 +84,9 @@ public class FileBaseVideoSource implements VideoSource {
 	/**
 	 * 기존에 만든적이 없으면, video source를 로드를 호출한다.
 	 */
-	public final void createVideoSource() {
+	private final void createVideoSource() {
 		logger.trace("createVideoSource");
-		if(!loaded)
+		if (!loaded)
 			load();
 	}
 	/**
@@ -98,7 +99,10 @@ public class FileBaseVideoSource implements VideoSource {
 //		videoMap = new HashMap<String, Video>();
 //		studioMap = new HashMap<String, Studio>();
 //		actressMap = new HashMap<String, Actress>();
-
+		videoMap.clear();
+		studioMap.clear();
+		actressMap.clear();
+		
 		// 2. file find
 		Collection<File> files = new ArrayList<File>();
 		for (String path : paths) {
@@ -119,30 +123,32 @@ public class FileBaseVideoSource implements VideoSource {
 		int unclassifiedNo = 1;
 		for (File file : files) {
 			String filename = file.getName();
-			String name = FileUtils.getNameExceptExtension(file);
-			String ext  = FileUtils.getExtension(file).toLowerCase();
+			String     name = FileUtils.getNameExceptExtension(file);
+			String      ext = FileUtils.getExtension(file).toLowerCase();
 			
 			//연속 스페이스 제거
 			name = StringUtils.normalizeSpace(name);
 			
-			if(filename.equals(VideoCore.HISTORY_LOG) || filename.endsWith(VideoCore.EXT_ACTRESS) || filename.endsWith(VideoCore.EXT_STUDIO))
+			if (filename.equals(VideoCore.HISTORY_LOG) 
+					|| ext.equals(VideoCore.EXT_ACTRESS) 
+					|| ext.equals(VideoCore.EXT_STUDIO))
 				continue;
 			
 			//   1      2     3       4       5     6
 			//[studio][opus][title][actress][date][etc...]
 			String[] names = StringUtils.split(name, "]");
-			String studioName  = UNKNOWN;
-			String opus    = UNKNOWN;
-			String title   = filename;
+			String studioName  	= UNKNOWN;
+			String opus    		= UNKNOWN;
+			String title   		= filename;
 			String actressNames = UNKNOWN;
-			String releaseDate = "";
-			String etcInfo = "";
+			String releaseDate 	= "";
+			String etcInfo 		= "";
 			
 			switch (names.length) {
 			case 6:
 				etcInfo 	= VideoUtils.removeUnnecessaryCharacter(names[5]);
 			case 5:
-				releaseDate 	= VideoUtils.removeUnnecessaryCharacter(names[4]);
+				releaseDate = VideoUtils.removeUnnecessaryCharacter(names[4]);
 			case 4:
 				actressNames = VideoUtils.removeUnnecessaryCharacter(names[3], unclassifiedActress);
 			case 3:
@@ -177,29 +183,22 @@ public class FileBaseVideoSource implements VideoSource {
 				videoMap.put(opus.toLowerCase(), video);
 				logger.trace("add video - {}", video);
 			}
-			
-			// set File
-			if (video_extensions.toLowerCase().indexOf(ext) > -1) {
-				video.setVideoFile(file);
-			}
-			else if (cover_extensions.toLowerCase().indexOf(ext) > -1) {
-				if (webp_mode) {
+			// set video File
+			if (video_extensions.toLowerCase().contains(ext))
+				video.addVideoFile(file);
+			else if (cover_extensions.toLowerCase().contains(ext)) {
+				if (webp_mode)
 					video.setCoverWebpFile(convertWebpFile(file));
-				}
 				video.setCoverFile(file);
 			}
-			else if (subtitles_extensions.toLowerCase().indexOf(ext) > -1) {
-				video.setSubtitlesFile(file);
-			}
-			else if ("info".equalsIgnoreCase(ext)) {
+			else if (subtitles_extensions.toLowerCase().contains(ext))
+				video.addSubtitlesFile(file);
+			else if (VideoCore.EXT_INFO.equalsIgnoreCase(ext))
 				video.setInfoFile(file);
-			}
-			else if ("webp".equalsIgnoreCase(ext)) {
+			else if (VideoCore.EXT_WEBP.equalsIgnoreCase(ext))
 				video.setCoverWebpFile(file);
-			}
-			else {
-				video.setEtcFile(file);
-			}
+			else
+				video.addEtcFile(file);
 			
 			Studio studio = studioMap.get(studioName.toLowerCase());
 			if (studio == null) {
@@ -210,8 +209,7 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 
 			// inject reference
-			studio.putVideo(video);
-			
+			studio.addVideo(video);
 			video.setStudio(studio);
 			
 			for (String actressName : StringUtils.split(actressNames, ",")) { 
@@ -224,11 +222,12 @@ public class FileBaseVideoSource implements VideoSource {
 					actressMap.put(forwardActressName, actress);
 					logger.trace("add actress - {}", actress);
 				}
-				actress.putVideo(video);
-				actress.putStudio(studio);
+				// inject reference
+				actress.addVideo(video);
+				actress.addStudio(studio);
 
-				studio.putActress(actress);
-				video.putActress(actress);
+				studio.addActress(actress);
+				video.addActress(actress);
 			}
 			
 		}
@@ -243,42 +242,14 @@ public class FileBaseVideoSource implements VideoSource {
 	 */
 	private File convertWebpFile(File file) {
 		logger.trace("{}", file.getAbsolutePath());
-		File webpfile = new File(file.getParent(), FileUtils.getNameExceptExtension(file) + ".webp");
+		File webpfile = new File(file.getParent(), 
+				FileUtils.getNameExceptExtension(file) + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_WEBP);
 		if(!webpfile.exists()) {
 			WebpUtils.convert(webp_exec, file);
 		}
 		return webpfile;
 	}
 	
-	/**
-	 * 컴마(,)로 구분된 이름을 <code>List&lt;Actress&gt;</code>로 반환
-	 * @param actressNames
-	 * @return
-	 *//*
-	private List<Actress> makeActressList(String actressNames) {
-		logger.trace("getActressList {}", actressNames);
-		List<Actress> actressList = new ArrayList<Actress>();
-		
-		String[] namesArr = StringUtils.split(actressNames, ",");
-		for(String name : namesArr) {
-			name = StringUtils.join(StringUtils.split(name), " ");
-			boolean bFindSameName = false;
-			for(Actress actress : actressList) {
-				if(VideoUtils.equalsName(actress.getName(), name)) {
-					bFindSameName = true;
-					break;
-				}
-			}
-			if(!bFindSameName) {
-				Actress actress = this.actressProvider.get();
-				actress.setName(name);
-				actressList.add(actress);
-			}
-		}
-		logger.trace("found actress list - {}", actressList);
-		return actressList;
-	}
-	*/
 	@Override
 	public void reload() {
 		logger.trace("reload");
@@ -314,34 +285,28 @@ public class FileBaseVideoSource implements VideoSource {
 	public Video getVideo(String opus) {
 		logger.trace(opus);
 		createVideoSource();
-		if (videoMap.containsKey(opus.toLowerCase())) {
+		if (videoMap.containsKey(opus.toLowerCase()))
 			return videoMap.get(opus.toLowerCase());
-		}
-		else {
+		else
 			throw new VideoException("Video not found : " + opus);
-		}
 	}
 	@Override
 	public Studio getStudio(String name) {
 		logger.trace(name);
 		createVideoSource();
-		if (studioMap.containsKey(name.toLowerCase())) {
+		if (studioMap.containsKey(name.toLowerCase()))
 			return studioMap.get(name.toLowerCase());
-		}
-		else {
+		else
 			throw new VideoException("Studio not found : " + name);
-		}
 	}
 	@Override
 	public Actress getActress(String name) {
 		logger.trace(name);
 		createVideoSource();
-		if (actressMap.containsKey(VideoUtils.forwardNameSort(name))) {
+		if (actressMap.containsKey(VideoUtils.forwardNameSort(name)))
 			return actressMap.get(VideoUtils.forwardNameSort(name));
-		}
-		else {
+		else
 			throw new VideoException("Actress not found : " + name);
-		}
 	}
 	@Override
 	public List<Video> getVideoList() {

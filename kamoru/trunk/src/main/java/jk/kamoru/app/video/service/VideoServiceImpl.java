@@ -224,7 +224,7 @@ public class VideoServiceImpl implements VideoService {
 //					actressInMap = new Actress(actress.getName());
 //					actressInMap.setMainBasePath(mainBasePath);
 				}
-				actressInMap.putVideo(video);
+				actressInMap.addVideo(video);
 				actressMap.put(actress.getName(), actressInMap);
 			}
 		}
@@ -280,7 +280,7 @@ public class VideoServiceImpl implements VideoService {
 //				studio = new Studio(studioName);
 //				studio.setMainBasePath(mainBasePath);
 			}
-			studio.putVideo(video);
+			studio.addVideo(video);
 			studioMap.put(studioName, studio);
 		}
 		List<Studio> list = new ArrayList<Studio>(studioMap.values());
@@ -464,7 +464,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void saveActressInfo(String name, Map<String, String> params) {
 		logger.trace("name={}, params={}", name, params);
-		VideoUtils.saveFileFromMap(new File(mainBasePath, name + VideoCore.EXT_ACTRESS), params);
+		VideoUtils.saveFileFromMap(new File(mainBasePath, name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS), params);
 		videoDao.getActress(name).reloadInfo();
 	}
 
@@ -546,7 +546,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void saveStudioInfo(String studio, Map<String, String> params) {
 		logger.trace("name={}, params={}", studio, params);
-		VideoUtils.saveFileFromMap(new File(mainBasePath, studio + VideoCore.EXT_STUDIO), params);
+		VideoUtils.saveFileFromMap(new File(mainBasePath, studio + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO), params);
 		videoDao.getStudio(studio).reloadInfo();
 	}
 	

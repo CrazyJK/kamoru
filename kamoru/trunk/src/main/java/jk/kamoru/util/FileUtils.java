@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
 	
-	private static final String EXTENSION_SEPARATOR = ".";
+	public static final String EXTENSION_SEPARATOR = ".";
 
 	
 	/**
@@ -35,12 +35,22 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			f.renameTo(new File(parent, newName + "." + ext.toLowerCase()));
 		}
 	}
-	
+
+	/**
+	 * 확장자를 뺀 파일 이름
+	 * @param file
+	 * @return
+	 */
 	public static String getNameExceptExtension(File file) {
 		Assert.isTrue(file.isFile(), "It is not file!");
 		return StringUtils.substringBeforeLast(file.getName(), EXTENSION_SEPARATOR);
 	}
 
+	/**
+	 * 파일의 확장자
+	 * @param file
+	 * @return
+	 */
 	public static String getExtension(File file) {
 		Assert.isTrue(file.isFile(), "It is not file!");
 		return StringUtils.substringAfterLast(file.getName(), EXTENSION_SEPARATOR);

@@ -15,10 +15,14 @@ public class VideoCore {
 
 	public static final Sort DEFAULT_SORTMETHOD = Sort.T;
 
-	public static final String EXT_ACTRESS = ".actress";
-
-	public static final String EXT_STUDIO = ".studio";
-
 	public static final String HISTORY_LOG = "history.log";
-	
+
+	public static final String EXT_ACTRESS = "actress";
+
+	public static final String EXT_STUDIO = "studio";
+
+	public static final String EXT_INFO = "info";
+
+	public static final String EXT_WEBP = "webp";
+
 }

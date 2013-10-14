@@ -18,6 +18,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileExistsException;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -35,33 +36,35 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class Video implements Comparable<Object>, Serializable {
+public class Video implements Comparable<Video>, Serializable {
+
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
 	private static final Logger logger = LoggerFactory.getLogger(Video.class);
 	
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
-
 	private static Sort sortMethod = VideoCore.DEFAULT_SORTMETHOD;
 	
 	@Value("#{videoProp['server.base.url']}") private String baseurl;
-	
-	private List<Actress> actressList;
+
+	// files
+	private List<File> videoFileList;
+	private List<File> subtitlesFileList;
 	private File coverFile;
 	private File coverWebpFile;
-	private List<File> etcFileList;
-	private String etcInfo;
-	private List<String> historyList; // history list
 	private File infoFile; // json file
+	private List<File> etcFileList;
+
+	// info
+	private Studio studio;
 	private String opus;
+	private String title;
 	private String overview; // overview text
+	private String etcInfo;
+	private String releaseDate;
+	private List<Actress> actressList;
+	private List<String> historyList; // history list
 	private Integer playCount;
 	private int rank; // ranking score
-	private Studio studio;
-	private List<File> subtitlesFileList;
-	private String title;
-	private List<File> videoFileList;
-
-	private String releaseDate;
 
 
 	public Video() {
@@ -98,45 +101,25 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		Video comp = (Video)o;
-		String thisStr = "";
-		String compStr = "";
-		
+	public int compareTo(Video comp) {
 		switch(sortMethod) {
 		case S:
-			thisStr = this.getStudio().getName();
-			compStr = comp.getStudio().getName();
-			break;
+			return StringUtils.compateTo(this.getStudio().getName(), comp.getStudio().getName());
 		case O:
-			thisStr = this.getOpus();
-			compStr = comp.getOpus();
-			break;
+			return StringUtils.compateTo(this.getOpus(), comp.getOpus());
 		case T:
-			thisStr = this.getTitle();
-			compStr = comp.getTitle();
-			break;
+			return StringUtils.compateTo(this.getTitle(), comp.getTitle());
 		case A:
-			thisStr = this.getActress();
-			compStr = comp.getActress();
-			break;
+			return StringUtils.compateTo(this.getActress(), comp.getActress());
 		case M:
-			thisStr = String.valueOf(this.getDelegateFile() != null ? this.getDelegateFile().lastModified() : 0l);
-			compStr = String.valueOf(comp.getDelegateFile() != null ? comp.getDelegateFile().lastModified() : 0l);
-			break;
+			return StringUtils.compateTo(this.getDelegateFile().lastModified(), comp.getDelegateFile().lastModified());
 		case P:
 			return this.getPlayCount() - comp.getPlayCount();
 		case R:
 			return this.getRank() - comp.getRank();
 		default:
-			break;
-		
+			return StringUtils.compateTo(this, comp);
 		}
-//		String[] s = {thisStr, compStr};
-//		logger.trace("{} : {}", this.opus, ArrayUtils.toString(s));
-//		Arrays.sort(s);
-//		return s[0].equals(thisStr) ? -1 : 1;
-		return StringUtils.compateTo(thisStr, compStr);
 	}
 	
 	/**
@@ -280,7 +263,7 @@ public class Video implements Comparable<Object>, Serializable {
 	}
 	
 	/**
-	 * 기타 정보. 보통 날자
+	 * 기타 정보. 보통 날짜
 	 */
 	public String getEtcInfo() {
 		return etcInfo;
@@ -307,9 +290,8 @@ public class Video implements Comparable<Object>, Serializable {
 	 */
 	public String getHistoryText() {
 		StringBuilder sb = new StringBuilder();
-		for (String his : historyList) {
-			sb.append(his).append(System.getProperty("line.separator"));
-		}
+		for (String his : historyList) 
+			sb.append(his).append(SystemUtils.LINE_SEPARATOR);
 		return sb.toString();
 	}
 
@@ -318,8 +300,14 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @return
 	 */
 	public File getInfoFile() {
-		if(this.infoFile == null) 
-			this.infoFile = new File(this.getDelegatePath(), this.getDelegateFilenameWithoutSuffix() + ".info");
+		if(this.infoFile == null) {
+			this.infoFile = new File(this.getDelegatePath(), this.getDelegateFilenameWithoutSuffix() + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_INFO);
+			try {
+				this.infoFile.createNewFile();
+			} catch (IOException e) {
+				logger.error("fail to create info file", e);
+			}
+		}
 		return infoFile;
 	}
 
@@ -328,9 +316,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * @return
 	 */
 	public String getInfoFilePath() {
-		if (infoFile != null)
-			return this.infoFile.getAbsolutePath();
-		return "";
+		return getInfoFile().getAbsolutePath();
 	}
 
 	/**
@@ -396,9 +382,9 @@ public class Video implements Comparable<Object>, Serializable {
 	 */
 	public String[] getSubtitlesFileListPathArray() {
 		if(isExistSubtitlesFileList()) {
-			String[] filePathes = new String[getSubtitlesFileList().size()];
-			for(int i=0; i<filePathes.length; i++)
-				filePathes[i] = getSubtitlesFileList().get(i).getAbsolutePath();
+			String[] filePathes = new String[this.subtitlesFileList.size()];
+			for(int i=0; i<this.subtitlesFileList.size(); i++)
+				filePathes[i] = this.subtitlesFileList.get(i).getAbsolutePath();
 			return filePathes;
 		}
 		return null;
@@ -555,7 +541,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * actress를 추가한다. 기존actress가 발견되면 ref를 갱신.
 	 * @param actress
 	 */
-	public void putActress(Actress actress) {
+	public void addActress(Actress actress) {
 		boolean notFound = true;
 		for (Actress actressInList : this.actressList) {
 			if (actressInList.contains(actress.getName())) {
@@ -643,9 +629,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * etc file
 	 * @param file
 	 */
-	public void setEtcFile(File file) {
-		if (this.etcFileList.contains(file))
-			this.etcFileList.remove(file);
+	public void addEtcFile(File file) {
 		this.etcFileList.add(file);		
 	}
 	
@@ -749,9 +733,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * add subtitles file
 	 * @param file
 	 */
-	public void setSubtitlesFile(File file) {
-		if (this.subtitlesFileList.contains(file))
-			this.subtitlesFileList.remove(file);
+	public void addSubtitlesFile(File file) {
 		this.subtitlesFileList.add(file);
 	}
 	
@@ -775,9 +757,7 @@ public class Video implements Comparable<Object>, Serializable {
 	 * add video file
 	 * @param file
 	 */
-	public void setVideoFile(File file) {
-		if (this.videoFileList.contains(file))
-			this.videoFileList.remove(file);
+	public void addVideoFile(File file) {
 		this.videoFileList.add(file);
 	}
 
@@ -788,23 +768,13 @@ public class Video implements Comparable<Object>, Serializable {
 	public void setVideoFileList(List<File> videoFileList) {
 		this.videoFileList = videoFileList;
 	}
-/*
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("video : ").append(this.getVideoFileListPath()).append(",");
-		sb.append("subtitles : ").append(this.getSubtitlesFileListPath()).append(",");
-		sb.append("cover : ").append(this.getCoverFilePath()).append(",");
-		sb.append("info : ").append(this.getInfoFilePath()).append(",");
-		sb.append("etc : ").append(this.getEtcFileListPath());
-		return sb.toString();
-	}
-*/
-	
-	
 	
 	public String getReleaseDate() {
 		return releaseDate;
+	}
+
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
 	}
 
 	@Override
@@ -817,10 +787,10 @@ public class Video implements Comparable<Object>, Serializable {
 						videoFileList, releaseDate);
 	}
 
-	public void setReleaseDate(String releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-
+	/**
+	 * video의 모든 파일 크기
+	 * @return
+	 */
 	public long length() {
 		long length = 0l;
 		for (File file : this.getFileAll()) {

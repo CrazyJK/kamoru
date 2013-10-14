@@ -9,6 +9,7 @@ import java.util.Map;
 
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,20 +22,21 @@ public class Actress implements Serializable, Comparable<Actress> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
-	private String birth;
+	@Value("#{videoProp['mainBasePath']}") 			
+	private String mainBasePath;
 
+	private String name;
+	private String localName;
+	private String birth;
 	private String bodySize;
 	private String debut;
 	private String height;
-	private boolean loaded;
-	private String localName;
-	@Value("#{videoProp['mainBasePath']}") 			
-	private String mainBasePath;
-	private String name;
+	
 	private List<Studio> studioList;
-	
-	private List<Video> videoList;
-	
+	private List<Video>   videoList;
+
+	private boolean loaded;
+
 	public Actress() {
 		studioList = new ArrayList<Studio>();
 		videoList = new ArrayList<Video>();
@@ -94,7 +96,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 	
 	private void loadInfo() {
 		if (!loaded) {
-			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + VideoCore.EXT_ACTRESS));
+			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS));
 			this.localName = info.get("LOCALNAME");
 			this.birth     = info.get("BIRTH");
 			this.height    = info.get("HEIGHT");
@@ -107,11 +109,11 @@ public class Actress implements Serializable, Comparable<Actress> {
 		loaded = false;
 		loadInfo();
 	}
-	public void putStudio(Studio studio) {
+	public void addStudio(Studio studio) {
 		if(!this.studioList.contains(studio))
 			this.studioList.add(studio);
 	}
-	public void putVideo(Video video) {
+	public void addVideo(Video video) {
 		if(!this.videoList.contains(video))
 			this.videoList.add(video);
 	}
