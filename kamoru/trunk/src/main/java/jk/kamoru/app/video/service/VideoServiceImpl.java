@@ -561,19 +561,19 @@ public class VideoServiceImpl implements VideoService {
 			public int compare(Actress o1, Actress o2) {
 				switch (sort) {
 				case NAME:
-					return StringUtils.compateTo(o1.getName(), o2.getName());
+					return StringUtils.compareTo(o1.getName(), o2.getName());
 				case BIRTH:
-					return StringUtils.compateTo(o2.getBirth(), o1.getBirth());
+					return StringUtils.compareTo(o2.getBirth(), o1.getBirth());
 				case BODY:
-					return StringUtils.compateTo(o2.getBodySize(), o1.getBodySize());
+					return StringUtils.compareTo(o2.getBodySize(), o1.getBodySize());
 				case HEIGHT:
-					return StringUtils.compateTo(o2.getHeight(), o1.getHeight());
+					return StringUtils.compareTo(o2.getHeight(), o1.getHeight());
 				case DEBUT:
-					return StringUtils.compateTo(o2.getDebut(), o1.getDebut());
+					return StringUtils.compareTo(o2.getDebut(), o1.getDebut());
 				case VIDEO:
 					return o2.getVideoList().size() - o1.getVideoList().size();
 				default:
-					return StringUtils.compateTo(o1.getName(), o2.getName());
+					return StringUtils.compareTo(o1.getName(), o2.getName());
 				}
 			}
 		});
@@ -591,15 +591,15 @@ public class VideoServiceImpl implements VideoService {
 			public int compare(Studio o1, Studio o2) {
 				switch (sort) {
 				case NAME:
-					return StringUtils.compateTo(o1.getName(), o2.getName());
+					return StringUtils.compareTo(o1.getName(), o2.getName());
 				case HOMEPAGE:
-					return StringUtils.compateTo(o2.getHomepage(), o1.getHomepage());
+					return StringUtils.compareTo(o2.getHomepage(), o1.getHomepage());
 				case COMPANY:
-					return StringUtils.compateTo(o2.getCompanyName(), o1.getCompanyName());
+					return StringUtils.compareTo(o2.getCompanyName(), o1.getCompanyName());
 				case VIDEO:
 					return o2.getVideoList().size() - o1.getVideoList().size();
 				default:
-					return StringUtils.compateTo(o1.getName(), o2.getName());
+					return StringUtils.compareTo(o1.getName(), o2.getName());
 				}
 			}
 		});

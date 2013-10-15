@@ -104,7 +104,7 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	@Override
 	public int compareTo(Studio comp) {
-		return StringUtils.compateTo(this.getName().toLowerCase(), comp.getName().toLowerCase());
+		return StringUtils.compareTo(this.getName().toLowerCase(), comp.getName().toLowerCase());
 	}
 
 	private void loadInfo() {

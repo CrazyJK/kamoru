@@ -54,7 +54,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 	}
 	@Override
 	public int compareTo(Actress comp) {
-		return StringUtils.compateTo(this.getName(), comp.getName());
+		return StringUtils.compareTo(this.getName(), comp.getName());
 	}
 	
 	public boolean contains(String actressName) {

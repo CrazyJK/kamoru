@@ -29,28 +29,28 @@ public class FileBaseVideoSource implements VideoSource {
 	
 	protected static final Logger logger = LoggerFactory.getLogger(FileBaseVideoSource.class);
 
-	private final String UNKNOWN = "_Unknown";
-	private final String unclassifiedStudio = UNKNOWN;
-	private final String unclassifiedOpus = UNKNOWN;
+	private final String UNKNOWN 			 = "_Unknown";
+	private final String unclassifiedStudio  = UNKNOWN;
+	private final String unclassifiedOpus 	 = UNKNOWN;
 	private final String unclassifiedActress = "Amateur";
 
 	// data source
-	private Map<String, Video> videoMap = new HashMap<String, Video>();
-	private Map<String, Studio> studioMap = new HashMap<String, Studio>();
+	private Map<String, Video>     videoMap	= new HashMap<String, Video>();
+	private Map<String, Studio>   studioMap	= new HashMap<String, Studio>();
 	private Map<String, Actress> actressMap = new HashMap<String, Actress>();
 	
 	// Domain provider
-	@Inject Provider<Video> videoProvider;
-	@Inject Provider<Studio> studioProvider;
+	@Inject Provider<Video>     videoProvider;
+	@Inject Provider<Studio>   studioProvider;
 	@Inject Provider<Actress> actressProvider;
 
 	// property
 	private String[] paths;
-	private String video_extensions;
-	private String cover_extensions;
-	private String subtitles_extensions;
-	private boolean webp_mode;
-	private String webp_exec;
+	private String 	     video_extensions;
+	private String 	     cover_extensions;
+	private String 	 subtitles_extensions;
+	private boolean  webp_mode;
+	private String 	 webp_exec;
 
 	// logic variables
 	private boolean loaded = false;
@@ -85,10 +85,11 @@ public class FileBaseVideoSource implements VideoSource {
 	 * 기존에 만든적이 없으면, video source를 로드를 호출한다.
 	 */
 	private final void createVideoSource() {
-		logger.trace("createVideoSource");
+//		logger.trace("createVideoSource");
 		if (!loaded)
 			load();
 	}
+	
 	/**
 	 * video데이터를 로드한다.
 	 */
@@ -107,8 +108,8 @@ public class FileBaseVideoSource implements VideoSource {
 		Collection<File> files = new ArrayList<File>();
 		for (String path : paths) {
 			File directory = new File(path);
-			logger.debug("directory scanning : {}", directory);
-			if(directory.isDirectory()) {
+			logger.debug("directory scanning : {}", directory.getAbsolutePath());
+			if (directory.isDirectory()) {
 				Collection<File> found = FileUtils.listFiles(directory, null, true);
 				logger.debug("\tfound file size is {}", found.size());
 				files.addAll(found);
@@ -136,7 +137,7 @@ public class FileBaseVideoSource implements VideoSource {
 			
 			//   1      2     3       4       5     6
 			//[studio][opus][title][actress][date][etc...]
-			String[] names = StringUtils.split(name, "]");
+			String[] names 		= StringUtils.split(name, "]");
 			String studioName  	= UNKNOWN;
 			String opus    		= UNKNOWN;
 			String title   		= filename;
@@ -244,7 +245,7 @@ public class FileBaseVideoSource implements VideoSource {
 		logger.trace("{}", file.getAbsolutePath());
 		File webpfile = new File(file.getParent(), 
 				FileUtils.getNameExceptExtension(file) + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_WEBP);
-		if(!webpfile.exists()) {
+		if (!webpfile.exists()) {
 			WebpUtils.convert(webp_exec, file);
 		}
 		return webpfile;
@@ -253,6 +254,7 @@ public class FileBaseVideoSource implements VideoSource {
 	@Override
 	public void reload() {
 		logger.trace("reload");
+		loaded = false;
 		load();
 	}
 	

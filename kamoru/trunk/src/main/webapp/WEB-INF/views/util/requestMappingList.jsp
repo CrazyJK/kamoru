@@ -4,42 +4,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title><s:message code="default.requestMapping-list"/></title>
 <style type="text/css">
-ol {color: red; font-size:0.8em;}
-li {}
-dl {border-bottom: 1px solid orange; border-radius: 10px; margin: 0;}
-dt {font-size:10pt; color:lightgray;}
-dd {color:gray; font-size:9pt; display: none;}
-em {color:navy; font-size:1em; font-style: normal;}
+table {font-size:0.7em; width:100%;}
+tr:hover {background-color:rgba(255,165,0,.25);}
+th {background-color:rgba(255,165,0,.5);}
+* [onclick] {
+	cursor:pointer;
+}
+* [onclick]:hover {
+	color:orange; 
+	text-decoration:none; 
+	text-shadow:1px 1px 1px black;
+}
+.selected {color: blue;}
 </style>
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {// /[/gi
-//	$("body").html($('body').html().replace(/\[/g,"[<span class='highlighted'>"));
-//	$("body").html($('body').html().replace(/\]/g,"</span>]"));
-	
-	$("dt").each(function() {
-		$(this).html($(this).html().replace(/\[/g,"[<em>"));
-		$(this).html($(this).html().replace(/\]/g,"</em>]"));
-	});
-	
+$(document).ready(function() {
+	var sort = location.search.split("=")[1]; 
+	if (sort == 'M')
+		$("#M").addClass("selected");
+	else if (sort == 'C')
+		$("#C").addClass("selected");
+	else
+		$("#P").addClass("selected");
 });
+function fnSort(sort) {
+	location.href= "?sort=" + sort;
+}
 </script>
 </head>
 <body>
-<ol>
-	<c:forEach items="${handlerMethodMap}" var="handlerMethod">
-	<li>
-		<dl>
-			<dt title="<c:out value="${handlerMethod.value}" escapeXml="true"/>">${handlerMethod.key}</dt>
-			<dd><c:out value="${handlerMethod.value}" escapeXml="true"/></dd>	
-		</dl>
+
+<table>
+	<tr>
+		<th align="center">	No</th>
+		<th align="left">	<span id="P" onclick="fnSort('P')">Pattern</span></th>
+		<th align="center">	<span id="M" onclick="fnSort('M')">Method</span></th>
+		<th align="right">	<span id="C" onclick="fnSort('C')">Class</span></th>
+		<th align="left">	Method</th>
+	</tr>		
+	<c:forEach items="${mappingList}" var="mapping" varStatus="status">
+	<tr>
+		<td align="center">	${status.count }</td>
+		<td align="left">	${mapping.reqPattern }</td>
+		<td align="center">	${mapping.reqMethod }</td>
+		<td align="right">	${mapping.beanType }</td>
+		<td align="left">	${mapping.beanMethod }</td>
+	</tr>
 	</c:forEach>
-</ol>
+</table>
+
 </body>
 </html>

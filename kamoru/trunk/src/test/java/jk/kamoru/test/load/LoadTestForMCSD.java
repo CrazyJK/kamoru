@@ -76,9 +76,12 @@ public class LoadTestForMCSD extends LoadTester {
 		List<String[]> userList = new ArrayList<String[]>();
 		userList.add(new String[]{"남종관", "1"});
 		userList.add(new String[]{"배태영", "1"});
-		userList.add(new String[]{"정필종", "1"});
+//		userList.add(new String[]{"정필종", "1"});
 		userList.add(new String[]{"장응주", "1"});
-		userList.add(new String[]{"조상욱", "1"});
+//		userList.add(new String[]{"조상욱", "1"});
+		userList.add(new String[]{"서대영", "1"});
+		userList.add(new String[]{"현혁", "1"});
+		
 		return userList;
 	}
 

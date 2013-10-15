@@ -26,13 +26,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @param name2
 	 * @return
 	 */
-	public static int compateTo(String name1, String name2) {
+	public static int compareTo(String name1, String name2) {
 		name1 = name1 == null ? "" : name1.trim();
 		name2 = name2 == null ? "" : name2.trim();
 		return name1.compareTo(name2);
 	}
 
-	public static int compateTo(Object obj1, Object obj2) {
+	public static int compareTo(Object obj1, Object obj2) {
 		String str1 = obj1 == null ? "" : obj1.toString();
 		String str2 = obj2 == null ? "" : obj2.toString();
 		return str1.compareTo(str2);

@@ -20,15 +20,14 @@ public class VideoBatch {
 
 	@Autowired VideoService videoService;
 
-	@Value("#{videoProp['moveWatchedVideo']}") private boolean MOVE_WATCHED_VIDEO;
-	@Value("#{videoProp['watchedVideoPath']}") private String WATCHED_PATH;
+	@Value("#{videoProp['moveWatchedVideo']}") 				private boolean MOVE_WATCHED_VIDEO;
+	@Value("#{videoProp['watchedVideoPath']}") 				private String 	WATCHED_PATH;
+	@Value("#{videoProp['removeLowerRankVideo']}") 			private boolean REMOVE_LOWER_RANK_VIDEO;
+	@Value("#{videoProp['lowerRankVideoBaselineScore']}")  	private int 	LOWER_RANK_VIDEO_BASELINE_SCORE;
+
 	/** 최소 공간 사이즈 */
 	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;
 	private final long SLEEP_TIME = 30 * 1000;
-	
-	@Value("#{videoProp['removeLowerRankVideo']}") private boolean REMOVE_LOWER_RANK_VIDEO;
-	@Value("#{videoProp['lowerRankVideoBaselineScore']}")  private int LOWER_RANK_VIDEO_BASELINE_SCORE;
-
 
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {

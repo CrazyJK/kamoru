@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import jk.kamoru.KamoruException;
 import jk.kamoru.app.image.service.ImageService;
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.domain.ActressSort;
@@ -41,9 +40,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Video Collection controller<br>
- * data loading, searching, background-image setting
  * @author kamoru
- *
  */
 @Controller
 @RequestMapping("/video")
@@ -81,15 +78,20 @@ public class VideoController {
 		logger.trace("{}", params);
 		videoService.saveActressInfo(actress, params);
 	}
-	
-	@RequestMapping("/error")
-	public void error() {
-		throw new RuntimeException("error");
-	}
 
-	@RequestMapping("/videoError")
-	public void errorVideo() {
-		throw new KamoruException("error");
+	@RequestMapping(value="/briefing", method=RequestMethod.GET)
+	public String briefing(Model model) {
+		logger.trace("briefing");
+		model.addAttribute("pathMap", videoService.groupByPath());
+		model.addAttribute("dateMap", videoService.groupByDate());
+		model.addAttribute("rankMap", videoService.groupByRank());
+		model.addAttribute("playMap", videoService.groupByPlay());
+		model.addAttribute(videoService.getStudioList());
+		model.addAttribute(videoService.getActressList());
+		model.addAttribute(videoService.getVideoList());
+		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
+
+		return "video/briefing";
 	}
 
 	@RequestMapping(value="/history", method=RequestMethod.GET)
@@ -97,20 +99,6 @@ public class VideoController {
 		logger.trace("query={}", query);
 		model.addAttribute("historyList", videoService.findHistory(query));
 		return "video/history";
-	}
-
-	private HttpEntity<byte[]> httpEntity(byte[] imageBytes, String suffix) {
-		long today = new Date().getTime();
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setCacheControl("max-age=" + VideoCore.WEBCACHETIME_SEC);
-		headers.setContentLength(imageBytes.length);
-		headers.setContentType(MediaType.parseMediaType("image/" + suffix));
-		headers.setDate(		today + VideoCore.WEBCACHETIME_MILI);
-		headers.setExpires(		today + VideoCore.WEBCACHETIME_MILI);
-		headers.setLastModified(today - VideoCore.WEBCACHETIME_MILI);
-		
-		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
@@ -126,71 +114,6 @@ public class VideoController {
 		return httpEntity(videoService.getDefaultCoverFileByteArray(), "jpg");
 	}
 	
-	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
-	public String opus(Model model, @PathVariable String opus) {
-		logger.trace(opus);
-		model.addAttribute("video", videoService.getVideo(opus));
-		return "video/videoDetail";
-	}
-	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> opusCover(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
-		logger.trace("{}", opus);
-		boolean isChrome = agent.indexOf("Chrome") > -1;
-		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
-		if(imageFile == null) {
-			response.sendRedirect("../no/cover");
-			return null;
-		}
-		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), FileUtils.getExtension(imageFile));
-	}
-	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusDelete(@PathVariable("opus") String opus) {
-		logger.trace(opus);
-		videoService.deleteVideo(opus);
-	}
-
-	@RequestMapping(value="/{opus}/overview", method=RequestMethod.GET)
-	public String opusOverview(Model model, @PathVariable("opus") String opus) {
-		logger.trace(opus);
-		model.addAttribute("video", videoService.getVideo(opus));
-		return "video/videoOverview";
-	}
-	
-	@RequestMapping(value="/{opus}/overview", method=RequestMethod.POST) //	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public String opusOverviewPost(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
-		logger.trace("{} - {}", opus, overViewTxt);
-		videoService.saveVideoOverview(opus, overViewTxt);
-		return "video/videoOverviewSave";
-	}
-	
-	@RequestMapping(value="/{opus}/play", method=RequestMethod.GET)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusPlay(@PathVariable String opus) {
-		logger.trace(opus);
-		videoService.playVideo(opus);
-	}
-	
-	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusPost() {
-		logger.warn("POST do not something yet");
-	}
-	
-	@RequestMapping(value="/{opus}/rank/{rank}", method=RequestMethod.PUT)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusRank(@PathVariable String opus, @PathVariable int rank) {
-		logger.trace("{} : {}", opus, rank);
-		videoService.rankVideo(opus, rank);
-	}
-	
-	@RequestMapping(value="/{opus}/subtitles", method=RequestMethod.GET)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusSubtitles(@PathVariable String opus) {
-		logger.trace(opus);
-		videoService.editVideoSubtitles(opus);
-	}
-	
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	public String search(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
 		logger.trace("query={}", query);
@@ -200,14 +123,6 @@ public class VideoController {
         return "video/search";		
 	}
 
-	@RequestMapping(value="/studio", method=RequestMethod.GET)
-	public String studio(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
-		logger.trace("studio");
-		model.addAttribute(videoService.getStudioList(sort));
-		model.addAttribute("sorts", StudioSort.values());
-		model.addAttribute("sort", sort);
-		return "video/studioList";
-	}
 	@RequestMapping(value="/studio/{studio}", method=RequestMethod.GET)
 	public String studioName(Model model, @PathVariable String studio) {
 		logger.trace(studio);
@@ -222,6 +137,82 @@ public class VideoController {
 		videoService.saveStudioInfo(studio, params);
 	}
 
+	@RequestMapping(value="/studio", method=RequestMethod.GET)
+	public String studio(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
+		logger.trace("studio");
+		model.addAttribute(videoService.getStudioList(sort));
+		model.addAttribute("sorts", StudioSort.values());
+		model.addAttribute("sort", sort);
+		return "video/studioList";
+	}
+
+	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
+	public HttpEntity<byte[]> opusCover(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
+		logger.trace("{}", opus);
+		boolean isChrome = agent.indexOf("Chrome") > -1;
+		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
+		if(imageFile == null) {
+			response.sendRedirect("../no/cover");
+			return null;
+		}
+		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), FileUtils.getExtension(imageFile));
+	}
+	
+	@RequestMapping(value="/{opus}/overview", method=RequestMethod.GET)
+	public String opusOverview(Model model, @PathVariable("opus") String opus) {
+		logger.trace(opus);
+		model.addAttribute("video", videoService.getVideo(opus));
+		return "video/videoOverview";
+	}
+
+	@RequestMapping(value="/{opus}/overview", method=RequestMethod.POST)
+	public String opusOverviewPost(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
+		logger.trace("{} - {}", opus, overViewTxt);
+		videoService.saveVideoOverview(opus, overViewTxt);
+		return "video/videoOverviewSave";
+	}
+
+	@RequestMapping(value="/{opus}/play", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusPlay(@PathVariable String opus) {
+		logger.trace(opus);
+		videoService.playVideo(opus);
+	}
+
+	@RequestMapping(value="/{opus}/rank/{rank}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusRank(@PathVariable String opus, @PathVariable int rank) {
+		logger.trace("{} : {}", opus, rank);
+		videoService.rankVideo(opus, rank);
+	}
+
+	@RequestMapping(value="/{opus}/subtitles", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusSubtitles(@PathVariable String opus) {
+		logger.trace(opus);
+		videoService.editVideoSubtitles(opus);
+	}
+
+	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusDelete(@PathVariable("opus") String opus) {
+		logger.trace(opus);
+		videoService.deleteVideo(opus);
+	}
+
+	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
+	public String opus(Model model, @PathVariable String opus) {
+		logger.trace(opus);
+		model.addAttribute("video", videoService.getVideo(opus));
+		return "video/videoDetail";
+	}
+	
+	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusPost() {
+		logger.warn("POST do not something yet");
+	}
+	
 	@RequestMapping
 	public String video(Model model, @ModelAttribute VideoSearch videoSearch) {
 		logger.trace("{}", videoSearch);
@@ -239,18 +230,19 @@ public class VideoController {
 		return "video/videoMain";
 	}
 	
-	@RequestMapping(value="/briefing", method=RequestMethod.GET)
-	public String briefing(Model model) {
-		logger.trace("briefing");
-		model.addAttribute("pathMap", videoService.groupByPath());
-		model.addAttribute("dateMap", videoService.groupByDate());
-		model.addAttribute("rankMap", videoService.groupByRank());
-		model.addAttribute("playMap", videoService.groupByPlay());
-		model.addAttribute(videoService.getStudioList());
-		model.addAttribute(videoService.getActressList());
-		model.addAttribute(videoService.getVideoList());
-		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
-
-		return "video/briefing";
+	private HttpEntity<byte[]> httpEntity(byte[] imageBytes, String suffix) {
+		long today = new Date().getTime();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setCacheControl("max-age=" + VideoCore.WEBCACHETIME_SEC);
+		headers.setContentLength(imageBytes.length);
+		headers.setContentType(MediaType.parseMediaType("image/" + suffix));
+		headers.setDate(		today + VideoCore.WEBCACHETIME_MILI);
+		headers.setExpires(		today + VideoCore.WEBCACHETIME_MILI);
+		headers.setLastModified(today - VideoCore.WEBCACHETIME_MILI);
+		
+		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
+
+
 }

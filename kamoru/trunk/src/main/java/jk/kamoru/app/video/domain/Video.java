@@ -104,21 +104,21 @@ public class Video implements Comparable<Video>, Serializable {
 	public int compareTo(Video comp) {
 		switch(sortMethod) {
 		case S:
-			return StringUtils.compateTo(this.getStudio().getName(), comp.getStudio().getName());
+			return StringUtils.compareTo(this.getStudio().getName(), comp.getStudio().getName());
 		case O:
-			return StringUtils.compateTo(this.getOpus(), comp.getOpus());
+			return StringUtils.compareTo(this.getOpus(), comp.getOpus());
 		case T:
-			return StringUtils.compateTo(this.getTitle(), comp.getTitle());
+			return StringUtils.compareTo(this.getTitle(), comp.getTitle());
 		case A:
-			return StringUtils.compateTo(this.getActress(), comp.getActress());
+			return StringUtils.compareTo(this.getActress(), comp.getActress());
 		case M:
-			return StringUtils.compateTo(this.getDelegateFile().lastModified(), comp.getDelegateFile().lastModified());
+			return StringUtils.compareTo(this.getDelegateFile().lastModified(), comp.getDelegateFile().lastModified());
 		case P:
 			return this.getPlayCount() - comp.getPlayCount();
 		case R:
 			return this.getRank() - comp.getRank();
 		default:
-			return StringUtils.compateTo(this, comp);
+			return StringUtils.compareTo(this, comp);
 		}
 	}
 	
