@@ -10,12 +10,12 @@ public class ImageException extends KamoruException {
 	public ImageException() {
 		super();
 	}
-
+/*	since JDK 1.7
 	public ImageException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
-
+*/
 	public ImageException(String message, Throwable cause) {
 		super(message, cause);
 	}

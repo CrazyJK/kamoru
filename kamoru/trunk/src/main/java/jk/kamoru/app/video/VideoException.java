@@ -9,12 +9,12 @@ public class VideoException extends KamoruException {
 	public VideoException() {
 		super();
 	}
-
+/*	since JDK 1.7
 	public VideoException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
-
+*/
 	public VideoException(String message, Throwable cause) {
 		super(message, cause);
 	}

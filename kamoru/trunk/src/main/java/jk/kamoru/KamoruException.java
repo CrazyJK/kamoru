@@ -7,12 +7,12 @@ public class KamoruException extends RuntimeException {
 	public KamoruException() {
 		super();
 	}
-
+/*	sinse JDK 1.7
 	public KamoruException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
-
+*/
 	public KamoruException(String message, Throwable cause) {
 		super(message, cause);
 	}
