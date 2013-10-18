@@ -2,6 +2,7 @@ package jk.kamoru.util;
 
 import java.io.File;
 
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.springframework.util.Assert;
 
 
@@ -33,6 +34,15 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			String newName = folder + StringUtils.addZero(++count, digit);
 			
 			f.renameTo(new File(parent, newName + "." + ext.toLowerCase()));
+		}
+	}
+	
+	public static void renameToMelon(File basepath) {
+		Assert.isTrue(basepath.isDirectory());
+		for (File file : FileUtils.listFiles(basepath, null, false)) {
+			String name = file.getName();
+			if (name.length() > 4)
+				file.renameTo(new File(file.getParentFile(), name.substring(4)));
 		}
 	}
 
