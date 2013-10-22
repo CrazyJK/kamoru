@@ -6,6 +6,7 @@ import java.util.Map;
 
 import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.ActressSort;
+import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.StudioSort;
 import jk.kamoru.app.video.domain.Video;
@@ -72,5 +73,7 @@ public interface VideoService {
 	List<Actress> getActressList(ActressSort sort);
 
 	List<Studio> getStudioList(StudioSort sort);
+
+	List<Video> getVideoList(Sort sort);
 	
 }

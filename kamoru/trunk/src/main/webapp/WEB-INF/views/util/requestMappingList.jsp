@@ -6,9 +6,18 @@
 <head>
 <title><s:message code="default.requestMapping-list"/></title>
 <style type="text/css">
-table {font-size:0.7em; width:100%;}
-tr:hover {background-color:rgba(255,165,0,.25);}
-th {background-color:rgba(255,165,0,.5);}
+table {
+	font-size:0.8em; width:100%;
+}
+tr:hover {
+	background-color:rgba(255,165,0,.25);
+}
+th {
+	background-color:rgba(255,165,0,.5);
+}
+td {
+	font-family: "나눔고딕코딩";
+}
 * [onclick] {
 	cursor:pointer;
 }
@@ -17,7 +26,9 @@ th {background-color:rgba(255,165,0,.5);}
 	text-decoration:none; 
 	text-shadow:1px 1px 1px black;
 }
-.selected {color: blue;}
+.selected {
+	color: blue;
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -50,7 +61,7 @@ function fnSort(sort) {
 		<td align="left">	${mapping.reqPattern }</td>
 		<td align="center">	${mapping.reqMethod }</td>
 		<td align="right">	${mapping.beanType }</td>
-		<td align="left">	${mapping.beanMethod }</td>
+		<td align="left">  .${mapping.beanMethod }</td>
 	</tr>
 	</c:forEach>
 </table>

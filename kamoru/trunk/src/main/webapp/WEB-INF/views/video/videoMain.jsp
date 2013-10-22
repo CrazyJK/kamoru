@@ -69,10 +69,13 @@ var listViewType = '${videoSearch.listViewType}';
 				<form:hidden path="viewActressDiv"/>
 		</span>
 		<span class="group">
-			<span class="button" onclick="fnRandomPlay()"><s:message code="video.random-play"/></span>
+			<span class="button" onclick="fnRandomPlay()" title="<s:message code="video.random-play.title"/>"><s:message code="video.random-play"/></span>
 		</span>
 		<span class="group">
-			<span class="button" onclick="fnBGImageView();"><s:message code="video.bgimage"/></span>
+			<span class="button" onclick="fnBGImageView();" title="<s:message code="video.bgimage.title"/>"><s:message code="video.bgimage"/></span>
+		</span>
+		<span class="group">
+			<span class="button" onclick="fnReloadVideoSource();" title="<s:message code="video.reload.title"/>"><s:message code="video.reload"/></span>
 		</span>
 		<span id="debug" style="display:none"></span>
 	</div>

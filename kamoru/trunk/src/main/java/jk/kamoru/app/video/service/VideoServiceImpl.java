@@ -446,7 +446,7 @@ public class VideoServiceImpl implements VideoService {
 		Long[] total = new Long[]{0l, 0l};
 		for (Video video : videoDao.getVideoList()) {
 			String path = video.getDelegatePath();
-			long length = video.length();
+			long length = video.getLength();
 			Long[] data = pathMap.get(path);
 			if (data == null) {
 				data = new Long[]{0l, 0l};
@@ -561,19 +561,19 @@ public class VideoServiceImpl implements VideoService {
 			public int compare(Actress o1, Actress o2) {
 				switch (sort) {
 				case NAME:
-					return StringUtils.compareTo(o1.getName(), o2.getName());
+					return StringUtils.compareToIgnoreCase(o1.getName(), o2.getName());
 				case BIRTH:
-					return StringUtils.compareTo(o2.getBirth(), o1.getBirth());
+					return StringUtils.compareToIgnoreCase(o2.getBirth(), o1.getBirth());
 				case BODY:
-					return StringUtils.compareTo(o2.getBodySize(), o1.getBodySize());
+					return StringUtils.compareToIgnoreCase(o2.getBodySize(), o1.getBodySize());
 				case HEIGHT:
-					return StringUtils.compareTo(o2.getHeight(), o1.getHeight());
+					return StringUtils.compareToIgnoreCase(o2.getHeight(), o1.getHeight());
 				case DEBUT:
-					return StringUtils.compareTo(o2.getDebut(), o1.getDebut());
+					return StringUtils.compareToIgnoreCase(o2.getDebut(), o1.getDebut());
 				case VIDEO:
 					return o2.getVideoList().size() - o1.getVideoList().size();
 				default:
-					return StringUtils.compareTo(o1.getName(), o2.getName());
+					return StringUtils.compareToIgnoreCase(o1.getName(), o2.getName());
 				}
 			}
 		});
@@ -591,18 +591,27 @@ public class VideoServiceImpl implements VideoService {
 			public int compare(Studio o1, Studio o2) {
 				switch (sort) {
 				case NAME:
-					return StringUtils.compareTo(o1.getName(), o2.getName());
+					return StringUtils.compareToIgnoreCase(o1.getName(), o2.getName());
 				case HOMEPAGE:
 					return StringUtils.compareTo(o2.getHomepage(), o1.getHomepage());
 				case COMPANY:
-					return StringUtils.compareTo(o2.getCompanyName(), o1.getCompanyName());
+					return StringUtils.compareToIgnoreCase(o2.getCompanyName(), o1.getCompanyName());
 				case VIDEO:
 					return o2.getVideoList().size() - o1.getVideoList().size();
 				default:
-					return StringUtils.compareTo(o1.getName(), o2.getName());
+					return StringUtils.compareToIgnoreCase(o1.getName(), o2.getName());
 				}
 			}
 		});
+		return list;
+	}
+
+	@Override
+	public List<Video> getVideoList(Sort sort) {
+		List<Video> list = videoDao.getVideoList();
+		for (Video video : list) 
+			video.setSortMethod(sort);
+		Collections.sort(list, Collections.reverseOrder());
 		return list;
 	}
 

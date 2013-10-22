@@ -3,6 +3,8 @@ package jk.springframework.web.servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jk.kamoru.util.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
@@ -44,7 +46,7 @@ public class ControllerInterceptor implements HandlerInterceptor {
 						String.format("%4s", elapsedtime),
 						String.format("%-10s", request.getRemoteAddr()),
 						String.format("%-6s", request.getMethod()),
-						String.format("%25s", response.getContentType()),
+						String.format("%25s", StringUtils.trimToEmpty(response.getContentType())),
 						request.getRequestURI()
 			);
 			

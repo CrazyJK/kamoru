@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 /* Dom elements */
 * {
-	font-family: '나눔고딕', '맑은 고딕', 'Comic Sans MS', '나눔고딕코딩';
+	font-family: "Malgun Gothic", '맑은 고딕', '나눔고딕', 'Comic Sans MS', '나눔고딕코딩';
 	/* font-size:15px;  */
 }
 input[type=range] { 
@@ -342,7 +342,7 @@ li,
 }
 
 .video-table td {
-	font-size: 13px;
+	font-size: 12px;
 }
 .video-table th.nowrap,
 .video-table td.nowrap {

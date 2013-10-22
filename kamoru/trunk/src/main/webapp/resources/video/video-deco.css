@@ -35,6 +35,7 @@ body {
 }
 .menu a {
  	color: navy;
+	font-family: "Malgun Gothic";
 }
 .menu-selected {
 	background-color: orange;

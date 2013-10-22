@@ -5,20 +5,6 @@
 <html>
 <head>
 <title><s:message code="default.hitMessageCodeList"/></title>
-<style type="text/css">
-ol {
-	color: red; font-size:0.8em;
-}
-li {
-	font-size:13px;
-	padding-left: 10px;
-	margin-top: 1px;
-}
-.notExist {
-	background-color: rgba(123,0,123,0.5);
-	border-radius: 10px;
-}
-</style>
 </head>
 <body>
 
@@ -28,7 +14,7 @@ li {
 			<span style="float: right" onclick='$(".exist").toggle()'>Filter
 				: no value code</span>
 		</h3>
-		<ol>
+		<ol class="code-view">
 			<c:forEach items="${hitMessageCodeMap}" var="code">
 				<li class="${code.value eq null ? 'notExist' : 'exist' }">
 					<code class="code-name">${code.key}</code> = <code class="code-value">${code.value}</code>

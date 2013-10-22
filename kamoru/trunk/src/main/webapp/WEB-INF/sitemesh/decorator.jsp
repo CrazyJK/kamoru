@@ -20,17 +20,7 @@ try {
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/favicon_kamoru.ico"/>">
 <title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
 <link rel="stylesheet" href="<c:url value="/resources/deco.css" />" />
-<style type="text/css">
-body {
-	/* background-image:url('<c:url value="/resources/img/orgrimmar_horde_territory.jpg"/>'); */
-	/* background-image:url('<c:url value="http://fc03.deviantart.net/fs71/i/2013/249/5/1/freckly_by_tanyashatseva-d6l9s2t.jpg"/>'); */
-	background-repeat: repeat;
-	background-position: center center;
-}
-</style>
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -62,7 +52,6 @@ function showNav() {
 	if(!found)
 		$("#deco_nav").css("display", "none");
 }
-
 </script>
 <sitemesh:write property="head" />
 </head>

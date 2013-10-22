@@ -14,9 +14,10 @@ input[type=password] {
 	height:30px;
 	border:0 solid orange;
 	border-radius: 5px;
+	background-color: rgba(211, 211, 211, 0.5); /* lightgray; */
 }
 input[type=submit] {
-	min-width:46px;
+	min-width:76px;
 	height:32px;
 	border:1px solid #3079ed;
 	background-color:#4d90fe;
@@ -27,17 +28,25 @@ input[type=submit] {
 input[type=submit]:hover {
 	background-color:#4787ed;
 }
+input[type=checkbox] {
+	background-color:rgba(255,255,255,.5);
+}
+select, option {
+	border-radius: 5px;
+	background-color:rgba(255,255,255,.5);
+	border:0;
+}
 div {
 	margin:10px;
 }
 body {
-	background-image:url('<s:url value="/resources/img/orgrimmar_horde_territory.jpg"/>');
+	/* background-image:url('<s:url value="/resources/img/orgrimmar_horde_territory.jpg"/>'); */
 	background-repeat: repeat;
 	background-position: center center;
 }
 #sign-in {
 	margin:20px 20px 20px;
-	background-color:#f1f1f1; 
+	background-color: rgba(241, 241, 241, 0.5); 
 	border:1px solid #e5e5e5;
 	border-radius:10px;
 	padding:20px 25px 15px; 
@@ -56,11 +65,6 @@ body {
 	background-color:rgba(255,255,255,0);
 }
 </style>
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#identity").focus();
-});
-</script>
 </head>
 <body>
 <div id="sign-in">
@@ -68,17 +72,21 @@ $(document).ready(function() {
 		<h3><s:message code="default.login"/></h3>
 		<form name='f' action='<c:url value="/j_spring_security_check"/>' method='POST'>
 			<div>
-				<label for="identity"><s:message code="default.identify"/></label>
-		    	<input type='text' name='j_username' id="identity"/>
+				<label>
+					<s:message code="default.identify"/>
+		    		<input type='text' name='j_username' placeholder="<s:message code="default.identify"/>" autofocus/></label>
 		    </div>
 		    <div>
-		    	<label for="passwd"><s:message code="default.password"/></label>
-		    	<input type='password' name='j_password' id="passwd"/>
+		    	<label>
+		    		<s:message code="default.password"/>
+		    		<input type='password' name='j_password' placeholder="<s:message code="default.password"/>"/></label>
 		    </div>
 		    <div>
 		    	<input name="submit" type="submit" value="<s:message code="default.login"/>"/>
-			    <input id="remember_me" name="_spring_security_remember_me" type="checkbox">
-		    	<label for="remember_me"><s:message code="default.rememberme"/></label>
+			    <label style="float:right;">
+				    <input type="checkbox" name="_spring_security_remember_me">
+				    <s:message code="default.rememberme"/>
+			    </label>
 		    </div>
 		    <div style="text-align:center">
 		    	<span style="color:red">${login_msg} ${access_msg}</span>
@@ -86,12 +94,15 @@ $(document).ready(function() {
 		</form>
 	</div>
 	<div id="lang-chooser">
-		<form><s:message code="default.language"/> 
-			<select name="lang" onchange="document.forms[1].submit();">
-				<option value="ko" ${locale eq "ko" ? "selected" : "" }><s:message code="default.korean"/></option>
-				<option value="en" ${locale eq "en" ? "selected" : "" }><s:message code="default.english"/></option>
-				<option value="ja" ${locale eq "ja" ? "selected" : "" }><s:message code="default.japanese"/></option>
-			</select>
+		<form>
+			<label>
+				<s:message code="default.language"/> 
+				<select name="lang" onchange="document.forms[1].submit();">
+					<option value="ko" ${locale eq "ko" ? "selected" : "" }><s:message code="default.korean"/></option>
+					<option value="en" ${locale eq "en" ? "selected" : "" }><s:message code="default.english"/></option>
+					<option value="ja" ${locale eq "ja" ? "selected" : "" }><s:message code="default.japanese"/></option>
+				</select>
+			</label>
 		</form>
 	</div>
 </div>

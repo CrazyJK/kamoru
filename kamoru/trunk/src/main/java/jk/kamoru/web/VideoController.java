@@ -102,9 +102,11 @@ public class VideoController {
 	}
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String list(Model model) {
+	public String list(Model model, @RequestParam(value="sort", required=false, defaultValue="O") Sort sort) {
 		logger.trace("list");
-		model.addAttribute("videoList", videoService.getVideoList());
+		model.addAttribute("videoList", videoService.getVideoList(sort));
+		model.addAttribute("sorts", Sort.values());
+		model.addAttribute("sort", sort);
 		return "video/videoList";
 	}
 
@@ -229,7 +231,14 @@ public class VideoController {
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
 		return "video/videoMain";
 	}
-	
+
+	@RequestMapping("/reload")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void reload() {
+		logger.trace("reload");
+		videoService.reload();
+	}
+
 	private HttpEntity<byte[]> httpEntity(byte[] imageBytes, String suffix) {
 		long today = new Date().getTime();
 		

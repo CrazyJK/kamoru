@@ -2,7 +2,6 @@ package jk.kamoru.util;
 
 import java.io.File;
 
-import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.springframework.util.Assert;
 
 

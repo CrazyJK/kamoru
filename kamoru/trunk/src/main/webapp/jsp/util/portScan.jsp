@@ -4,24 +4,19 @@
 <%@ page import="java.util.concurrent.*" %>
 <%@ page import="jk.kamoru.util.*" %>
 <% 
-String ip = WebUtils.getParameter(request, "ip", "127.0.0.1");
-int port_s = WebUtils.getParameterInt(request, "ports", 0);
-int port_e = WebUtils.getParameterInt(request, "porte", 0);
+String 	 ip  	 = WebUtils.getParameter(request, "ip", "127.0.0.1");
+int 	 port_s  = WebUtils.getParameterInt(request, "ports", 0);
+int 	 port_e  = WebUtils.getParameterInt(request, "porte", 0);
 String[] portArr = WebUtils.getParameterArray(request, "portArr", ",");
 
 List<Integer> ports = new ArrayList<Integer>(); 
-if (port_s > 0 && port_e > port_s) {
-	for(int port=port_s; port<= port_e; port++) {
+if (port_s > 0 && port_s < port_e)
+	for(int port=port_s; port<= port_e; port++)
 		ports.add(port);
-	}
-}
-else if (portArr != null) {
-	for(String port : portArr) {
-		if (port.trim().length() > 0) {
+else if (portArr != null)
+	for(String port : portArr)
+		if (port.trim().length() > 0)
 			ports.add(Integer.parseInt(port.trim()));
-		}
-	}
-}
 
 final List<Future<Object[]>> futures = new ArrayList<Future<Object[]>>(); 
 if (ports.size() > 0) {
@@ -64,17 +59,21 @@ if (ports.size() > 0) {
 	<h2>port scan</h2>
  
  	<form>
- 		<input name="ip" size="11" value="<%=ip %>" placeHolder="ip address">
- 		<input name="ports" size="5" value="<%=port_s %>" placeHolder="port">
- 		~
- 		<input name="porte" size="5" value="<%=port_e %>" placeHolder="port">
- 		<input type="submit">
- 		<br/>
+ 		<div>
+	 		<label>IP Address
+	 			<input name="ip" size="11" value="<%=ip %>" placeHolder="ip address"></label>
+	 		<label>Port from
+	 			<input name="ports" size="5" value="<%=port_s %>" placeHolder="port"></label>
+	 		<label>to
+	 			<input name="porte" size="5" value="<%=port_e %>" placeHolder="port"></label>
+	 		<input type="submit">
+ 		</div>
  		<textarea name="portArr" style="width:600px; height:100px;" placeHolder="ex. 8080, 8081, 8082"><%=ArrayUtils.toStringComma(portArr) %></textarea>
  	</form>
  	
-	<label>Result : <span class="result-listen">LISTEN</span></label>
- 	<ol>
+ 	<div>
+		<h3>Result - <span class="result-listen">LISTEN</span></h3>
+ 		<ol>
 <%
 for (final Future<Object[]> f : futures) {
 	Object[] result = f.get();
@@ -84,7 +83,8 @@ for (final Future<Object[]> f : futures) {
 <%	
 }
 %> 	
-	</ol>
+		</ol>
+	</div>
 </div>
 
 </body>

@@ -6,7 +6,7 @@
 <title>Web Session List</title>
 </head>
 <body>
-<ol>
+<ol class="code-view">
 <%
 	Enumeration names = session.getAttributeNames();
 	while (names.hasMoreElements()) {

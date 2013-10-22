@@ -38,4 +38,16 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return str1.compareTo(str2);
 	}
 
+	/**
+	 * 문자열 비교. null일 경우 ""으로 변환. trim, IgnoreCase
+	 * @param name1
+	 * @param name2
+	 * @return
+	 */
+	public static int compareToIgnoreCase(String name1, String name2) {
+		name1 = name1 == null ? "" : name1.trim().toLowerCase();
+		name2 = name2 == null ? "" : name2.trim().toLowerCase();
+		return name1.compareTo(name2);
+	}
+
 }

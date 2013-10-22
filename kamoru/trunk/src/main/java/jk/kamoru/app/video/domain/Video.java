@@ -104,19 +104,21 @@ public class Video implements Comparable<Video>, Serializable {
 	public int compareTo(Video comp) {
 		switch(sortMethod) {
 		case S:
-			return StringUtils.compareTo(this.getStudio().getName(), comp.getStudio().getName());
+			return StringUtils.compareToIgnoreCase(this.getStudio().getName(), comp.getStudio().getName());
 		case O:
-			return StringUtils.compareTo(this.getOpus(), comp.getOpus());
+			return StringUtils.compareToIgnoreCase(this.getOpus(), comp.getOpus());
 		case T:
-			return StringUtils.compareTo(this.getTitle(), comp.getTitle());
+			return StringUtils.compareToIgnoreCase(this.getTitle(), comp.getTitle());
 		case A:
-			return StringUtils.compareTo(this.getActress(), comp.getActress());
+			return StringUtils.compareToIgnoreCase(this.getActress(), comp.getActress());
 		case M:
-			return StringUtils.compareTo(this.getDelegateFile().lastModified(), comp.getDelegateFile().lastModified());
+			return this.getDelegateFile().lastModified() > comp.getDelegateFile().lastModified() ? 1 : -1;
 		case P:
 			return this.getPlayCount() - comp.getPlayCount();
 		case R:
 			return this.getRank() - comp.getRank();
+		case L:
+			return this.getLength() > comp.getLength() ? 1 : -1;
 		default:
 			return StringUtils.compareTo(this, comp);
 		}
@@ -658,9 +660,13 @@ public class Video implements Comparable<Video>, Serializable {
 		
 		JSONObject json = null;
 		try {
-			json = JSONObject.fromObject(FileUtils.readFileToString(infoFile, VideoCore.FILE_ENCODING));
-		} catch (IOException e1) {
-			logger.error("info read error", e1);
+			String infoText = FileUtils.readFileToString(infoFile, VideoCore.FILE_ENCODING);
+			if (infoText != null && infoText.trim().length() > 0)
+				json = JSONObject.fromObject(infoText);
+			else 
+				return;
+		} catch (Exception e1) {
+			logger.error("info read error : {} - {}", this.opus, e1);
 			return;
 		}
 		JSONObject infoData = json.getJSONObject("info");
@@ -791,7 +797,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 * video의 모든 파일 크기
 	 * @return
 	 */
-	public long length() {
+	public long getLength() {
 		long length = 0l;
 		for (File file : this.getFileAll()) {
 			if (file != null)

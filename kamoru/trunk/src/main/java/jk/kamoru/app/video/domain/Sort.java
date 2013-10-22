@@ -2,7 +2,7 @@ package jk.kamoru.app.video.domain;
 
 public enum Sort {
 
-	S("Studis"), O("Opus"), T("Title"), A("Actress"), M("Modified"), P("PlayCount"), R("Rank");
+	S("Studio"), O("Opus"), T("Title"), A("Actress"), M("Modified"), P("PlayCount"), R("Rank"), L("Length");
 	
 	private String sortString;
 	

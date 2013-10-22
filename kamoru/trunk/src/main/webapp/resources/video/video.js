@@ -282,3 +282,9 @@ function fnUnchecked(obj) {
 		}
 	});
 }
+
+function fnReloadVideoSource() {
+	var frm = document.forms["actionFrm"];
+	frm.action = context + "video/reload";
+	frm.submit();
+}
