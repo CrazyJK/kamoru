@@ -18,6 +18,7 @@
    	<!-- Exclude path from decoration. -->
   	<mapping path="/resources/*" 	exclue="false"/>
   	<mapping path="/" 				exclue="false"/>
+  	<mapping path="/jsp/mgw/*" 		exclue="false"/>
   	<!-- <mapping path="/image" 	exclue="false"/> -->
   	<!-- <mapping path="/jsp/util/logView.jsp" 	exclue="false"/> -->
 </sitemesh>

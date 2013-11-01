@@ -41,13 +41,13 @@ public class ControllerInterceptor implements HandlerInterceptor {
 		if ( handler instanceof org.springframework.web.method.HandlerMethod) {
 			HandlerMethod method = (HandlerMethod)handler;
 			logger.debug("{}.{} - {} - {} - {} - {} - {}",
-					String.format("%15s", method.getBean().getClass().getSimpleName()), 
-						String.format("%-18s", method.getMethod().getName()), 
-						String.format("%4s", elapsedtime),
-						String.format("%-10s", request.getRemoteAddr()),
-						String.format("%-6s", request.getMethod()),
-						String.format("%25s", StringUtils.trimToEmpty(response.getContentType())),
-						request.getRequestURI()
+					String.format( "%15s", method.getBean().getClass().getSimpleName()), 
+					String.format("%-18s", method.getMethod().getName()), 
+					String.format(  "%4s", elapsedtime),
+					String.format("%-10s", request.getRemoteAddr()),
+					String.format( "%-6s", request.getMethod()),
+					String.format( "%25s", StringUtils.trimToEmpty(response.getContentType())),
+					request.getRequestURI()
 			);
 			
 		}
