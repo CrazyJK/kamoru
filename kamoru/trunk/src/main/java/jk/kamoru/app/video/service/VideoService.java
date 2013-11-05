@@ -75,5 +75,13 @@ public interface VideoService {
 	List<Studio> getStudioList(StudioSort sort);
 
 	List<Video> getVideoList(Sort sort);
+
+	List<Integer> getPlayRange();
+
+	Integer minRank();
+
+	Integer maxRank();
+
+	List<Integer> getRankRange();
 	
 }

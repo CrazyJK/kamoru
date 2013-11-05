@@ -36,14 +36,16 @@ dl {
 	margin:0;
 }
 dt {
-	height:30px; 
+	height:25px; 
 	text-align:center;
 }
 dd {
-	margin:2px 0px 0px 0px; 
+	margin:1px 0px 0px 0px; 
 	text-align:left;
 }
-
+label {
+	cursor:pointer;
+}
 /* id */
 div#searchDiv {
 	text-align:center;
@@ -150,7 +152,7 @@ li,
 }
 .separator {
 	font-weight:bold; 
-	color:gray; 
+	color: orange; 
 	text-shadow: 1px 1px 1px white;
 }				
 .checkbox,    
@@ -269,6 +271,7 @@ li,
 	color:black; 
 	text-shadow:1px 1px 1px white; 
 	padding:0px 5px 0px 5px;
+	margin-bottom: 5px;
 	border:1px solid orange; 
 }
 .label-title {
@@ -328,6 +331,9 @@ li,
 	background-size:contain;
 	background-color: rgba(255, 255, 255, 0.75);
 }
+.video-slide-bg > dd {
+	margin: 3px 0px 0px 5px;
+}
 .video-sbox {
 	background-color:transparent; 
 }
@@ -350,6 +356,16 @@ li,
 }
 .center {
 	text-align:center;
+}
+.item-selectBox {
+	border:0;
+}
+.rangeLabel {
+	background-color: rgba(255,255,0, 0.75); 
+	border: 1px solid orangered; 
+	border-radius:3px;
+	padding:0px 3px 0px 3px;
+	opacity: 1; 
 }
 
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */

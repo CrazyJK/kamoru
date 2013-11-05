@@ -23,7 +23,7 @@
 							<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 							<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
 						</dd>
-						<dd><input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
+						<dd><input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
 					</dl>
 				</td>
 			</tr>

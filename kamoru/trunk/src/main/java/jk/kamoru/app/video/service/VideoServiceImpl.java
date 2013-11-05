@@ -27,6 +27,7 @@ import jk.kamoru.app.video.dao.VideoDao;
 import jk.kamoru.app.video.domain.Action;
 import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.ActressSort;
+import jk.kamoru.app.video.domain.InequalitySign;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.StudioSort;
@@ -44,13 +45,15 @@ public class VideoServiceImpl implements VideoService {
 
 	private byte[] defaultCoverFileBytes;
 	
-	@Value("#{videoProp['defaultCoverFilePath']}") 	private String defaultCoverFilePath;
-	@Value("#{videoProp['editor']}") 				private String editor;
-	@Value("#{videoProp['mainBasePath']}") 			private String mainBasePath;
-	@Value("#{videoProp['player']}") 				private String player;
-	@Value("#{videoProp['webp.mode']}") 			private boolean webpMode;
-
-	@Value("#{videoProp['basePath']}") 				private String[] basePath;
+	@Value("#{prop['defaultCoverFilePath']}") 	private String   defaultCoverFilePath;
+	@Value("#{prop['editor']}") 				private String   editor;
+	@Value("#{prop['mainBasePath']}") 			private String   mainBasePath;
+	@Value("#{prop['player']}") 				private String   player;
+	@Value("#{prop['webp.mode']}") 			    private boolean  webpMode;
+	@Value("#{prop['basePath']}") 				private String[] basePath;
+	@Value("#{prop['minRank']}") 				private Integer  minRank;
+	@Value("#{prop['maxRank']}") 				private Integer  maxRank;
+	
 	
 	@Autowired private VideoDao videoDao;
 
@@ -386,6 +389,9 @@ public class VideoServiceImpl implements VideoService {
 			search.setSortMethod(Sort.M);
 			search.setSortReverse(false);
 		}
+		if (search.getRankRange() == null)
+			search.setRankRange(getRankRange());
+		
 		List<Video> foundList = new ArrayList<Video>();
 		for (Video video : videoDao.getVideoList()) {
 			if ((VideoUtils.equals(video.getStudio().getName(), search.getSearchText()) 
@@ -400,6 +406,9 @@ public class VideoServiceImpl implements VideoService {
 						: true)
 				&& (search.getSelectedStudio() == null ? true : search.getSelectedStudio().contains(video.getStudio().getName()))
 				&& (search.getSelectedActress() == null ? true : VideoUtils.containsActress(video, search.getSelectedActress()))
+				&& (rankCompare(video.getRank(), search.getRankSign(), search.getRank()))
+				&& (rankMatch(video.getRank(), search.getRankRange()))
+				&& (playCountMatch(video.getPlayCount(), search.getPlayCount()))
 				) 
 			{
 				video.setSortMethod(search.getSortMethod());
@@ -421,6 +430,32 @@ public class VideoServiceImpl implements VideoService {
 		}
 	}
 	
+	private boolean playCountMatch(Integer playCount, Integer playCount2) {
+		if (playCount2 == null || playCount2 == -1)
+			return true;
+		else if (playCount == playCount2)
+			return true;
+		else
+			return false;
+	}
+
+	private boolean rankMatch(int rank, List<Integer> rankRange) {
+		return rankRange.contains(rank);
+	}
+
+	private boolean rankCompare(int rank, InequalitySign rankSign, Integer rank2) {
+		switch (rankSign) {
+		case eq:
+			return rank == rank2;
+		case lt:
+			return rank < rank2;
+		case gt:
+			return rank > rank2;
+		default:
+			throw new VideoException("Unknown rank info");
+		}
+	}
+
 	@Override
 	public Map<String, Long[]> groupByPath() {
 		logger.trace("groupByPath");
@@ -613,6 +648,36 @@ public class VideoServiceImpl implements VideoService {
 			video.setSortMethod(sort);
 		Collections.sort(list, Collections.reverseOrder());
 		return list;
+	}
+
+	@Override
+	public List<Integer> getPlayRange() {
+		int maxPlayCount = 0;
+		for (Video video : videoDao.getVideoList())
+			maxPlayCount = maxPlayCount - video.getPlayCount() > 0 ? maxPlayCount : video.getPlayCount();
+
+		List<Integer> playList = new ArrayList<Integer>();
+		for (int i=-1; i<=maxPlayCount; i++)
+			playList.add(i);
+		return playList;
+	}
+
+	@Override
+	public Integer minRank() {
+		return minRank;
+	}
+
+	@Override
+	public Integer maxRank() {
+		return maxRank;
+	}
+
+	@Override
+	public List<Integer> getRankRange() {
+		List<Integer> rankList = new ArrayList<Integer>();
+		for (Integer i=minRank; i<=maxRank; i++)
+			rankList.add(i);
+		return rankList;
 	}
 
 }

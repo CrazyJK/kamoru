@@ -69,14 +69,14 @@ public class ImageDownloader {
 		this.titleCssQuery = titleCssQuery;
 	}
 
-	public boolean download() {
+	public DownloadResult download() {
 		// jsoup HTML parser를 이용해 접속해서 이미지 찾기
 		Document document;
 		try {
 			document = Jsoup.connect(urlString).get();
 		} catch (IOException e) {
-			logger.error("접속이 안됨", e);
-			return false;
+			logger.debug("접속이 안됨 {} - {}", e.getMessage(), urlString);
+			return new DownloadResult(pageNo, false, "접속이 안됨 " + e.getMessage() + " " + urlString);
 		}
 		// 페이지 타이틀 구하기
 		String title = null;
@@ -91,8 +91,8 @@ public class ImageDownloader {
 		int foundImageCount = imgTags.size();
 		
 		if (foundImageCount == 0) {
-			logger.warn("이미지가 없음 {}", urlString);
-			return false;
+			logger.debug("이미지가 없음 {}", urlString);
+			return new DownloadResult(pageNo, false, "이미지가 없음 " + urlString);
 		}
 		else {
 			logger.debug("no={} [{}] 이미지 {}", pageNo, title, foundImageCount);
@@ -101,92 +101,115 @@ public class ImageDownloader {
 			int count = 0;
 			for (Element imgTag : imgTags) {
 				String imgSrc = imgTag.attr("src");
-	
-				// Executes a request image
-				DefaultHttpClient httpClient = new DefaultHttpClient();
-				HttpGet httpGet = new HttpGet(imgSrc);
-				HttpResponse httpResponse = null;
-				try {
-					httpResponse = httpClient.execute(httpGet);
-				} catch (Exception e) {
-					logger.error("이미지 연결 실패", e.getMessage());
-					continue;
-				}
-				HttpEntity entity = httpResponse.getEntity();
+
+				// download thread start
+				ImageDownload imageDownload = new ImageDownload(imgSrc, title, ++count); 
+				imageDownload.start();
 				
-				// 확장자 결정
-				Header contentTypeHeader = httpResponse.getLastHeader("Content-Type");
-				String[] contentType = StringUtils.split(contentTypeHeader.getValue(), '/');
-				String imagePrefix = "jpg";
-				if (contentType != null && contentType.length > 1) {
-					if (contentType[0].equals("image"))
-						imagePrefix = contentType[1];
-					else {
-						String srcBasedPrefix = StringUtils.substringAfterLast(imgSrc, ".");
-						if (imagePrefixList.contains(srcBasedPrefix.toLowerCase()))
-							imagePrefix = srcBasedPrefix;
-					}
-				}
-				
-	//			Header에서 content-type을 구하기 위한 테스트 코드
-	//			Header[] headers = httpResponse.getAllHeaders();
-	//			for (Header header : headers) {
-	//				logger.info("Header info {}={}", header.getName(), header.getValue());
-	//			}
-				
-				// 이미지 파일로 저장
-				if (entity != null) {
-					String imageName = null;
-					if (pageNo < 1)
-						imageName = String.format("%s-%s.%s", title, ++count, imagePrefix);
-					else 
-						imageName = String.format("%s_%s-%s.%s", pageNo, title, ++count, imagePrefix);
-					File imageFile = new File(downloadDir, imageName);
-					
-					InputStream inputStream = null;
-					OutputStream outputStream = null;
-					try {
-						inputStream = entity.getContent();
-						outputStream = new FileOutputStream(imageFile);
-						byte[] buffer = new byte[1024];
-						int length = 0;
-						while ((length = inputStream.read(buffer)) >0) {
-							outputStream.write(buffer, 0, length);
-						}
-						logger.debug("{} - save as {} from {}", urlString, imageFile.getAbsolutePath(), imgSrc);
-					} catch (IOException e) {
-						logger.error("다운로드 실패", e);
-					} finally {
-						if (outputStream != null)
-							try {
-								outputStream.close();
-							} catch (IOException e) {
-								logger.error("{}", e);
-							}
-						if (inputStream != null)
-							try {
-								inputStream.close();
-							} catch (IOException e) {
-								logger.error("{}", e);
-							}
-					}
-				}
-				else {
-					logger.warn("entity is null. {}", imgSrc);
-				}
 			}
+			return new DownloadResult(pageNo, true);
 		}
-		return true;
 	}
 	
-	public Future<Boolean> download(final ExecutorService executorService) {
-		return executorService.submit(new Callable<Boolean>() {
+	public Future<DownloadResult> download(final ExecutorService executorService) {
+		return executorService.submit(new Callable<DownloadResult>() {
 
 			@Override
-			public Boolean call() throws Exception {
+			public DownloadResult call() throws Exception {
 				logger.debug("task start - {}", urlString);
 				return download();
 			}
 		});
+	}
+	
+	private class ImageDownload extends Thread {
+		
+		private String imgSrc;
+		private String title;
+		private int count;
+		
+		public ImageDownload(String imgSrc, String title, int count) {
+			super();
+			this.imgSrc = imgSrc;
+			this.title = title;
+			this.count = count;
+		}
+
+		public void run() {
+
+			// Executes a request image
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			HttpGet httpGet = null;
+			HttpResponse httpResponse = null;
+			try {
+				httpGet = new HttpGet(imgSrc);
+				httpResponse = httpClient.execute(httpGet);
+			} catch (Exception e) {
+				logger.debug("이미지 연결 실패 {} - {}", imgSrc, e.getMessage());
+				return;
+			}
+			HttpEntity entity = httpResponse.getEntity();
+			
+			// 확장자 결정
+			Header contentTypeHeader = httpResponse.getLastHeader("Content-Type");
+			String[] contentType = StringUtils.split(contentTypeHeader.getValue(), '/');
+			String imagePrefix = "jpg";
+			if (contentType != null && contentType.length > 1) {
+				if (contentType[0].equals("image"))
+					imagePrefix = contentType[1];
+				else {
+					String srcBasedPrefix = StringUtils.substringAfterLast(imgSrc, ".");
+					if (imagePrefixList.contains(srcBasedPrefix.toLowerCase()))
+						imagePrefix = srcBasedPrefix;
+				}
+			}
+			
+			/* Header에서 content-type을 구하기 위한 테스트 코드
+			Header[] headers = httpResponse.getAllHeaders();
+			for (Header header : headers) {
+				logger.info("Header info {}={}", header.getName(), header.getValue());
+			}*/
+			
+			// 이미지 파일로 저장
+			if (entity != null) {
+				String imageName = null;
+				if (pageNo < 1)
+					imageName = String.format("%s-%s.%s", title, ++count, imagePrefix);
+				else 
+					imageName = String.format("%s_%s-%s.%s", pageNo, title, ++count, imagePrefix);
+				File imageFile = new File(downloadDir, imageName);
+				
+				InputStream inputStream = null;
+				OutputStream outputStream = null;
+				try {
+					inputStream = entity.getContent();
+					outputStream = new FileOutputStream(imageFile);
+					byte[] buffer = new byte[1024];
+					int length = 0;
+					while ((length = inputStream.read(buffer)) >0) {
+						outputStream.write(buffer, 0, length);
+					}
+					logger.debug("{} - save as {} from {}", urlString, imageFile.getAbsolutePath(), imgSrc);
+				} catch (IOException e) {
+					logger.debug("다운로드 실패 {} - {}", imgSrc, e.getMessage());
+				} finally {
+					if (outputStream != null)
+						try {
+							outputStream.close();
+						} catch (IOException e) {
+							logger.error("{}", e.getMessage());
+						}
+					if (inputStream != null)
+						try {
+							inputStream.close();
+						} catch (IOException e) {
+							logger.error("{}", e.getMessage());
+						}
+				}
+			}
+			else {
+				logger.warn("entity is null. {}", imgSrc);
+			}		
+		}
 	}
 }

@@ -23,8 +23,7 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
-	@Value("#{videoProp['mainBasePath']}") 			
-	private String mainBasePath;
+	@Value("#{prop['mainBasePath']}")	private String mainBasePath;
 
 	private String name;
 	private URL    homepage;

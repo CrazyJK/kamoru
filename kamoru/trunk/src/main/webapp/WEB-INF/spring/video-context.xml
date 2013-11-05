@@ -16,18 +16,15 @@
 	<!-- @Scheduled, @Async -->
 	<task:annotation-driven scheduler="scheduler" executor="executor"/>
 	<task:scheduler id="scheduler" pool-size="5"/>
-	<task:executor id="executor" pool-size="4" queue-capacity="4" rejection-policy="ABORT"/>	
-		
-	<util:properties id="videoProp" location="/WEB-INF/spring/video.#{T(java.net.InetAddress).getLocalHost().getHostName()}.properties" />
+	<task:executor  id="executor"  pool-size="4" queue-capacity="4" rejection-policy="ABORT"/>	
 	
-	<bean id="videoSource" class="jk.kamoru.app.video.source.FileBaseVideoSource"	>
-		<property name="paths" value="#{videoProp['basePath']}" />
-		<property name="video_extensions" value="#{videoProp['video_extensions']}" />
-		<property name="cover_extensions" value="#{videoProp['cover_extensions']}" />
-		<property name="subtitles_extensions" value="#{videoProp['subtitles_extensions']}" />
-		<property name="webp_mode" value="#{videoProp['webp.mode']}" />
-		<property name="webp_exec" value="#{videoProp['webp.exec']}" />
-		
+	<bean id="videoSource" class="jk.kamoru.app.video.source.FileBaseVideoSource">
+		<property name="paths"                value="#{prop['basePath']}" />
+		<property name="video_extensions"     value="#{prop['video_extensions']}" />
+		<property name="cover_extensions"     value="#{prop['cover_extensions']}" />
+		<property name="subtitles_extensions" value="#{prop['subtitles_extensions']}" />
+		<property name="webp_mode"            value="#{prop['webp.mode']}" />
+		<property name="webp_exec"            value="#{prop['webp.exec']}" />
 	</bean>
 	
 	<!-- AOP : VideoSource.load() -->	

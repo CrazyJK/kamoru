@@ -2,6 +2,7 @@ package jk.kamoru.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import jk.kamoru.app.image.service.ImageService;
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.domain.ActressSort;
+import jk.kamoru.app.video.domain.InequalitySign;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.StudioSort;
 import jk.kamoru.app.video.domain.Video;
@@ -24,6 +26,7 @@ import jk.kamoru.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,6 +59,16 @@ public class VideoController {
 		return locale;
 	}
 	
+	@ModelAttribute("minRank")
+	public Integer minRank() {
+		return videoService.minRank();
+	}
+
+	@ModelAttribute("maxRank")
+	public Integer maxRank() {
+		return videoService.maxRank();
+	}
+
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
 	public String actress(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") ActressSort sort) {
 		logger.trace("actress");
@@ -219,16 +232,19 @@ public class VideoController {
 	public String video(Model model, @ModelAttribute VideoSearch videoSearch) {
 		logger.trace("{}", videoSearch);
 		List<Video> videoList =  videoService.searchVideo(videoSearch);
-
-		model.addAttribute("views", View.values());
-		model.addAttribute("sorts", Sort.values());
-		model.addAttribute("videoList", videoList);
-		model.addAttribute("opusArray", VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
-//		model.addAttribute("actressList", videoService.getActressListOfVideoes(videoList));
-//		model.addAttribute("studioList", videoService.getStudioListOfVideoes(videoList));
-		model.addAttribute("actressList", videoService.getActressList());
-		model.addAttribute("studioList", videoService.getStudioList());
-		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
+		
+		model.addAttribute("views", 		View.values());
+		model.addAttribute("sorts", 		Sort.values());
+//		model.addAttribute("rankSign", 		InequalitySign.values());
+		model.addAttribute("rankRange", 	videoService.getRankRange());
+		model.addAttribute("playRange", 	videoService.getPlayRange());
+		model.addAttribute("videoList", 	videoList);
+		model.addAttribute("opusArray", 	VideoUtils.getOpusArrayStyleStringWithVideofile(videoList));
+//		model.addAttribute("actressList", 	videoService.getActressListOfVideoes(videoList));
+//		model.addAttribute("studioList", 	videoService.getStudioListOfVideoes(videoList));
+		model.addAttribute("actressList", 	videoService.getActressList());
+		model.addAttribute("studioList", 	videoService.getStudioList());
+		model.addAttribute("bgImageCount", 	imageService.getImageSourceSize());
 		return "video/videoMain";
 	}
 

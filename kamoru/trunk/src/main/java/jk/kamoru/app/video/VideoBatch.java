@@ -1,4 +1,4 @@
-package jk.kamoru.app.video.source;
+package jk.kamoru.app.video;
 
 import java.io.File;
 
@@ -20,10 +20,10 @@ public class VideoBatch {
 
 	@Autowired VideoService videoService;
 
-	@Value("#{videoProp['moveWatchedVideo']}") 				private boolean MOVE_WATCHED_VIDEO;
-	@Value("#{videoProp['watchedVideoPath']}") 				private String 	WATCHED_PATH;
-	@Value("#{videoProp['removeLowerRankVideo']}") 			private boolean REMOVE_LOWER_RANK_VIDEO;
-	@Value("#{videoProp['lowerRankVideoBaselineScore']}")  	private int 	LOWER_RANK_VIDEO_BASELINE_SCORE;
+	@Value("#{prop['moveWatchedVideo']}") 				private boolean MOVE_WATCHED_VIDEO;
+	@Value("#{prop['watchedVideoPath']}") 				private String 	WATCHED_PATH;
+	@Value("#{prop['removeLowerRankVideo']}") 			private boolean REMOVE_LOWER_RANK_VIDEO;
+	@Value("#{prop['lowerRankVideoBaselineScore']}")  	private int 	LOWER_RANK_VIDEO_BASELINE_SCORE;
 
 	/** 최소 공간 사이즈 */
 	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;

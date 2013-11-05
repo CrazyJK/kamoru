@@ -44,7 +44,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	private static Sort sortMethod = VideoCore.DEFAULT_SORTMETHOD;
 	
-	@Value("#{videoProp['server.base.url']}") private String baseurl;
+	@Value("#{prop['server.base.url']}") private String baseurl;
 
 	// files
 	private List<File> videoFileList;

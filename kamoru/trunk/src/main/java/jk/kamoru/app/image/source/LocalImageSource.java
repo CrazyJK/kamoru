@@ -22,8 +22,7 @@ public class LocalImageSource implements ImageSource {
 
 	private List<Image> imageList;
 
-	@Value("#{videoProp['backgroundImagePoolPath']}")
-	private String[] backgroundImagePoolPath;
+	@Value("#{prop['backgroundImagePoolPath']}")	private String[] backgroundImagePoolPath;
 
 	private void listImages() {
 		List<File> imageFileList = new ArrayList<File>();

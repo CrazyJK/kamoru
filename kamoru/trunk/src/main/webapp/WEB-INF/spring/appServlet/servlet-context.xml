@@ -78,6 +78,5 @@
 	<interceptors>
 		<beans:bean class="jk.springframework.web.servlet.ControllerInterceptor" />
 	</interceptors>
-	
     
 </beans:beans>

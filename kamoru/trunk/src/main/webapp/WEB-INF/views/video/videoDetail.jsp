@@ -16,7 +16,7 @@ $(document).ready(function() {
 <c:set var="opus" value="${video.opus}"/>
 <dl>
 	<dt><span class="label-large">${video.title}</span><br/>
-		<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@videoProp['minRank']"/>" max="<s:eval expression="@videoProp['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dt>
+		<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dt>
 	<dd><span class="label-large" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
 	<dd><span class="label-large">${video.opus}</span></dd>
 	<dd><span class="label-large">Download : ${video.videoDate}</span></dd>

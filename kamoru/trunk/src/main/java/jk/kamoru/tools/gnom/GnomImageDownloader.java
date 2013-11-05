@@ -1,14 +1,7 @@
 package jk.kamoru.tools.gnom;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,45 +11,37 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import jk.kamoru.tools.DownloadResult;
 import jk.kamoru.tools.ImageDownloader;
 import jk.kamoru.util.FileUtils;
-import jk.kamoru.util.StringUtils;
 
-import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-import com.googlecode.mp4parser.util.Path;
-
+@Component
 public class GnomImageDownloader {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GnomImageDownloader.class);
 
-	final String urlPattern = "http://cham.us.to/?bbs=%s&no=%s&offset=%s&time=%s";
-	final String[] bbsList = {"dcaworld", "picture", "sexy"};
-	final String PAGENO_PREFIX = ".pageno";
-	final String titleCssQuery = "div.b2";
+	final String   urlPattern    = "http://cham.us.to/?bbs=%s&no=%s&offset=%s&time=%s";
+	final String[] bbsList       = {"dcaworld", "picture", "sexy"};
+	final String   PAGENO_PREFIX = ".pageno";
+	final String   titleCssQuery = "div.b2";
 	
 	List<String> imagePrefixList = Arrays.asList("png", "jpg", "jpeg", "gif", "webp", "bmp");
 
-	String downloadPath = "/home/kamoru/image";
+	@Value("#{prop['gnomDownloadPath']}")	String downloadPath = "/home/kamoru/image";
 	
 	public GnomImageDownloader() {
 	}
 	
+	@Scheduled(cron="0 0 */1 * * *")
 	public void process() {
 		logger.info("그놈 이미지 가져오기 시작");
 		// 게시판별 작업
@@ -82,27 +67,33 @@ public class GnomImageDownloader {
 				}
 
 			// 게시판의 이미지 받기
+			/* 
 			boolean result = true;
-//			while (result) {
-//				pageNo++;
-//
-//				// url string 
-//				String urlString = String.format(urlPattern, bbs, pageNo, 0, System.currentTimeMillis());
-//				
-//				ImageDownloader imageDownloader = new ImageDownloader(urlString, pageNo, downloadDir.getAbsolutePath(), titleCssQuery);
-//				result = imageDownloader.download();
-//			}
-//			try {
-//				saveLastPageNo(bbs, --pageNo);
-//			} catch (IOException e) {
-//				logger.error("{}의 마지막 페이지 번호를 저장 할 수 없음. pageNo={}", bbs, pageNo);
-//			}
+			while (result) {
+				pageNo++;
+
+				// url string 
+				String urlString = String.format(urlPattern, bbs, pageNo, 0, System.currentTimeMillis());
+				
+				ImageDownloader imageDownloader = new ImageDownloader(urlString, pageNo, downloadDir.getAbsolutePath(), titleCssQuery);
+				DownloadResult downloadResult = imageDownloader.download();
+				result = downloadResult.result;
+			}
+			try {
+				saveLastPageNo(bbs, --pageNo);
+			} catch (IOException e) {
+				logger.error("{}의 마지막 페이지 번호를 저장 할 수 없음. pageNo={}", bbs, pageNo);
+			}
+			*/
 			
 			// java.util.concurrent.Future 사용 비동기 방식 처리
+			boolean result = true;
 			int futureCount = 10;
+			List<Integer> successList = new ArrayList<Integer>();
+			int failCount = 0;
 			while (result) {
 				// futureCount 만큼 비동기 수행
-				final List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
+				final List<Future<DownloadResult>> futures = new ArrayList<Future<DownloadResult>>();
 				final ExecutorService eService = Executors.newFixedThreadPool(futureCount);
 				for (int i=0; i<futureCount; i++) {
 					pageNo++;
@@ -113,27 +104,36 @@ public class GnomImageDownloader {
 				eService.shutdown();
 
 				// 결과 확인
-				for (final Future<Boolean> future : futures) {
+				for (final Future<DownloadResult> future : futures) {
 					try {
-						boolean downloadResult = future.get();
-						logger.info("{} 다운로드 결과 {}", bbs, downloadResult);
-						result = result && downloadResult;
+						DownloadResult downloadResult = future.get();
+						logger.info("{} {}", bbs, downloadResult);
+						
+						if (downloadResult.result)
+							successList.add(downloadResult.no);
+						else
+							failCount++;
 					} catch (InterruptedException e) {
 						logger.error("", e);
-						result = false;
+						failCount++;
 					} catch (ExecutionException e) {
 						logger.error("", e);
-						result = false;
+						failCount++;
 					}
 				}
+				
+				if (failCount > futureCount/2)
+					result = false;
 			}
-			try {
-				pageNo = pageNo - futureCount;
-				saveLastPageNo(bbs, pageNo);
-				logger.info("{} 마지막 페이지 번호 저장 {}", bbs, pageNo);
-			} catch (IOException e) {
-				logger.error("{}의 마지막 페이지 번호를 저장 할 수 없음. pageNo={}", bbs, pageNo);
-			}
+			// save page no
+			if (successList.size() > 0)
+				try {
+					pageNo = NumberUtils.max(ArrayUtils.toPrimitive(successList.toArray(new Integer[successList.size()])));
+					saveLastPageNo(bbs, pageNo);
+					logger.info("{} 마지막 페이지 번호 저장 {}", bbs, pageNo);
+				} catch (IOException e) {
+					logger.error("{}의 마지막 페이지 번호를 저장 할 수 없음. pageNo={}", bbs, pageNo);
+				}
 		}
 		logger.info("그놈 이미지 가져오기 완료");
 	}
@@ -160,6 +160,7 @@ public class GnomImageDownloader {
 	 */
 	public static void main(String[] args) throws IOException {
 		GnomImageDownloader downloader = new GnomImageDownloader();
+		downloader.setDownloadPath("E:\\Girls\\gnom");
 		downloader.process();
 
 	}

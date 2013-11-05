@@ -22,8 +22,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
-	@Value("#{videoProp['mainBasePath']}") 			
-	private String mainBasePath;
+	@Value("#{prop['mainBasePath']}") private String mainBasePath;
 
 	private String name;
 	private String localName;

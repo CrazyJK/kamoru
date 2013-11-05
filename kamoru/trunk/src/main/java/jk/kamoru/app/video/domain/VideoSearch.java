@@ -1,6 +1,7 @@
 package jk.kamoru.app.video.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import jk.kamoru.app.video.VideoCore;
@@ -29,8 +30,71 @@ public class VideoSearch implements Serializable {
 	boolean viewActressDiv = false;
 
 	boolean viewStudioDiv = false;
-	boolean zeroRank = true;
+	boolean zeroRank = false;
 	
+	InequalitySign rankSign = InequalitySign.gt;
+	Integer rank = -2;
+	
+	List<Integer> rankRange;
+
+	Integer playCount;
+	
+	public VideoSearch() {
+	}
+	
+	
+	/**
+	 * @return the playCount
+	 */
+	public Integer getPlayCount() {
+		return playCount;
+	}
+
+
+	/**
+	 * @param playCount the playCount to set
+	 */
+	public void setPlayCount(Integer playCount) {
+		this.playCount = playCount;
+	}
+
+
+	/**
+	 * @return the rankRange
+	 */
+	public List<Integer> getRankRange() {
+		return rankRange;
+	}
+	/**
+	 * @param rankRange the rankRange to set
+	 */
+	public void setRankRange(List<Integer> rankRange) {
+		this.rankRange = rankRange;
+	}
+	/**
+	 * @return the rankSign
+	 */
+	public InequalitySign getRankSign() {
+		return rankSign;
+	}
+	/**
+	 * @param rankSign the rankSign to set
+	 */
+	public void setRankSign(InequalitySign rankSign) {
+		this.rankSign = rankSign;
+	}
+	/**
+	 * @return the rank
+	 */
+	public Integer getRank() {
+		return rank;
+	}
+	/**
+	 * @param rank the rank to set
+	 */
+	public void setRank(Integer rank) {
+		this.rank = rank;
+	}
 	public String getActress() {
 		return actress;
 	}
