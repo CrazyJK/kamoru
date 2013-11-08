@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 
 import org.apache.http.Header;
@@ -189,7 +190,12 @@ public class ImageDownloader {
 					while ((length = inputStream.read(buffer)) >0) {
 						outputStream.write(buffer, 0, length);
 					}
-					logger.debug("{} - save as {} from {}", urlString, imageFile.getAbsolutePath(), imgSrc);
+					if (imageFile.length() < 100l) {
+						FileUtils.deleteQuietly(imageFile);
+					}
+					else {
+						logger.debug("{} - save as {} from {}", urlString, imageFile.getAbsolutePath(), imgSrc);
+					}
 				} catch (IOException e) {
 					logger.debug("다운로드 실패 {} - {}", imgSrc, e.getMessage());
 				} finally {

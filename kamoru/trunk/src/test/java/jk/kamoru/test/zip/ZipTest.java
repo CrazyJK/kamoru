@@ -19,9 +19,9 @@ import jk.kamoru.util.ZipUtils;
 
 public class ZipTest {
 
-	File file1 = new File("E:\\Girls\\gnom", "29675_잘빠진 각선미-2.jpeg");
-	File file2 = new File("E:\\Girls\\gnom", "29676_만지고 싶은 가슴-2.jpeg");
-	File file3 = new File("E:\\Girls\\gnom", "29677_야 외 노 출-2.jpeg");
+	File file1 = new File("/home/kamoru/image", "dcaworld.pageno");
+	File file2 = new File("/home/kamoru/image", "picture.pageno");
+	File file3 = new File("/home/kamoru/image", "sexy.pageno");
 
 	public void zip() throws IOException {
 		final int BUFFER_SIZE = 1024 * 2;
@@ -86,13 +86,27 @@ public class ZipTest {
 		zin.close();
 	}
 	
-	public void test() {
-		File zipFile = new File("E:\\Girls\\gnom", "ziputils2.zip");
-		File baseDir = new File("E:\\Girls");
+	public void testZipUtils() {
+		File zipFile = new File("/home/kamoru/image", "ziputils2.zip");
+		File baseDir = new File("/home/kamoru/DaumCloud/MyDocs/각종명세서");
+//		List<File> fileList = Arrays.asList(file1, file2, file3);
+		int count = ZipUtils.zip(zipFile, baseDir, null);
+		System.out.println(count);
+	}
+
+	public void testAddFile4ZipUtils() {
+		File zipFile = new File("/home/kamoru/image", "ziputils1.zip");
 		List<File> fileList = Arrays.asList(file1, file2, file3);
-		ZipUtils.zip(zipFile, baseDir, fileList);
+		int count = ZipUtils.zip(zipFile, null, fileList);
+		System.out.println(count);
 	}
 	
+	public void testUnzip4ZipUtils() {
+		File zipFile = new File("/home/kamoru/image", "ziputils2.zip");
+		File destDir = new File("/home/kamoru/image/aaa");
+
+		ZipUtils.unzip(zipFile, destDir);
+	}
 	/**
 	 * @param args
 	 * @throws IOException
@@ -102,7 +116,9 @@ public class ZipTest {
 //		zipTest.zip();
 //		zipTest.unzip();
 //		zipTest.unzip2();
-		zipTest.test();
+//		zipTest.testZipUtils();
+//		zipTest.testAddFile4ZipUtils();
+		zipTest.testUnzip4ZipUtils();
 	}
 
 }
