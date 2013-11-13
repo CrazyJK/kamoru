@@ -2,10 +2,10 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
 <li id="opus-${video.opus}" class="li-box">
-	<div class="video-card">
-		<table>
+	<div class="video-card" style="width:220px;">
+		<table style="width:100%;">
 			<tr>
-				<td colspan="2"><div style="height:17px;" class="label" onclick="fnVideoDetail('${video.opus}')" title="${video.title}">${video.title}</div></td>
+				<td colspan="2" style="text-align:center;"><div style="height:17px; text-align:center;" class="label" onclick="fnVideoDetail('${video.opus}')" title="${video.title}">${video.title}</div></td>
 			</tr>
 			<tr valign="top" height="120px">
 				<td width="70px" class="video-card-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />')">
@@ -13,17 +13,24 @@
 				</td>
 				<td>
 					<dl>
-						<dd><c:forEach items="${video.actressList}" var="actress">
+						<dd>
+							<c:forEach items="${video.actressList}" var="actress">
 							<span class="label" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
-							</c:forEach></dd>
+							</c:forEach>
+						</dd>
 						<dd><span class="label" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd> 
 						<dd><span class="label">${video.opus}</span></dd>
-						<dd><span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">V</span>
+						<dd>
+							<span class="label ${video.existVideoFileList ? 'exist' : 'nonExist'}" onclick="fnPlay('${video.opus}')">V</span>
 							<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">C</span>
 							<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 							<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
 						</dd>
-						<dd><input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dd>
+						<dd>
+							<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
+							<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
+						</dd>
 					</dl>
 				</td>
 			</tr>

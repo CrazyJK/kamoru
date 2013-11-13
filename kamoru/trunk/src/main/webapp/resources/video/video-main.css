@@ -281,6 +281,7 @@ li,
 	text-shadow:1px 1px 1px white; 
 	padding:0px 5px 0px 5px;
 	border-bottom:1px solid navy; 
+	padding-bottom: 3px;
 }
 .exist {
 	color:blue;
@@ -367,7 +368,12 @@ li,
 	padding:0px 3px 0px 3px;
 	opacity: 1; 
 }
-
+.dl-detail {
+	
+}
+.dl-detail dd {
+	margin: 3px 0 3px 0;
+}
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */
 ::-webkit-scrollbar {
 	width: 8px; 

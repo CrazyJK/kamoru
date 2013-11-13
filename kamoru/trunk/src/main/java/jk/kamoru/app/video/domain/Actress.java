@@ -132,7 +132,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 		this.localName = localName;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = StringUtils.trimToEmpty(name);
 	}
 	public void setStudioList(List<Studio> studioList) {
 		this.studioList = studioList;

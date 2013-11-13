@@ -14,34 +14,51 @@ $(document).ready(function() {
 </head>
 <body>
 <c:set var="opus" value="${video.opus}"/>
-<dl>
+<dl class="dl-detail">
 	<dt><span class="label-large">${video.title}</span><br/>
-		<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"/></dt>
+		<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+			onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
+		<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
+	</dt>
 	<dd><span class="label-large" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
 	<dd><span class="label-large">${video.opus}</span></dd>
 	<dd><span class="label-large">Download : ${video.videoDate}</span></dd>
 	<dd><span class="label-large">Release : ${video.releaseDate}</span></dd>
+	<c:if test="${video.etcInfo ne ''}">
 	<dd><span class="label-large">ETC info : ${video.etcInfo}</span></dd>
-	<dd><span class="label-large" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
-	<dd><span class="label-large">COVER : ${video.coverFilePath}</span></dd>
-	<dd><span class="label-large">WEBP : ${video.coverWebpFilePath}</span></dd>
-	<dd><span class="label-large" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
-	<dd><span class="label-large">INFO : ${video.infoFilePath}</span></dd>
+	</c:if>
+	<dd><span class="label" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
+	<dd><span class="label">COVER : ${video.coverFilePath}</span></dd>
+	<dd><span class="label">WEBP : ${video.coverWebpFilePath}</span></dd>
+	<c:if test="${video.subtitlesFileListPath ne ''}">
+	<dd><span class="label" onclick="opener.fnEditSubtitles('${video.opus}')">SMI : ${video.subtitlesFileListPath}</span></dd>
+	</c:if>
+	<dd><span class="label">INFO : ${video.infoFilePath}</span></dd>
+	<c:if test="${video.etcFileListPath ne ''}">
 	<dd><div  class="label-large">ETC : ${video.etcFileListPath}</div></dd>
-	<dd><pre  class="label-large">${video.historyText}</pre></dd>
+	</c:if>
+	<c:if test="${video.historyText ne ''}">
+	<dd><pre  class="label">${video.historyText}</pre></dd>
+	</c:if>
+	<c:if test="${video.overviewText ne ''}">
 	<dd><pre  class="label-large" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
-	<dd><c:forEach items="${video.actressList}" var="actress">
+	</c:if>
+	<dd>
+		<c:forEach items="${video.actressList}" var="actress">
 			<span class="label-large actressSpan" onclick="fnViewActressDetail('${actress.name}')">${actress.name} (${fn:length(actress.videoList)})</span>
-			<ul>
-			<c:forEach items="${actress.videoList}" var="video">
-				<c:choose>
-				<c:when test="${video.opus != opus }">
-				<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
-				</c:when>
-				</c:choose>
-			</c:forEach>
-			</ul>
-		</c:forEach></dd>
+			<div style="padding-left:60px;">
+				<ul>
+				<c:forEach items="${actress.videoList}" var="video">
+					<c:choose>
+						<c:when test="${video.opus != opus }">
+						<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+				</ul>
+			</div>
+		</c:forEach>
+	</dd>
 </dl>
 </body>
 </html>
