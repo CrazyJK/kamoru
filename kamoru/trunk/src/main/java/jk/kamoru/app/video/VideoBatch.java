@@ -2,10 +2,12 @@ package jk.kamoru.app.video;
 
 import java.io.File;
 
+import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.service.VideoService;
 import jk.kamoru.util.FileUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,43 @@ public class VideoBatch {
 		logger.info("batch START");
 		long startTime = System.currentTimeMillis();
 
+		logger.info("batch : remove lower rank video [{}] < {}", REMOVE_LOWER_RANK_VIDEO, LOWER_RANK_VIDEO_BASELINE_SCORE);
 		if (REMOVE_LOWER_RANK_VIDEO) {
-			logger.info("batch : remove lower rank video periodically");
 			for (Video video : videoService.getVideoList()) {
 				if (video.getRank() < LOWER_RANK_VIDEO_BASELINE_SCORE) {
 					logger.info("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
 					videoService.deleteVideo(video.getOpus());
+				}
+			}
+		}
+
+		/*
+		 * 비디오 삭제 조건
+		 * 1. rank == 1
+		 * 2. play count > 1
+		 * 3. 여배우의 정보가 없고, 비디오 개수가 5개 미만
+		 */
+		logger.info("batch : delete video automatically");
+		int count = 0;
+		for (Video video : videoService.getVideoList()) {
+			if (video.getRank() == 1) {
+				if (video.getPlayCount() > 1) {
+					boolean delete = true;
+					for (Actress actress : video.getActressList()) {
+						if (actress.getVideoList().size() < 5) {
+							if (StringUtils.isEmpty(actress.getBirth()) && StringUtils.isEmpty(actress.getBodySize())) {
+								delete = delete && true; 
+							}
+							else {
+								delete = false;
+							}
+						}
+					}
+					if (delete) {
+						count++;
+//						videoService.deleteVideo(video.getOpus());
+						logger.info("Candidate to deletion - {}.{}", count, video.getDelegatePath());
+					}
 				}
 			}
 		}
@@ -55,15 +88,15 @@ public class VideoBatch {
 			}
 		}
 		
-		logger.info("batch : move video file to same folder");
+		logger.info("batch : arrange to same folder");
 		for (Video video : videoService.getVideoList()) {
 			logger.trace("arrange video {}", video.getOpus());
 			videoService.arrangeVideo(video.getOpus());
 		}
 		
+		logger.info("batch : move watched video [{}] to {}", MOVE_WATCHED_VIDEO, WATCHED_PATH);
 		if (MOVE_WATCHED_VIDEO) {
-			logger.info("batch : move watched video");
-			int count = 0;
+			count = 0;
 			for (Video video : videoService.getVideoList()) {
 				if (video.getPlayCount() > 0
 						&& video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0
