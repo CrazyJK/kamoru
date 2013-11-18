@@ -805,4 +805,8 @@ public class Video implements Comparable<Video>, Serializable {
 		}
 		return length;
 	}
+	
+	public String getFullname() {
+		return String.format("[%s][%s][%s][%s][%s]", studio, opus, title, getActress(), releaseDate != null ? releaseDate : getVideoDate());
+	}
 }

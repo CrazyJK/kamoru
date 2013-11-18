@@ -48,30 +48,31 @@ public class VideoBatch {
 
 		/*
 		 * 비디오 삭제 조건
-		 * 1. rank == 1
-		 * 2. play count > 1
-		 * 3. 여배우의 정보가 없고, 비디오 개수가 5개 미만
+		 * 1. rank <= 1
+		 * 2. play count > 2
+		 * 3. 자막 없음.
+		 * 4. 여배우 : 정보가 없고, 비디오 개수가 5개 미만에 모두 만족
 		 */
 		logger.info("batch : delete video automatically");
 		int count = 0;
 		for (Video video : videoService.getVideoList()) {
-			if (video.getRank() == 1) {
-				if (video.getPlayCount() > 1) {
-					boolean delete = true;
-					for (Actress actress : video.getActressList()) {
-						if (actress.getVideoList().size() < 5) {
-							if (StringUtils.isEmpty(actress.getBirth()) && StringUtils.isEmpty(actress.getBodySize())) {
-								delete = delete && true; 
-							}
-							else {
-								delete = false;
+			if (video.getRank() <= 1) {
+				if (video.getPlayCount() > 2) {
+					if (!video.isExistSubtitlesFileList()) {
+						boolean delete = true;
+						for (Actress actress : video.getActressList()) {
+							if (actress.getVideoList().size() > 5 
+									|| !StringUtils.isEmpty(actress.getBirth()) 
+									|| !StringUtils.isEmpty(actress.getBodySize())) {
+									delete = false; 
+									break;
 							}
 						}
-					}
-					if (delete) {
-						count++;
-//						videoService.deleteVideo(video.getOpus());
-						logger.info("Candidate to deletion - {}.{}", count, video.getDelegatePath());
+						if (delete) {
+							count++;
+							logger.info("Candidate to deletion - {}.{}", count, video.getFullname());
+//							videoService.deleteVideo(video.getOpus());
+						}
 					}
 				}
 			}
