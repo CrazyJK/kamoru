@@ -44,8 +44,6 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	private static Sort sortMethod = VideoCore.DEFAULT_SORTMETHOD;
 	
-	@Value("#{prop['server.base.url']}") private String baseurl;
-
 	// files
 	private List<File> videoFileList;
 	private List<File> subtitlesFileList;
@@ -449,7 +447,7 @@ public class Video implements Comparable<Video>, Serializable {
 			String pname = vfile.getParentFile().getName();
 			
 			try {
-				return new URL(baseurl + "/" + pname + "/" + vfile.getName());
+				return new URL("/" + pname + "/" + vfile.getName());
 			} catch (MalformedURLException e) {
 				logger.error(e.getMessage(), e);
 			}
@@ -806,7 +804,10 @@ public class Video implements Comparable<Video>, Serializable {
 		return length;
 	}
 	
+	/**
+	 * @return [studio][opus][title][actress][date]
+	 */
 	public String getFullname() {
-		return String.format("[%s][%s][%s][%s][%s]", studio, opus, title, getActress(), releaseDate != null ? releaseDate : getVideoDate());
+		return String.format("[%s][%s][%s][%s][%s]", studio.getName(), opus, title, getActress(), StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate);
 	}
 }

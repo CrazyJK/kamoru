@@ -29,17 +29,19 @@ public class GnomImageDownloader {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GnomImageDownloader.class);
 
-	final String   urlPattern    = "http://cham.us.to/?bbs=%s&no=%s&offset=%s&time=%s";
-	final String[] bbsList       = {"dcaworld", "picture", "sexy"};
-	final String   PAGENO_PREFIX = ".pageno";
-	final String   titleCssQuery = "div.b2";
-	
-	List<String> imagePrefixList = Arrays.asList("png", "jpg", "jpeg", "gif", "webp", "bmp");
+	final String   		PAGENO_PREFIX 	= ".pageno";
+	final List<String> 	imagePrefixList = Arrays.asList("png", "jpg", "jpeg", "gif", "webp", "bmp");
 
-	@Value("#{prop['gnomDownloadPath']}")	String downloadPath = "/home/kamoru/image";
+	@Value("#{prop['gnom.urlPattern']}")	String   urlPattern;
+	@Value("#{prop['gnom.bbsList']}")		String[] bbsList;
+	@Value("#{prop['gnom.titleCssQuery']}") String   titleCssQuery;
+	@Value("#{prop['gnom.downloadPath']}")	String   downloadPath;
 	
-	public GnomImageDownloader() {
-	}
+	@Value("#{prop['gnom.proxy']}")			 	boolean proxy;
+	@Value("#{prop['gnom.proxy.host.name']}") 	String  proxyHostName;
+	@Value("#{prop['gnom.proxy.host.value']}") 	String  proxyHostValue;
+	@Value("#{prop['gnom.proxy.port.name']}") 	String  proxyPortName;
+	@Value("#{prop['gnom.proxy.port.value']}") 	int     proxyPortValue;
 	
 	@Scheduled(cron="0 0 */1 * * *")
 	public void process() {
@@ -57,7 +59,8 @@ public class GnomImageDownloader {
 			}
 
 			// 저장할 폴더 확인
-			File downloadDir = new File(downloadPath, bbs + "/" + DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+//			File downloadDir = new File(downloadPath, bbs + "/" + DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+			File downloadDir = new File(downloadPath,             DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
 			if (!downloadDir.exists())
 				try {
 					FileUtils.forceMkdir(downloadDir);
@@ -98,7 +101,9 @@ public class GnomImageDownloader {
 				for (int i=0; i<futureCount; i++) {
 					pageNo++;
 					String urlString = String.format(urlPattern, bbs, pageNo, 0, System.currentTimeMillis());
-					ImageDownloader imageDownloader = new ImageDownloader(urlString, pageNo, downloadDir.getAbsolutePath(), titleCssQuery);
+					ImageDownloader imageDownloader = 
+							new ImageDownloader(urlString, pageNo, downloadDir.getAbsolutePath(), titleCssQuery);
+					imageDownloader.setProxyInfo(proxy, proxyHostName, proxyHostValue, proxyPortName, proxyPortValue);
 					futures.add(imageDownloader.download(eService));
 				}
 				eService.shutdown();

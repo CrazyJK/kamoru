@@ -13,6 +13,11 @@ var bgImageCount = ${bgImageCount};
 var totalVideoSize = parseInt('${fn:length(videoList)}');
 var currentVideoIndex = getRandomInteger(1, totalVideoSize);
 var listViewType = '${videoSearch.listViewType}';
+
+function fnViewBGImage() {
+	$("#contentContainer").toggle();
+	$("#bgActionGroup").toggle();
+}
 </script>
 <script src="<c:url value="/resources/video/videoMain.js" />" type="text/javascript"></script>
 <script src="http://slidesjs.com/examples/standard/js/jquery.slides.min.js"></script>
@@ -102,7 +107,10 @@ var listViewType = '${videoSearch.listViewType}';
 			<span class="button" onclick="fnRandomPlay()" title="<s:message code="video.random-play.title"/>"><s:message code="video.random-play"/></span>
 		</span>
 		<span class="group">
+			<%-- 		
 			<span class="button" onclick="fnBGImageView();" title="<s:message code="video.bgimage.title"/>"><s:message code="video.bgimage"/></span>
+			 --%>
+			<span class="button" onclick="fnViewBGImage();" title="<s:message code="video.bgimage.title"/>"><s:message code="video.bgimage"/></span>
 		</span>
 		<span class="group">
 			<span class="button" onclick="fnReloadVideoSource();" title="<s:message code="video.reload.title"/>"><s:message code="video.reload"/></span>
@@ -134,7 +142,8 @@ var listViewType = '${videoSearch.listViewType}';
 	</form:form>
 </div>
 
-<div id="contentDiv" class="div-box" ><!-- onclick="fnBGImageView();" -->
+<div id="contentDiv" class="div-box">
+<div id="contentContainer">
 <c:choose>
 	<c:when test="${videoSearch.listViewType eq 'C' }">
 	<ul>
@@ -269,10 +278,18 @@ var listViewType = '${videoSearch.listViewType}';
 					</dt>
 					<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
 						<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
-					<dd><span class="label-large">${video.opus}</span></dd>
+					<dd><span class="label-large">${video.opus}</span>
+						<c:if test="${!video.existVideoFileList}">
+							<span class="label-large">
+								<a href="<s:eval expression="@prop['torrentURL']"/>${video.opus}" target="_blank" class="link">Get torrent</a>
+							</span>
+						</c:if>  
+					</dd>
 					<dd>
 						<c:forEach items="${video.actressList}" var="actress" varStatus="status">
-						<span class="label-large" onclick="fnSearch('${actress.name}')">${actress.name}</span>
+						<span class="label-large" onclick="fnSearch('${actress.name}')"
+								title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut}"
+						>${actress.name}</span>
 						<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 						</c:forEach>
 					</dd>
@@ -373,6 +390,11 @@ var listViewType = '${videoSearch.listViewType}';
 	</ol>		
 	</c:otherwise>
 </c:choose>
+</div>
+<div id="bgActionGroup" style="display:none;">
+	<span onclick="setRandomBackgroundImage();">NEXT</span>
+	<span onclick="fnBGImageView();">VIEW</span>
+</div>
 </div>
 
 </body>

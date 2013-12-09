@@ -4,6 +4,10 @@ function resizeContentDivHeight() {
 	var resizeContentDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
 	$("#contentDiv").height(resizeContentDivHeight); //alert(resizeContentDivHeight);
 }
+function setRandomBackgroundImage() {
+	selectedNumber = getRandomInteger(0, bgImageCount);
+	setBackgroundImage();
+}
 function setBackgroundImage() {
 	currBGImageUrl = context + "image/" + selectedNumber;
 //	$("#contentDiv").hide();

@@ -54,9 +54,16 @@ public class ImageDownloader {
 	 */
 	private int pageNo;
 
+	private boolean proxy;
+	private String proxyHostName;
+	private String proxyHostValue;
+	private String proxyPortName;
+	private int proxyPortValue;
 	
 	
 	/**
+	 * 이미지 다운로더<br>
+	 * proxy 설정이 필요하면, {@link #setProxyInfo(boolean, String, String, String, int)} 함수를 추가하라.
 	 * @param urlString 이미지가 있는 URL
 	 * @param pageNo URL의 페이지 번호. 게시판 같은 경우에 해당
 	 * @param downloadDir 이미지 저장할 폴더
@@ -70,23 +77,48 @@ public class ImageDownloader {
 		this.titleCssQuery = titleCssQuery;
 	}
 
+	/**
+	 *  다운로드를 수행해 이미지를 저장한다.
+	 * @return 다운로드 결과
+	 */
 	public DownloadResult download() {
 		// jsoup HTML parser를 이용해 접속해서 이미지 찾기
 		Document document;
 		try {
+			if (proxy) {
+				System.setProperty(proxyHostName, proxyHostValue);
+				System.setProperty(proxyPortName, String.valueOf(proxyPortValue));
+			}
+			 
 			document = Jsoup.connect(urlString).get();
+			if (document == null) {
+				logger.debug("문서를 찾을수 없음 {}", document);
+				return new DownloadResult(pageNo, false, "문서를 찾을수 없음 " + document);
+			}
 		} catch (IOException e) {
 			logger.debug("접속이 안됨 {} - {}", e.getMessage(), urlString);
 			return new DownloadResult(pageNo, false, "접속이 안됨 " + e.getMessage() + " " + urlString);
 		}
+		
 		// 페이지 타이틀 구하기
 		String title = null;
 		if (titleCssQuery == null) {
 			title = document.title();
 		}
 		else {
-			title = document.select(titleCssQuery).first().text();
+			try {
+				title = document.select(titleCssQuery).first().text();
+			}
+			catch (Exception e) {
+				logger.info("제목 태그를 찾을수 없음 {} - {}", document.select(titleCssQuery), document.select(titleCssQuery).first());
+				return new DownloadResult(pageNo, false, "제목 태그를 찾을수 없음 " + document);
+			}
 		}
+		if (StringUtils.isEmpty(title)) {
+			logger.debug("제목을 찾을수 없음 {}", document);
+			return new DownloadResult(pageNo, false, "제목을 찾을수 없음 " + document);
+		}
+		
 		// img 태그 찾기
 		Elements imgTags = document.getElementsByTag("img");
 		int foundImageCount = imgTags.size();
@@ -190,7 +222,7 @@ public class ImageDownloader {
 					while ((length = inputStream.read(buffer)) >0) {
 						outputStream.write(buffer, 0, length);
 					}
-					if (imageFile.length() < 100l) {
+					if (imageFile.length() < 1000l) {
 						FileUtils.deleteQuietly(imageFile);
 					}
 					else {
@@ -198,6 +230,7 @@ public class ImageDownloader {
 					}
 				} catch (IOException e) {
 					logger.debug("다운로드 실패 {} - {}", imgSrc, e.getMessage());
+					FileUtils.deleteQuietly(imageFile);
 				} finally {
 					if (outputStream != null)
 						try {
@@ -217,5 +250,23 @@ public class ImageDownloader {
 				logger.warn("entity is null. {}", imgSrc);
 			}		
 		}
+	}
+
+	/**
+	 * proxy 설정<br>
+	 * ref. http://docs.xrath.com/java/se/6/docs/ko/technotes/guides/net/proxies.html
+	 * 
+	 * @param proxy 프록시 사용여부
+	 * @param proxyHostName 
+	 * @param proxyHostValue
+	 * @param proxyPortName
+	 * @param proxyPortValue
+	 */
+	public void setProxyInfo(boolean proxy, String proxyHostName, String proxyHostValue, String proxyPortName, int proxyPortValue) {
+		this.proxy = proxy;
+		this.proxyHostName = proxyHostName;
+		this.proxyHostValue = proxyHostValue;
+		this.proxyPortName = proxyPortName;
+		this.proxyPortValue = proxyPortValue;
 	}
 }

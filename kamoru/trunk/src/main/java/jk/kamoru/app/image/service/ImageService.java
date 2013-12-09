@@ -12,4 +12,6 @@ public interface ImageService {
 
 	Image getImageByRandom();
 
+	void downloadGnomImage();
+
 }

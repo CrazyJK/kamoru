@@ -374,6 +374,15 @@ li,
 .dl-detail dd {
 	margin: 3px 0 3px 0;
 }
+a.link {
+	color:#123;
+	text-decoration: none;
+}
+a.link:hover {
+	color: orange;
+	text-decoration: none;
+	text-shadow: 2px 2px 2px #123;
+}
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */
 ::-webkit-scrollbar {
 	width: 8px; 

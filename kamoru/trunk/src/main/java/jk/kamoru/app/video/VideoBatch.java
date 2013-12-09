@@ -1,6 +1,10 @@
 package jk.kamoru.app.video;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.Video;
@@ -33,6 +37,7 @@ public class VideoBatch {
 
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
+		
 		logger.info("batch START");
 		long startTime = System.currentTimeMillis();
 
@@ -49,16 +54,24 @@ public class VideoBatch {
 		/*
 		 * 비디오 삭제 조건
 		 * 1. rank <= 1
-		 * 2. play count > 2
+		 * 2. play count > 1
 		 * 3. 자막 없음.
-		 * 4. 여배우 : 정보가 없고, 비디오 개수가 5개 미만에 모두 만족
+		 * 4. 여배우 : 정보가 없고, 비디오 개수가 5개 미만
 		 */
 		logger.info("batch : delete video automatically");
 		int count = 0;
+		int rankTotal = 0;
+		int playTotal = 0;
+		int subTotal = 0;
+		int actressTotal = 0;
+		long deletedTotal = 0l;
 		for (Video video : videoService.getVideoList()) {
 			if (video.getRank() <= 1) {
-				if (video.getPlayCount() > 2) {
+				rankTotal++;
+				if (video.getPlayCount() > 1) {
+					playTotal++;
 					if (!video.isExistSubtitlesFileList()) {
+						subTotal++;
 						boolean delete = true;
 						for (Actress actress : video.getActressList()) {
 							if (actress.getVideoList().size() > 5 
@@ -69,14 +82,69 @@ public class VideoBatch {
 							}
 						}
 						if (delete) {
+							actressTotal++;
 							count++;
-							logger.info("Candidate to deletion - {}.{}", count, video.getFullname());
-//							videoService.deleteVideo(video.getOpus());
+							deletedTotal += video.getLength();
+							logger.info("Candidate to deletion - {}.{} rank:{}, play:{}, path:{} size:{}", count, video.getFullname(), video.getRank(), video.getPlayCount(), video.getDelegatePath(), video.getLength());
+							videoService.deleteVideo(video.getOpus());
 						}
 					}
 				}
 			}
 		}
+		if (count > 0)
+			logger.info("    Total deleted size {}, rank {}, play {}, subtitles {}, actress {}", deletedTotal / FileUtils.ONE_GB, rankTotal, playTotal, subTotal, actressTotal);
+		
+		/*
+		 * 종합 순위
+		 * 대상 비디오
+		 * 	- play count is over 0
+		 * 	- subtitles is not exist
+		 * 점수 배정
+		 * 	- rank 			: 1
+		 * 	- play count	: 1
+		 * 	- actress video	: 1		
+		 * 
+		 */
+		logger.info("batch : video point");
+		int rankRatio = 2;
+		int playRatio = 1;
+		int actressVideoRatio = 1;
+		int videoTotalCount = 0;
+		long videoTotalSize = 0l;
+		Map<Integer, Video> pointMap = new TreeMap<Integer, Video>(Collections.reverseOrder());
+		for (Video video : videoService.getVideoList()) {
+			if (video.getPlayCount() > 0 || !video.isExistSubtitlesFileList()) {
+				int rankPoint = video.getRank() * rankRatio;
+				int playPoint = video.getPlayCount() * playRatio;
+				int actressVideoPoint = 0;
+				for (Actress actress : video.getActressList()) {
+					actressVideoPoint += actress.getVideoList().size() * actressVideoRatio;
+				}
+				int totalPoint = rankPoint + playPoint + actressVideoPoint;
+				pointMap.put(totalPoint, video);
+				videoTotalCount++;
+				videoTotalSize += video.getLength();
+			}
+		}
+		logger.info("    Total {}video, {}GB", videoTotalCount, videoTotalSize / FileUtils.ONE_GB);
+		int index = 0;
+		long maxVideoSize = 700 * FileUtils.ONE_GB;
+		long totalVideoSize = 0l;
+		for (Entry<Integer, Video> entry : pointMap.entrySet()) {
+			int point = entry.getKey();
+			Video video = entry.getValue();
+			
+			totalVideoSize += video.getLength();
+			
+			logger.info("{} = {} > {} : {}", point, totalVideoSize / FileUtils.ONE_GB, maxVideoSize / FileUtils.ONE_GB, video.getFullname());
+			
+			if (totalVideoSize > maxVideoSize) {
+				logger.info("{}. point={} - {}, {}, {}, {}", ++index, point, video.getFullname(), video.getRank(), video.getPlayCount(), point - video.getRank() - video.getPlayCount());
+			}
+		}
+		
+		
 		
 		logger.info("batch : delete garbage file");
 		for (Video video : videoService.getVideoList()) {

@@ -51,7 +51,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @return
 	 */
 	public static String getNameExceptExtension(File file) {
-		Assert.isTrue(file.isFile(), "It is not file!");
+		Assert.isTrue(file.isFile(), "It is not file! - " + file.getAbsolutePath());
 		return StringUtils.substringBeforeLast(file.getName(), EXTENSION_SEPARATOR);
 	}
 
@@ -61,7 +61,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @return
 	 */
 	public static String getExtension(File file) {
-		Assert.isTrue(file.isFile(), "It is not file!");
+		Assert.isTrue(file.isFile(), "It is not file! - " + file.getAbsolutePath());
 		return StringUtils.substringAfterLast(file.getName(), EXTENSION_SEPARATOR);
 	}
 
