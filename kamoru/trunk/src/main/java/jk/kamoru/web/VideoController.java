@@ -123,6 +123,17 @@ public class VideoController {
 		return "video/videoList";
 	}
 
+	@RequestMapping(value="/torrent", method=RequestMethod.GET)
+	public String torrent(Model model) {
+		logger.trace("torrent");
+		VideoSearch videoSearch = new VideoSearch();
+		videoSearch.setAddCond(true);
+		videoSearch.setExistVideo(false);
+		videoSearch.setSortMethod(Sort.M);
+		model.addAttribute("videoList", videoService.searchVideo(videoSearch));
+		return "video/torrent";
+	}
+
 	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> noCover() {
 		logger.trace("noCover");

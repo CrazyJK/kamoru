@@ -9,6 +9,7 @@
 	<li><a href="<c:url value="/video/actress"/>">Actress list</a>
 	<li><a href="<c:url value="/video/studio"/>">Studio List</a>
 	<li><a href="<c:url value="/video/briefing"/>">Video briefing</a>
+	<li><a href="<c:url value="/video/torrent"/>">Video Torrent</a>
 </security:authorize>
 <security:authorize url="/image**">
 	<li><a href="<c:url value="/image"/>">Image view</a>

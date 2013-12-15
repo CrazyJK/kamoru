@@ -64,6 +64,11 @@ public class Video implements Comparable<Video>, Serializable {
 	private Integer playCount;
 	private int rank; // ranking score
 
+	@Value("#{prop['rankRatio']}")		private int      rankRatio;
+	@Value("#{prop['playRatio']}")		private int      playRatio;
+	@Value("#{prop['actressRatio']}")	private int   actressRatio;
+	@Value("#{prop['subtitlesRatio']}")	private int subtitlesRatio;
+
 
 	public Video() {
 		videoFileList 		= new ArrayList<File>();
@@ -117,6 +122,8 @@ public class Video implements Comparable<Video>, Serializable {
 			return this.getRank() - comp.getRank();
 		case L:
 			return this.getLength() > comp.getLength() ? 1 : -1;
+		case SC:
+			return this.getScore() - comp.getScore();
 		default:
 			return StringUtils.compareTo(this, comp);
 		}
@@ -809,5 +816,37 @@ public class Video implements Comparable<Video>, Serializable {
 	 */
 	public String getFullname() {
 		return String.format("[%s][%s][%s][%s][%s]", studio.getName(), opus, title, getActress(), StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate);
+	}
+	
+	/**비디오 점수<br>
+	 * rank, playCount, actress video count, subtitles count
+	 * @return
+	 */
+	public int getScore() {
+		if (getPlayCount() > 0 && this.isExistVideoFileList()) {
+			return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
+		}
+		else {
+			return 1000;
+		}
+	}
+
+	public int getRankScore() {
+		return getRank() * rankRatio;
+	}
+
+	public int getPlayScore() {
+		return getPlayCount() * playRatio;
+	}
+
+	public int getActressScore() {
+		int actressVideoScore = 0;
+		for (Actress actress : getActressList()) {
+			actressVideoScore += actress.getVideoList().size() * actressRatio;
+		}
+		return actressVideoScore;
+	}
+	public int getSubtitlesScore() {
+		return isExistSubtitlesFileList() ? 1 * subtitlesRatio : 0;
 	}
 }

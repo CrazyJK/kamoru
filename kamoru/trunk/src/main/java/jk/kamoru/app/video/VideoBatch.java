@@ -2,6 +2,8 @@ package jk.kamoru.app.video;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
 public class VideoBatch {
@@ -30,15 +34,17 @@ public class VideoBatch {
 	@Value("#{prop['watchedVideoPath']}") 				private String 	WATCHED_PATH;
 	@Value("#{prop['removeLowerRankVideo']}") 			private boolean REMOVE_LOWER_RANK_VIDEO;
 	@Value("#{prop['lowerRankVideoBaselineScore']}")  	private int 	LOWER_RANK_VIDEO_BASELINE_SCORE;
-
+	@Value("#{prop['maximumGBSizeOfEntireVideo']}")  	private int 	MAXIMUM_GB_SIZE_OF_ENTIRE_VIDEO;
+	@Value("#{prop['deleteLowerScoreVideo']}") 			private boolean DELETE_LOWER_SCORE_VIDEO;
+	
 	/** 최소 공간 사이즈 */
 	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;
-	private final long SLEEP_TIME = 30 * 1000;
+	private final long SLEEP_TIME = 10 * 1000;
 
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
 		
-		logger.info("batch START");
+		logger.info("BATCH START");
 		long startTime = System.currentTimeMillis();
 
 		logger.info("batch : remove lower rank video [{}] < {}", REMOVE_LOWER_RANK_VIDEO, LOWER_RANK_VIDEO_BASELINE_SCORE);
@@ -50,14 +56,13 @@ public class VideoBatch {
 				}
 			}
 		}
-
+		
 		/*
 		 * 비디오 삭제 조건
 		 * 1. rank <= 1
 		 * 2. play count > 1
 		 * 3. 자막 없음.
 		 * 4. 여배우 : 정보가 없고, 비디오 개수가 5개 미만
-		 */
 		logger.info("batch : delete video automatically");
 		int count = 0;
 		int rankTotal = 0;
@@ -94,99 +99,108 @@ public class VideoBatch {
 		}
 		if (count > 0)
 			logger.info("    Total deleted size {}, rank {}, play {}, subtitles {}, actress {}", deletedTotal / FileUtils.ONE_GB, rankTotal, playTotal, subTotal, actressTotal);
+		 */
 		
 		/*
 		 * 종합 순위
-		 * 대상 비디오
-		 * 	- play count is over 0
-		 * 	- subtitles is not exist
 		 * 점수 배정
-		 * 	- rank 			: 1
-		 * 	- play count	: 1
-		 * 	- actress video	: 1		
-		 * 
+		 * 	- rank 			: rankRatio
+		 * 	- play count	: playRatio
+		 * 	- actress video	: actressRatio		
+		 *  - subtitles     : subtitlesRatio
 		 */
-		logger.info("batch : video point");
-		int rankRatio = 2;
-		int playRatio = 1;
-		int actressVideoRatio = 1;
-		int videoTotalCount = 0;
-		long videoTotalSize = 0l;
-		Map<Integer, Video> pointMap = new TreeMap<Integer, Video>(Collections.reverseOrder());
-		for (Video video : videoService.getVideoList()) {
-			if (video.getPlayCount() > 0 || !video.isExistSubtitlesFileList()) {
-				int rankPoint = video.getRank() * rankRatio;
-				int playPoint = video.getPlayCount() * playRatio;
-				int actressVideoPoint = 0;
-				for (Actress actress : video.getActressList()) {
-					actressVideoPoint += actress.getVideoList().size() * actressVideoRatio;
+		logger.info("BATCH : delete lower score video [{}]", DELETE_LOWER_SCORE_VIDEO);
+		if (DELETE_LOWER_SCORE_VIDEO) {
+			long maximumSizeOfEntireVideo = MAXIMUM_GB_SIZE_OF_ENTIRE_VIDEO * FileUtils.ONE_GB;
+			long sumSizeOfTotalVideo  = 0l;
+			long sumSizeOfDeleteVideo = 0l;
+			int  countOfTotalVideo    = 0;
+			int  countOfDeleteVideo   = 0;
+			
+			List<Video> list = videoService.getVideoList();
+			Collections.sort(list, new Comparator<Video>(){
+				@Override
+				public int compare(Video o1, Video o2) {
+					return o2.getScore() - o1.getScore();
+				}});
+			int minAliveScore = 0;
+			for (Video video : list) {
+				int score = video.getScore();
+				sumSizeOfTotalVideo += video.getLength();
+				countOfTotalVideo++;
+				
+				if (sumSizeOfTotalVideo > maximumSizeOfEntireVideo) {
+					sumSizeOfDeleteVideo += video.getLength();
+					countOfDeleteVideo++;
+					
+					logger.info("    {}/{}. score[{}] = rankScore[{}] + playScore[{}] + actressScore[{}] + subtitlesScore[{}]; {}", 
+							countOfDeleteVideo,
+							countOfTotalVideo,
+							score, 
+							video.getRankScore(), 
+							video.getPlayScore(), 
+							video.getActressScore(),
+							video.getSubtitlesScore(),
+							video.getFullname());
+	
+					videoService.deleteVideo(video.getOpus());
 				}
-				int totalPoint = rankPoint + playPoint + actressVideoPoint;
-				pointMap.put(totalPoint, video);
-				videoTotalCount++;
-				videoTotalSize += video.getLength();
+				else {
+					minAliveScore = score;
+				}
 			}
-		}
-		logger.info("    Total {}video, {}GB", videoTotalCount, videoTotalSize / FileUtils.ONE_GB);
-		int index = 0;
-		long maxVideoSize = 700 * FileUtils.ONE_GB;
-		long totalVideoSize = 0l;
-		for (Entry<Integer, Video> entry : pointMap.entrySet()) {
-			int point = entry.getKey();
-			Video video = entry.getValue();
-			
-			totalVideoSize += video.getLength();
-			
-			logger.info("{} = {} > {} : {}", point, totalVideoSize / FileUtils.ONE_GB, maxVideoSize / FileUtils.ONE_GB, video.getFullname());
-			
-			if (totalVideoSize > maxVideoSize) {
-				logger.info("{}. point={} - {}, {}, {}, {}", ++index, point, video.getFullname(), video.getRank(), video.getPlayCount(), point - video.getRank() - video.getPlayCount());
-			}
+	//		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	//	    attr.getRequest().getSession(true).setAttribute("MIN_SCORE", minAliveScore);
+			if (countOfDeleteVideo > 0)
+				logger.info("    Total deleted {} video, {} GB", countOfDeleteVideo, sumSizeOfDeleteVideo / FileUtils.ONE_GB);
+			logger.info("    Current minimum score is {} ", minAliveScore);
 		}
 		
-		
-		
-		logger.info("batch : delete garbage file");
+		logger.info("BATCH : delete garbage file");
 		for (Video video : videoService.getVideoList()) {
 			if (!video.isExistVideoFileList() 
 					&& !video.isExistCoverFile()
 					&& !video.isExistCoverWebpFile() 
 					&& !video.isExistSubtitlesFileList()) {
-				logger.info("delete garbage file - {}", video);
+				logger.info("    delete garbage file - {}", video);
 				videoService.deleteVideo(video.getOpus());
 			}
 		}
 		
-		logger.info("batch : arrange to same folder");
+		logger.info("BATCH : arrange to same folder");
 		for (Video video : videoService.getVideoList()) {
-			logger.trace("arrange video {}", video.getOpus());
+			logger.trace("    arrange video {}", video.getOpus());
 			videoService.arrangeVideo(video.getOpus());
 		}
 		
-		logger.info("batch : move watched video [{}] to {}", MOVE_WATCHED_VIDEO, WATCHED_PATH);
+		logger.info("BATCH : move watched video [{}] to {}", MOVE_WATCHED_VIDEO, WATCHED_PATH);
+		int maximumCountOfMoveVideo = 5;
 		if (MOVE_WATCHED_VIDEO) {
-			count = 0;
+			int countOfMoveVideo = 0;
 			for (Video video : videoService.getVideoList()) {
 				if (video.getPlayCount() > 0
 						&& video.getVideoFileListPath().indexOf(WATCHED_PATH) < 0
-						&& count++ < 5
+						&& countOfMoveVideo++ < maximumCountOfMoveVideo
 						&& new File(WATCHED_PATH).getFreeSpace() > MIN_FREE_SPAC) {
-					logger.info("move video {} : {}", count, video);
+					logger.info("    move video {} : {}", countOfMoveVideo, video.getFullname());
+					
 					videoService.moveVideo(video.getOpus(), WATCHED_PATH);
-					try {
-						Thread.sleep(SLEEP_TIME);
-					} catch (InterruptedException e) {
-						logger.error("sleep error", e);
-					}
+
+					if (countOfMoveVideo < maximumCountOfMoveVideo)
+						try {
+							Thread.sleep(SLEEP_TIME);
+						} catch (InterruptedException e) {
+							logger.error("sleep error", e);
+						}
 				}
 			}
 		}
 
-		logger.info("batch : reload");
+		logger.info("BATCH : reload");
 		videoService.reload();
 		
 		long elapsedTime = System.currentTimeMillis() - startTime;
-		logger.info("batch END. Elapsed time : {} ms", elapsedTime);
+		logger.info("BATCH END. Elapsed time : {} ms", elapsedTime);
 	}
 	
 }
