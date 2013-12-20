@@ -823,12 +823,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 * @return
 	 */
 	public int getScore() {
-		if (getPlayCount() > 0 && this.isExistVideoFileList()) {
-			return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
-		}
-		else {
-			return 1000;
-		}
+		return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
 	}
 
 	public int getRankScore() {
@@ -836,7 +831,10 @@ public class Video implements Comparable<Video>, Serializable {
 	}
 
 	public int getPlayScore() {
-		return getPlayCount() * playRatio;
+		if (getPlayCount() > 0)
+			return getPlayCount() * playRatio;
+		else
+			return 1000;
 	}
 
 	public int getActressScore() {

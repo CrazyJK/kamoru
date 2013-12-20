@@ -32,6 +32,7 @@ public class GnomImageDownloader {
 	final String   		PAGENO_PREFIX 	= ".pageno";
 	final List<String> 	imagePrefixList = Arrays.asList("png", "jpg", "jpeg", "gif", "webp", "bmp");
 
+	@Value("#{prop['gnom.download']}")		boolean	 download;
 	@Value("#{prop['gnom.urlPattern']}")	String   urlPattern;
 	@Value("#{prop['gnom.bbsList']}")		String[] bbsList;
 	@Value("#{prop['gnom.titleCssQuery']}") String   titleCssQuery;
@@ -45,6 +46,9 @@ public class GnomImageDownloader {
 	
 	@Scheduled(cron="0 0 */1 * * *")
 	public void process() {
+		if (!download) {
+			return;
+		}
 		logger.info("그놈 이미지 가져오기 시작");
 		// 게시판별 작업
 		for (String bbs : bbsList) { 

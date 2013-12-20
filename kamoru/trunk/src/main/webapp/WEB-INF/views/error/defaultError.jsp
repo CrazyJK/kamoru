@@ -29,6 +29,7 @@
 	<h4><s:message code="default.request-attribute"/></h4>
 	<ol class="code-view">
 <%
+@SuppressWarnings("rawtypes")
 java.util.Enumeration e = request.getAttributeNames();
 while (e.hasMoreElements()) {
 	String name = (String)e.nextElement();
