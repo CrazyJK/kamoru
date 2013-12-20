@@ -79,7 +79,7 @@
 
 	<logger name="net.sf.ehcache">
 		<level value="trace" />
-		<!-- <appender-ref ref="ehcache" /> -->
+		<appender-ref ref="ehcache" />
 	</logger>
 
 	<!-- Root Logger -->

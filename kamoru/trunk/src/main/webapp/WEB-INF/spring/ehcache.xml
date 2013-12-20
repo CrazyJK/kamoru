@@ -3,6 +3,16 @@
     xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
     <diskStore path="java.io.tmpdir" />
 
+    <cacheManagerPeerProviderFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+            properties="peerDiscovery=automatic,
+                        multicastGroupAddress=230.0.0.1,
+                        multicastGroupPort=4446, timeToLive=0"/>
+    <cacheManagerPeerListenerFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/>
+
+
+
     <defaultCache
         maxElementsInMemory="50000"
         eternal="false"
@@ -32,6 +42,7 @@
         diskPersistent="false"
         diskExpiryThreadIntervalSeconds="120"
         memoryStoreEvictionPolicy="LRU">
+        <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />
     </cache>
     <cache name="studioCache"
         maxElementsInMemory="100"
