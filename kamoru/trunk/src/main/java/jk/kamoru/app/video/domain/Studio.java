@@ -23,7 +23,7 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
-	@Value("#{prop['mainBasePath']}")	private String mainBasePath;
+	@Value("#{prop['video.basePath']}") 		private String[] basePath;
 
 	private String name;
 	private URL    homepage;
@@ -108,7 +108,7 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	private void loadInfo() {
 		if (!loaded) {
-			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO));
+			Map<String, String> info = VideoUtils.readFileToMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO));
 			try {
 				this.homepage = new URL(info.get("HOMEPAGE"));
 			} catch (MalformedURLException e) {
@@ -120,10 +120,6 @@ public class Studio implements Serializable, Comparable<Studio> {
 	}
 	public void reloadInfo() {
 		loaded = false;
-	}
-
-	public void setMainBasePath(String mainBasePath) {
-		this.mainBasePath = mainBasePath;
 	}
 
 	public void emptyVideo() {

@@ -202,7 +202,7 @@ function fnViewBGImage() {
 					<dd><span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span></dd>
 					<dd><span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span></dd>
 					<dd><span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
-						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 						<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 					</dd>	
@@ -231,7 +231,7 @@ function fnViewBGImage() {
 				<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 				<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
 				<span id="DEL-opus-${video.opus}" style="display:none;" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span>
-				<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+				<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 					onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 				<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 			</div>
@@ -257,7 +257,7 @@ function fnViewBGImage() {
 				<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">s</span>
 				<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
 				<span id="DEL-opus-${video.opus}" class="label" onclick="fnDeleteOpus('${video.opus}')">D</span></td>
-			<td><input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+			<td><input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 					onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 				<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 			</td>
@@ -275,7 +275,7 @@ function fnViewBGImage() {
 						<span class="label-large rangeLabel" 
 							title="rank[${video.rankScore}] + play[${video.playScore}] + actress[${video.actressScore}] + subtitles[${video.subtitlesScore}]">${video.score}</span>
 						<br/>
-						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 						<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 					</dt>
@@ -284,7 +284,7 @@ function fnViewBGImage() {
 					<dd><span class="label-large">${video.opus}</span>
 						<c:if test="${!video.existVideoFileList}">
 							<span class="label-large">
-								<a href="<s:eval expression="@prop['torrentURL']"/>${video.opus}" target="_blank" class="link">Get torrent</a>
+								<a href="<s:eval expression="@prop['video.torrent.url']"/>${video.opus}" target="_blank" class="link">Get torrent</a>
 							</span>
 						</c:if>  
 					</dd>
@@ -320,7 +320,7 @@ function fnViewBGImage() {
 			<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 				<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span><br/>
-						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 						<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 					</dt>
@@ -367,7 +367,7 @@ function fnViewBGImage() {
 						<span class="label ${video.existCoverFile ? 'exist' : 'nonExist'}" onclick="fnImageView('${video.opus}')">Cover</span>
 						<span class="label ${video.existSubtitlesFileList ? 'exist' : 'nonExist'}" onclick="fnEditSubtitles('${video.opus}')">smi</span>
 						<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">Overview</span>
-						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 						<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 					</dt>

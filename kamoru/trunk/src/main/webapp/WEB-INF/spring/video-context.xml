@@ -19,12 +19,12 @@
 	<task:executor  id="executor"  pool-size="4" queue-capacity="4" rejection-policy="ABORT"/>	
 	
 	<bean id="videoSource" class="jk.kamoru.app.video.source.FileBaseVideoSource">
-		<property name="paths"                value="#{prop['basePath']}" />
-		<property name="video_extensions"     value="#{prop['video_extensions']}" />
-		<property name="cover_extensions"     value="#{prop['cover_extensions']}" />
-		<property name="subtitles_extensions" value="#{prop['subtitles_extensions']}" />
-		<property name="webp_mode"            value="#{prop['webp.mode']}" />
-		<property name="webp_exec"            value="#{prop['webp.exec']}" />
+		<property name="paths"                value="#{prop['video.basePath']}" />
+		<property name="video_extensions"     value="#{prop['video.extension']}" />
+		<property name="cover_extensions"     value="#{prop['video.cover.extension']}" />
+		<property name="subtitles_extensions" value="#{prop['video.subtitles.extension']}" />
+		<property name="webp_mode"            value="#{prop['video.cover.webp.mode']}" />
+		<property name="webp_exec"            value="#{prop['video.cover.webp.exec']}" />
 	</bean>
 	
 	<!-- AOP : VideoSource.load() -->	

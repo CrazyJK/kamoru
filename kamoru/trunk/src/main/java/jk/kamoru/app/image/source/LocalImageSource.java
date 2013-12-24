@@ -22,7 +22,7 @@ public class LocalImageSource implements ImageSource {
 
 	private List<Image> imageList;
 
-	@Value("#{prop['backgroundImagePoolPath']}")	private String[] backgroundImagePoolPath;
+	@Value("#{prop['image.basePath']}")	private String[] backgroundImagePoolPath;
 
 	private void listImages() {
 		List<File> imageFileList = new ArrayList<File>();

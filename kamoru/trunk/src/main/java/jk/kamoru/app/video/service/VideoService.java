@@ -62,8 +62,6 @@ public interface VideoService {
 	
 	Map<Integer, List<Video>> groupByPlay();
 
-	void arrangeVideo(String opus);
-
 	void moveVideo(String opus, String path);
 
 	void reload();
@@ -83,5 +81,15 @@ public interface VideoService {
 	Integer maxRank();
 
 	List<Integer> getRankRange();
+
+	void removeLowerRankVideo();
+
+	void removeLowerScoreVideo();
+
+	void deleteGarbageFile();
+
+	void moveWatchedVideo();
+
+	void arrangeVideo();
 	
 }

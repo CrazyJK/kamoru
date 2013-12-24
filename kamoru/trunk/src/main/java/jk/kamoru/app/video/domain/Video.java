@@ -64,10 +64,11 @@ public class Video implements Comparable<Video>, Serializable {
 	private Integer playCount;
 	private int rank; // ranking score
 
-	@Value("#{prop['rankRatio']}")		private int      rankRatio;
-	@Value("#{prop['playRatio']}")		private int      playRatio;
-	@Value("#{prop['actressRatio']}")	private int   actressRatio;
-	@Value("#{prop['subtitlesRatio']}")	private int subtitlesRatio;
+	@Value("#{prop['score.ratio.rank']}")		private int      rankRatio;
+	@Value("#{prop['score.ratio.play']}")		private int      playRatio;
+	@Value("#{prop['score.ratio.actress']}")	private int   actressRatio;
+	@Value("#{prop['score.ratio.subtitles']}")	private int subtitlesRatio;
+	@Value("#{prop['score.ratio.unseen']}")		private int    unseenRatio;
 
 
 	public Video() {
@@ -834,7 +835,7 @@ public class Video implements Comparable<Video>, Serializable {
 		if (getPlayCount() > 0)
 			return getPlayCount() * playRatio;
 		else
-			return 1000;
+			return unseenRatio;
 	}
 
 	public int getActressScore() {

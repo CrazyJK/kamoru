@@ -45,15 +45,24 @@ public class VideoServiceImpl implements VideoService {
 
 	private byte[] defaultCoverFileBytes;
 	
-	@Value("#{prop['defaultCoverFilePath']}") 	private String   defaultCoverFilePath;
-	@Value("#{prop['editor']}") 				private String   editor;
-	@Value("#{prop['mainBasePath']}") 			private String   mainBasePath;
-	@Value("#{prop['player']}") 				private String   player;
-	@Value("#{prop['webp.mode']}") 			    private boolean  webpMode;
-	@Value("#{prop['basePath']}") 				private String[] basePath;
-	@Value("#{prop['minRank']}") 				private Integer  minRank;
-	@Value("#{prop['maxRank']}") 				private Integer  maxRank;
+	@Value("#{prop['video.basePath']}") 		private String[] basePath;
+	@Value("#{prop['video.player']}") 			private String   player;
+	@Value("#{prop['video.subtitles.editor']}") private String   editor;
+	@Value("#{prop['video.cover.webp.mode']}") 	private boolean  webpMode;
+	@Value("#{prop['video.cover.default']}") 	private String   defaultCover;
 	
+	@Value("#{prop['rank.minimum']}") 			private Integer  minRank;
+	@Value("#{prop['rank.maximum']}") 			private Integer  maxRank;
+	@Value("#{prop['rank.baseline']}")  		private int 	 lowerRankVideoBaselineScore;
+	
+	@Value("#{prop['score.baseline']}")  		private int 	 maximumGBSizeOfEntireVideo;
+
+//	private String   mainBasePath;
+
+	/** 최소 공간 사이즈 */
+	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;
+	private final long SLEEP_TIME = 10 * 1000;
+
 	
 	@Autowired private VideoDao videoDao;
 
@@ -64,6 +73,7 @@ public class VideoServiceImpl implements VideoService {
 
 	public VideoServiceImpl() {
 		isChanged = true;
+//		mainBasePath = basePath[0];
 	}
 	
 	@Override
@@ -242,7 +252,7 @@ public class VideoServiceImpl implements VideoService {
 		logger.trace("getDefaultCoverFileByteArray");
 		if(defaultCoverFileBytes == null)
 			try {
-				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCoverFilePath));
+				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCover));
 			} catch (IOException e) {
 				logger.error("cover file byte array read fail", e);
 			}
@@ -251,7 +261,7 @@ public class VideoServiceImpl implements VideoService {
 	
 	private File getHistoryFile() {
 		if(historyFile == null)
-			historyFile = new File(mainBasePath, "history.log");
+			historyFile = new File(basePath[0], "history.log");
 		logger.debug("history file is {}", historyFile.getAbsolutePath());
 		return historyFile;
 	}
@@ -499,7 +509,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void saveActressInfo(String name, Map<String, String> params) {
 		logger.trace("name={}, params={}", name, params);
-		VideoUtils.saveFileFromMap(new File(mainBasePath, name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS), params);
+		VideoUtils.saveFileFromMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS), params);
 		videoDao.getActress(name).reloadInfo();
 	}
 
@@ -561,12 +571,6 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public void arrangeVideo(String opus) {
-		logger.trace(opus);
-		videoDao.arrangeVideo(opus);
-	}
-
-	@Override
 	public void moveVideo(String opus, String path) {
 		logger.trace("{} move to {}", opus, path);
 		videoDao.moveVideo(opus, path);
@@ -581,7 +585,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void saveStudioInfo(String studio, Map<String, String> params) {
 		logger.trace("name={}, params={}", studio, params);
-		VideoUtils.saveFileFromMap(new File(mainBasePath, studio + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO), params);
+		VideoUtils.saveFileFromMap(new File(basePath[0], studio + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO), params);
 		videoDao.getStudio(studio).reloadInfo();
 	}
 	
@@ -680,4 +684,111 @@ public class VideoServiceImpl implements VideoService {
 		return rankList;
 	}
 
+	@Override
+	public void removeLowerRankVideo() {
+		for (Video video : videoDao.getVideoList()) {
+			if (video.getRank() < lowerRankVideoBaselineScore) {
+				logger.info("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
+				videoDao.deleteVideo(video.getOpus());
+			}
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see jk.kamoru.app.video.service.VideoService#removeLowerScoreVideo()
+	 * 종합 순위<br>
+	 * 점수 배정<br>
+	 * 	- rank 			: rankRatio<br>
+	 * 	- play count	: playRatio<br>
+	 * 	- actress video	: actressRatio	<br>	
+	 *  - subtitles     : subtitlesRatio
+	 */
+	@Override
+	public void removeLowerScoreVideo() {
+		long maximumSizeOfEntireVideo = maximumGBSizeOfEntireVideo * FileUtils.ONE_GB;
+		long sumSizeOfTotalVideo  = 0l;
+		long sumSizeOfDeleteVideo = 0l;
+		int  countOfTotalVideo    = 0;
+		int  countOfDeleteVideo   = 0;
+		int  minAliveScore 		  = 0;
+		
+		List<Video> list = videoDao.getVideoList();
+		Collections.sort(list, new Comparator<Video>(){
+			@Override
+			public int compare(Video o1, Video o2) {
+				return o2.getScore() - o1.getScore();
+			}});
+		for (Video video : list) {
+			int score = video.getScore();
+			sumSizeOfTotalVideo += video.getLength();
+			countOfTotalVideo++;
+			
+			if (sumSizeOfTotalVideo > maximumSizeOfEntireVideo) {
+				sumSizeOfDeleteVideo += video.getLength();
+				countOfDeleteVideo++;
+				
+				logger.info("    {}/{}. score[{}] = rankScore[{}] + playScore[{}] + actressScore[{}] + subtitlesScore[{}]; {}", 
+						countOfDeleteVideo,
+						countOfTotalVideo,
+						score, 
+						video.getRankScore(), 
+						video.getPlayScore(), 
+						video.getActressScore(),
+						video.getSubtitlesScore(),
+						video.getFullname());
+
+				videoDao.deleteVideo(video.getOpus());
+			}
+			else {
+				minAliveScore = score;
+			}
+		}
+		if (countOfDeleteVideo > 0)
+			logger.info("    Total deleted {} video, {} GB", countOfDeleteVideo, sumSizeOfDeleteVideo / FileUtils.ONE_GB);
+		logger.info("    Current minimum score is {} ", minAliveScore);
+	}
+	
+	@Override
+	public void deleteGarbageFile() {
+		for (Video video : videoDao.getVideoList()) {
+			if (!video.isExistVideoFileList() 
+					&& !video.isExistCoverFile()
+					&& !video.isExistCoverWebpFile() 
+					&& !video.isExistSubtitlesFileList()) {
+				logger.info("    delete garbage file - {}", video);
+				videoDao.deleteVideo(video.getOpus());
+			}
+		}
+	}
+	
+	@Override
+	public void moveWatchedVideo() {
+		int maximumCountOfMoveVideo = 5;
+		int countOfMoveVideo = 0;
+		for (Video video : videoDao.getVideoList()) {
+			if (video.getPlayCount() > 0
+					&& video.getVideoFileListPath().indexOf(basePath[0]) < 0
+					&& countOfMoveVideo++ < maximumCountOfMoveVideo
+					&& new File(basePath[0]).getFreeSpace() > MIN_FREE_SPAC) {
+				logger.info("    move video {} : {}", countOfMoveVideo, video.getFullname());
+				
+				videoDao.moveVideo(video.getOpus(), basePath[0]);
+
+				if (countOfMoveVideo < maximumCountOfMoveVideo)
+					try {
+						Thread.sleep(SLEEP_TIME);
+					} catch (InterruptedException e) {
+						logger.error("sleep error", e);
+					}
+			}
+		}
+	}
+
+	@Override
+	public void arrangeVideo() {
+		for (Video video : videoDao.getVideoList()) {
+			logger.trace("    arrange video {}", video.getOpus());
+			videoDao.arrangeVideo(video.getOpus());
+		}
+	}
 }

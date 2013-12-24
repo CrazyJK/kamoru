@@ -22,7 +22,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
-	@Value("#{prop['mainBasePath']}") private String mainBasePath;
+	@Value("#{prop['video.basePath']}") 		private String[] basePath;
 
 	private String name;
 	private String localName;
@@ -95,7 +95,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 	
 	private void loadInfo() {
 		if (!loaded) {
-			Map<String, String> info = VideoUtils.readFileToMap(new File(mainBasePath, name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS));
+			Map<String, String> info = VideoUtils.readFileToMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS));
 			this.localName = info.get("LOCALNAME");
 			this.birth     = info.get("BIRTH");
 			this.height    = info.get("HEIGHT");
@@ -140,9 +140,6 @@ public class Actress implements Serializable, Comparable<Actress> {
 	
 	public void setVideoList(List<Video> videoList) {
 		this.videoList = videoList;
-	}
-	public void setMainBasePath(String mainBasePath) {
-		this.mainBasePath = mainBasePath;
 	}
 	public void emptyVideo() {
 		videoList.clear();

@@ -53,7 +53,7 @@ function checkboxTorrent(opus) {
 			<td align="right">${status.count}</td>
 			<td><span class="label" id="title-${video.opus}" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span></td>
 			<td><span class="label">
-					<a onclick="checkboxTorrent('${video.opus}')" href="<s:eval expression="@prop['torrentURL']"/>${video.opus}" target="_blank" class="link">Get torrent</a></span>
+					<a onclick="checkboxTorrent('${video.opus}')" href="<s:eval expression="@prop['video.torrent.url']"/>${video.opus}" target="_blank" class="link">Get torrent</a></span>
 				<input type="checkbox" id="checkbox-${video.opus}"/></td>
 			<td><input type="text" value="${video.fullname}" class="fullname" readonly/></td>
 		</tr>
