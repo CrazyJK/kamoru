@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -50,6 +51,9 @@ public class VideoServiceImpl implements VideoService {
 	@Value("#{prop['video.subtitles.editor']}") private String   editor;
 	@Value("#{prop['video.cover.webp.mode']}") 	private boolean  webpMode;
 	@Value("#{prop['video.cover.default']}") 	private String   defaultCover;
+	@Value("#{prop['video.torrent.path']}") 	private String   torrentPath;
+	@Value("#{prop['video.extension']}") 		private String[] videoExtensions;
+	
 	
 	@Value("#{prop['rank.minimum']}") 			private Integer  minRank;
 	@Value("#{prop['rank.maximum']}") 			private Integer  maxRank;
@@ -73,7 +77,6 @@ public class VideoServiceImpl implements VideoService {
 
 	public VideoServiceImpl() {
 		isChanged = true;
-//		mainBasePath = basePath[0];
 	}
 	
 	@Override
@@ -491,6 +494,8 @@ public class VideoServiceImpl implements VideoService {
 		Long[] total = new Long[]{0l, 0l};
 		for (Video video : videoDao.getVideoList()) {
 			String path = video.getDelegatePath();
+			if (path.contains(basePath[0]))
+				path = basePath[0];
 			long length = video.getLength();
 			Long[] data = pathMap.get(path);
 			if (data == null) {
@@ -765,14 +770,20 @@ public class VideoServiceImpl implements VideoService {
 	public void moveWatchedVideo() {
 		int maximumCountOfMoveVideo = 5;
 		int countOfMoveVideo = 0;
+		File mainBaseFile = new File(basePath[0]);
 		for (Video video : videoDao.getVideoList()) {
 			if (video.getPlayCount() > 0
-					&& video.getVideoFileListPath().indexOf(basePath[0]) < 0
+					&& !video.getDelegatePath().contains(mainBaseFile.getAbsolutePath())
+//					&& !video.getDelegatePathFile().equals(mainDestFile)
 					&& countOfMoveVideo++ < maximumCountOfMoveVideo
-					&& new File(basePath[0]).getFreeSpace() > MIN_FREE_SPAC) {
+					&& mainBaseFile.getFreeSpace() > MIN_FREE_SPAC) {
 				logger.info("    move video {} : {}", countOfMoveVideo, video.getFullname());
 				
-				videoDao.moveVideo(video.getOpus(), basePath[0]);
+				File destDir = new File(basePath[0]  + "/" + video.getStudio().getName());
+				if (!destDir.exists())
+					destDir.mkdir();
+				
+				videoDao.moveVideo(video.getOpus(), destDir.getAbsolutePath());
 
 				if (countOfMoveVideo < maximumCountOfMoveVideo)
 					try {
@@ -790,5 +801,68 @@ public class VideoServiceImpl implements VideoService {
 			logger.trace("    arrange video {}", video.getOpus());
 			videoDao.arrangeVideo(video.getOpus());
 		}
+	}
+	
+	@Override
+	public List<Video> torrent() {
+		logger.trace("torrent");
+		VideoSearch videoSearch = new VideoSearch();
+		videoSearch.setAddCond(true);
+		videoSearch.setExistVideo(false);
+		videoSearch.setSortMethod(Sort.M);		
+		List<Video> list =  this.searchVideo(videoSearch);
+		logger.info("  need torrent videos - {}", list.size());
+		
+		// get downloaded torrent file
+		File torrentDirectory = new File(torrentPath);
+		if (!torrentDirectory.isDirectory())
+			throw new VideoException("invalid torrent path");
+		
+		String[] extensions = new String[videoExtensions.length * 2];
+		int index = 0;
+		for (String ext : videoExtensions) {
+			extensions[index++] = ext.toUpperCase();
+			extensions[index++] = ext.toLowerCase();
+		}
+		logger.trace("extensions - {}", Arrays.toString(extensions));
+		
+		Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
+		logger.info("  found cadidates file - {}", torrents.size());
+		
+		// matching video file
+		for (Video video : list) {
+			video.resetVideoCandidates();
+			String opus = video.getOpus().toLowerCase();
+			logger.info("  OPUS : {}", opus);
+			for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
+				for (File file : torrents) {
+					String fileName = file.getName().toLowerCase();
+					logger.trace("    compare : {} = {}", fileName, key);
+					if (fileName.contains(key)) {
+						video.addVideoCandidates(file);
+						logger.info("    add video candidate - {}", fileName);
+					}
+				}
+			}
+		}
+		
+		return list;
+	}
+
+	@Override
+	public void confirmCandidate(String opus, String path) {
+		logger.trace("confirmCandidate : {} - {}", opus, path);
+		Video   video = videoDao.getVideo(opus);
+		int videoFileSize = video.getVideoFileList().size();
+		File     file = new File(path);
+		File destFile = new File(new File(basePath[basePath.length-1]), 
+				video.getFullname() + (videoFileSize > 0 ? String.valueOf(videoFileSize+1) : "") + "." + FileUtils.getExtension(file));
+		try {
+			FileUtils.moveFile(file, destFile);
+			logger.info("move to {}", destFile.getAbsoluteFile());
+		} catch (IOException e) {
+			throw new VideoException("candidate file moving error", e);
+		}
+		video.addVideoFile(destFile);
 	}
 }

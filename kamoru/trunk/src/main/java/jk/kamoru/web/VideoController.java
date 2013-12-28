@@ -123,11 +123,7 @@ public class VideoController {
 	@RequestMapping(value="/torrent", method=RequestMethod.GET)
 	public String torrent(Model model) {
 		logger.trace("torrent");
-		VideoSearch videoSearch = new VideoSearch();
-		videoSearch.setAddCond(true);
-		videoSearch.setExistVideo(false);
-		videoSearch.setSortMethod(Sort.M);
-		model.addAttribute("videoList", videoService.searchVideo(videoSearch));
+		model.addAttribute("videoList", videoService.torrent());
 		return "video/torrent";
 	}
 
@@ -277,5 +273,37 @@ public class VideoController {
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
 
+	@RequestMapping("/manager")
+	public String mng() {
+		logger.trace("video mng");
+		return "video/manager";
+	}
 
+	@RequestMapping("/manager/move")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void arrange() {
+		logger.trace("move watched video");
+		videoService.moveWatchedVideo();
+	}
+	
+	@RequestMapping("/manager/rank")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void rank() {
+		logger.trace("delete lower rank video");
+		videoService.removeLowerRankVideo();
+	}
+	
+	@RequestMapping("/manager/score")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void score() {
+		logger.trace("delete lower score video");
+		videoService.removeLowerScoreVideo();
+	}
+	
+	@RequestMapping(value="/{opus}/confirmCandidate", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void confirmCandidate(Model model, @PathVariable("opus") String opus, @RequestParam("path") String path) {
+		logger.trace("confirm candidate video file");
+		videoService.confirmCandidate(opus, path);
+	}
 }

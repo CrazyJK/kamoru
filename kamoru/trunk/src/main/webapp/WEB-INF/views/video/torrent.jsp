@@ -13,7 +13,7 @@
 	color: blue;
 }
 .fullname {
-	width:600px; border:0; font-size: 11px; 
+	width:500px; border:0; font-size: 11px; 
 }
 .fullname:focus {
 	background-color:yellow;
@@ -33,8 +33,13 @@ function resizeDivHeight() {
 	var calculatedDivHeight = windowHeight - header - 20 * 2; 
 	$("#list_div").outerHeight(calculatedDivHeight);	
 }
+
 function checkboxTorrent(opus) {
 	$("#checkbox-" + opus).click();
+}
+
+function fnConfirmedByVideo(opus, path) {
+	alert(opus + "; " + path);
 }
 </script>
 </head>
@@ -56,6 +61,14 @@ function checkboxTorrent(opus) {
 					<a onclick="checkboxTorrent('${video.opus}')" href="<s:eval expression="@prop['video.torrent.url']"/>${video.opus}" target="_blank" class="link">Get torrent</a></span>
 				<input type="checkbox" id="checkbox-${video.opus}"/></td>
 			<td><input type="text" value="${video.fullname}" class="fullname" readonly/></td>
+			<td>
+				<c:forEach items="${video.videoCandidates}" var="candidate">
+				<form method="post" target="ifrm" action="<c:url value="/video/${video.opus}/confirmCandidate"/>">
+					<input type="submit" value="${candidate.name}"/>
+					<input type="hidden" name="path" value="${candidate.absolutePath}"/>
+				</form>
+				</c:forEach>
+			</td>
 		</tr>
 		</c:forEach>
 	</table>

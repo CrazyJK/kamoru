@@ -50,7 +50,8 @@ function resizeDivHeight() {
 <div id="list_div" class="div-box" style="overflow:auto;">
 	<table class="video-table" style="background-color:lightgray">
 		<c:forEach items="${videoList}" var="video" varStatus="status">
-		<tr>
+		
+		<tr <%-- class="${video.deletionCandidate ? 'deletionCandidate' : ''}" --%>>
 			<td align="right">
 				${status.count}</td>
 			<td>
@@ -75,6 +76,7 @@ function resizeDivHeight() {
 			<td width="45px" align="right">
 				<fmt:formatNumber value="${video.length / ONE_GB}" pattern="#,##0.00G"/></td>
 		</tr>
+		
 		</c:forEach>
 	</table>
 </div>

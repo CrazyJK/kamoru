@@ -51,6 +51,7 @@ public class Video implements Comparable<Video>, Serializable {
 	private File coverWebpFile;
 	private File infoFile; // json file
 	private List<File> etcFileList;
+	private List<File> videoCandidates;
 
 	// info
 	private Studio studio;
@@ -75,6 +76,7 @@ public class Video implements Comparable<Video>, Serializable {
 		videoFileList 		= new ArrayList<File>();
 		subtitlesFileList 	= new ArrayList<File>();
 		etcFileList 		= new ArrayList<File>();
+		videoCandidates		= new ArrayList<File>();
 		
 		actressList = new ArrayList<Actress>();
 		historyList = new ArrayList<String>();
@@ -252,6 +254,14 @@ public class Video implements Comparable<Video>, Serializable {
 		return this.getDelegateFile().getParent();
 	}
 	
+	/**
+	 * video 대표 폴더 경로. video > cover > overview > subtitles > etc 순으로 찾는다.
+	 * @return
+	 */
+	public File getDelegatePathFile() {
+		return this.getDelegateFile().getParentFile();
+	}
+
 	/**
 	 * 기타 파일 
 	 * @return
@@ -848,4 +858,28 @@ public class Video implements Comparable<Video>, Serializable {
 	public int getSubtitlesScore() {
 		return isExistSubtitlesFileList() ? 1 * subtitlesRatio : 0;
 	}
+
+	public void addVideoCandidates(File file) {
+		videoCandidates.add(file);
+	}
+
+	/**
+	 * @return the videoCandidates
+	 */
+	public List<File> getVideoCandidates() {
+		return videoCandidates;
+	}
+
+	/**
+	 * @param videoCandidates the videoCandidates to set
+	 */
+	public void setVideoCandidates(List<File> videoCandidates) {
+		this.videoCandidates = videoCandidates;
+	}
+
+	public void resetVideoCandidates() {
+		this.videoCandidates.clear();
+	}
+
+	
 }

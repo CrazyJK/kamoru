@@ -91,5 +91,9 @@ public interface VideoService {
 	void moveWatchedVideo();
 
 	void arrangeVideo();
+
+	List<Video> torrent();
+
+	void confirmCandidate(String opus, String path);
 	
 }

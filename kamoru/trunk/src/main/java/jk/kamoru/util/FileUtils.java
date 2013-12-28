@@ -1,6 +1,9 @@
 package jk.kamoru.util;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.util.Assert;
 
@@ -65,4 +68,22 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		return StringUtils.substringAfterLast(file.getName(), EXTENSION_SEPARATOR);
 	}
 
+	public static List<File> listFiles(String[] directories, String[] extensions, boolean recursive) {
+		List<File> dirFiles = new ArrayList<File>();
+		for (String directory : directories) {
+			File dirFile = new File(directory);
+			if (dirFile.isDirectory())
+				dirFiles.add(dirFile);
+		}
+		return listFiles(dirFiles, extensions, recursive);
+	}
+
+	private static List<File> listFiles(List<File> dirFiles, String[] extensions, boolean recursive) {
+		List<File> list = new ArrayList<File>();
+		for (File dir : dirFiles) {
+			Collection<File> found = listFiles(dir, extensions, recursive);
+			list.addAll(found);
+		}
+		return list;
+	}
 }

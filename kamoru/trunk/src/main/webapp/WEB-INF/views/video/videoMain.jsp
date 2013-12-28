@@ -279,7 +279,9 @@ function fnViewBGImage() {
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 						<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 					</dt>
-					<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')">${video.studio.name}</span>
+					<dd><span class="label-large" onclick="fnSearch('${video.studio.name}')"
+							title="${video.studio.homepage} ${video.studio.companyName}"
+						>${video.studio.name}</span>
 						<img src="<c:url value="/resources/link.png"/>" onclick="fnViewStudioDetail('${video.studio.name}')"></dd>
 					<dd><span class="label-large">${video.opus}</span>
 						<c:if test="${!video.existVideoFileList}">
@@ -291,7 +293,7 @@ function fnViewBGImage() {
 					<dd>
 						<c:forEach items="${video.actressList}" var="actress" varStatus="status">
 						<span class="label-large" onclick="fnSearch('${actress.name}')"
-								title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut}"
+								title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut} [${fn:length(actress.videoList)}]"
 						>${actress.name}</span>
 						<img src="<c:url value="/resources/magnify${status.count%2}.png"/>" onclick="fnViewActressDetail('${actress.name}')" width="12px">
 						</c:forEach>

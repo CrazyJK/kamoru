@@ -4,12 +4,15 @@
 	<li><a href="<c:url value="/home"/>">Home</a>
 <security:authorize url="/video**">
 	<li><a href="<c:url value="/video"/>">Video Main</a>
-	<li><a href="<c:url value="/video/search"/>">Video search</a>
-	<li><a href="<c:url value="/video/list"/>">Video list</a>
-	<li><a href="<c:url value="/video/actress"/>">Actress list</a>
-	<li><a href="<c:url value="/video/studio"/>">Studio List</a>
-	<li><a href="<c:url value="/video/briefing"/>">Video briefing</a>
-	<li><a href="<c:url value="/video/torrent"/>">Video Torrent</a>
+		<ul>
+			<li><a href="<c:url value="/video/search"/>">Video search</a>
+			<li><a href="<c:url value="/video/list"/>">Video list</a>
+			<li><a href="<c:url value="/video/actress"/>">Actress list</a>
+			<li><a href="<c:url value="/video/studio"/>">Studio List</a>
+			<li><a href="<c:url value="/video/briefing"/>">Video briefing</a>
+			<li><a href="<c:url value="/video/torrent"/>">Video Torrent</a>
+			<li><a href="<c:url value="/video/manager"/>">Video Manager</a>
+		</ul>
 </security:authorize>
 <security:authorize url="/image**">
 	<li><a href="<c:url value="/image"/>">Image view</a>
