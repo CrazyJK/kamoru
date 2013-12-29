@@ -86,4 +86,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 		return list;
 	}
+
+	public static boolean isEmptyDirectory(File downloadDir) {
+		Collection<File> found = listFiles(downloadDir, null, true);
+		return found.size() == 0 ? true : false;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(FileUtils.isEmptyDirectory(new File("E:\\Girls\\gnom\\2013-12-24")));
+	}
 }

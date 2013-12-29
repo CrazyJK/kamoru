@@ -150,7 +150,7 @@ public class ImageDownloader extends Thread {
 			}
 		}
 		else {
-			logger.error("entity is null or smaill. {}", imgSrc);
+			logger.error("entity is null or smaill. {} - {}", imgSrc, (entity == null ? null : entity.getContentLength()));
 		}		
 	}
 

@@ -42,34 +42,42 @@ public class GnomImageDownloader {
 	@Value("#{prop['gnom.proxy.port.value']}") 	int      proxyPortValue;
 	
 	@Scheduled(cron="0 0 */1 * * *")
+	public void batch() {
+		logger.info("batch : gnom image download [{}]", download);
+		if (download)
+			process();
+	}
+	
 	public void process() {
-		if (!download) {
-			return;
+		logger.info("[그놈 이미지 가져오기 시작]");
+
+		// 저장할 폴더 확인
+		File downloadDir = new File(downloadPath, DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+		if (!downloadDir.exists())
+			try {
+				FileUtils.forceMkdir(downloadDir);
+			} catch (IOException e) {
+				logger.error("저장 폴더 생성 실패", e);
+				return;
+			}
+
+		// set proxy
+		if (proxy) {
+			System.setProperty(proxyHostName, proxyHostValue);
+			System.setProperty(proxyPortName, String.valueOf(proxyPortValue));
 		}
 		
-		logger.info("그놈 이미지 가져오기 시작");
 		// 게시판별 작업
 		for (String bbs : bbsList) { 
-			logger.info("{} 게시판 시도", bbs);
+			logger.info("  - {} 게시판 시도", bbs);
 			// 마지막 페이지 읽어오기
 			int pageNo;
 			try {
 				pageNo = getLastPageNo(bbs);
 			} catch (IOException e) {
-				logger.error("{}의 마지막 페이지를 알수 없음. {}", bbs, e);
+				logger.error("  - {}의 마지막 페이지를 알수 없음. {}", bbs, e);
 				continue;
 			}
-
-			// 저장할 폴더 확인
-//			File downloadDir = new File(downloadPath, bbs + "/" + DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
-			File downloadDir = new File(downloadPath,             DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
-			if (!downloadDir.exists())
-				try {
-					FileUtils.forceMkdir(downloadDir);
-				} catch (IOException e) {
-					logger.error("폴더 생성 실패", e);
-					continue;
-				}
 
 			// 게시판의 이미지 받기
 			// java.util.concurrent.Future 사용 비동기 방식 처리
@@ -84,12 +92,14 @@ public class GnomImageDownloader {
 					pageNo++;
 					String pageUrl = String.format(urlPattern, bbs, pageNo, 0, System.currentTimeMillis());
 					
-					PageImageDownloader imageDownloader = 
+					PageImageDownloader pageImageDownloader = 
 							new PageImageDownloader(pageUrl, downloadDir.getAbsolutePath(), pageNo, bbs, titleCssQuery);
+					pageImageDownloader.setMinimumDownloladSize(FileUtils.ONE_KB * 4);
+					/*앞부분에 설정되므로 생략
 					if (proxy)
 						imageDownloader.setProxyInfo(proxy, proxyHostName, proxyHostValue, proxyPortName, proxyPortValue);
-					
-					futures.add(imageDownloader.download(eService));
+					*/
+					futures.add(pageImageDownloader.download(eService));
 				}
 				eService.shutdown();
 
@@ -97,17 +107,17 @@ public class GnomImageDownloader {
 				for (Future<PageImageDownloader.DownloadResult> future : futures) {
 					try {
 						PageImageDownloader.DownloadResult downloadResult = future.get();
-						logger.info("{} {}", bbs, downloadResult);
+						logger.info("  - {} - {}", bbs, downloadResult);
 						
 						if (downloadResult.result)
 							successList.add(downloadResult.no);
 						else
 							failCount++;
 					} catch (InterruptedException e) {
-						logger.error("", e);
+						logger.error("  - {}", e);
 						failCount++;
 					} catch (ExecutionException e) {
-						logger.error("", e);
+						logger.error("  - {}", e);
 						failCount++;
 					}
 				}
@@ -121,12 +131,26 @@ public class GnomImageDownloader {
 				try {
 					pageNo = NumberUtils.max(ArrayUtils.toPrimitive(successList.toArray(new Integer[successList.size()])));
 					saveLastPageNo(bbs, pageNo);
-					logger.info("{} 마지막 페이지 번호 저장 {}", bbs, pageNo);
+					logger.info("  - {} 마지막 페이지 번호 저장 {}", bbs, pageNo);
 				} catch (IOException e) {
-					logger.error("{}의 마지막 페이지 번호를 저장 할 수 없음. pageNo={}", bbs, pageNo);
+					logger.error("  - {}의 마지막 페이지 번호를 저장 할 수 없음. pageNo={}", bbs, pageNo);
 				}
 		}
-		logger.info("그놈 이미지 가져오기 완료");
+		
+		if (FileUtils.isEmptyDirectory(downloadDir))
+			try {
+				FileUtils.deleteDirectory(downloadDir);
+			} catch (IOException e) {
+				logger.error("저장 폴더가 비었으나 삭제에 실패 함", e);
+			}
+		
+		// release proxy
+		if (proxy) {
+			System.clearProperty(proxyHostName);
+			System.clearProperty(proxyPortName);
+		}
+		
+		logger.info("[그놈 이미지 가져오기 완료]");
 	}
 	
 	private void saveLastPageNo(String bbs, int pageNo) throws IOException {

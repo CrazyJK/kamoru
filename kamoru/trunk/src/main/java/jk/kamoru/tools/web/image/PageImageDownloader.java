@@ -43,6 +43,11 @@ public class PageImageDownloader {
 	 */
 	private int pageNo;
 
+	/**
+	 * 다운 받을 최소 이미지 사이즈
+	 */
+	private long minimumSize;
+	
 	private boolean proxy;
 	private String proxyHostName;
 	private String proxyHostValue;
@@ -101,6 +106,14 @@ public class PageImageDownloader {
 	}
 	
 	/**
+	 * 다운로드 받을 이미지의 최소 사이즈. 단위 byte
+	 * @param minimumSize
+	 */
+	public void setMinimumDownloladSize(long minimumSize) {
+		this.minimumSize = minimumSize;
+	}
+	
+	/**
 	 * 다운로드 수행. {@link java.util.concurrent.ExecutorService}를 이용한 비동기 방식
 	 * @param executorService
 	 * @return 다운로드 결과
@@ -121,58 +134,72 @@ public class PageImageDownloader {
 	 * @return 다운로드 결과
 	 */
 	public DownloadResult download() {
-		// jsoup HTML parser를 이용해 접속해서 이미지 찾기
-		Document document;
+		
 		try {
 			// set proxy
 			if (proxy) {
 				System.setProperty(proxyHostName, proxyHostValue);
 				System.setProperty(proxyPortName, String.valueOf(proxyPortValue));
 			}
-			// connect url
-			document = Jsoup.connect(pageUrl).get();
-			if (document == null) {
-				logger.error("문서를 찾을수 없음 {}", document);
-				return new DownloadResult(false, pageNo, "문서를 찾을수 없음 " + document);
+			
+			// jsoup HTML parser를 이용해 접속해서 이미지 찾기
+			Document document;
+			try {
+				// connect url
+				document = Jsoup.connect(pageUrl).get();
+				if (document == null) {
+//					logger.error("문서가 비었음");
+					return new DownloadResult(false, pageNo, "문서가 비었음 " + pageUrl);
+				}
+			} catch (IOException e) {
+//				logger.error("접속이 안됨 : {} [{}]", e.getMessage(), pageUrl);
+				return new DownloadResult(false, pageNo, "접속이 안됨 " + e.getMessage() + " " + pageUrl);
 			}
-		} catch (IOException e) {
-			logger.error("접속이 안됨 {} - {}", e.getMessage(), pageUrl);
-			return new DownloadResult(false, pageNo, "접속이 안됨 " + e.getMessage() + " " + pageUrl);
-		}
+			
+			// 페이지 타이틀 구하기
+			String documentTitle = document.title();
+			String titleByCSS = titleCssQuery != null ? document.select(titleCssQuery).first().text() : null;
+			String title = (StringUtils.isEmpty(titlePrefix) ? "" : titlePrefix + "-") 
+					+ (pageNo == 0 ? "" : pageNo + "-")
+					+ (StringUtils.isEmpty(titleByCSS) ? documentTitle : titleByCSS);
+			
+			if (StringUtils.isEmpty(title)) {
+//				logger.error("제목을 결정할 수 없음 {}", document);
+				return new DownloadResult(false, pageNo, "제목을 결정할 수 없음 " + pageUrl);
+			}
+			
+			// img 태그 찾기
+			Elements imgTags = document.getElementsByTag("img");
+			int foundImageCount = imgTags.size();	
+			if (foundImageCount == 0) {
+//				logger.error("이미지가 없음 {}", pageUrl);
+				return new DownloadResult(false, pageNo, "이미지가 없음 " + pageUrl);
+			}
 		
-		// 페이지 타이틀 구하기
-		String documentTitle = document.title();
-		String titleByCSS = titleCssQuery != null ? document.select(titleCssQuery).first().text() : null;
-		String title = (StringUtils.isEmpty(titlePrefix) ? "" : titlePrefix + "-") 
-				+ (pageNo == 0 ? "" : pageNo + "-")
-				+ (StringUtils.isEmpty(titleByCSS) ? documentTitle : titleByCSS);
-		
-		if (StringUtils.isEmpty(title)) {
-			logger.error("제목을 결정할 수 없음 {}", document);
-			return new DownloadResult(false, pageNo, "제목을 결정할 수 없음 " + document);
-		}
-		
-		// img 태그 찾기
-		Elements imgTags = document.getElementsByTag("img");
-		int foundImageCount = imgTags.size();	
-		if (foundImageCount == 0) {
-			logger.error("이미지가 없음 {}", pageUrl);
-			return new DownloadResult(false, pageNo, "이미지가 없음 " + pageUrl);
-		}
-		logger.debug("no={} [{}] 이미지 {}", pageNo, title, foundImageCount);
+			// 페이지 안에 이미지들 다운로드
+			int count = 0;
+			for (Element imgTag : imgTags) {
+				String imgSrc = imgTag.attr("src");
 	
-		// 페이지 안에 이미지들 다운로드
-		int count = 0;
-		for (Element imgTag : imgTags) {
-			String imgSrc = imgTag.attr("src");
-
-			title += "-" + ++count;
-
-			// download thread start
-			ImageDownloader imageDownload = new ImageDownloader(imgSrc, title, downloadDir); 
-			imageDownload.start();
+				if (!StringUtils.isEmpty(imgSrc)) {
+					// download thread start
+					ImageDownloader imageDownload = new ImageDownloader(imgSrc, String.format("%s-%s", title, ++count), downloadDir, minimumSize); 
+					imageDownload.start();
+				}
+			}
+			return new DownloadResult(true, pageNo, "예상 다운로드 이미지 개수 " + count);
+		
 		}
-		return new DownloadResult(true, pageNo);
+		catch (Exception e) {
+			return new DownloadResult(false, pageNo, " 예기치 않은 에러 " + e.getMessage() + " " + pageUrl);
+		}
+		finally {
+			// release proxy
+			if (proxy) {
+				System.clearProperty(proxyHostName);
+				System.clearProperty(proxyPortName);
+			}
+		}
 	}
 
 	/**
@@ -217,8 +244,6 @@ public class PageImageDownloader {
 		public String toString() {
 			return String.format("DownloadResult [result=%s, no=%s, message=%s]", result, no, message);
 		}
-
-		
 	}
 
 }
