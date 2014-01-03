@@ -15,7 +15,6 @@
 	
 		<import resource="video-context.xml" />
 		<import resource="security-context.xml" />
-		<import resource="ehcache-context.xml" />
 	
 		<bean id="messageSource" class="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
 			<property name="basenames">

@@ -9,10 +9,13 @@ import javax.imageio.ImageIO;
 
 import jk.kamoru.app.image.ImageException;
 import jk.kamoru.util.FileUtils;
+import lombok.Cleanup;
+import lombok.Data;
 
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 
+@Data
 public class Image {
 
 	private String name;
@@ -31,26 +34,6 @@ public class Image {
 		this.suffix = FileUtils.getExtension(file);
 		this.size = file.length();
 		this.lastModified = file.lastModified();
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getSuffix() {
-		return suffix;
-	}
-
-	public long getSize() {
-		return size;
-	}
-
-	public long getLastModified() {
-		return lastModified;
-	}
-
-	public File getFile() {
-		return file;
 	}
 
 	public byte[] getImageBytes(PictureType type) {
@@ -73,22 +56,11 @@ public class Image {
 		}
 	}
 
-	private byte[] readBufferedImageToByteArray(BufferedImage bi) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	private byte[] readBufferedImageToByteArray(BufferedImage bi) throws IOException {
+		@Cleanup ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ImageIO.setUseCache(false);
-		try {
-			ImageIO.write(bi, "gif", outputStream);
-			return outputStream.toByteArray();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (outputStream != null)
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					// nothing
-				}
-		}
+		ImageIO.write(bi, "gif", outputStream);
+		return outputStream.toByteArray();
 	}
 
 }

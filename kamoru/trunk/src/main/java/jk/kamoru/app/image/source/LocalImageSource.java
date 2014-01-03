@@ -8,17 +8,17 @@ import java.util.List;
 import jk.kamoru.app.image.ImageException;
 import jk.kamoru.app.image.domain.Image;
 import jk.kamoru.util.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Slf4j
 public class LocalImageSource implements ImageSource {
 
-	private static final Logger logger = LoggerFactory.getLogger(LocalImageSource.class);
+//	private static final Logger logger = LoggerFactory.getLogger(LocalImageSource.class);
 
 	private List<Image> imageList;
 
@@ -29,7 +29,7 @@ public class LocalImageSource implements ImageSource {
 		for (String path : this.backgroundImagePoolPath) {
 			File dir = new File(path);
 			if (dir.isDirectory()) {
-				logger.debug("directory scanning : {}", dir);
+				log.debug("directory scanning : {}", dir);
 				Collection<File> found = FileUtils.listFiles(dir, new String[] {"jpg", "jpeg", "gif", "png" }, true);
 				imageFileList.addAll(found);
 			}
@@ -39,7 +39,7 @@ public class LocalImageSource implements ImageSource {
 		for (File file : imageFileList) {
 			imageList.add(new Image(file));
 		}
-		logger.debug("total found image size : {}", imageList.size());
+		log.debug("total found image size : {}", imageList.size());
 	}
 
 	private List<Image> createImageSource() {

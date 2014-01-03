@@ -12,6 +12,7 @@ import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
+import lombok.Data;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
+@Data
 public class Studio implements Serializable, Comparable<Studio> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
@@ -67,9 +69,6 @@ public class Studio implements Serializable, Comparable<Studio> {
 			this.actressList.add(actress);
 	}
 	
-	public String getName() {
-		return name;
-	}
 	public URL getHomepage() {
 		loadInfo();
 		return homepage;
@@ -77,28 +76,6 @@ public class Studio implements Serializable, Comparable<Studio> {
 	public String getCompanyName() {
 		loadInfo();
 		return companyName;
-	}
-	public List<Actress> getActressList() {
-		return actressList;
-	}
-	public List<Video> getVideoList() {
-		return videoList;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setHomepage(URL homepage) {
-		this.homepage = homepage;
-	}
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-	public void setActressList(List<Actress> actressList) {
-		this.actressList = actressList;
-	}
-	public void setVideoList(List<Video> videoList) {
-		this.videoList = videoList;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
+import lombok.Data;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
+@Data
 public class Actress implements Serializable, Comparable<Actress> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
@@ -80,15 +82,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 		loadInfo();
 		return localName;
 	}
-	public String getName() {
-		return name;
-	}
-	public List<Studio> getStudioList() {
-		return studioList;
-	}
-	public List<Video> getVideoList() {
-		return videoList;
-	}
+	
 	public List<URL> getWebImage() {
 		return VideoUtils.getGoogleImage(this.getName());
 	}
@@ -116,31 +110,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 		if(!this.videoList.contains(video))
 			this.videoList.add(video);
 	}
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
-	public void setBodySize(String bodySize) {
-		this.bodySize = bodySize;
-	}
-	public void setDebut(String debut) {
-		this.debut = debut;
-	}
-	public void setHeight(String height) {
-		this.height = height;
-	}
-	public void setLocalName(String localName) {
-		this.localName = localName;
-	}
-	public void setName(String name) {
-		this.name = StringUtils.trimToEmpty(name);
-	}
-	public void setStudioList(List<Studio> studioList) {
-		this.studioList = studioList;
-	}
 	
-	public void setVideoList(List<Video> videoList) {
-		this.videoList = videoList;
-	}
 	public void emptyVideo() {
 		videoList.clear();
 	}
