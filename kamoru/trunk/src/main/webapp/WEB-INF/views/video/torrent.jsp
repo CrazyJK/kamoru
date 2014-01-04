@@ -18,6 +18,9 @@
 .fullname:focus {
 	background-color:yellow;
 }
+.mark {
+	background-color:orange;
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -34,37 +37,40 @@ function resizeDivHeight() {
 	$("#list_div").outerHeight(calculatedDivHeight);	
 }
 
-function checkboxTorrent(opus) {
-	$("#checkbox-" + opus).click();
-}
-
-function fnConfirmedByVideo(opus, path) {
-	alert(opus + "; " + path);
+/**
+ * 비디오 확인을 기억하기 위해 css class를 변경한다.
+ */
+function fnMarkChoice(opus) {
+	//$("#check-" + opus).addClass("mark");
+	$("#check-" + opus).hide();
 }
 </script>
 </head>
 <body>
+
 <div id="header_div" class="div-box">
-<s:message code="video.total"/> <s:message code="video.video"/> : ${fn:length(videoList)}
-
-<input type="search" name="search" id="search" style="width:200px;" class="searchInput" placeHolder="<s:message code="video.search"/>" onkeyup="searchContent(this.value)"/>
-
+	<s:message code="video.total"/> <s:message code="video.video"/> : ${fn:length(videoList)}
+	<input type="search" name="search" id="search" style="width:200px;" 
+		class="searchInput" placeHolder="<s:message code="video.search"/>" 
+		onkeyup="searchContent(this.value)"/>
 </div>
 
 <div id="list_div" class="div-box" style="overflow:auto;">
 	<table class="video-table" style="background-color:lightgray">
 		<c:forEach items="${videoList}" var="video" varStatus="status">
-		<tr>
+		<tr id="check-${video.opus}">
 			<td align="right">${status.count}</td>
-			<td><span class="label" id="title-${video.opus}" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span></td>
 			<td><span class="label">
-					<a onclick="checkboxTorrent('${video.opus}')" href="<s:eval expression="@prop['video.torrent.url']"/>${video.opus}" target="_blank" class="link">Get torrent</a></span>
-				<input type="checkbox" id="checkbox-${video.opus}"/></td>
+					<a onclick="fnMarkChoice('${video.opus}')" 
+						href="<s:eval expression="@prop['video.torrent.url']"/>${video.opus}" 
+						target="_blank" class="link">Get torrent</a></span></td>
 			<td><input type="text" value="${video.fullname}" class="fullname" readonly/></td>
+			<td><span class="label" id="title-${video.opus}" 
+					onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span></td>
 			<td>
 				<c:forEach items="${video.videoCandidates}" var="candidate">
 				<form method="post" target="ifrm" action="<c:url value="/video/${video.opus}/confirmCandidate"/>">
-					<input type="submit" value="${candidate.name}"/>
+					<input type="submit" value="${candidate.name}" onclick="fnMarkChoice('${video.opus}')"/>
 					<input type="hidden" name="path" value="${candidate.absolutePath}"/>
 				</form>
 				</c:forEach>

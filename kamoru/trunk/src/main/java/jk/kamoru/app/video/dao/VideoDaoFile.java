@@ -22,62 +22,62 @@ public class VideoDaoFile implements VideoDao {
 	private VideoSource videoSource;
 
 	@Override
-	@Cacheable(value="videoCache")
+//	@Cacheable(value="videoCache")
 	public List<Video> getVideoList() {
 		logger.trace("getVideoList");
 		return videoSource.getVideoList();
 	}
 	
 	@Override
-	@Cacheable("studioCache")
+//	@Cacheable("studioCache")
 	public List<Studio> getStudioList() {
 		logger.trace("getStudioList");
 		return videoSource.getStudioList();
 	}
 
 	@Override
-	@Cacheable("actressCache")
+//	@Cacheable("actressCache")
 	public List<Actress> getActressList() {
 		logger.trace("getActressList");
 		return videoSource.getActressList();
 	}
 
 	@Override
-	@Cacheable(value="videoCache")
+//	@Cacheable(value="videoCache")
 	public Video getVideo(String opus) {
 		logger.trace(opus);
 		return videoSource.getVideo(opus);
 	}
 
 	@Override
-	@Cacheable("studioCache")
+//	@Cacheable("studioCache")
 	public Studio getStudio(String name) {
 		logger.trace(name);
 		return videoSource.getStudio(name);
 	}
 
 	@Override
-	@Cacheable("actressCache")
+//	@Cacheable("actressCache")
 	public Actress getActress(String name) {
 		logger.trace(name);
 		return videoSource.getActress(name);
 	}
 
 	@Override
-	@CacheEvict(value = { "videoCache" }, allEntries=true)
+//	@CacheEvict(value = { "videoCache" }, allEntries=true)
 	public void deleteVideo(String opus) {
 		logger.trace(opus);
 		videoSource.removeVideo(opus);
 	}
 	
 	@Override
-	@CacheEvict(value = { "videoCache" }, allEntries=true)
+//	@CacheEvict(value = { "videoCache" }, allEntries=true)
 	public void moveVideo(String opus, String destPath) {
 		logger.trace(opus);
 		videoSource.moveVideo(opus, destPath);
 	}
 	@Override
-	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
+//	@CacheEvict(value = { "videoCache", "studioCache", "actressCache" }, allEntries=true)
 	public void reload() {
 		logger.trace("reload");
 		videoSource.reload();

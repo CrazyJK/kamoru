@@ -96,6 +96,7 @@ public class VideoController {
 		model.addAttribute("dateMap", videoService.groupByDate());
 		model.addAttribute("rankMap", videoService.groupByRank());
 		model.addAttribute("playMap", videoService.groupByPlay());
+		model.addAttribute("scoreMap", videoService.groupByScore());
 		model.addAttribute(videoService.getStudioList());
 		model.addAttribute(videoService.getActressList());
 		model.addAttribute(videoService.getVideoList());

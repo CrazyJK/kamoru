@@ -95,5 +95,7 @@ public interface VideoService {
 	List<Video> torrent();
 
 	void confirmCandidate(String opus, String path);
+
+	Map<Integer, List<Video>> groupByScore();
 	
 }

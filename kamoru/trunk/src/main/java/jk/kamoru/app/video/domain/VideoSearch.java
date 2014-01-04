@@ -4,246 +4,83 @@ import java.io.Serializable;
 import java.util.List;
 
 import jk.kamoru.app.video.VideoCore;
+import lombok.Data;
 
+/**
+ * 비디오 검색 form bean
+ * @author kamoru
+ */
+@Data
 public class VideoSearch implements Serializable {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
-	String actress;
-	boolean addCond;
-	boolean existSubtitles;
-	boolean existVideo;
-	View listViewType = View.S;
-	boolean neverPlay = false;
-	boolean oldVideo = false;
-	String opus;
+	/**
+	 * 검색조건 : 검색어
+	 */
 	String searchText;
-	List<String> selectedActress;
-	List<String> selectedStudio;
+	/**
+	 * 검색조건 : 추가 여부. 조건 {@link #existVideo}, {@link #existSubtitles}
+	 */
+	boolean addCond = true;
+	/**
+	 * 검색조건 : 비디오 존재
+	 */
+	boolean existVideo = true;
+	/**
+	 * 검색조건 : 자막 존재
+	 */
+	boolean existSubtitles;
+	/**
+	 * 검색조건 : 랭킹 범위
+	 */
+	List<Integer> rankRange;
+	/**
+	 * 검색조건 : 플레이 횟수 
+	 */
+	Integer playCount = 0;
+
+	/**
+	 * View type
+	 */
+	View listViewType = View.S;
+	/**
+	 * 정렬 방법 
+	 */
 	Sort sortMethod = Sort.M;
+	/**
+	 * 역정렬 여부
+	 */
 	boolean sortReverse = true;
 
-	String studio;
+	/**
+	 * 검색조건 : 선택된 스튜디오
+	 */
+	List<String> selectedStudio;
+	/**
+	 * 검색조건 : 선택된 배우
+	 */
+	List<String> selectedActress;
 
-	String title;
+	/**
+	 * 스튜디오 화면 볼지 여부
+	 */
+	boolean viewStudioDiv = false;
+	/**
+	 * 여배우 화면 볼지 여부
+	 */
 	boolean viewActressDiv = false;
 
-	boolean viewStudioDiv = false;
-	boolean zeroRank = false;
-	
+	/* Not use
+	boolean neverPlay = false;
+	boolean oldVideo = false;
+	String studio;
+	String title;
+	String opus;
+	String actress;
 	InequalitySign rankSign = InequalitySign.gt;
+	boolean zeroRank = false;
 	Integer rank = -2;
-	
-	List<Integer> rankRange;
-
-	Integer playCount;
-	
-	public VideoSearch() {
-	}
-	
-	
-	/**
-	 * @return the playCount
-	 */
-	public Integer getPlayCount() {
-		return playCount;
-	}
-
-
-	/**
-	 * @param playCount the playCount to set
-	 */
-	public void setPlayCount(Integer playCount) {
-		this.playCount = playCount;
-	}
-
-
-	/**
-	 * @return the rankRange
-	 */
-	public List<Integer> getRankRange() {
-		return rankRange;
-	}
-	/**
-	 * @param rankRange the rankRange to set
-	 */
-	public void setRankRange(List<Integer> rankRange) {
-		this.rankRange = rankRange;
-	}
-	/**
-	 * @return the rankSign
-	 */
-	public InequalitySign getRankSign() {
-		return rankSign;
-	}
-	/**
-	 * @param rankSign the rankSign to set
-	 */
-	public void setRankSign(InequalitySign rankSign) {
-		this.rankSign = rankSign;
-	}
-	/**
-	 * @return the rank
-	 */
-	public Integer getRank() {
-		return rank;
-	}
-	/**
-	 * @param rank the rank to set
-	 */
-	public void setRank(Integer rank) {
-		this.rank = rank;
-	}
-	public String getActress() {
-		return actress;
-	}
-	public View getListViewType() {
-		return listViewType;
-	}
-	public String getOpus() {
-		return opus;
-	}
-	public String getSearchText() {
-		return searchText;
-	}
-	public List<String> getSelectedActress() {
-		return selectedActress;
-	}
-
-	public List<String> getSelectedStudio() {
-		return selectedStudio;
-	}
-
-	public Sort getSortMethod() {
-		return sortMethod;
-	}
-
-	public String getStudio() {
-		return studio;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public boolean isAddCond() {
-		return addCond;
-	}
-
-	public boolean isExistSubtitles() {
-		return existSubtitles;
-	}
-
-	public boolean isExistVideo() {
-		return existVideo;
-	}
-
-	public boolean isNeverPlay() {
-		return neverPlay;
-	}
-
-	public boolean isOldVideo() {
-		return oldVideo;
-	}
-
-	public boolean isSortReverse() {
-		return sortReverse;
-	}
-
-	public boolean isViewActressDiv() {
-		return viewActressDiv;
-	}
-
-	public boolean isViewStudioDiv() {
-		return viewStudioDiv;
-	}
-
-	public boolean isZeroRank() {
-		return zeroRank;
-	}
-
-	public void setActress(String actress) {
-		this.actress = actress;
-	}
-
-	public void setAddCond(boolean addCond) {
-		this.addCond = addCond;
-	}
-
-	public void setExistSubtitles(boolean existSubtitles) {
-		this.existSubtitles = existSubtitles;
-	}
-
-	public void setExistVideo(boolean existVideo) {
-		this.existVideo = existVideo;
-	}
-
-	public void setListViewType(View listViewType) {
-		this.listViewType = listViewType;
-	}
-
-	public void setNeverPlay(boolean neverPlay) {
-		this.neverPlay = neverPlay;
-	}
-
-	public void setOldVideo(boolean oldVideo) {
-		this.oldVideo = oldVideo;
-	}
-
-	public void setOpus(String opus) {
-		this.opus = opus;
-	}
-
-	public void setSearchText(String searchText) {
-		this.searchText = searchText;
-	}
-
-	public void setSelectedActress(List<String> selectedActress) {
-		this.selectedActress = selectedActress;
-	}
-
-	public void setSelectedStudio(List<String> selectedStudio) {
-		this.selectedStudio = selectedStudio;
-	}
-
-	public void setSortMethod(Sort sortMethod) {
-		this.sortMethod = sortMethod;
-	}
-
-	public void setSortReverse(boolean sortReverse) {
-		this.sortReverse = sortReverse;
-	}
-
-	public void setStudio(String studio) {
-		this.studio = studio;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public void setViewActressDiv(boolean viewActressDiv) {
-		this.viewActressDiv = viewActressDiv;
-	}
-	
-	public void setViewStudioDiv(boolean viewStudioDiv) {
-		this.viewStudioDiv = viewStudioDiv;
-	}
-	
-	public void setZeroRank(boolean zeroRank) {
-		this.zeroRank = zeroRank;
-	}
-	
-	@Override
-	public String toString() {
-		return String
-				.format("VideoSearch [actress=%s, addCond=%s, existSubtitles=%s, existVideo=%s, listViewType=%s, neverPlay=%s, oldVideo=%s, opus=%s, searchText=%s, selectedActress=%s, selectedStudio=%s, sortMethod=%s, sortReverse=%s, studio=%s, title=%s, viewActressDiv=%s, viewStudioDiv=%s, zeroRank=%s]",
-						actress, addCond, existSubtitles, existVideo,
-						listViewType, neverPlay, oldVideo, opus, searchText,
-						selectedActress, selectedStudio, sortMethod,
-						sortReverse, studio, title, viewActressDiv,
-						viewStudioDiv, zeroRank);
-	}
-
+	*/
 
 }

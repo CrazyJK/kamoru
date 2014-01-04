@@ -173,6 +173,38 @@ function resizeDivHeight() {
 </section>
 
 <section>
+	<h3><s:message code="video.video-by-score"/></h3>
+	<article>
+		<table class="video-table" style="background-color:lightgray">
+			<tr>
+				<th class="nowrap"><s:message code="video.Score"/></th>
+				<th class="nowrap"><s:message code="video.size"/></th>
+				<th class="nowrap"><s:message code="video.length"/></th>
+				<th class="nowrap"><s:message code="video.video"/></th>
+			</tr>
+			<c:set var="totalLength" value="0"/>
+			<c:forEach items="${scoreMap}" var="score" varStatus="status">
+			<tr>
+				<td class="nowrap">${score.key}</td>
+				<td class="nowrap" style="text-align:right;">${fn:length(score.value)}</td>
+				<td class="nowrap" style="text-align:right;">
+					<c:forEach items="${score.value}" var="video" varStatus="status">
+						<c:set var="totalLength" value="${totalLength + video.length}"/>
+					</c:forEach>				
+					<fmt:formatNumber value="${totalLength / ONE_GB}" pattern="#,##0 GB"/>
+				</td>
+				<td class="nowrap">
+					<c:forEach items="${score.value}" var="video" varStatus="status">
+					<span class="label" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span>
+					</c:forEach>
+				</td>
+			</tr>
+			</c:forEach>		
+		</table>
+	</article>
+</section>
+
+<section>
 	<h3><s:message code="video.total"/> <s:message code="video.video"/> : ${fn:length(videoList)}</h3>
 	<article id="videoDiv" class="div-box">
 		<c:forEach items="${videoList}" var="video" varStatus="status">

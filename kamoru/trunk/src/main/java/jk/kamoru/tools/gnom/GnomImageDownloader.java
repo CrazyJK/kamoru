@@ -122,7 +122,7 @@ public class GnomImageDownloader {
 					}
 				}
 				// 실패 횟수가 누적되면 멈춘다
-				if (failCount > futureCount/2)
+				if (failCount > futureCount)
 					break;
 			}
 			

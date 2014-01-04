@@ -398,10 +398,10 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Video> searchVideo(VideoSearch search) {
 		logger.trace("{}", search);
-		if (search.isOldVideo()) {
-			search.setSortMethod(Sort.M);
-			search.setSortReverse(false);
-		}
+//		if (search.isOldVideo()) {
+//			search.setSortMethod(Sort.M);
+//			search.setSortReverse(false);
+//		}
 		if (search.getRankRange() == null)
 			search.setRankRange(getRankRange());
 		
@@ -411,15 +411,15 @@ public class VideoServiceImpl implements VideoService {
 					|| VideoUtils.equals(video.getOpus(), search.getSearchText()) 
 					|| VideoUtils.containsName(video.getTitle(), search.getSearchText()) 
 					|| VideoUtils.containsActress(video, search.getSearchText())) 
-				&& (search.isNeverPlay() ? video.getPlayCount() == 0 : true)
-				&& (search.isZeroRank()  ? video.getRank() == 0 : true)
+//				&& (search.isNeverPlay() ? video.getPlayCount() == 0 : true)
+//				&& (search.isZeroRank()  ? video.getRank() == 0 : true)
 				&& (search.isAddCond()   
 						? ((search.isExistVideo() ? video.isExistVideoFileList() : !video.isExistVideoFileList())
 							&& (search.isExistSubtitles() ? video.isExistSubtitlesFileList() : !video.isExistSubtitlesFileList())) 
 						: true)
 				&& (search.getSelectedStudio() == null ? true : search.getSelectedStudio().contains(video.getStudio().getName()))
 				&& (search.getSelectedActress() == null ? true : VideoUtils.containsActress(video, search.getSelectedActress()))
-				&& (rankCompare(video.getRank(), search.getRankSign(), search.getRank()))
+//				&& (rankCompare(video.getRank(), search.getRankSign(), search.getRank()))
 				&& (rankMatch(video.getRank(), search.getRankRange()))
 				&& (playCountMatch(video.getPlayCount(), search.getPlayCount()))
 				) 
@@ -435,12 +435,12 @@ public class VideoServiceImpl implements VideoService {
 
 		logger.debug("found video list size {}", foundList.size());
 
-		if (search.isOldVideo() && foundList.size() > 9) {
-			return foundList.subList(0, 10);
-		}
-		else {
+//		if (search.isOldVideo() && foundList.size() > 9) {
+//			return foundList.subList(0, 10);
+//		}
+//		else {
 			return foundList;
-		}
+//		}
 	}
 	
 	private boolean playCountMatch(Integer playCount, Integer playCount2) {
@@ -806,6 +806,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Video> torrent() {
 		logger.trace("torrent");
+		
 		VideoSearch videoSearch = new VideoSearch();
 		videoSearch.setAddCond(true);
 		videoSearch.setExistVideo(false);
@@ -864,5 +865,24 @@ public class VideoServiceImpl implements VideoService {
 			throw new VideoException("candidate file moving error", e);
 		}
 		video.addVideoFile(destFile);
+	}
+
+	@Override
+	public Map<Integer, List<Video>> groupByScore() {
+		logger.trace("groupByScore");
+		Map<Integer, List<Video>> map = new TreeMap<Integer, List<Video>>(Collections.reverseOrder());
+		for (Video video : videoDao.getVideoList()) {
+			Integer score = video.getScore();
+			if (map.containsKey(score)) {
+				map.get(score).add(video);
+			}
+			else {
+				List<Video> videoList = new ArrayList<Video>();
+				videoList.add(video);
+				map.put(score, videoList);
+			}
+		}
+		logger.debug("video group by score - {}", map);
+		return map;
 	}
 }
