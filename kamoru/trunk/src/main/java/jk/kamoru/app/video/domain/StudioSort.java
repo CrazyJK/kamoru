@@ -1,6 +1,24 @@
 package jk.kamoru.app.video.domain;
 
+/**studio sort
+ * @author kamoru
+ */
 public enum StudioSort {
 
-	NAME, HOMEPAGE, COMPANY, VIDEO;
+	/**
+	 * studio name
+	 */
+	NAME, 
+	/**
+	 * studio homepage
+	 */
+	HOMEPAGE, 
+	/**
+	 * studio company
+	 */
+	COMPANY, 
+	/**
+	 * video size of a studio
+	 */
+	VIDEO;
 }

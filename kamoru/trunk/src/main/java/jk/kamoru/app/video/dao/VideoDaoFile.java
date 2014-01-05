@@ -14,6 +14,7 @@ import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.source.VideoSource;
 
+@SuppressWarnings("unused")
 @Repository
 public class VideoDaoFile implements VideoDao {
 	protected static final Logger logger = LoggerFactory.getLogger(VideoDaoFile.class);

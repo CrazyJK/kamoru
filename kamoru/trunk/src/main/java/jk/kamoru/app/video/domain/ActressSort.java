@@ -1,5 +1,31 @@
 package jk.kamoru.app.video.domain;
 
+/**actress sort
+ * @author kamoru
+ */
 public enum ActressSort {
-	NAME, BIRTH, BODY, HEIGHT, DEBUT, VIDEO;
+	/**
+	 * actress name
+	 */
+	NAME, 
+	/**
+	 * actress birth date
+	 */
+	BIRTH, 
+	/**
+	 * actress body size
+	 */
+	BODY, 
+	/**
+	 * actress height
+	 */
+	HEIGHT, 
+	/**
+	 * actress debut date
+	 */
+	DEBUT, 
+	/**
+	 * video size of a actress
+	 */
+	VIDEO;
 }

@@ -39,62 +39,86 @@ import jk.kamoru.util.ArrayUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.RuntimeUtils;
 import jk.kamoru.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * video service implement class
+ * @author kamoru
+ */
 @Service
+@Slf4j
 public class VideoServiceImpl implements VideoService {
-	protected static final Logger logger = LoggerFactory.getLogger(VideoServiceImpl.class);
+//	protected static final Logger logger = LoggerFactory.getLogger(VideoServiceImpl.class);
 
+	/** default cover file byte array */
 	private byte[] defaultCoverFileBytes;
 	
+	/** base video path in properties */
 	@Value("#{prop['video.basePath']}") 		private String[] basePath;
+	/** video player command path in properties */
 	@Value("#{prop['video.player']}") 			private String   player;
+	/** subtitles editor command path in properties */
 	@Value("#{prop['video.subtitles.editor']}") private String   editor;
+	/** whether or not using video cover webp mode in properties */
 	@Value("#{prop['video.cover.webp.mode']}") 	private boolean  webpMode;
+	/** default video cover path in properties */
 	@Value("#{prop['video.cover.default']}") 	private String   defaultCover;
+	/** torrent completed file directory in properties */
 	@Value("#{prop['video.torrent.path']}") 	private String   torrentPath;
+	/** video extensions in properties */
 	@Value("#{prop['video.extension']}") 		private String[] videoExtensions;
 	
-	
+	/** minimum rank in properties */
 	@Value("#{prop['rank.minimum']}") 			private Integer  minRank;
+	/** maximum rank in properties */
 	@Value("#{prop['rank.maximum']}") 			private Integer  maxRank;
+	/** baseline rank in properties */
 	@Value("#{prop['rank.baseline']}")  		private int 	 lowerRankVideoBaselineScore;
 	
+	/** baseline score in properties */
 	@Value("#{prop['score.baseline']}")  		private int 	 maximumGBSizeOfEntireVideo;
 
-//	private String   mainBasePath;
-
-	/** 최소 공간 사이즈 */
+	/** minimum free space of disk */
 	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;
+	/** sleep time of moving video */
 	private final long SLEEP_TIME = 10 * 1000;
 
 	
+	/** video dao */
 	@Autowired private VideoDao videoDao;
 
+	/** history file */
 	private File historyFile;
+	/** history list */
 	private List<String> historyList;
 	
-	private static boolean isChanged;
+	/** whether or not history changed */
+	private static boolean isHistoryChanged;
 
 	public VideoServiceImpl() {
-		isChanged = true;
+		isHistoryChanged = true;
 	}
 	
 	@Override
 	public void deleteVideo(String opus) {
-		logger.trace(opus);
+		log.trace(opus);
 		saveHistory(getVideo(opus), Action.DELETE);
 		videoDao.deleteVideo(opus);
 	}
 
 	@Override
 	public void editVideoSubtitles(String opus) {
-		logger.trace(opus);
-		executeCommand(getVideo(opus), Action.SUBTITLES);
+		log.trace(opus);
+		callExecutiveCommand(getVideo(opus), Action.SUBTITLES);
 	}
 
+	/**call executive command by action. asynchronous
+	 * @param video
+	 * @param action PLAY, SUBTITLES in {@link Action}
+	 */
 	@Async
-	private void executeCommand(Video video, Action action) {
-		logger.trace("{} : {}", video.getOpus(), action);
+	private void callExecutiveCommand(Video video, Action action) {
+		log.trace("{} : {}", video.getOpus(), action);
 		String command = null;
 		String[] argumentsArray = null;
 		switch(action) {
@@ -113,24 +137,23 @@ public class VideoServiceImpl implements VideoService {
 			throw new RuntimeException("No arguments");
 		
 		String[] cmdArray = ArrayUtils.addAll(new String[]{command}, argumentsArray);
-		logger.debug("exec command - {} {}", command, argumentsArray);
+		log.debug("exec command - {} {}", command, argumentsArray);
 		RuntimeUtils.exec(cmdArray);
-		
 	}
 
 	@Override
 	public List<Map<String, String>> findHistory(String query) {
-		logger.trace(query);
+		log.trace(query);
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
 
 		if(query == null || query.trim().length() == 0)
 			return foundMapList;
 		
 		try {
-			if(isChanged || historyFile == null) {
+			if(isHistoryChanged || historyFile == null) {
 				historyList = FileUtils.readLines(getHistoryFile(), VideoCore.FILE_ENCODING);
-				isChanged = false;
-				logger.debug("read history.log size={}", historyList.size());
+				isHistoryChanged = false;
+				log.debug("read history.log size={}", historyList.size());
 			}
 			if(query == null || query.trim().length() == 0)
 				return foundMapList;
@@ -152,7 +175,7 @@ public class VideoServiceImpl implements VideoService {
 					}
 				}
 			}
-			logger.debug("q={} foundLength={}", query, foundMapList.size());
+			log.debug("q={} foundLength={}", query, foundMapList.size());
 			Collections.sort(foundMapList, new Comparator<Map<String, String>>(){
 
 				@Override
@@ -169,14 +192,14 @@ public class VideoServiceImpl implements VideoService {
 			return foundMapList;
 		} 
 		catch (IOException e) {
-			logger.error("history file read error", e);
+			log.error("history file read error", e);
 			throw new VideoException("history file read error", e);
 		}
 	}
 
 	@Override
 	public List<Map<String, String>> findVideoList(String query) {
-		logger.trace(query);
+		log.trace(query);
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
 		if(query == null || query.trim().length() == 0)
 			return foundMapList;
@@ -198,7 +221,7 @@ public class VideoServiceImpl implements VideoService {
 				foundMapList.add(map);
 			} 
 		}
-		logger.debug("q={} foundLength={}", query, foundMapList.size());
+		log.debug("q={} foundLength={}", query, foundMapList.size());
 		Collections.sort(foundMapList, new Comparator<Map<String, String>>() {
 
 			@Override
@@ -215,13 +238,13 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public Actress getActress(String actressName) {
-		logger.trace(actressName);
+		log.trace(actressName);
 		return videoDao.getActress(actressName);
 	}
 
 	@Override
 	public List<Actress> getActressList() {
-		logger.trace("");
+		log.trace("");
 		List<Actress> list = videoDao.getActressList();
 		Collections.sort(list);
 		return list;
@@ -229,7 +252,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Actress> getActressListInVideoList(List<Video> videoList) {
-		logger.trace("size : {}", videoList.size());
+		log.trace("size : {}", videoList.size());
 		Map<String, Actress> actressMap = new TreeMap<String, Actress>();
 		for(Video video : videoList) {
 			for (Actress actress : video.getActressList()) {
@@ -246,38 +269,41 @@ public class VideoServiceImpl implements VideoService {
 		}
 		List<Actress> list = new ArrayList<Actress>(actressMap.values());
 		Collections.sort(list);
-		logger.debug("found studio list size {}", list.size());
+		log.debug("found studio list size {}", list.size());
 		return list;
 	}
 
 	@Override
 	public byte[] getDefaultCoverFileByteArray() {
-		logger.trace("getDefaultCoverFileByteArray");
+		log.trace("getDefaultCoverFileByteArray");
 		if(defaultCoverFileBytes == null)
 			try {
 				defaultCoverFileBytes = FileUtils.readFileToByteArray(new File(defaultCover));
 			} catch (IOException e) {
-				logger.error("cover file byte array read fail", e);
+				log.error("cover file byte array read fail", e);
 			}
 		return defaultCoverFileBytes;
 	}
 	
+	/**get history file
+	 * @return {@link #historyFile}
+	 */
 	private File getHistoryFile() {
 		if(historyFile == null)
 			historyFile = new File(basePath[0], "history.log");
-		logger.debug("history file is {}", historyFile.getAbsolutePath());
+		log.debug("history file is {}", historyFile.getAbsolutePath());
 		return historyFile;
 	}
 
 	@Override
 	public Studio getStudio(String studioName) {
-		logger.trace(studioName);
+		log.trace(studioName);
 		return videoDao.getStudio(studioName);
 	}
 
 	@Override
 	public List<Studio> getStudioList() {
-		logger.trace("getStudioList");
+		log.trace("getStudioList");
 		List<Studio> list = videoDao.getStudioList(); 
 		Collections.sort(list);
 		return list;
@@ -285,7 +311,7 @@ public class VideoServiceImpl implements VideoService {
 	
 	@Override
 	public List<Studio> getStudioListInVideoList(List<Video> videoList) {
-		logger.trace("size : {}", videoList.size());
+		log.trace("size : {}", videoList.size());
 		Map<String, Studio> studioMap = new TreeMap<String, Studio>();
 		for(Video video : videoList) {
 			String studioName = video.getStudio().getName();
@@ -301,19 +327,19 @@ public class VideoServiceImpl implements VideoService {
 		}
 		List<Studio> list = new ArrayList<Studio>(studioMap.values());
 		Collections.sort(list);
-		logger.debug("found studio list size {}", list.size());
+		log.debug("found studio list size {}", list.size());
 		return list;
 	}
 
 	@Override
 	public Video getVideo(String opus) {
-		logger.trace(opus);
+		log.trace(opus);
 		return videoDao.getVideo(opus);
 	}
 
 	@Override
 	public byte[] getVideoCoverByteArray(String opus, boolean isChrome) {
-		logger.trace(opus);
+		log.trace(opus);
 		if(webpMode && isChrome)
 			return videoDao.getVideo(opus).getCoverWebpByteArray();
 		else 
@@ -322,7 +348,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public File getVideoCoverFile(String opus, boolean isChrome) {
-		logger.trace(opus);
+		log.trace(opus);
 		if(webpMode && isChrome)
 			return videoDao.getVideo(opus).getCoverWebpFile();
 		else
@@ -331,7 +357,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Video> getVideoList() {
-		logger.trace("getVideoList");
+		log.trace("getVideoList");
 		List<Video> list = videoDao.getVideoList(); 
 		Collections.sort(list);
 		return list;
@@ -339,23 +365,26 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void playVideo(String opus) {
-		logger.trace(opus);
-		executeCommand(videoDao.getVideo(opus), Action.PLAY);
+		log.trace(opus);
+		callExecutiveCommand(videoDao.getVideo(opus), Action.PLAY);
 		videoDao.getVideo(opus).increasePlayCount();
 		saveHistory(videoDao.getVideo(opus), Action.PLAY);
 	}
 
 	@Override
 	public void rankVideo(String opus, int rank) {
-		logger.trace("opus={} : rank={}", opus, rank);
+		log.trace("opus={} : rank={}", opus, rank);
 		videoDao.getVideo(opus).setRank(rank);
 	}
 
+	/**save history by action
+	 * @param video
+	 * @param action PLAY, OVERVIEW, COVER, SUBTITLES, DELETE in {@link Action}
+	 */
 	private void saveHistory(Video video, Action action) {
-		logger.trace("opus={} : action={}", video.getOpus(), action);
-		String files = null; 
-		String currDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		log.trace("opus={} : action={}", video.getOpus(), action);
 	
+		String files = null; 
 		switch(action) {
 			case PLAY :
 				files = video.getVideoFileListPath();
@@ -376,28 +405,29 @@ public class VideoServiceImpl implements VideoService {
 				throw new IllegalStateException("Undefined Action : " + action.toString());
 		}
 		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", 
-				currDate, video.getOpus(), action, files, System.getProperty("line.separator"));
-		
-		logger.debug("save history - {}", historymsg);
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), 
+				video.getOpus(), action, files, System.getProperty("line.separator"));
+		log.debug("save history - {}", historymsg);
+
 		if(action != Action.DELETE)
 			video.addHistory(historymsg);
 		try {
 			FileUtils.writeStringToFile(getHistoryFile(), historymsg, VideoCore.FILE_ENCODING, true);
-			isChanged = true;
+			isHistoryChanged = true;
 		} catch (IOException e) {
-			logger.error(historymsg, e);
+			log.error(historymsg, e);
 		}
 	}
 
 	@Override
 	public void saveVideoOverview(String opus, String overViewText) {
-		logger.trace("opus={} : text={}", opus, overViewText);
+		log.trace("opus={} : text={}", opus, overViewText);
 		videoDao.getVideo(opus).saveOverView(overViewText);
 	}
 
 	@Override
 	public List<Video> searchVideo(VideoSearch search) {
-		logger.trace("{}", search);
+		log.trace("{}", search);
 //		if (search.isOldVideo()) {
 //			search.setSortMethod(Sort.M);
 //			search.setSortReverse(false);
@@ -433,7 +463,7 @@ public class VideoServiceImpl implements VideoService {
 		else
 			Collections.sort(foundList);
 
-		logger.debug("found video list size {}", foundList.size());
+		log.debug("found video list size {}", foundList.size());
 
 //		if (search.isOldVideo() && foundList.size() > 9) {
 //			return foundList.subList(0, 10);
@@ -443,19 +473,34 @@ public class VideoServiceImpl implements VideoService {
 //		}
 	}
 	
+	/**compare play count. {@code true} if playCount2 is {@code null} or {@code -1}
+	 * @param playCount
+	 * @param playCount2
+	 * @return {@code true} if same of both or playCount2 {@code null}, {@code -1}
+	 */
 	private boolean playCountMatch(Integer playCount, Integer playCount2) {
 		if (playCount2 == null || playCount2 == -1)
 			return true;
-		else if (playCount == playCount2)
-			return true;
-		else
-			return false;
+		else 
+			return playCount == playCount2;
 	}
 
+	/**Returns {@code true} if rankRange list contains the specified rank
+	 * @param rank
+	 * @param rankRange rank range list
+	 * @return {@code true} if rankRange list contains the specified rank
+	 */
 	private boolean rankMatch(int rank, List<Integer> rankRange) {
 		return rankRange.contains(rank);
 	}
 
+	/**test two numbers by inequality sign
+	 * @param rank
+	 * @param rankSign
+	 * @param rank2
+	 * @return {@code true} if result is true
+	 */
+	@SuppressWarnings("unused")
 	private boolean rankCompare(int rank, InequalitySign rankSign, Integer rank2) {
 		switch (rankSign) {
 		case eq:
@@ -465,31 +510,13 @@ public class VideoServiceImpl implements VideoService {
 		case gt:
 			return rank > rank2;
 		default:
-			throw new VideoException("Unknown rank info");
+			throw new VideoException("Unknown InequalitySign");
 		}
 	}
 
 	@Override
 	public Map<String, Long[]> groupByPath() {
-		logger.trace("groupByPath");
-		/*
-		Map<String, String> map = new TreeMap<String, String>();
-		long total = 0;
-		for (String path : basePath) {
-			File dir = new File(path);
-			if (dir.exists()) {
-				long size = FileUtils.sizeOfDirectory(dir);
-				total += size;
-				map.put(path, String.valueOf((int)(size / FileUtils.ONE_GB)) + " GB");
-			}
-			else {
-				map.put(path, path + " does not exist");
-			}
-		}
-		map.put("Total", String.valueOf((int)(total / FileUtils.ONE_GB)) + " GB");
-		logger.debug("video group by path - {}", map);
-		return map;
-		*/
+		log.trace("groupByPath");
 		Map<String, Long[]> pathMap = new TreeMap<String, Long[]>();
 		Long[] total = new Long[]{0l, 0l};
 		for (Video video : videoDao.getVideoList()) {
@@ -513,14 +540,14 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void saveActressInfo(String name, Map<String, String> params) {
-		logger.trace("name={}, params={}", name, params);
+		log.trace("name={}, params={}", name, params);
 		VideoUtils.saveFileFromMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS), params);
 		videoDao.getActress(name).reloadInfo();
 	}
 
 	@Override
 	public Map<String, List<Video>> groupByDate() {
-		logger.trace("groupByDate");
+		log.trace("groupByDate");
 		Map<String, List<Video>> map = new TreeMap<String, List<Video>>();
 		for (Video video : videoDao.getVideoList()) {
 			String yyyyMM = StringUtils.substringBeforeLast(video.getVideoDate(), "-");
@@ -533,13 +560,13 @@ public class VideoServiceImpl implements VideoService {
 				map.put(yyyyMM, videoList);
 			}
 		}
-		logger.debug("video group by date - {}", map);
+		log.debug("video group by date - {}", map);
 		return map;
 	}
 
 	@Override
 	public Map<Integer, List<Video>> groupByRank() {
-		logger.trace("groupByRank");
+		log.trace("groupByRank");
 		Map<Integer, List<Video>> map = new TreeMap<Integer, List<Video>>();
 		for (Video video : videoDao.getVideoList()) {
 			Integer rank = video.getRank();
@@ -552,13 +579,13 @@ public class VideoServiceImpl implements VideoService {
 				map.put(rank, videoList);
 			}
 		}
-		logger.debug("video group by rank - {}", map);
+		log.debug("video group by rank - {}", map);
 		return map;
 	}
 
 	@Override
 	public Map<Integer, List<Video>> groupByPlay() {
-		logger.trace("groupByPlay");
+		log.trace("groupByPlay");
 		Map<Integer, List<Video>> map = new TreeMap<Integer, List<Video>>();
 		for (Video video : videoDao.getVideoList()) {
 			Integer play = video.getPlayCount();
@@ -571,32 +598,32 @@ public class VideoServiceImpl implements VideoService {
 				map.put(play, videoList);
 			}
 		}
-		logger.debug("video group by play - {}", map);
+		log.debug("video group by play - {}", map);
 		return map;
 	}
 
 	@Override
 	public void moveVideo(String opus, String path) {
-		logger.trace("{} move to {}", opus, path);
+		log.trace("{} move to {}", opus, path);
 		videoDao.moveVideo(opus, path);
 	}
 
 	@Override
 	public void reload() {
-		logger.trace("reload");
+		log.trace("reload");
 		videoDao.reload();
 	}
 
 	@Override
 	public void saveStudioInfo(String studio, Map<String, String> params) {
-		logger.trace("name={}, params={}", studio, params);
+		log.trace("name={}, params={}", studio, params);
 		VideoUtils.saveFileFromMap(new File(basePath[0], studio + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO), params);
 		videoDao.getStudio(studio).reloadInfo();
 	}
 	
 	@Override
 	public List<Actress> getActressList(final ActressSort sort) {
-		logger.trace("sort={}", sort);
+		log.trace("sort={}", sort);
 		List<Actress> list = videoDao.getActressList();
 //		List<Actress> list = getActressListOfVideoes(videoDao.getVideoList());
 		Collections.sort(list, new Comparator<Actress>(){
@@ -626,7 +653,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public List<Studio> getStudioList(final StudioSort sort) {
-		logger.trace("sort={}", sort);
+		log.trace("sort={}", sort);
 		List<Studio> list = videoDao.getStudioList();
 //		List<Studio> list = getStudioListOfVideoes(videoDao.getVideoList());
 		Collections.sort(list, new Comparator<Studio>(){
@@ -693,7 +720,7 @@ public class VideoServiceImpl implements VideoService {
 	public void removeLowerRankVideo() {
 		for (Video video : videoDao.getVideoList()) {
 			if (video.getRank() < lowerRankVideoBaselineScore) {
-				logger.info("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
+				log.info("remove lower rank video {} : {} : {}", video.getOpus(), video.getRank(), video.getTitle());
 				videoDao.deleteVideo(video.getOpus());
 			}
 		}
@@ -732,7 +759,7 @@ public class VideoServiceImpl implements VideoService {
 				sumSizeOfDeleteVideo += video.getLength();
 				countOfDeleteVideo++;
 				
-				logger.info("    {}/{}. score[{}] = rankScore[{}] + playScore[{}] + actressScore[{}] + subtitlesScore[{}]; {}", 
+				log.info("    {}/{}. score[{}] = rankScore[{}] + playScore[{}] + actressScore[{}] + subtitlesScore[{}]; {}", 
 						countOfDeleteVideo,
 						countOfTotalVideo,
 						score, 
@@ -749,8 +776,8 @@ public class VideoServiceImpl implements VideoService {
 			}
 		}
 		if (countOfDeleteVideo > 0)
-			logger.info("    Total deleted {} video, {} GB", countOfDeleteVideo, sumSizeOfDeleteVideo / FileUtils.ONE_GB);
-		logger.info("    Current minimum score is {} ", minAliveScore);
+			log.info("    Total deleted {} video, {} GB", countOfDeleteVideo, sumSizeOfDeleteVideo / FileUtils.ONE_GB);
+		log.info("    Current minimum score is {} ", minAliveScore);
 	}
 	
 	@Override
@@ -760,7 +787,7 @@ public class VideoServiceImpl implements VideoService {
 					&& !video.isExistCoverFile()
 					&& !video.isExistCoverWebpFile() 
 					&& !video.isExistSubtitlesFileList()) {
-				logger.info("    delete garbage file - {}", video);
+				log.info("    delete garbage file - {}", video);
 				videoDao.deleteVideo(video.getOpus());
 			}
 		}
@@ -777,7 +804,7 @@ public class VideoServiceImpl implements VideoService {
 //					&& !video.getDelegatePathFile().equals(mainDestFile)
 					&& countOfMoveVideo++ < maximumCountOfMoveVideo
 					&& mainBaseFile.getFreeSpace() > MIN_FREE_SPAC) {
-				logger.info("    move video {} : {}", countOfMoveVideo, video.getFullname());
+				log.info("    move video {} : {}", countOfMoveVideo, video.getFullname());
 				
 				File destDir = new File(basePath[0]  + "/" + video.getStudio().getName());
 				if (!destDir.exists())
@@ -789,7 +816,7 @@ public class VideoServiceImpl implements VideoService {
 					try {
 						Thread.sleep(SLEEP_TIME);
 					} catch (InterruptedException e) {
-						logger.error("sleep error", e);
+						log.error("sleep error", e);
 					}
 			}
 		}
@@ -798,21 +825,21 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void arrangeVideo() {
 		for (Video video : videoDao.getVideoList()) {
-			logger.trace("    arrange video {}", video.getOpus());
+			log.trace("    arrange video {}", video.getOpus());
 			videoDao.arrangeVideo(video.getOpus());
 		}
 	}
 	
 	@Override
 	public List<Video> torrent() {
-		logger.trace("torrent");
+		log.trace("torrent");
 		
 		VideoSearch videoSearch = new VideoSearch();
 		videoSearch.setAddCond(true);
 		videoSearch.setExistVideo(false);
 		videoSearch.setSortMethod(Sort.M);		
 		List<Video> list =  this.searchVideo(videoSearch);
-		logger.info("  need torrent videos - {}", list.size());
+		log.info("  need torrent videos - {}", list.size());
 		
 		// get downloaded torrent file
 		File torrentDirectory = new File(torrentPath);
@@ -825,23 +852,23 @@ public class VideoServiceImpl implements VideoService {
 			extensions[index++] = ext.toUpperCase();
 			extensions[index++] = ext.toLowerCase();
 		}
-		logger.trace("extensions - {}", Arrays.toString(extensions));
+		log.trace("extensions - {}", Arrays.toString(extensions));
 		
 		Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
-		logger.info("  found cadidates file - {}", torrents.size());
+		log.info("  found cadidates file - {}", torrents.size());
 		
 		// matching video file
 		for (Video video : list) {
 			video.resetVideoCandidates();
 			String opus = video.getOpus().toLowerCase();
-			logger.info("  OPUS : {}", opus);
+			log.info("  OPUS : {}", opus);
 			for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
 				for (File file : torrents) {
 					String fileName = file.getName().toLowerCase();
-					logger.trace("    compare : {} = {}", fileName, key);
+					log.trace("    compare : {} = {}", fileName, key);
 					if (fileName.contains(key)) {
 						video.addVideoCandidates(file);
-						logger.info("    add video candidate - {}", fileName);
+						log.info("    add video candidate - {}", fileName);
 					}
 				}
 			}
@@ -852,7 +879,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public void confirmCandidate(String opus, String path) {
-		logger.trace("confirmCandidate : {} - {}", opus, path);
+		log.trace("confirmCandidate : {} - {}", opus, path);
 		Video   video = videoDao.getVideo(opus);
 		int videoFileSize = video.getVideoFileList().size();
 		File     file = new File(path);
@@ -860,7 +887,7 @@ public class VideoServiceImpl implements VideoService {
 				video.getFullname() + (videoFileSize > 0 ? String.valueOf(videoFileSize+1) : "") + "." + FileUtils.getExtension(file));
 		try {
 			FileUtils.moveFile(file, destFile);
-			logger.info("move to {}", destFile.getAbsoluteFile());
+			log.info("move to {}", destFile.getAbsoluteFile());
 		} catch (IOException e) {
 			throw new VideoException("candidate file moving error", e);
 		}
@@ -869,7 +896,7 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public Map<Integer, List<Video>> groupByScore() {
-		logger.trace("groupByScore");
+		log.trace("groupByScore");
 		Map<Integer, List<Video>> map = new TreeMap<Integer, List<Video>>(Collections.reverseOrder());
 		for (Video video : videoDao.getVideoList()) {
 			Integer score = video.getScore();
@@ -882,7 +909,7 @@ public class VideoServiceImpl implements VideoService {
 				map.put(score, videoList);
 			}
 		}
-		logger.debug("video group by score - {}", map);
+		log.debug("video group by score - {}", map);
 		return map;
 	}
 }

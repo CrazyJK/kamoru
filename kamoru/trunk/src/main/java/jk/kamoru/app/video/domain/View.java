@@ -1,7 +1,24 @@
 package jk.kamoru.app.video.domain;
 
+/**view type
+ * @author kamoru
+ */
 public enum View {
-	C("Card"), B("Box"), SB("SmallBox"), T("Table"), S("Slide"), L("Large"), V("Video");
+	
+	/** card type */
+	C("Card"), 
+	/** box type */
+	B("Box"), 
+	/** small box type */
+	SB("SmallBox"), 
+	/** table type */
+	T("Table"), 
+	/** slide type */
+	S("Slide"), 
+	/** large type */
+	L("Large"), 
+	/** video type */
+	V("Video");
 	
 	private String desc;
 	

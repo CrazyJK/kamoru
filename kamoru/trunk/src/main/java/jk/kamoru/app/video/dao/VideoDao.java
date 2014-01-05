@@ -6,6 +6,10 @@ import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.Video;
 
+/**
+ * Video DAO
+ * @author kamoru
+ */
 public interface VideoDao {
 
 	/**
@@ -32,14 +36,14 @@ public interface VideoDao {
 	
 	/**
 	 * studio by studio name
-	 * @param name
+	 * @param studio name
 	 * @return
 	 */
 	Studio getStudio(String name);
 	
 	/**
 	 * actress by actress name
-	 * @param name
+	 * @param actress name
 	 * @return
 	 */
 	Actress getActress(String name);
@@ -53,9 +57,13 @@ public interface VideoDao {
 	/**
 	 * move video
 	 * @param opus
+	 * @param destination path
 	 */
 	void moveVideo(String opus, String destPath);
 	
+	/**
+	 * reload video source
+	 */
 	void reload();
 
 	/**

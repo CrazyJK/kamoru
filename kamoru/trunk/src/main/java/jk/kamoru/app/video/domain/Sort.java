@@ -1,8 +1,28 @@
 package jk.kamoru.app.video.domain;
 
+/**video sort
+ * @author kamoru
+ */
 public enum Sort {
 
-	S("Studio"), O("Opus"), T("Title"), A("Actress"), M("Modified"), P("PlayCount"), R("Rank"), L("Length"), SC("Score");
+	/** studio sort */
+	S("Studio"), 
+	/** opus sort */
+	O("Opus"), 
+	/** title sort */
+	T("Title"), 
+	/** actress name sort */
+	A("Actress"), 
+	/** file modified date sort */
+	M("Modified"), 
+	/** play count sort */
+	P("PlayCount"), 
+	/** rank sort */
+	R("Rank"), 
+	/** video length sort */
+	L("Length"), 
+	/** score sort */
+	SC("Score");
 	
 	private String sortString;
 	
