@@ -9,6 +9,11 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**로그인 유저 Bean</br>
+ * 하드코딩된 패스워드와 모든 권한이 있는 사용자
+ * @author kamoru
+ *
+ */
 public class KamoruUser implements UserDetails {
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;

@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+/**로그인 실패 후처리기<br>
+ * 로그 남기기
+ * @author kamoru
+ *
+ */
 public class KamoruAuthenticationFailureHandler extends
 		SimpleUrlAuthenticationFailureHandler  {
 

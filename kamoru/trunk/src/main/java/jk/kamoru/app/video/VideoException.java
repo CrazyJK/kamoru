@@ -2,6 +2,9 @@ package jk.kamoru.app.video;
 
 import jk.kamoru.KamoruException;
 
+/**video에서 발생하는 에러
+ * @author kamoru
+ */
 public class VideoException extends KamoruException {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;

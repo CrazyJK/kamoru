@@ -106,9 +106,5 @@ body {
 		</form>
 	</div>
 </div>
-<div>
-	<%-- <img src="<s:url value="/resources/img/subterraneans_by_joe_maccer-d6bnuip-reverse.jpg"/>"> --%>
-	<h1></h1>
-</div>
 </body>
 </html>

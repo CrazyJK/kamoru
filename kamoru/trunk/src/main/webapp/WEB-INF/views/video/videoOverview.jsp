@@ -15,10 +15,6 @@ function overviewSave()
 	$("#overview-${video.opus}", opener.document).attr("title", overview.val());
 	var frm = document.forms['overviewFrm'];
 	frm.submit();
-/* 	if(opener) {
-		opener.document.forms[0].submit();
-	}
- */	
 }
 </script>
 </head>

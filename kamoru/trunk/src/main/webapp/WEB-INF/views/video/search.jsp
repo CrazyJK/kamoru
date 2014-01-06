@@ -9,8 +9,6 @@
 <title><s:message code="video.video"/> <s:message code="video.search"/></title>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(window).bind("resize", resizeDivHeight);
-	resizeDivHeight();
 	
 	$("#query").bind("keyup", function(e) {
 		
@@ -107,10 +105,10 @@ $(document).ready(function(){
 		});
 	});
 });
-function resizeDivHeight() {
-	var windowHeight = $(window).height();
-	var queryDivHeight = $("#queryDiv").outerHeight();
-	var calculatedDivHeight = (windowHeight - queryDivHeight) / 2 - 20; 
+ 
+function resizeSecondDiv() {
+	var contentDivHeight = $("#content_div").outerHeight();
+	var calculatedDivHeight = (contentDivHeight) / 2; 
 
 	$("#resultVideoDiv").outerHeight(calculatedDivHeight);	
 	$("#resultHistoryDiv").outerHeight(calculatedDivHeight);	
@@ -119,22 +117,23 @@ function resizeDivHeight() {
 </head>
 <body>
 
-<div id="queryDiv" class="div-box">
+<div id="header_div" class="div-box">
 	<label for="query"><s:message code="video.video"/> <s:message code="video.search"/></label>
 	<input type="search" name="query" id="query" style="width:200px;" class="searchInput" placeHolder="<s:message code="video.search"/>"/>
 	<span id="url"></span>
 	<span id="debug"></span>
 </div>
 
-<div id="resultVideoDiv" class="div-box" style="overflow:auto">
-	<h4 class="item-header"><s:message code="video.video"/></h4>
-	<ol id="foundVideoList" class="items"></ol>
+<div id="content_div">
+	<div id="resultVideoDiv" class="div-box" style="overflow:auto">
+		<h4 class="item-header"><s:message code="video.video"/></h4>
+		<ol id="foundVideoList" class="items"></ol>
+	</div>
+	
+	<div id="resultHistoryDiv" class="div-box" style="overflow:auto">
+		<h4 class="item-header"><s:message code="video.history"/></h4>
+		<ol id="foundHistoryList" class="items"></ol>
+	</div>
 </div>
-
-<div id="resultHistoryDiv" class="div-box" style="overflow:auto">
-	<h4 class="item-header"><s:message code="video.history"/></h4>
-	<ol id="foundHistoryList" class="items"></ol>
-</div>
-
 </body>
 </html>

@@ -1,14 +1,4 @@
-
-var currBGImageUrl;
-var selectedNumber = getRandomInteger(0, bgImageCount); //Math.floor(Math.random() * bgImageCount);
-
 $(document).ready(function(){
-	
-	// Add listener : if window resize, contentDiv height resize.
-	$(window).bind("resize", resizeContentDivHeight);
-	
-//	$("input[type=checkbox]").css("display", "none");
-//	$("input[type=radio]").css("display", "none");
 	
 	// Add listener : implement checkbox element
 	$('span[id^="checkbox"]')
@@ -96,14 +86,13 @@ $(document).ready(function(){
  		$("#actressDiv").css("display", "block");
  	}
  	
- 	// resize contentDiv height
-	resizeContentDivHeight();
 	// set background image
 	setBackgroundImage();
-	setInterval(function(){
-		selectedNumber = getRandomInteger(0, bgImageCount);
-		setBackgroundImage();
-	},60*1000);
+	setInterval(
+			function() {
+				setBackgroundImage();
+			}, 
+			60*1000);
 
 	
 	// for slide view

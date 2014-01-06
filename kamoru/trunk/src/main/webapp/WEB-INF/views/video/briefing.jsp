@@ -8,22 +8,22 @@
 <head>
 <title><s:message code="video.briefing"/></title>
 <style type="text/css">
-div#contentDiv.div-box section {
+div#content_div.div-box section {
 	margin: 2px;
 	border-radius:5px; 
 	border: 1px solid orange;
 }
-div#contentDiv.div-box h3 {
+div#content_div.div-box h3 {
 	margin: 2px;
 	padding: 5px;
 	cursor: pointer;
 	text-shadow: 1px 1px 1px white;
 }
-div#contentDiv.div-box h3:hover {
+div#content_div.div-box h3:hover {
 	border-radius:5px; 
 	background-color:rgba(255,165,0,.5);
 }
-div#contentDiv.div-box article {
+div#content_div.div-box article {
 	margin: 10px;
 	display: none;
 }
@@ -34,13 +34,7 @@ div#contentDiv.div-box article {
 }
 </style>
 <script type="text/javascript">
-var bgImageCount = ${bgImageCount};
-var selectedNumber = getRandomInteger(0, bgImageCount);
 $(document).ready(function(){
-	$(window).bind("resize", resizeDivHeight);
-	
-	//setBackgroundImage();
-	resizeDivHeight();
 	
 	$("h3").bind("click", function(){
 		$(this).next().slideToggle("slow", function() {
@@ -48,13 +42,6 @@ $(document).ready(function(){
 		});
 	});
 });
-
-function resizeDivHeight() {
-	var windowHeight = $(window).height();
-	var header = $("#header_div").outerHeight();
-	var calculatedDivHeight = windowHeight - header - 20 * 2; 
-	$("#contentDiv").outerHeight(calculatedDivHeight);	
-}
 
 </script>
 </head>
@@ -64,7 +51,7 @@ function resizeDivHeight() {
 	<s:message code="video.briefing"/>
 </div>
 
-<div id="contentDiv" class="div-box" style="overflow:auto; text-align:left;">
+<div id="content_div" class="div-box" style="overflow:auto; text-align:left;">
 
 <section>
 	<h3><s:message code="video.video-by-folder"/></h3>

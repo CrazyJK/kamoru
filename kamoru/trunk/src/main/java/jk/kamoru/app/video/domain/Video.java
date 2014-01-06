@@ -116,7 +116,7 @@ public class Video implements Comparable<Video>, Serializable {
 		case T:
 			return StringUtils.compareToIgnoreCase(this.getTitle(), comp.getTitle());
 		case A:
-			return StringUtils.compareToIgnoreCase(this.getActress(), comp.getActress());
+			return StringUtils.compareToIgnoreCase(this.getActressName(), comp.getActressName());
 		case M:
 			return this.getDelegateFile().lastModified() > comp.getDelegateFile().lastModified() ? 1 : -1;
 		case P:
@@ -135,7 +135,7 @@ public class Video implements Comparable<Video>, Serializable {
 	/**
 	 * actress 이름이 있는지 확인
 	 * @param actressName
-	 * @return
+	 * @return 같은 이름이 있으면 {@code true}
 	 */
 	public boolean containsActress(String actressName) {
 		for(Actress actress : actressList)
@@ -146,9 +146,9 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * 전체 배우 이름을 컴마(,)로 구분한 문자로 반환
-	 * @return
+	 * @return 배우이름 문자열
 	 */
-	public String getActress() {
+	public String getActressName() {
 		List<String> list = new ArrayList<String>();
 		for(Actress actress : actressList) {
 			list.add(actress.getName());
@@ -158,7 +158,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * Actress 목록. 이름순 정렬
-	 * @return
+	 * @return actress list by name sort
 	 */
 	public List<Actress> getActressList() {
 		Collections.sort(actressList);
@@ -175,7 +175,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * 커버 파일 반환
-	 * @return
+	 * @return 커버 파일
 	 */
 	public File getCoverFile() {
 		return coverFile;
@@ -201,7 +201,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * WebP cover 파일 반환
-	 * @return
+	 * @return 커버 파일 WebP
 	 */
 	public File getCoverWebpFile() {
 		return coverWebpFile;
@@ -219,7 +219,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * video 대표 파일
-	 * @return
+	 * @return 대표 파일
 	 */
 	private File getDelegateFile() {
 		if (this.isExistVideoFileList()) 
@@ -240,7 +240,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * video 대표 파일 이름. 확장자를 뺀 대표이름
-	 * @return
+	 * @return 대표 이름
 	 */
 	private String getDelegateFilenameWithoutSuffix() {
 		return FileUtils.getNameExceptExtension(getDelegateFile());
@@ -248,7 +248,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * video 대표 폴더 경로. video > cover > overview > subtitles > etc 순으로 찾는다.
-	 * @return
+	 * @return 대표 경로
 	 */
 	public String getDelegatePath() {
 		return this.getDelegateFile().getParent();
@@ -256,7 +256,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * video 대표 폴더 경로. video > cover > overview > subtitles > etc 순으로 찾는다.
-	 * @return
+	 * @return 대표 경로 file
 	 */
 	public File getDelegatePathFile() {
 		return this.getDelegateFile().getParentFile();
@@ -264,7 +264,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 기타 파일 
-	 * @return
+	 * @return etc file list
 	 */
 	public List<File> getEtcFileList() {
 		return etcFileList;
@@ -272,7 +272,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * 기타 파일 경로
-	 * @return
+	 * @return string of etc file list
 	 */
 	public String getEtcFileListPath() {
 		if(isExistEtcFileList())
@@ -280,8 +280,8 @@ public class Video implements Comparable<Video>, Serializable {
 		return "";
 	}
 	
-	/**
-	 * 기타 정보. 보통 날짜
+	/**기타 정보. 날짜
+	 * @return etc info
 	 */
 	public String getEtcInfo() {
 		return etcInfo;
@@ -289,7 +289,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 모든 파일 list. null도 포함 되어 있을수 있음
-	 * @return
+	 * @return all file
 	 */
 	public List<File> getFileAll() {
 		List<File> list = new ArrayList<File>();
@@ -304,7 +304,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * 히스토리 내용 반환. 건별 줄바꿈함
-	 * @return
+	 * @return history 
 	 */
 	public String getHistoryText() {
 		StringBuilder sb = new StringBuilder();
@@ -315,7 +315,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * info 파일 반환. 없으면 대표경로에 만듬.
-	 * @return
+	 * @return info
 	 */
 	public File getInfoFile() {
 		if(this.infoFile == null) {
@@ -331,13 +331,13 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * info 파일 경로
-	 * @return
+	 * @return info path
 	 */
 	public String getInfoFilePath() {
 		return getInfoFile().getAbsolutePath();
 	}
 
-	/**
+	/**품번
 	 * @return 품번
 	 */
 	public String getOpus() {
@@ -346,7 +346,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * overview
-	 * @return
+	 * @return overvire text
 	 */
 	public String getOverviewText() {
 		return overview;
@@ -354,7 +354,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * play count
-	 * @return
+	 * @return count of play
 	 */
 	public Integer getPlayCount() {
 		return playCount;
@@ -362,7 +362,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * rank point
-	 * @return
+	 * @return rank
 	 */
 	public int getRank() {
 		return rank;
@@ -370,7 +370,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * studio
-	 * @return
+	 * @return studio class
 	 */
 	public Studio getStudio() {
 		return studio;
@@ -378,7 +378,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * subtitles file list
-	 * @return
+	 * @return list of subtitles file
 	 */
 	public List<File> getSubtitlesFileList() {
 		return subtitlesFileList;
@@ -386,7 +386,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * subtitles file list path
-	 * @return
+	 * @return string of sutitles path
 	 */
 	public String getSubtitlesFileListPath() {
 		if(isExistSubtitlesFileList())
@@ -396,7 +396,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 자막 파일 위치를 배열로 반환, 외부 에디터로 자막 수정시 사용 
-	 * @return
+	 * @return array of subtitles oath
 	 */
 	public String[] getSubtitlesFileListPathArray() {
 		if(isExistSubtitlesFileList()) {
@@ -409,8 +409,8 @@ public class Video implements Comparable<Video>, Serializable {
 	}
 	
 	/**
-	 * title
-	 * @return
+	 * video title
+	 * @return title
 	 */
 	public String getTitle() {
 		return title;
@@ -418,7 +418,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * video의 대표 날자. video > cover > overview > subtitles > etc 순으로 찾는다.
-	 * @return
+	 * @return date of video
 	 */
 	public String getVideoDate() {
 		return DateFormatUtils.format(this.getDelegateFile().lastModified(), "yyyy-MM-dd");
@@ -426,7 +426,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * video file list
-	 * @return
+	 * @return list of video file
 	 */
 	public List<File> getVideoFileList() {
 		return videoFileList;
@@ -434,7 +434,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * video file list path
-	 * @return
+	 * @return string of video path
 	 */
 	public String getVideoFileListPath() {
 		if(isExistVideoFileList()) 
@@ -444,7 +444,7 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	/**
 	 * 비디오 파일 목록 배열. 플레이어 구동시 사용
-	 * @return
+	 * @return array of video path
 	 */
 	public String[] getVideoFileListPathArray() {
 		if(isExistVideoFileList()) {
@@ -456,6 +456,9 @@ public class Video implements Comparable<Video>, Serializable {
 		return null;
 	}
 
+	/**비디오 상대 경로 형식의 URL객체
+	 * @return url of video
+	 */
 	public URL getVideoURL() {
 		if (videoFileList == null || videoFileList.size() == 0) {
 			return null;
@@ -482,7 +485,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 커버 파일이 존재하는지
-	 * @return
+	 * @return {@code true} if exist
 	 */
 	public boolean isExistCoverFile() {
 		return this.coverFile != null;
@@ -490,7 +493,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * WebP 커버 파일이 존재하는지
-	 * @return
+	 * @return {@code true} if exist
 	 */
 	public boolean isExistCoverWebpFile() {
 		return this.coverWebpFile != null;
@@ -498,7 +501,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 기타 파일이 존재하는지
-	 * @return
+	 * @return {@code true} if exist
 	 */
 	public boolean isExistEtcFileList() {
 		return this.etcFileList != null && this.etcFileList.size() > 0;
@@ -506,7 +509,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * overview가 있는지
-	 * @return
+	 * @return {@code true} if exist
 	 */
 	public boolean isExistOverview() {
 		return this.overview != null && this.overview.trim().length() > 0;
@@ -514,7 +517,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 자막 파일이 존재하는지
-	 * @return
+	 * @return {@code true} if exist
 	 */
 	public boolean isExistSubtitlesFileList() {
 		return this.subtitlesFileList != null && this.subtitlesFileList.size() > 0;
@@ -522,7 +525,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * 비디오 파일이 존재하는지
-	 * @return
+	 * @return {@code true} if exist
 	 */
 	public boolean isExistVideoFileList() {
 		return this.videoFileList != null && this.videoFileList.size() > 0;  
@@ -669,7 +672,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * info file. 파일 분석해서 필요 데이터(rank, overview, history, playcount) 설정
-	 * @param info file
+	 * @param file info file
 	 */
 	public void setInfoFile(File file) {
 		this.infoFile = file;
@@ -811,7 +814,7 @@ public class Video implements Comparable<Video>, Serializable {
 
 	/**
 	 * video의 모든 파일 크기
-	 * @return
+	 * @return entire length of video
 	 */
 	public long getLength() {
 		long length = 0l;
@@ -822,25 +825,31 @@ public class Video implements Comparable<Video>, Serializable {
 		return length;
 	}
 	
-	/**
+	/**video full name
 	 * @return [studio][opus][title][actress][date]
 	 */
 	public String getFullname() {
-		return String.format("[%s][%s][%s][%s][%s]", studio.getName(), opus, title, getActress(), StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate);
+		return String.format("[%s][%s][%s][%s][%s]", studio.getName(), opus, title, getActressName(), StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate);
 	}
 	
 	/**비디오 점수<br>
 	 * rank, playCount, actress video count, subtitles count
-	 * @return
+	 * @return score
 	 */
 	public int getScore() {
 		return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
 	}
 
+	/**환산된 랭킹 점수
+	 * @return score of rank
+	 */
 	public int getRankScore() {
 		return getRank() * rankRatio;
 	}
 
+	/**환산된 플레이 점수
+	 * @return score of play count
+	 */
 	public int getPlayScore() {
 		if (getPlayCount() > 0)
 			return getPlayCount() * playRatio;
@@ -848,6 +857,9 @@ public class Video implements Comparable<Video>, Serializable {
 			return unseenRatio;
 	}
 
+	/**환산된 배우 점수
+	 * @return score of actress
+	 */
 	public int getActressScore() {
 		int actressVideoScore = 0;
 		for (Actress actress : getActressList()) {
@@ -855,28 +867,37 @@ public class Video implements Comparable<Video>, Serializable {
 		}
 		return actressVideoScore;
 	}
+	/**환산된 자막 점수
+	 * @return score of subtitles
+	 */
 	public int getSubtitlesScore() {
 		return isExistSubtitlesFileList() ? 1 * subtitlesRatio : 0;
 	}
 
+	/**비디오 파일 후보 추가
+	 * @param file
+	 */
 	public void addVideoCandidates(File file) {
 		videoCandidates.add(file);
 	}
 
-	/**
-	 * @return the videoCandidates
+	/**비디오 파일 후보 getter
+	 * @return list of the videoCandidates
 	 */
 	public List<File> getVideoCandidates() {
 		return videoCandidates;
 	}
 
-	/**
+	/**비디오 파일 후보 setter
 	 * @param videoCandidates the videoCandidates to set
 	 */
 	public void setVideoCandidates(List<File> videoCandidates) {
 		this.videoCandidates = videoCandidates;
 	}
 
+	/**
+	 * 비디오 파일 후보 list clear
+	 */
 	public void resetVideoCandidates() {
 		this.videoCandidates.clear();
 	}

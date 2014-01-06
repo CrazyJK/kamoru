@@ -21,8 +21,6 @@ var context = '<c:url value="/"/>';
 var locationPathname = window.location.pathname;
 
 $(document).ready(function() {
-	// Add class : elements in onclick attribute add class
-	//$("*[onclick]").addClass("onclick");
 
 	//set rank color
  	$('input[type="range"]').each(function() {
@@ -36,6 +34,11 @@ $(document).ready(function() {
 	});
 
  	showNav();
+ 	
+	$(window).bind("resize", resizeDivHeight);
+
+	resizeDivHeight();
+
 });
 
 /**
@@ -54,6 +57,16 @@ function showNav() {
 	});
 	if(!found)
 		$("#deco_nav").css("display", "none");
+}
+/**
+ * post 액션
+ */
+function actionFrame(url, method) {
+	var actionFrm = document.forms['actionFrm'];
+	actionFrm.action = url;
+	if (method)
+		$("#hiddenHttpMethod").val(method);
+	actionFrm.submit();
 }
 </script>
 

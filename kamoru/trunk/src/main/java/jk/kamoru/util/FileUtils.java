@@ -51,7 +51,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	/**
 	 * 확장자를 뺀 파일 이름
 	 * @param file
-	 * @return
+	 * @return 확장자 없는 파일명
 	 */
 	public static String getNameExceptExtension(File file) {
 		Assert.isTrue(file.isFile(), "It is not file! - " + file.getAbsolutePath());
@@ -61,7 +61,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	/**
 	 * 파일의 확장자
 	 * @param file
-	 * @return
+	 * @return 파일 확장자
 	 */
 	public static String getExtension(File file) {
 		Assert.isTrue(file.isFile(), "It is not file! - " + file.getAbsolutePath());

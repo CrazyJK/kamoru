@@ -11,19 +11,19 @@ public interface VideoSource {
 
 	/**
 	 * 전체 Video 맵. &lt;opus, video&gt;
-	 * @return
+	 * @return map of video
 	 */
 	Map<String, Video> getVideoMap();
 	
 	/**
 	 * 전체 Studio 맵. &lt;opus, studio&gt;
-	 * @return
+	 * @return map of studio
 	 */
 	Map<String, Studio> getStudioMap();
 	
 	/**
 	 * 전체 Actress 맵. &lt;opus, actress&gt;
-	 * @return
+	 * @return map of actress
 	 */
 	Map<String, Actress> getActressMap();
 

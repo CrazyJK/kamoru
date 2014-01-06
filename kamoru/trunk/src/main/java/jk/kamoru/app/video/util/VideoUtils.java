@@ -35,7 +35,7 @@ public class VideoUtils {
 	 * 배열을 컴마(,)로 구분한 문자열로 반환. a, b<br>
 	 * ArrayUtils.toString() 이용
 	 * @param array
-	 * @return
+	 * @return string of a, b style
 	 */
 	public static String arrayToString(Object array) {
 		String toString = ArrayUtils.toString(array, "");
@@ -129,7 +129,7 @@ public class VideoUtils {
 	 * 같은 이름인지 확인. 대소문자 구분없이 공백을 기준으로 순차 정렬하여 비교.
 	 * @param name1
 	 * @param name2
-	 * @return
+	 * @return {@code true} if equal
 	 */
 	public static boolean equalsName(String name1, String name2) {
 		if(name1 == null || name2 == null) 
@@ -139,7 +139,7 @@ public class VideoUtils {
 	/**
 	 * 공백이 들어간 이름을 소문자 순차정렬해서 반환
 	 * @param name
-	 * @return
+	 * @return string of sort name
 	 */
 	public static String forwardNameSort(String name) {
 		if(name == null) return null;
@@ -147,32 +147,13 @@ public class VideoUtils {
 		Arrays.sort(nameArr);
 		return StringUtils.join(nameArr, " ");
 	}
-	/**
-	 * 확장자 반환
-	 * @param file
-	 * @return 확장자. 없으면 공백 반환
-	 */
-	/*public static String getFileExtension(File file) {
-		String filename = file.getName();
-		int index = filename.lastIndexOf(".");
-		return index < 0 ? "" : filename.substring(index + 1); 
-	}*/
-
-	/**
-	 * 파일 이름 반환
-	 * @param file
-	 * @return 확장자 뺀 이름만
-	 */
-	/*public static String getFileName(File file) {
-		return getName(file.getName()); 
-	}*/
 	
 	/**
 	 * 주어진 이름을 구글 이미지 검색을 사용해 URL list로 반환.<br>
 	 * google url : https://ajax.googleapis.com/ajax/services/search/images<br>
 	 * 에러 발생시 빈 list 리턴.
 	 * @param name
-	 * @return
+	 * @return list of url
 	 */
 	@SuppressWarnings("deprecation")
 	public static List<URL> getGoogleImage(String name) {
@@ -209,19 +190,9 @@ public class VideoUtils {
 	}
 	
 	/**
-	 * 확장자를 제거한 이름 반환
-	 * @param name
-	 * @return
-	 */
-	/*public static String getName(String name) {
-		int index = name.lastIndexOf(".");
-		return index < 0 ? name : name.substring(0, index); 
-	}*/
-
-	/**
 	 * video list을 opus값 배열 스타일로 반환. [abs-123, avs-34]
 	 * @param videoList
-	 * @return
+	 * @return string of opus list
 	 */
 	public static String getOpusArrayStyleString(List<Video> videoList) {
 		StringBuilder sb = new StringBuilder();
@@ -238,7 +209,7 @@ public class VideoUtils {
 	/**
 	 * video list중 video파일이 있는것만 골라 opus값 배열 스타일로 반환. [abs-123, avs-34]
 	 * @param videoList
-	 * @return
+	 * @return  string of opus list with file
 	 */
 	public static String getOpusArrayStyleStringWithVideofile(List<Video> videoList) {
 		List<Video> videoListWithVideofile = new ArrayList<Video>();
@@ -329,7 +300,7 @@ public class VideoUtils {
 	/**
 	 * 파일을 byte배열로 읽어 반환. null이거나 에러시 null반환
 	 * @param file
-	 * @return
+	 * @return byte array of file
 	 */
 	public static byte[] readFileToByteArray(File file) {
 		if(file == null || !file.exists())
@@ -345,7 +316,7 @@ public class VideoUtils {
 	/**
 	 * 파일안의 내용을 숫자로 반환.
 	 * @param file
-	 * @return
+	 * @return number of file
 	 */
 	public static int readFileToInteger(File file) {
 		try {
@@ -359,7 +330,7 @@ public class VideoUtils {
 	/**
 	 * file의 내용을 읽어 반환. null이나 ioexception시 공백 반환
 	 * @param file
-	 * @return
+	 * @return string of file
 	 */
 	public static String readFileToString(File file) {
 		if(file == null || !file.exists()) return "";
@@ -374,7 +345,7 @@ public class VideoUtils {
 	/**
 	 * 특수문자를 제거한 문자 반환
 	 * @param str
-	 * @return
+	 * @return string
 	 */
 	public static String removeSpecialCharacters(String str) {
 		String str_imsi = ""; 
@@ -390,7 +361,7 @@ public class VideoUtils {
 	/**
 	 * 앞 뒤 공백, [ 제거. null이나 공백이면 "" 리턴
 	 * @param str
-	 * @return
+	 * @return string
 	 */
 	public static String removeUnnecessaryCharacter(String str) {
 		return removeUnnecessaryCharacter(str, "");
@@ -400,7 +371,7 @@ public class VideoUtils {
 	 * 앞 뒤 공백, [ 제거
 	 * @param str
 	 * @param defaultString
-	 * @return
+	 * @return string
 	 */
 	public static String removeUnnecessaryCharacter(String str, String defaultString) {
 		if (str == null || str.trim().length() == 0)
@@ -413,7 +384,7 @@ public class VideoUtils {
 	/**
 	 * list를 컴마(,)로 구분한 string반환
 	 * @param list
-	 * @return
+	 * @return string of list
 	 */
 	public static <T> String toListToSimpleString(List<T> list) {
 		StringBuilder sb = new StringBuilder();
@@ -429,7 +400,7 @@ public class VideoUtils {
 	/**
 	 * file list를 컴마(,)로 구분한 string으로 반환
 	 * @param list
-	 * @return
+	 * @return string of list
 	 */
 	public static String toFileListToSimpleString(List<File> list) {
 		StringBuilder sb = new StringBuilder();
@@ -457,9 +428,9 @@ public class VideoUtils {
 	
 	/**
 	 * null, " " or 글자가 같은지
-	 * @param target지
+	 * @param target
 	 * @param compare
-	 * @return
+	 * @return {@code true} if equals
 	 */
 	public static boolean equals(String target, String compare) {
 		return compare == null || compare.trim().length() == 0 || target.equalsIgnoreCase(compare);
@@ -468,7 +439,7 @@ public class VideoUtils {
 	 * null, " " or 글자가 포함하는지
 	 * @param target
 	 * @param compare
-	 * @return
+	 * @return {@code true} if contains
 	 */
 	public static boolean containsName(String target, String compare) {
 		return compare == null || compare.trim().length() == 0 || StringUtils.containsIgnoreCase(target, compare);
@@ -477,7 +448,7 @@ public class VideoUtils {
 	 * null, " " or video에 포함하는 배우이름이 있는지
 	 * @param target
 	 * @param compare
-	 * @return
+	 * @return {@code true} if contains
 	 */
 	public static boolean containsActress(Video target, String compare) {
 		return compare == null || compare.trim().length() == 0 || target.containsActress(compare);
@@ -506,6 +477,10 @@ public class VideoUtils {
 		return map;
 	}
 
+	/**params내요을 file로 저장
+	 * @param file
+	 * @param params
+	 */
 	public static void saveFileFromMap(File file, Map<String, String> params) {
 		StringBuffer sb = new StringBuffer();
 		for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -520,9 +495,9 @@ public class VideoUtils {
 	
 	/**
 	 * 파라미터로 선택된 이름에 비디오의 배우 이름이 포함되어 있는지
+	 * @param video
 	 * @param actressNameList
-	 * @param actressList
-	 * @return
+	 * @return {@code true} if contains
 	 */
 	public static boolean containsActress(Video video, List<String> actressNameList) {
 		boolean ret = false;

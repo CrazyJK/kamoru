@@ -1,76 +1,38 @@
-function resizeContentDivHeight() {
-	var windowHeight = $(window).height();
-	var searchDivHeight = $("#headerDiv").outerHeight();
-	var resizeContentDivHeight = windowHeight - searchDivHeight - 16 - 20 - 20; 
-	$("#contentDiv").height(resizeContentDivHeight); //alert(resizeContentDivHeight);
-}
-function setRandomBackgroundImage() {
-	selectedNumber = getRandomInteger(0, bgImageCount);
-	setBackgroundImage();
-}
-function setBackgroundImage() {
-	currBGImageUrl = context + "image/" + selectedNumber;
-//	$("#contentDiv").hide();
-	$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
-//	$("#contentDiv").fadeIn();
-}
+
 /**
- * background-size:contain; Scale the image to the largest size such that both its width and its height can fit inside the content area
- * 이 설정과 같이 움직이도록 하는 함수 
-function resizeBackgroundImage() {
-	currBGImageUrl = context + "image/" + selectedNumber;
-	
-	var img = $("<img />");
-	img.hide();
-	img.attr("src", currBGImageUrl);
-	img.bind('load', function(){
-		var imgWidth  = $(this).width();
-		var imgHeight = $(this).height();
-		var divWidth  = $("#contentDiv").width() + 30;
-		var divHeight = $("#contentDiv").height() + 20;
-		var width  = 0;
-		var height = 0;
-		
-		if(imgWidth <= divWidth && imgHeight <= divHeight) { // 1. x:- y:-
-			width  = imgWidth;
-			height = imgHeight;
-		}else if(imgWidth <= divWidth && imgHeight > divHeight) { // 2. x:- y:+
-			width  = ratioSize(divHeight, imgWidth, imgHeight);
-			height = divHeight;
-		}else if(imgWidth > divWidth && imgHeight <= divHeight) { // 3. x:+ y:-
-			width  = divWidth;
-			height = ratioSize(divWidth, imgHeight, imgWidth);
-		}else if(imgWidth > divWidth && imgHeight > divHeight) { // 4. x:+ y:+
-			width  = divWidth;
-			height = ratioSize(width, imgHeight, imgWidth);
-			if(height > divHeight) {
-				width  = ratioSize(divHeight, imgWidth, imgHeight);
-				height = divHeight;
-			}
-		}
-		//debug("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
-		$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
-		$("#contentDiv").css("background-size", width + "px " + height + "px");
-	});
-	$("body").append(img);
-}
-function ratioSize(numerator1, numerator2, denominator) {
-	return parseInt(numerator1 * numerator2 / denominator);
-}
+ * div container 높이 조정
  */
+function resizeDivHeight() {
+	var windowHeight = $(window).height();
+	var header = $("#header_div").outerHeight();
+	var calculatedDivHeight = windowHeight - header - 20 * 2; 
+	$("#content_div").outerHeight(calculatedDivHeight);	
+	try {
+		resizeSecondDiv();
+	} catch (e) {}
+}
+
+function setBackgroundImage(imgIdx) {
+	if (imgIdx)
+		currBGImageUrl = context + "image/" + imgIdx;
+	else 
+		currBGImageUrl = context + "image/" + getRandomInteger(0, bgImageCount);
+
+	//	$("#contentDiv").hide();
+	$("#content_div").css("background-image", "url(" + currBGImageUrl + ")");
+	//	$("#contentDiv").fadeIn();
+}
 
 function fnVideoDivToggle() {
 	$("#videoDiv").toggle();
 }
 function fnStudioDivToggle() {
 	$("#studioDiv").toggle();
-	resizeContentDivHeight();
-	debug("fnStudioDivToggle");
+	resizeDivHeight();
 }
 function fnActressDivToggle() {
 	$("#actressDiv").toggle();
-	resizeContentDivHeight();
-	debug("fnActressDivToggle");
+	resizeDivHeight();
 }
 function fnSearch(txt) {
 	if(txt)
@@ -137,11 +99,11 @@ function fnOpusFocus(opus) {
 			$(this).addClass("li-box-played");
 		});
 		var topValue = $("#opus-" + opus).position().top - $("#headerDiv").outerHeight() - 20;
-		$("#contentDiv").scrollTop(topValue);
+		$("#content_div").scrollTop(topValue);
 	}
 }
 function fnBGImageView() {
-	popup(context + "image?n=" + selectedNumber, "ImageView" + selectedNumber, 800, 600);
+	popup(currBGImageUrl, currBGImageUrl, 800, 600);
 }
 function fnImageView(opus) {
 	debug("Cover image view : " + opus);
@@ -264,7 +226,7 @@ function rePagination() {
 
 }
 function fnRandomVideoView_Slide() {
-	selectedNumber = getRandomInteger(1, totalVideoSize);
+	var selectedNumber = getRandomInteger(1, totalVideoSize);
 	$("a[data-slidesjs-item='" + selectedNumber + "']").click();
 }
 
@@ -292,3 +254,48 @@ function fnReloadVideoSource() {
 	frm.action = context + "video/reload";
 	frm.submit();
 }
+
+/**
+ * background-size:contain; Scale the image to the largest size such that both its width and its height can fit inside the content area
+ * 이 설정과 같이 움직이도록 하는 함수 
+function resizeBackgroundImage() {
+	currBGImageUrl = context + "image/" + selectedNumber;
+	
+	var img = $("<img />");
+	img.hide();
+	img.attr("src", currBGImageUrl);
+	img.bind('load', function(){
+		var imgWidth  = $(this).width();
+		var imgHeight = $(this).height();
+		var divWidth  = $("#contentDiv").width() + 30;
+		var divHeight = $("#contentDiv").height() + 20;
+		var width  = 0;
+		var height = 0;
+		
+		if(imgWidth <= divWidth && imgHeight <= divHeight) { // 1. x:- y:-
+			width  = imgWidth;
+			height = imgHeight;
+		}else if(imgWidth <= divWidth && imgHeight > divHeight) { // 2. x:- y:+
+			width  = ratioSize(divHeight, imgWidth, imgHeight);
+			height = divHeight;
+		}else if(imgWidth > divWidth && imgHeight <= divHeight) { // 3. x:+ y:-
+			width  = divWidth;
+			height = ratioSize(divWidth, imgHeight, imgWidth);
+		}else if(imgWidth > divWidth && imgHeight > divHeight) { // 4. x:+ y:+
+			width  = divWidth;
+			height = ratioSize(width, imgHeight, imgWidth);
+			if(height > divHeight) {
+				width  = ratioSize(divHeight, imgWidth, imgHeight);
+				height = divHeight;
+			}
+		}
+		//debug("background-image resize :{"+imgWidth+","+imgHeight+"}->{"+width+","+height+"}");
+		$("#contentDiv").css("background-image", "url(" + currBGImageUrl + ")");
+		$("#contentDiv").css("background-size", width + "px " + height + "px");
+	});
+	$("body").append(img);
+}
+function ratioSize(numerator1, numerator2, denominator) {
+	return parseInt(numerator1 * numerator2 / denominator);
+}
+ */

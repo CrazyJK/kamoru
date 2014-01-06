@@ -14,9 +14,9 @@ public class WebUtils {
 	
 	/**
 	 * UTF-8 인코딩을 거친 파라미터 value 반환
-	 * @param req
+	 * @param request
 	 * @param name
-	 * @return
+	 * @return parameter value
 	 */
 	public static String getParameter(HttpServletRequest request, String name) {
 		return getParameter(request, name, null);
@@ -24,10 +24,10 @@ public class WebUtils {
 	
 	/**
 	 * UTF-8 인코딩을 거친 파라미터 value 반환
-	 * @param req
+	 * @param request
 	 * @param name
 	 * @param defaultValue
-	 * @return
+	 * @return parameter value
 	 */
 	public static String getParameter(HttpServletRequest request, String name, String defaultValue) {
 		String value = null;
@@ -53,7 +53,7 @@ public class WebUtils {
 	 * @param request
 	 * @param name
 	 * @param defaultValue
-	 * @return
+	 * @return parameter value
 	 */
 	public static int getParameterInt(HttpServletRequest request, String name, int defaultValue) {
 		try {
@@ -68,7 +68,7 @@ public class WebUtils {
 	 * 파라미터 value를 숫자로 리턴. 숫자가 아닐경우 0 리턴
 	 * @param request
 	 * @param name
-	 * @return
+	 * @return parameter value
 	 */
 	public static int getParameterInt(HttpServletRequest request, String name) {
 		return getParameterInt(request, name, 0);
@@ -79,7 +79,7 @@ public class WebUtils {
 	 * @param request
 	 * @param name
 	 * @param separator
-	 * @return
+	 * @return parameter value
 	 */
 	public static String[] getParameterArray(HttpServletRequest request, String name, String separator) {
 		String value = getParameter(request, name, "");
@@ -94,7 +94,7 @@ public class WebUtils {
 	/**
 	 * 전체 파라미터를 GET방식 포멧으로 리턴
 	 * @param request
-	 * @return
+	 * @return GET방식 표현 문자열
 	 */
 	@SuppressWarnings("rawtypes")
 	String getParamters(HttpServletRequest request) {

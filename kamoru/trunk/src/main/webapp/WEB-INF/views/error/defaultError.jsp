@@ -5,6 +5,10 @@
 <html>
 <head>
 <title><s:message code="default.error"/></title>
+<script type="text/javascript">
+if (self.innerHeight == 0)
+	alert('${exceptionMsg.message}');
+</script>
 </head>
 <body>
 

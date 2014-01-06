@@ -64,3 +64,9 @@ body {
 .code-clazz {
 	color: navy;
 }
+div#content_div {
+	overflow:auto; 
+	text-align:center; 
+	background-position:center center; 
+	background-size:contain;
+}

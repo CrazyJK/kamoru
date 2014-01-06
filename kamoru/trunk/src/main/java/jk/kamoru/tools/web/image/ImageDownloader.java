@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Web image downloader
  * @author kamoru
- * @see {@link #ImageDownloader(String, String, String)}, {@link #ImageDownloader(String, String, String, long)}
  */
 public class ImageDownloader extends Thread {
 	
@@ -57,7 +56,7 @@ public class ImageDownloader extends Thread {
 	/**
 	 * Constructs a new <code>ImageDownloader</code> using image source, title, destination directory<br>
 	 * execute - {@link #download()} or if Thread mode {@link #run()}
-	 * @param imageSrc image source url
+	 * @param imgSrc image source url
 	 * @param title image title
 	 * @param destDir destination directory
 	 * @param minimunSize minimum image size(bytes)

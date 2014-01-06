@@ -11,18 +11,7 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(window).bind("resize", resizeDivHeight);
-	
-	resizeDivHeight();
-	
 });
-
-function resizeDivHeight() {
-	var windowHeight = $(window).height();
-	var header = $("#header_div").outerHeight();
-	var calculatedDivHeight = windowHeight - header - 20 * 2; 
-	$("#contentDiv").outerHeight(calculatedDivHeight);	
-}
 </script>
 </head>
 <body>
@@ -31,20 +20,14 @@ function resizeDivHeight() {
 	<s:message code="video.manager"/>
 </div>
 
-<div id="contentDiv" class="div-box" style="overflow:auto; text-align:left;">
+<div id="content_div" class="div-box" style="overflow:auto; text-align:left;">
 
-<ul>
-	<li><a href="<c:url value="/video/manager/move"/>" target="ifrm"><s:message code="video.mng.move"/></a>
-	<li><a href="<c:url value="/video/manager/rank"/>" target="ifrm"><s:message code="video.mng.rank"/></a>
-	<li><a href="<c:url value="/video/manager/score"/>" target="ifrm"><s:message code="video.mng.score"/></a>
-</ul>
-
-
-
-
-
-
-
+	<ul>
+		<li><a onclick="actionFrame('<c:url value="/video/manager/moveWatchedVideo"/>')"><s:message code="video.mng.move"/></a>
+		<li><a onclick="actionFrame('<c:url value="/video/manager/removeLowerRankVideo"/>')"><s:message code="video.mng.rank"/></a>
+		<li><a onclick="actionFrame('<c:url value="/video/manager/removeLowerScoreVideo"/>')"><s:message code="video.mng.score"/></a>
+		<li><a onclick="actionFrame('<c:url value="/error"/>')">Error</a>
+	</ul>
 
 </div>
 

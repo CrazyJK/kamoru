@@ -8,21 +8,12 @@
 <title><s:message code="video.actress"/> <s:message code="video.list"/></title>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(window).bind("resize", resizeDivHeight);
 	
 	$("input[type=radio]").bind("click", function(){
 		location.href= "?sort=" + $(this).val();
 	}).css("display","none");
-	resizeDivHeight();
+
 });
-
-function resizeDivHeight() {
-	var windowHeight = $(window).height();
-	var header = $("#header_div").outerHeight();
-	var calculatedDivHeight = windowHeight - header - 20 * 2; 
-	$("#list_div").outerHeight(calculatedDivHeight);	
-}
-
 </script>
 </head>
 <body>
@@ -37,7 +28,7 @@ function resizeDivHeight() {
 
 </div>
 
-<div id="list_div" class="div-box" style="overflow:auto;">
+<div id="content_div" class="div-box" style="overflow:auto;">
 <table class="video-table" style="background-color:lightgray">
 <c:forEach items="${actressList}" var="actress" varStatus="status">
 	<tr><td class="nowrap">${status.count}</td>

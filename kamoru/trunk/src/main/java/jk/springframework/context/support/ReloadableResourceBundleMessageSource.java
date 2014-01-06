@@ -25,6 +25,13 @@ import org.springframework.util.DefaultPropertiesPersister;
 import org.springframework.util.PropertiesPersister;
 import org.springframework.util.StringUtils;
 
+/**
+ * {@link org.springframework.context.support.ReloadableResourceBundleMessageSource} 순수 소스에서<br>
+ * 호출된 code를 알아보기 위해 {@link #hitMessageCodeMap}을 추가
+ * @author kamoru
+ * @see org.springframework.context.support.ReloadableResourceBundleMessageSource
+ *
+ */
 public class ReloadableResourceBundleMessageSource extends
 		AbstractMessageSource implements ResourceLoaderAware {
 
@@ -57,7 +64,7 @@ public class ReloadableResourceBundleMessageSource extends
 	/** Cache to hold merged loaded properties per locale */
 	private final Map<Locale, PropertiesHolder> cachedMergedProperties = new HashMap<Locale, PropertiesHolder>();
 
-
+	/** hit한 message 정보. [code_locale, value] */
 	public static Map<String, String> hitMessageCodeMap = new TreeMap<String, String>();
 
 	/**

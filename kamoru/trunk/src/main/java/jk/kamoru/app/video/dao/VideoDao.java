@@ -30,21 +30,21 @@ public interface VideoDao {
 	/**
 	 * video by opus
 	 * @param opus
-	 * @return
+	 * @return video
 	 */
 	Video getVideo(String opus);
 	
 	/**
 	 * studio by studio name
-	 * @param studio name
-	 * @return
+	 * @param name studio name
+	 * @return studio
 	 */
 	Studio getStudio(String name);
 	
 	/**
 	 * actress by actress name
-	 * @param actress name
-	 * @return
+	 * @param name actress name
+	 * @return actress
 	 */
 	Actress getActress(String name);
 
@@ -57,7 +57,7 @@ public interface VideoDao {
 	/**
 	 * move video
 	 * @param opus
-	 * @param destination path
+	 * @param destPath destination path
 	 */
 	void moveVideo(String opus, String destPath);
 	

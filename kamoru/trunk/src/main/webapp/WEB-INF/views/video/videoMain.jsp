@@ -13,7 +13,9 @@ var bgImageCount = ${bgImageCount};
 var totalVideoSize = parseInt('${fn:length(videoList)}');
 var currentVideoIndex = getRandomInteger(1, totalVideoSize);
 var listViewType = '${videoSearch.listViewType}';
+var currBGImageUrl;
 
+/** 바탕화면 보기 */
 function fnViewBGImage() {
 	$("#contentContainer").toggle();
 	$("#bgActionGroup").toggle();
@@ -25,7 +27,7 @@ function fnViewBGImage() {
 <link  href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet" />
 </head>
 <body>
-<div id="headerDiv">
+<div id="header_div">
 	<form:form method="POST" commandName="videoSearch">
 	<div id="searchDiv" class="div-box">
 		<span class="group">
@@ -142,7 +144,8 @@ function fnViewBGImage() {
 	</form:form>
 </div>
 
-<div id="contentDiv" class="div-box">
+<div id="content_div" class="div-box">
+
 <div id="contentContainer">
 <c:choose>
 	<c:when test="${videoSearch.listViewType eq 'C' }">
@@ -396,10 +399,12 @@ function fnViewBGImage() {
 	</c:otherwise>
 </c:choose>
 </div>
-<div id="bgActionGroup" style="display:none;">
-	<span onclick="setRandomBackgroundImage();">NEXT</span>
-	<span onclick="fnBGImageView();">VIEW</span>
-</div>
+
+	<div id="bgActionGroup" style="display:none;">
+		<span onclick="setBackgroundImage();">NEXT</span>
+		<span onclick="fnBGImageView();">VIEW</span>
+	</div>
+
 </div>
 
 </body>

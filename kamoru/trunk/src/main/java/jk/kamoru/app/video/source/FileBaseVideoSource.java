@@ -239,7 +239,7 @@ public class FileBaseVideoSource implements VideoSource {
 	/**
 	 * 이미지를 webp파일로 반환. 없으면 만드는 작업 호출
 	 * @param file
-	 * @return
+	 * @return file of webp image
 	 */
 	private File convertWebpFile(File file) {
 		logger.trace("{}", file.getAbsolutePath());

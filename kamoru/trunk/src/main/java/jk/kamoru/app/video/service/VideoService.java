@@ -16,6 +16,10 @@ import jk.kamoru.app.video.domain.VideoSearch;
  * Video Service Interface
  * @author kamoru
  */
+/**
+ * @author kamoru
+ *
+ */
 public interface VideoService {
 
 	/**Delete video
@@ -234,7 +238,6 @@ public interface VideoService {
 	void arrangeVideo();
 
 	/**get video list with torrent info
-	 * @return
 	 */
 	List<Video> torrent();
 

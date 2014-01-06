@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import jk.kamoru.app.image.service.ImageService;
 import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.domain.ActressSort;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.StudioSort;
@@ -39,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Video Collection controller<br>
+ * Video controller<br>
  * @author kamoru
  */
 @Controller
@@ -51,23 +52,39 @@ public class VideoController {
 	@Autowired private ImageService imageService;
 	@Autowired private VideoService videoService;
 
+	/**locae model attribute
+	 * @param locale
+	 * @return model attribute
+	 */
 	@ModelAttribute
 	public Locale locale(Locale locale) {
 		return locale;
 	}
 	
+	/**minimum rank model attrubute by named 'minRank'
+	 * @return model attribute
+	 */
 	@ModelAttribute("minRank")
 	public Integer minRank() {
 		return videoService.minRank();
 	}
 
+	/**maximum rank model attrubute by named 'maxRank'
+	 * @return model attribute
+	 */
 	@ModelAttribute("maxRank")
 	public Integer maxRank() {
 		return videoService.maxRank();
 	}
 
+	/**display actress list view
+	 * @param model
+	 * @param sort default NAME if {@code null}
+	 * @return view name
+	 */
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
-	public String actress(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") ActressSort sort) {
+	public String actressList(Model model, 
+			@RequestParam(value="sort", required=false, defaultValue="NAME") ActressSort sort) {
 		logger.trace("actress");
 		model.addAttribute(videoService.getActressList(sort));
 		model.addAttribute("sorts", ActressSort.values());
@@ -75,20 +92,33 @@ public class VideoController {
 		return "video/actressList";
 	}
 
-	@RequestMapping(value="/actress/{actress}", method=RequestMethod.GET)
-	public String actressName(Model model, @PathVariable String actress) {
-		logger.trace(actress);
-		model.addAttribute(videoService.getActress(actress));
+	/**display a actress detail view
+	 * @param model
+	 * @param actressName actress name
+	 * @return view name
+	 */
+	@RequestMapping(value="/actress/{actressName}", method=RequestMethod.GET)
+	public String actressDetail(Model model, @PathVariable String actressName) {
+		logger.trace(actressName);
+		model.addAttribute(videoService.getActress(actressName));
 		return "video/actressDetail";
 	}
 
-	@RequestMapping(value="/actress/{actress}", method=RequestMethod.PUT)
+	/**save actres info
+	 * @param actressName
+	 * @param params map of info
+	 */
+	@RequestMapping(value="/actress/{actressName}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void putActressInfo(@PathVariable String actress, @RequestParam Map<String, String> params) {
+	public void putActressInfo(@PathVariable String actressName, @RequestParam Map<String, String> params) {
 		logger.trace("{}", params);
-		videoService.saveActressInfo(actress, params);
+		videoService.saveActressInfo(actressName, params);
 	}
 
+	/**display status briefing view
+	 * @param model
+	 * @return view name
+	 */
 	@RequestMapping(value="/briefing", method=RequestMethod.GET)
 	public String briefing(Model model) {
 		logger.trace("briefing");
@@ -105,6 +135,11 @@ public class VideoController {
 		return "video/briefing";
 	}
 
+	/**send history list by query
+	 * @param model
+	 * @param query search keyword
+	 * @return view name
+	 */
 	@RequestMapping(value="/history", method=RequestMethod.GET)
 	public String history(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
 		logger.trace("query={}", query);
@@ -112,8 +147,13 @@ public class VideoController {
 		return "video/history";
 	}
 
+	/**display video list view
+	 * @param model
+	 * @param sort default Opus if {@code null}
+	 * @return view name
+	 */
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String list(Model model, @RequestParam(value="sort", required=false, defaultValue="O") Sort sort) {
+	public String videoList(Model model, @RequestParam(value="sort", required=false, defaultValue="O") Sort sort) {
 		logger.trace("list");
 		model.addAttribute("videoList", videoService.getVideoList(sort));
 		model.addAttribute("sorts", Sort.values());
@@ -121,6 +161,10 @@ public class VideoController {
 		return "video/videoList";
 	}
 
+	/**display video torrent info view
+	 * @param model
+	 * @return view name
+	 */
 	@RequestMapping(value="/torrent", method=RequestMethod.GET)
 	public String torrent(Model model) {
 		logger.trace("torrent");
@@ -128,12 +172,20 @@ public class VideoController {
 		return "video/torrent";
 	}
 
+	/**send default video cover image
+	 * @return image entity
+	 */
 	@RequestMapping(value="/no/cover", method=RequestMethod.GET)
 	public HttpEntity<byte[]> noCover() {
 		logger.trace("noCover");
 		return httpEntity(videoService.getDefaultCoverFileByteArray(), "jpg");
 	}
 	
+	/**display video search view by query
+	 * @param model
+	 * @param query
+	 * @return view name
+	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	public String search(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
 		logger.trace("query={}", query);
@@ -143,13 +195,22 @@ public class VideoController {
         return "video/search";		
 	}
 
+	/**display studio detail view
+	 * @param model
+	 * @param studio
+	 * @return view name
+	 */
 	@RequestMapping(value="/studio/{studio}", method=RequestMethod.GET)
-	public String studioName(Model model, @PathVariable String studio) {
+	public String studioDetail(Model model, @PathVariable String studio) {
 		logger.trace(studio);
 		model.addAttribute(videoService.getStudio(studio));
 		return "video/studioDetail";
 	}
 
+	/**save studio info
+	 * @param studio
+	 * @param params map of info
+	 */
 	@RequestMapping(value="/studio/{studio}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void putStudioInfo(@PathVariable String studio, @RequestParam Map<String, String> params) {
@@ -157,8 +218,14 @@ public class VideoController {
 		videoService.saveStudioInfo(studio, params);
 	}
 
+	/**display studio list view
+	 * @param model
+	 * @param sort default NAME
+	 * @return view name
+	 */
 	@RequestMapping(value="/studio", method=RequestMethod.GET)
-	public String studio(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
+	public String studioList(Model model, 
+			@RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
 		logger.trace("studio");
 		model.addAttribute(videoService.getStudioList(sort));
 		model.addAttribute("sorts", StudioSort.values());
@@ -166,8 +233,19 @@ public class VideoController {
 		return "video/studioList";
 	}
 
+	/**send video cover image<br>
+	 * send redirect '/no/cover' if image not found<br>
+	 * test {@code User-Agent} contails {@code Chrome}, then send webp image
+	 * @param opus
+	 * @param response
+	 * @param agent
+	 * @return image entity
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> opusCover(@PathVariable String opus, HttpServletResponse response, @RequestHeader("User-Agent") String agent) throws IOException {
+	public HttpEntity<byte[]> videoCover(HttpServletResponse response,
+			@PathVariable String opus, 
+			@RequestHeader("User-Agent") String agent) throws IOException {
 		logger.trace("{}", opus);
 		boolean isChrome = agent.indexOf("Chrome") > -1;
 		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
@@ -178,63 +256,106 @@ public class VideoController {
 		return httpEntity(videoService.getVideoCoverByteArray(opus, isChrome), FileUtils.getExtension(imageFile));
 	}
 	
+	/**display video overview view
+	 * @param model
+	 * @param opus
+	 * @return view name
+	 */
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.GET)
-	public String opusOverview(Model model, @PathVariable("opus") String opus) {
+	public String videoOverview(Model model, @PathVariable("opus") String opus) {
 		logger.trace(opus);
 		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/videoOverview";
 	}
 
+	/**save video overview
+	 * @param model
+	 * @param opus
+	 * @param overview
+	 */
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.POST)
-	public String opusOverviewPost(@PathVariable("opus") String opus, @RequestParam("overViewTxt") String overViewTxt) {
-		logger.trace("{} - {}", opus, overViewTxt);
-		videoService.saveVideoOverview(opus, overViewTxt);
-		return "video/videoOverviewSave";
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void opusOverviewPost(Model model,
+			@PathVariable("opus") String opus, 
+			@RequestParam("overViewTxt") String overview) {
+		logger.trace("{} - {}", opus, overview);
+		videoService.saveVideoOverview(opus, overview);
 	}
 
+	/**call video player
+	 * @param model
+	 * @param opus
+	 */
 	@RequestMapping(value="/{opus}/play", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusPlay(@PathVariable String opus) {
+	public void callVideoPlayer(Model model, @PathVariable String opus) {
 		logger.trace(opus);
 		videoService.playVideo(opus);
 	}
 
+	/**save video rank info
+	 * @param model
+	 * @param opus
+	 * @param rank
+	 */
 	@RequestMapping(value="/{opus}/rank/{rank}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusRank(@PathVariable String opus, @PathVariable int rank) {
+	public void putVideoRank(Model model, @PathVariable String opus, @PathVariable int rank) {
 		logger.trace("{} : {}", opus, rank);
 		videoService.rankVideo(opus, rank);
 	}
 
+	/**call Subtitles editor
+	 * @param model
+	 * @param opus
+	 */
 	@RequestMapping(value="/{opus}/subtitles", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusSubtitles(@PathVariable String opus) {
+	public void opusSubtitles(Model model, @PathVariable String opus) {
 		logger.trace(opus);
 		videoService.editVideoSubtitles(opus);
 	}
 
+	/**delete video
+	 * @param model
+	 * @param opus
+	 */
 	@RequestMapping(value="/{opus}", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusDelete(@PathVariable("opus") String opus) {
+	public void deleteVideo(Model model, @PathVariable("opus") String opus) {
 		logger.trace(opus);
 		videoService.deleteVideo(opus);
 	}
 
+	/**display video detail view
+	 * @param model
+	 * @param opus
+	 * @return view name
+	 */
 	@RequestMapping(value="/{opus}", method=RequestMethod.GET)
-	public String opus(Model model, @PathVariable String opus) {
+	public String videoDetail(Model model, @PathVariable String opus) {
 		logger.trace(opus);
 		model.addAttribute("video", videoService.getVideo(opus));
 		return "video/videoDetail";
 	}
 	
+	/**
+	 * Test code. 
+	 */
 	@RequestMapping(value="/{opus}", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void opusPost() {
 		logger.warn("POST do not something yet");
+		throw new VideoException(new IllegalStateException("POST do not something yet"));
 	}
 	
+	/**display video main view
+	 * @param model
+	 * @param videoSearch
+	 * @return view name
+	 */
 	@RequestMapping
-	public String video(Model model, @ModelAttribute VideoSearch videoSearch) {
+	public String videoMain(Model model, @ModelAttribute VideoSearch videoSearch) {
 		logger.trace("{}", videoSearch);
 		List<Video> videoList =  videoService.searchVideo(videoSearch);
 		
@@ -253,13 +374,22 @@ public class VideoController {
 		return "video/videoMain";
 	}
 
+	/**reload video source
+	 * @param model
+	 */
 	@RequestMapping("/reload")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void reload() {
+	public void reload(Model model) {
 		logger.trace("reload");
 		videoService.reload();
 	}
 
+	/**returns image entity<br>
+	 * cache time {@link VideoCore#WEBCACHETIME_SEC}, {@link VideoCore#WEBCACHETIME_MILI}
+	 * @param imageBytes
+	 * @param suffix
+	 * @return image entity
+	 */
 	private HttpEntity<byte[]> httpEntity(byte[] imageBytes, String suffix) {
 		long today = new Date().getTime();
 		
@@ -274,36 +404,55 @@ public class VideoController {
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
 
+	/**display video manager view
+	 * @return view name
+	 */
 	@RequestMapping("/manager")
-	public String mng() {
-		logger.trace("video mng");
+	public String manager() {
+		logger.trace("video manager");
 		return "video/manager";
 	}
 
-	@RequestMapping("/manager/move")
+	/**move watched video
+	 * @param model
+	 */
+	@RequestMapping(value="/manager/moveWatchedVideo", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void arrange() {
+	public void moveWatchedVideo(Model model) {
 		logger.trace("move watched video");
 		videoService.moveWatchedVideo();
 	}
 	
-	@RequestMapping("/manager/rank")
+	/**remove lower rank video
+	 * @param model
+	 */
+	@RequestMapping(value="/manager/removeLowerRankVideo", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void rank() {
+	public void removeLowerRankVideo(Model model) {
 		logger.trace("delete lower rank video");
 		videoService.removeLowerRankVideo();
 	}
 	
-	@RequestMapping("/manager/score")
+	/**remove lower score video
+	 * @param model
+	 */
+	@RequestMapping(value="/manager/removeLowerScoreVideo", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void score() {
+	public void removeLowerScoreVideo(Model model) {
 		logger.trace("delete lower score video");
 		videoService.removeLowerScoreVideo();
 	}
 	
+	/**confirm video candidate
+	 * @param model
+	 * @param opus
+	 * @param path
+	 */
 	@RequestMapping(value="/{opus}/confirmCandidate", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirmCandidate(Model model, @PathVariable("opus") String opus, @RequestParam("path") String path) {
+	public void confirmCandidate(Model model, 
+			@PathVariable("opus") String opus, 
+			@RequestParam("path") String path) {
 		logger.trace("confirm candidate video file");
 		videoService.confirmCandidate(opus, path);
 	}

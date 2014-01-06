@@ -11,6 +11,11 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+/**Controller 호출 전, 후에 추가적인 처리를 한다.<br>
+ * 호출 전 시간을 기억해 완료 후에 access log형식으로 로그에 기록한다.
+ * @author kamoru
+ *
+ */
 public class ControllerInterceptor implements HandlerInterceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(ControllerInterceptor.class);

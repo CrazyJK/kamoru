@@ -23,19 +23,7 @@
 }
 </style>
 <script type="text/javascript">
-$(document).ready(function(){
-	$(window).bind("resize", resizeDivHeight);
-
-	resizeDivHeight();
-	
-});
-
-function resizeDivHeight() {
-	var windowHeight = $(window).height();
-	var header = $("#header_div").outerHeight();
-	var calculatedDivHeight = windowHeight - header - 20 * 2; 
-	$("#list_div").outerHeight(calculatedDivHeight);	
-}
+$(document).ready(function(){});
 
 /**
  * 비디오 확인을 기억하기 위해 css class를 변경한다.
@@ -55,7 +43,7 @@ function fnMarkChoice(opus) {
 		onkeyup="searchContent(this.value)"/>
 </div>
 
-<div id="list_div" class="div-box" style="overflow:auto;">
+<div id="content_div" class="div-box" style="overflow:auto;">
 	<table class="video-table" style="background-color:lightgray">
 		<c:forEach items="${videoList}" var="video" varStatus="status">
 		<tr id="check-${video.opus}">

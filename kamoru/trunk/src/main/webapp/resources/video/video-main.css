@@ -59,12 +59,6 @@ div#studioDiv {
 div#actressDiv {
 	display:none;
 }
-div#contentDiv {
-	overflow:auto; 
-	text-align:center; 
-	background-position:center center; 
-	background-size:contain;
-}
 #totalCount, 
 #debug,
 #bgimg {

@@ -2,7 +2,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <ul>
 	<li><a href="<c:url value="/home"/>">Home</a>
-<security:authorize url="/video**">
+	<security:authorize url="/video**">
 	<li><a href="<c:url value="/video"/>">Video Main</a>
 		<ul>
 			<li><a href="<c:url value="/video/search"/>">Video search</a>
@@ -13,11 +13,11 @@
 			<li><a href="<c:url value="/video/torrent"/>">Video Torrent</a>
 			<li><a href="<c:url value="/video/manager"/>">Video Manager</a>
 		</ul>
-</security:authorize>
-<security:authorize url="/image**">
+	</security:authorize>
+	<security:authorize url="/image**">
 	<li><a href="<c:url value="/image"/>">Image view</a>
 	<li><a href="<c:url value="/image/downloadGnomImage"/>">Gnom Image Download</a>
-</security:authorize>
+	</security:authorize>
 	<li><a href="<c:url value="/requestMappingList"/>">request mapping list</a>
 	<li><a href="<c:url value="/hitMessageCodeList"/>">hit messageCode List</a>
 	<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>

@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
+/**로그인 성공 후처리기<br>
+ * 로그 남기기
+ * @author kamoru
+ *
+ */
 public class KamoruAuthenticationSuccessHandler extends
 		SavedRequestAwareAuthenticationSuccessHandler {
 

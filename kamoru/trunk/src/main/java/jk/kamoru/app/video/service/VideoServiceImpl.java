@@ -15,13 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.dao.VideoDao;
@@ -41,6 +34,11 @@ import jk.kamoru.util.RuntimeUtils;
 import jk.kamoru.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
 /**
  * video service implement class
  * @author kamoru
@@ -48,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class VideoServiceImpl implements VideoService {
+	// become disabled by using lombok @Slf4j
 //	protected static final Logger logger = LoggerFactory.getLogger(VideoServiceImpl.class);
 
 	/** default cover file byte array */
@@ -209,12 +208,12 @@ public class VideoServiceImpl implements VideoService {
 			if(StringUtils.containsIgnoreCase(video.getOpus(), query)
 					|| StringUtils.containsIgnoreCase(video.getStudio().getName(), query)
 					|| StringUtils.containsIgnoreCase(video.getTitle(), query)
-					|| StringUtils.containsIgnoreCase(video.getActress(), query)) {
+					|| StringUtils.containsIgnoreCase(video.getActressName(), query)) {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("opus", video.getOpus());
 				map.put("title", video.getTitle());
 				map.put("studio", video.getStudio().getName());
-				map.put("actress", video.getActress());
+				map.put("actress", video.getActressName());
 				map.put("existVideo", String.valueOf(video.isExistVideoFileList()));
 				map.put("existCover", String.valueOf(video.isExistCoverFile()));
 				map.put("existSubtitles", String.valueOf(video.isExistSubtitlesFileList()));
@@ -842,38 +841,39 @@ public class VideoServiceImpl implements VideoService {
 		log.info("  need torrent videos - {}", list.size());
 		
 		// get downloaded torrent file
-		File torrentDirectory = new File(torrentPath);
-		if (!torrentDirectory.isDirectory())
-			throw new VideoException("invalid torrent path");
-		
-		String[] extensions = new String[videoExtensions.length * 2];
-		int index = 0;
-		for (String ext : videoExtensions) {
-			extensions[index++] = ext.toUpperCase();
-			extensions[index++] = ext.toLowerCase();
-		}
-		log.trace("extensions - {}", Arrays.toString(extensions));
-		
-		Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
-		log.info("  found cadidates file - {}", torrents.size());
-		
-		// matching video file
-		for (Video video : list) {
-			video.resetVideoCandidates();
-			String opus = video.getOpus().toLowerCase();
-			log.info("  OPUS : {}", opus);
-			for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
-				for (File file : torrents) {
-					String fileName = file.getName().toLowerCase();
-					log.trace("    compare : {} = {}", fileName, key);
-					if (fileName.contains(key)) {
-						video.addVideoCandidates(file);
-						log.info("    add video candidate - {}", fileName);
+		if (torrentPath != null) {
+			File torrentDirectory = new File(torrentPath);
+			if (!torrentDirectory.isDirectory())
+				throw new VideoException("invalid torrent path");
+			
+			String[] extensions = new String[videoExtensions.length * 2];
+			int index = 0;
+			for (String ext : videoExtensions) {
+				extensions[index++] = ext.toUpperCase();
+				extensions[index++] = ext.toLowerCase();
+			}
+			log.trace("extensions - {}", Arrays.toString(extensions));
+			
+			Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
+			log.info("  found cadidates file - {}", torrents.size());
+			
+			// matching video file
+			for (Video video : list) {
+				video.resetVideoCandidates();
+				String opus = video.getOpus().toLowerCase();
+				log.info("  OPUS : {}", opus);
+				for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
+					for (File file : torrents) {
+						String fileName = file.getName().toLowerCase();
+						log.trace("    compare : {} = {}", fileName, key);
+						if (fileName.contains(key)) {
+							video.addVideoCandidates(file);
+							log.info("    add video candidate - {}", fileName);
+						}
 					}
 				}
 			}
-		}
-		
+		}		
 		return list;
 	}
 
