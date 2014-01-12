@@ -66,7 +66,7 @@ body {
 }
 div#content_div {
 	overflow:auto; 
-	text-align:center; 
+	/* text-align:center; */ 
 	background-position:center center; 
 	background-size:contain;
 }

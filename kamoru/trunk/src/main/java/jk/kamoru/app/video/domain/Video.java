@@ -840,6 +840,16 @@ public class Video implements Comparable<Video>, Serializable {
 		return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
 	}
 
+	/**자세한 비디오 점수
+	 * @return 비디오 점수 설명 
+	 */
+	public String getScoreDesc() {
+		return String.format("Rank[%s] + Play[%s] + Actress[%s] + Subtitles[%s] = %s", getRankScore(), getPlayScore(), getActressScore(), getSubtitlesScore(), getScore());
+	}
+	
+	public String getScoreRatio() {
+		return String.format("Rank[%s] Play[%s] Actress[%s] Subtitles[%s] Unseen[%s]", rankRatio, playRatio, actressRatio, subtitlesRatio, unseenRatio);
+	}
 	/**환산된 랭킹 점수
 	 * @return score of rank
 	 */

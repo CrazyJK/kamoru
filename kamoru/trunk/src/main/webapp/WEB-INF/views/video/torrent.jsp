@@ -29,8 +29,9 @@ $(document).ready(function(){});
  * 비디오 확인을 기억하기 위해 css class를 변경한다.
  */
 function fnMarkChoice(opus) {
-	//$("#check-" + opus).addClass("mark");
-	$("#check-" + opus).hide();
+	$("#check-" + opus).addClass("mark");
+	//$("#check-" + opus).hide();
+	//$("#check-" + opus + " > *").attr("disabled",true);
 }
 </script>
 </head>

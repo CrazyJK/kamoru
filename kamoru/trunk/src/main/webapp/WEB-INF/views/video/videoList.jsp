@@ -28,13 +28,19 @@ $(document).ready(function(){
 <div id="header_div" class="div-box">
 <s:message code="video.total"/> <s:message code="video.video"/> : ${fn:length(videoList)}
 
-<input type="search" name="search" id="search" style="width:200px;" class="searchInput" placeHolder="<s:message code="video.search"/>" onkeyup="searchContent(this.value)"/>
+<input type="search" name="search" id="search" style="width:100px;" class="searchInput" placeHolder="<s:message code="video.search"/>" onkeyup="searchContent(this.value)"/>
 
 <c:forEach items="${sorts}" var="s">
 	<label class="item sort-item">
 		<input type="radio" name="sort" value="${s}" ${s eq sort ? 'checked' : ''} style="display:none;">
 		<span><s:message code="video.${s.desc}"/></span></label>
 </c:forEach>
+
+	<span title="Rank[<s:eval expression="@prop['score.ratio.rank']"/>] 
+Play[<s:eval expression="@prop['score.ratio.play']"/>]
+Actress[<s:eval expression="@prop['score.ratio.actress']"/>]
+Subtitles[<s:eval expression="@prop['score.ratio.subtitles']"/>]
+Unseen[<s:eval expression="@prop['score.ratio.unseen']"/>]">Ratio</span>
 
 </div>
 
@@ -56,14 +62,8 @@ $(document).ready(function(){
 					<span class="label" title="${actress.name}" onclick="fnViewActressDetail('${actress.name}')">${actress.name}</span>
 				</c:forEach>
 			</td>
-			<td width="80px">
-				${video.videoDate}</td>
-			<td>
-				<span class="label" title="<s:message code="video.playCount"/>">${video.playCount}</span></td>
-			<td>
-				<span class="label" title="<s:message code="video.rank"/>">${video.rank}</span></td>
-			<td>
-				<span class="label" title="<s:message code="video.Score"/>">${video.score}</span></td>
+			<td width="80px">${video.videoDate}</td>
+			<td><span class="label" title="${video.scoreDesc}">${video.score}</span></td>
 			<td width="45px" align="right">
 				<fmt:formatNumber value="${video.length / ONE_GB}" pattern="#,##0.00G"/></td>
 		</tr>
