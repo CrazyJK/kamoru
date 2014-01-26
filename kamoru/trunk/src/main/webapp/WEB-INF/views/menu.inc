@@ -18,6 +18,7 @@
 	<li><a href="<c:url value="/image"/>">Image view</a>
 	<li><a href="<c:url value="/image/downloadGnomImage"/>">Gnom Image Download</a>
 	</security:authorize>
+	<li><a href="<c:url value="/image/google"/>">Google Image search</a>
 	<li><a href="<c:url value="/requestMappingList"/>">request mapping list</a>
 	<li><a href="<c:url value="/hitMessageCodeList"/>">hit messageCode List</a>
 	<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>

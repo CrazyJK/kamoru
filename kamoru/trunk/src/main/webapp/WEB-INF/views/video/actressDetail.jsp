@@ -6,6 +6,31 @@
 <html>
 <head>
 <title>${actress.name}</title>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	var queryUrl = context + 'image/google.json?q=${actress.name}'; 
+	$.getJSON(queryUrl ,function(data) {
+		$('#foundList').empty();
+		
+		var videoRow = data['URLList'];
+		$.each(videoRow, function(entryIndex, entry) {
+			var url = entry;
+			var li  = $("<li>");
+			li.css("display", "inline-block");
+			var img = $("<img>");
+			img.attr("src", url);
+			img.attr("width", "200px;");
+			img.bind("click", function() {
+				popupImage(url);
+			});
+			li.append(img);
+			$('#foundList').append(li);
+		});
+	});
+	
+});
+</script>
 </head>
 <body>
 
@@ -18,9 +43,12 @@
 		<input class="actressInfo" type="text" name="localname" value="${actress.localName}" />
 	</dt>
 	<dd style="text-align:center;">
-		<c:forEach items="${actress.webImage}" var="url">
+		<div id="actressImageContainer">
+			<ul id="foundList" class="items"></ul>
+		</div>
+		<%-- <c:forEach items="${actress.webImage}" var="url">
 			<img src="${url}" width="190px" onclick="popupImage('${url}')"/>
-		</c:forEach>
+		</c:forEach> --%>
 	</dd>
 	<dd>
 		<span class="label-title">Birth : <input class="actressInfo" type="text" name="birth"    value="${actress.birth}"    /></span>

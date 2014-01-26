@@ -17,6 +17,10 @@ public class VideoCore {
 
 	public static final String HISTORY_LOG = "history.log";
 
+	public static final String MAC_NETWORKSTORES = ".DS_Store";
+
+	public static final String WINDOW_DESKTOPINI = "desktop.ini";
+	
 	public static final String EXT_ACTRESS = "actress";
 
 	public static final String EXT_STUDIO = "studio";

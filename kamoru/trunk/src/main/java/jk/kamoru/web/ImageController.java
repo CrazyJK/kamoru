@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import jk.kamoru.app.image.domain.PictureType;
 import jk.kamoru.app.image.service.ImageService;
 import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.util.VideoUtils;
 
 @Controller
 @RequestMapping("/image")
@@ -93,5 +94,11 @@ public class ImageController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void downloadGnomImage() {
 		imageService.downloadGnomImage();
+	}
+
+	@RequestMapping(value="/google")
+	public String searchGoogle(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
+		model.addAttribute(VideoUtils.getGoogleImage(query));
+		return "picture/google";
 	}
 }

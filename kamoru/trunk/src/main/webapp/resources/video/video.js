@@ -145,7 +145,7 @@ function fnRankColor(rank) {
 	}
 }
 function fnViewActressDetail(name) {
-	popup(context + "video/actress/" + name, "actressDetail-" + name, 800, 600);
+	popup(context + "video/actress/" + name, "actressDetail-" + name, 850, 600);
 }
 
 function fnViewStudioDetail(name) {

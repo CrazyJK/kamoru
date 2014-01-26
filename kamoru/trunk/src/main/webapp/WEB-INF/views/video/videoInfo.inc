@@ -27,7 +27,7 @@
 							<span class="label ${video.existOverview ? 'exist' : 'nonExist'}" onclick="fnEditOverview('${video.opus}')" title="${video.overviewText}">O</span>
 						</dd>
 						<dd>
-							<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
+							<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 							<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 						</dd>

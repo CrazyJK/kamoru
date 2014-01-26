@@ -129,16 +129,18 @@ public class FileBaseVideoSource implements VideoSource {
 				String     name = FileUtils.getNameExceptExtension(file);
 				String      ext = FileUtils.getExtension(file).toLowerCase();
 				
-				//연속 스페이스 제거
+				// 연속 스페이스 제거
 				name = StringUtils.normalizeSpace(name);
-				
+				// Unnecessary file exclusion
 				if (filename.equals(VideoCore.HISTORY_LOG) 
+						|| filename.equals(VideoCore.MAC_NETWORKSTORES)
+						|| filename.equals(VideoCore.WINDOW_DESKTOPINI)
 						|| ext.equals(VideoCore.EXT_ACTRESS) 
 						|| ext.equals(VideoCore.EXT_STUDIO))
 					continue;
 				
-				//   1      2     3       4       5     6
-				//[studio][opus][title][actress][date][etc...]
+				// 1       2     3      4        5     6
+				// [studio][opus][title][actress][date]etc...
 				String[] names 		= StringUtils.split(name, "]");
 				String studioName  	= UNKNOWN;
 				String opus    		= UNKNOWN;
