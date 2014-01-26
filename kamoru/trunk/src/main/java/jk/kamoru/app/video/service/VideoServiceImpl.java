@@ -749,7 +749,11 @@ public class VideoServiceImpl implements VideoService {
 			public int compare(Video o1, Video o2) {
 				return o2.getScore() - o1.getScore();
 			}});
+		
 		for (Video video : list) {
+			if (video.getPlayCount() == 0)
+				continue;
+			
 			int score = video.getScore();
 			sumSizeOfTotalVideo += video.getLength();
 			countOfTotalVideo++;
@@ -758,15 +762,12 @@ public class VideoServiceImpl implements VideoService {
 				sumSizeOfDeleteVideo += video.getLength();
 				countOfDeleteVideo++;
 				
-				log.info("    {}/{}. score[{}] = rankScore[{}] + playScore[{}] + actressScore[{}] + subtitlesScore[{}]; {}", 
+				log.info("    {}/{}. Score[{}] - {} {}",
 						countOfDeleteVideo,
 						countOfTotalVideo,
 						score, 
-						video.getRankScore(), 
-						video.getPlayScore(), 
-						video.getActressScore(),
-						video.getSubtitlesScore(),
-						video.getFullname());
+						video.getFullname(),
+						video.getScoreDesc());
 
 				videoDao.deleteVideo(video.getOpus());
 			}
@@ -838,7 +839,7 @@ public class VideoServiceImpl implements VideoService {
 		videoSearch.setExistVideo(false);
 		videoSearch.setSortMethod(Sort.M);		
 		List<Video> list =  this.searchVideo(videoSearch);
-		log.info("  need torrent videos - {}", list.size());
+		log.debug("  need torrent videos - {}", list.size());
 		
 		// get downloaded torrent file
 		if (torrentPath != null) {
@@ -855,20 +856,20 @@ public class VideoServiceImpl implements VideoService {
 			log.trace("extensions - {}", Arrays.toString(extensions));
 			
 			Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
-			log.info("  found cadidates file - {}", torrents.size());
+			log.debug("  found cadidates file - {}", torrents.size());
 			
 			// matching video file
 			for (Video video : list) {
 				video.resetVideoCandidates();
 				String opus = video.getOpus().toLowerCase();
-				log.info("  OPUS : {}", opus);
+				log.debug("  OPUS : {}", opus);
 				for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
 					for (File file : torrents) {
 						String fileName = file.getName().toLowerCase();
 						log.trace("    compare : {} = {}", fileName, key);
 						if (fileName.contains(key)) {
 							video.addVideoCandidates(file);
-							log.info("    add video candidate - {}", fileName);
+							log.info("    add video candidate {} : {}", opus, file.getAbsolutePath());
 						}
 					}
 				}

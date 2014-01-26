@@ -116,7 +116,7 @@ public class FileBaseVideoSource implements VideoSource {
 				files.addAll(found);
 			}
 			else {
-				logger.debug("\tIt is not directory. Pass!!!");
+				logger.warn("\tIt is not directory. Pass!!!");
 			}
 		}
 		logger.info("total found file size : {}", files.size());
@@ -241,7 +241,7 @@ public class FileBaseVideoSource implements VideoSource {
 			}
 		}
 		loaded = true;
-		logger.info("total found video size : {}", videoMap.size());
+		logger.info("Total loaded video size : {}", videoMap.size());
 	}
 
 	/**

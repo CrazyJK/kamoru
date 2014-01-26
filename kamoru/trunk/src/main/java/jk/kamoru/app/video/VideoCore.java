@@ -6,7 +6,11 @@ import jk.kamoru.app.video.domain.Sort;
 public class VideoCore {
 
 	public static final long SERIAL_VERSION_UID = KAMORU.SERIAL_VERSION_UID; 
+
+	public static final String CHARSET = "UTF-8";
 	
+	public static final String URL_ENCODING = "UTF-8";
+
 	public static final String FILE_ENCODING = "UTF-8";
 	
 	public static final long WEBCACHETIME_SEC = 86400*7l;

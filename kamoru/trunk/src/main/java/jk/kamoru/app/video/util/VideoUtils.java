@@ -161,14 +161,14 @@ public class VideoUtils {
 		try {
 			name = URLEncoder.encode(name);
 			URL url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
-			        "v=1.0&q=" + name + "&userip=&safe=off");
+			        "v=1.0&q=" + URLEncoder.encode(name, VideoCore.URL_ENCODING) + "&userip=&safe=off");
 			logger.debug("{}", url);
 			URLConnection connection = url.openConnection();
 			connection.addRequestProperty("Referer", "http://www.kamoru.com");
 	
 			String line;
 			StringBuilder builder = new StringBuilder();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), VideoCore.URL_ENCODING));
 			while((line = reader.readLine()) != null) {
 				builder.append(line);
 			}

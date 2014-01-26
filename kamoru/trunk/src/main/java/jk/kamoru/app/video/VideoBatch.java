@@ -26,25 +26,25 @@ public class VideoBatch {
 		long startTime = System.currentTimeMillis();
 		logger.info("BATCH START");
 
-		logger.info("batch : delete lower rank video [{}]", DELETE_LOWER_RANK_VIDEO);
+		logger.info("  BATCH : delete lower rank video [{}]", DELETE_LOWER_RANK_VIDEO);
 		if (DELETE_LOWER_RANK_VIDEO)
 			videoService.removeLowerRankVideo();
 		
-		logger.info("BATCH : delete lower score video [{}]", DELETE_LOWER_SCORE_VIDEO);
+		logger.info("  BATCH : delete lower score video [{}]", DELETE_LOWER_SCORE_VIDEO);
 		if (DELETE_LOWER_SCORE_VIDEO)
 			videoService.removeLowerScoreVideo();
 		
-		logger.info("BATCH : delete garbage file");
+		logger.info("  BATCH : delete garbage file");
 		videoService.deleteGarbageFile();
 		
-		logger.info("BATCH : arrange to same folder");
+		logger.info("  BATCH : arrange to same folder");
 		videoService.arrangeVideo();
 		
-		logger.info("BATCH : move watched video [{}]", MOVE_WATCHED_VIDEO);
+		logger.info("  BATCH : move watched video [{}]", MOVE_WATCHED_VIDEO);
 		if (MOVE_WATCHED_VIDEO)
 			videoService.moveWatchedVideo();
 
-		logger.info("BATCH : reload");
+		logger.info("  BATCH : reload");
 		videoService.reload();
 		
 		long elapsedTime = System.currentTimeMillis() - startTime;

@@ -43,11 +43,13 @@ function popup(url, name, width, height, positionMethod, spec) {
 	popupWindow.focus();
 }
 function popupImage(url) {
-	var img = $("<img />");
-	img.hide();
-	img.attr("src", url);
-	img.bind('load', function() {
-		mw_image_window(this);
+	var img =  new Image(); 
+	img.src = url;
+	$(img).ready(function(){ 
+		var imgWidth  = img.width;
+		var imgHeight = img.height;
+//		alert("size method 3 = " + imgWidth + " x " + imgHeight);
+		popup(url, url, imgWidth, imgHeight);
 	});
 }
 function fnViewFullImage(image) {
@@ -62,6 +64,7 @@ function fnViewFullImage(image) {
 }
 /**
  * 이미지 팝업을 띄운다. 화면보다 큰 이미지는 마우스 드래그 가능하게 함.
+ * FIXME win.document 를 찾지 못하는 오류 발생
  * @param img 이미지 객체
  * @param w 이미지 가로 길이
  * @param h 이미지 세로 길이

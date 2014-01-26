@@ -231,7 +231,7 @@ function fnRandomVideoView_Slide() {
 }
 
 function searchContent(keyword) {
-	$("div#list_div table tr td:nth-child(2)").each(function() {
+	$("div#content_div table tr td:nth-child(2)").each(function() {
 		if ($(this).text().toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
 			$(this).parent().show();
 		}

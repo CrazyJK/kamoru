@@ -300,9 +300,9 @@ li,
 	background-color:rgba(255, 255, 255, 0.25);
 }
 .video-card-bg {
-	background-repeat:no-repeat; 
-	background-position:right center; 
-	background-size:155px;
+	background-repeat: no-repeat; 
+	background-position: right center; 
+	background-size: cover;
 }
 .video-box {
 	width:266px; 
@@ -310,9 +310,9 @@ li,
 }
 .video-box-bg {
 	height:177px; 
-	background-repeat:no-repeat; 
-	background-position:right center; 
-	background-size:contain;
+	background-repeat: no-repeat; 
+	background-position: center center; 
+	background-size: cover;
 }
 .video-slide {
 	width:800px; 
@@ -321,9 +321,9 @@ li,
 }
 .video-slide-bg {
 	height:555px; 
-	background-repeat:no-repeat; 
-	background-position:right center; 
-	background-size:contain;
+	background-repeat: no-repeat; 
+	background-position: center center; 
+	background-size: cover;
 	background-color: rgba(255, 255, 255, 0.75);
 }
 .video-slide-bg > dd {

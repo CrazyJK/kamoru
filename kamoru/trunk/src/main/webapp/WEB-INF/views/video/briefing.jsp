@@ -182,7 +182,8 @@ $(document).ready(function(){
 				</td>
 				<td class="nowrap">
 					<c:forEach items="${score.value}" var="video" varStatus="status">
-					<span class="label" onclick="fnViewVideoDetail('${video.opus}')">${video.opus}</span>
+					<span class="label" onclick="fnViewVideoDetail('${video.opus}')" title="${video.fullname}
+${video.scoreDesc}">${video.opus}</span>
 					</c:forEach>
 				</td>
 			</tr>

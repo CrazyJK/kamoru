@@ -22,6 +22,7 @@ try {
 <link rel="stylesheet" href="<c:url value="/resources/deco.css" />" />
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="<c:url value="/resources/common.js"     />" type="text/javascript"></script>
 <script type="text/javascript">
 var context = '<c:url value="/"/>';
 

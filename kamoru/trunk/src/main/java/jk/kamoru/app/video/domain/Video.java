@@ -69,7 +69,7 @@ public class Video implements Comparable<Video>, Serializable {
 	@Value("#{prop['score.ratio.play']}")		private int      playRatio;
 	@Value("#{prop['score.ratio.actress']}")	private int   actressRatio;
 	@Value("#{prop['score.ratio.subtitles']}")	private int subtitlesRatio;
-	@Value("#{prop['score.ratio.unseen']}")		private int    unseenRatio;
+//	@Value("#{prop['score.ratio.unseen']}")		private int    unseenRatio;
 
 
 	public Video() {
@@ -837,18 +837,26 @@ public class Video implements Comparable<Video>, Serializable {
 	 * @return score
 	 */
 	public int getScore() {
-		return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
+		if (getPlayScore() == 0)
+			return -1;
+		else
+			return getRankScore() + getPlayScore() + getActressScore() + getSubtitlesScore();
 	}
 
 	/**자세한 비디오 점수
 	 * @return 비디오 점수 설명 
 	 */
 	public String getScoreDesc() {
-		return String.format("Rank[%s] + Play[%s] + Actress[%s] + Subtitles[%s] = %s", getRankScore(), getPlayScore(), getActressScore(), getSubtitlesScore(), getScore());
+		return String.format("Rank[%s]*%s + Play[%s]*%s + Actress[%s]*%s + Subtitles[%s]*%s = %s", 
+				getRank(), rankRatio,
+				getPlayCount(), playRatio,
+				getActressScoreDesc(), actressRatio,
+				isExistSubtitlesFileList() ? 1 : 0, subtitlesRatio,
+				getScore());
 	}
 	
 	public String getScoreRatio() {
-		return String.format("Rank[%s] Play[%s] Actress[%s] Subtitles[%s] Unseen[%s]", rankRatio, playRatio, actressRatio, subtitlesRatio, unseenRatio);
+		return String.format("Score ratio {Rank[%s] Play[%s] Actress[%s] Subtitles[%s]}", rankRatio, playRatio, actressRatio, subtitlesRatio);
 	}
 	/**환산된 랭킹 점수
 	 * @return score of rank
@@ -861,10 +869,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 * @return score of play count
 	 */
 	public int getPlayScore() {
-		if (getPlayCount() > 0)
-			return getPlayCount() * playRatio;
-		else
-			return unseenRatio;
+		return getPlayCount() * playRatio;
 	}
 
 	/**환산된 배우 점수
@@ -877,11 +882,24 @@ public class Video implements Comparable<Video>, Serializable {
 		}
 		return actressVideoScore;
 	}
+	/**여배우 점수 설명
+	 * @return description of actress score
+	 */
+	public String getActressScoreDesc() {
+		String desc = "";
+		boolean first = true;
+		for (Actress actress : getActressList()) {
+			desc += first ? "" : "+";
+			desc += actress.getVideoList().size();
+			first = false;
+		}
+		return desc;
+	}
 	/**환산된 자막 점수
 	 * @return score of subtitles
 	 */
 	public int getSubtitlesScore() {
-		return isExistSubtitlesFileList() ? 1 * subtitlesRatio : 0;
+		return (isExistSubtitlesFileList() ? 1 : 0) * subtitlesRatio;
 	}
 
 	/**비디오 파일 후보 추가

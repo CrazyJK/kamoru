@@ -275,8 +275,7 @@ function fnViewBGImage() {
 			<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 				<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
 					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span>
-						<span class="label-large rangeLabel" 
-							title="rank[${video.rankScore}] + play[${video.playScore}] + actress[${video.actressScore}] + subtitles[${video.subtitlesScore}]">${video.score}</span>
+						<span class="label-large rangeLabel" title="${video.scoreDesc}">${video.score}</span>
 						<br/>
 						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
@@ -324,7 +323,9 @@ function fnViewBGImage() {
 		<c:forEach items="${videoList}" var="video" varStatus="status">
 			<div id="opus-${video.opus}" tabindex="${status.count}" class="video-slide" style="display:none;">             
 				<dl class="video-slide-bg" style="background-image:url('<c:url value="/video/${video.opus}/cover" />');">
-					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span><br/>
+					<dt><span class="label-large" onclick="fnVideoDetail('${video.opus}')">${video.title}</span>
+						<span class="label-large rangeLabel" title="${video.scoreDesc}">${video.score}</span>
+						<br/>
 						<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['rank.minimum']"/>" max="<s:eval expression="@prop['rank.maximum']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
 							onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 						<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>

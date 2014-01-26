@@ -9,6 +9,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$("body").css("background-image","url('<c:url value="/video/${video.opus}/cover" />')");
+	$("body").css("background-size", "cover");
 });
 </script>
 </head>

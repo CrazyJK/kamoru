@@ -8,7 +8,8 @@
 <head>
 <title><s:message code="image.googleSearch" text="Google image search"/></title>
 <style type="text/css">
-li {display:inline-block;}
+li.thumb {display: inline-block;}
+li.thumb > img {width:200px;}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -34,15 +35,17 @@ $(document).ready(function(){
 			$.each(videoRow, function(entryIndex, entry) {
 				var url = entry;
 				var li  = $("<li>");
+				li.addClass("thumb");
 				var img = $("<img>");
 				img.attr("src", url);
-				img.attr("width", "200px;");
+				img.bind("click", function() {
+					popupImage(url);
+				});
 				li.append(img);
 				$('#foundList').append(li);
 			});
 
  		    $('#foundList').slideDown();
-			resizeDivHeight();
 		});
 	});
 });
