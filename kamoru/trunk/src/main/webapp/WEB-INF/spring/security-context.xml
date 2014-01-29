@@ -12,6 +12,7 @@
 		<intercept-url pattern="/resources/**" 	access="permitAll" />
 		<intercept-url pattern="/jsp/**" 		access="permitAll" />
 		<intercept-url pattern="/login" 		access="permitAll" />
+		<intercept-url pattern="/jkServlet" 	access="permitAll" />
 		<intercept-url pattern="/image/random" 	access="permitAll" />
 		<intercept-url pattern="/" 				access="permitAll" />
 		<intercept-url pattern="/expiredSession" 		access="permitAll" />

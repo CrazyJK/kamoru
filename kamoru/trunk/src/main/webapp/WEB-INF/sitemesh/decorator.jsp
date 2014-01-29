@@ -85,8 +85,8 @@ function showNav() {
 	</section>
 	
 	<footer id="deco_footer">
-		Copyright &copy; <time datetime="<%=dateString %>"><%=dateString %></time> 
-		kAmOrU. All rights reserved.
+		Copyright &copy; <time datetime="<%=dateString %>" title="Today"><%=dateString %></time> 
+		<a href="<c:url value="/jkServlet"/>">kAmOrU.</a> All rights reserved.
 	</footer>
 
 </body>

@@ -3,8 +3,9 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
+
 	<display-name>kamoru</display-name>
-	
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
@@ -26,7 +27,6 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
- 
 	<filter>
 		<filter-name>sitemesh</filter-name>
 		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
@@ -39,7 +39,6 @@
 		<filter-name>sitemesh</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 	<filter>
 		<display-name>httpMethodFilter</display-name>
 		<filter-name>httpMethodFilter</filter-name>
@@ -49,7 +48,6 @@
 		<filter-name>httpMethodFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -76,50 +74,13 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	<!-- 
 	<servlet>
-		<servlet-name>bwadkdbconfig</servlet-name>
-		<servlet-class>com.hs.bf.adk.config.DBConfigBag</servlet-class>
-		<init-param>
-			<param-name>dbconfig-xml-uri</param-name>
-			<param-value>/WEB-INF/bdk/bwadk_db.xml</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
+		<servlet-name>jkServlet</servlet-name>
+		<servlet-class>jk.kamoru.web.servlet.JKServlet</servlet-class>
+		<load-on-startup>99</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>bwadkdbconfig</servlet-name>
-		<url-pattern>/servlet/bwadkdbconfig</url-pattern>
+		<servlet-name>jkServlet</servlet-name>
+		<url-pattern>/jkServlet</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>bwquery</servlet-name>
-		<servlet-class>com.hs.frmwk.db.BWQueryLoader</servlet-class>
-		<init-param>
-			<param-name>query-dir-uri</param-name>
-			<param-value>/WEB-INF/bdk/</param-value>
-		</init-param>
-		<init-param>
-			<param-name>query-file-prefix</param-name>
-			<param-value>bwquery</param-value>
-		</init-param>
-		<init-param>
-			<param-name>query-file-suffix</param-name>
-			<param-value>.xml</param-value>
-		</init-param>
-		<init-param>
-			<param-name>query-type</param-name>
-			<param-value>XML</param-value>
-		</init-param>
-		<load-on-startup>3</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>bwquery</servlet-name>
-		<url-pattern>/servlet/bwquery</url-pattern>
-	</servlet-mapping>
-	 -->
-	<!-- <servlet> <servlet-name>action</servlet-name> <servlet-class>org.apache.struts.action.ActionServlet</servlet-class> 
-		<init-param> <param-name>config</param-name> <param-value>/WEB-INF/struts/struts-config.xml</param-value> 
-		</init-param> <load-on-startup>3</load-on-startup> </servlet> <servlet-mapping> 
-		<servlet-name>action</servlet-name> <url-pattern>*.jk</url-pattern> </servlet-mapping> 
-		<servlet-mapping> <servlet-name>action</servlet-name> <url-pattern>*.do</url-pattern> 
-		</servlet-mapping> -->
 </web-app>
