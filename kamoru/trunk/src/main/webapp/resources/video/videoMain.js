@@ -43,17 +43,19 @@ $(document).ready(function(){
 		var clicked = $(this).attr("clicked");
 		if (!clicked || clicked == 'false') {
 			$(this).attr("clicked", "true");
-			$(this).children().animate({"height": "+=20px"}, "slow", function() {
-				$("#DEL-"+$(this).parent().attr("id")).css("display", "");
-				$(this).parent().addClass("li-box-select");
-			});
+			$(this).addClass("li-box-select");
+//			$(this).children().animate({"height": "+=20px"}, "slow", function() {
+//				$("#DEL-"+$(this).parent().attr("id")).css("display", "");
+//				$(this).parent().addClass("li-box-select");
+//			});
 		}
 		else {
 			$(this).attr("clicked", "false");
-			$(this).children().animate({"height": "-=20px"}, "slow", function() {
-				$("#DEL-"+$(this).parent().attr("id")).css("display", "none");
-				$(this).parent().removeClass("li-box-select");
-			});
+			$(this).removeClass("li-box-select");
+//			$(this).children().animate({"height": "-=20px"}, "slow", function() {
+//				$("#DEL-"+$(this).parent().attr("id")).css("display", "none");
+//				$(this).parent().removeClass("li-box-select");
+//			});
 		}
 	});
 	

@@ -49,9 +49,8 @@ public class Actress implements Serializable, Comparable<Actress> {
 	
 	@Override
 	public String toString() {
-		return String
-				.format("Actress [name=%s, birth=%s, bodySize=%s, debut=%s, height=%s, localName=%s]",
-						name, birth, bodySize, debut, height, localName);
+		return String.format("%s %s %s %s %s %s [%s]",
+						name, StringUtils.trimToEmpty(birth), StringUtils.trimToEmpty(bodySize), StringUtils.trimToEmpty(debut), StringUtils.trimToEmpty(height), StringUtils.trimToEmpty(localName), videoList.size());
 	}
 	@Override
 	public int compareTo(Actress comp) {

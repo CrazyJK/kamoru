@@ -460,4 +460,10 @@ public class VideoController {
 		logger.trace("confirm candidate video file");
 		videoService.confirmCandidate(opus, path);
 	}
+	
+	@RequestMapping(value="/{opus}/rename", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void rename(@PathVariable("opus") String opus, @RequestParam("newname") String newName) {
+		videoService.rename(opus, newName);
+	}
 }

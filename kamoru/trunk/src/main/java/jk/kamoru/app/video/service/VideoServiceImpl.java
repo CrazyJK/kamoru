@@ -913,4 +913,10 @@ public class VideoServiceImpl implements VideoService {
 		log.debug("video group by score - {}", map);
 		return map;
 	}
+
+	@Override
+	public void rename(String opus, String newName) {
+		Video video = videoDao.getVideo(opus);
+		video.rename(newName);
+	}
 }

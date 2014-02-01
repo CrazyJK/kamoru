@@ -48,8 +48,8 @@ public class Studio implements Serializable, Comparable<Studio> {
 	
 	@Override
 	public String toString() {
-		return String.format("Studio [name=%s, homepage=%s, companyName=%s]",
-				name, homepage, companyName);
+		return String.format("%s %s %s",
+				name, StringUtils.trimToEmpty(homepage), StringUtils.trimToEmpty(companyName));
 	}
 
 	public void addVideo(Video video) {

@@ -930,5 +930,27 @@ public class Video implements Comparable<Video>, Serializable {
 		this.videoCandidates.clear();
 	}
 
+	public void rename(String newName) {
+		int count = 1;
+		// video
+		for (File file : VideoUtils.sortFile(getVideoFileList())) {
+			FileUtils.rename(file, newName + count++);
+		}
+		// cover
+		FileUtils.rename(coverFile, newName);
+		FileUtils.rename(coverWebpFile, newName);
+		// subtitles, if exist
+		count = 1;
+		for (File file : VideoUtils.sortFile(getSubtitlesFileList())) {
+			FileUtils.rename(file, newName + count++);
+		}
+		// info file
+		FileUtils.rename(infoFile, newName);
+		// etc file
+		for (File file : this.getEtcFileList()) {
+			FileUtils.rename(file, newName);
+		}
+	}
+
 	
 }

@@ -1,5 +1,7 @@
 package jk.kamoru.util;
 
+import java.net.URL;
+
 
 /**
  * commons.lang3.StringUtils 상속하고 필요한 기능 추가
@@ -67,6 +69,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		name1 = name1 == null ? "" : name1.trim().toLowerCase();
 		name2 = name2 == null ? "" : name2.trim().toLowerCase();
 		return name1.compareTo(name2);
+	}
+
+	public static String trimToEmpty(Object object) {
+		return object == null ? "" : trimToEmpty(object.toString());
 	}
 
 }

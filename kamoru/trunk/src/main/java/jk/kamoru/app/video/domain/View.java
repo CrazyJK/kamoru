@@ -9,8 +9,6 @@ public enum View {
 	C("Card"), 
 	/** box type */
 	B("Box"), 
-	/** small box type */
-	SB("SmallBox"), 
 	/** table type */
 	T("Table"), 
 	/** slide type */

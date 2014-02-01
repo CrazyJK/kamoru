@@ -11,6 +11,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -507,6 +509,21 @@ public class VideoUtils {
 		return ret;
 	}
 
+	/**파일 이름으로 순차 정렬
+	 * @param files
+	 * @return
+	 */
+	public static List<File> sortFile(List<File> files) {
+		Collections.sort(files, new Comparator<File>(){
+
+			@Override
+			public int compare(File arg0, File arg1) {
+				return StringUtils.compareTo(arg0.getName(), arg1.getName());
+			}
+			
+		});
+		return files;
+	}
 }
 
 

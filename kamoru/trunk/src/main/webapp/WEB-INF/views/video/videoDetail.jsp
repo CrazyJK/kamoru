@@ -2,6 +2,7 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="jk"     tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,24 +11,37 @@
 $(document).ready(function() {
 	$("body").css("background-image","url('<c:url value="/video/${video.opus}/cover" />')");
 	$("body").css("background-size", "cover");
+	$("#renameForm").hide();
 });
+function fnToggleRenameForm() {
+	$("#renameForm").toggle();
+}
 </script>
 </head>
 <body>
 <c:set var="opus" value="${video.opus}"/>
+
 <dl class="dl-detail">
-	<dt><span class="label-large">${video.title}</span><br/>
-		<input type="range" id="Rank-${video.opus}" name="points" min="<s:eval expression="@prop['minRank']"/>" max="<s:eval expression="@prop['maxRank']"/>" value="${video.rank}" onmouseup="fnRank('${video.opus}')"
-			onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
-		<em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
+	<dt><jk:video video="${video}" view="title" mode="l"/>
+		<jk:video video="${video}" view="score" mode="l"/>
+		<br/>
+		<jk:video video="${video}" view="rank" mode="l"/>
 	</dt>
-	<dd><span class="label-large" onclick="fnViewStudioDetail('${video.studio.name}')">${video.studio.name}</span></dd>
-	<dd><span class="label-large">${video.opus}</span></dd>
-	<dd><span class="label-large">Download : ${video.videoDate}</span></dd>
-	<dd><span class="label-large">Release : ${video.releaseDate}</span></dd>
+
+	<dd><jk:video video="${video}" view="studio" mode="l"/></dd>
+	<dd><jk:video video="${video}" view="opus" mode="l"/></dd>
+	<dd><jk:video video="${video}" view="download" mode="l"/></dd>
+	<dd><jk:video video="${video}" view="release" mode="l"/></dd>
 	<c:if test="${video.etcInfo ne ''}">
 	<dd><span class="label-large">ETC info : ${video.etcInfo}</span></dd>
 	</c:if>
+	
+	<dd><span class="label" onclick="fnToggleRenameForm()">Rename</span>
+		<form id="renameForm" method="post" action="<s:url value="/video/${video.opus}/rename"/>" target="ifrm">
+		<input type="text" name="newname" value="${video.fullname}" style="width:600px; background-color:rgba(255,255,255,.5);"/>
+		<input type="submit" value="rename"/>
+		</form>
+	</dd>
 	<dd><span class="label" onclick="opener.fnPlay('${video.opus}')">VIDEO : ${video.videoFileListPath}</span></dd>
 	<dd><span class="label">COVER : ${video.coverFilePath}</span></dd>
 	<dd><span class="label">WEBP : ${video.coverWebpFilePath}</span></dd>
@@ -52,7 +66,7 @@ $(document).ready(function() {
 				<c:forEach items="${actress.videoList}" var="video">
 					<c:choose>
 						<c:when test="${video.opus != opus }">
-						<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
+						<%@ include file="/WEB-INF/views/video/videoCard.jspf" %>
 						</c:when>
 					</c:choose>
 				</c:forEach>

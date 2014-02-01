@@ -95,4 +95,17 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	public static void main(String[] args) {
 		System.out.println(FileUtils.isEmptyDirectory(new File("E:\\Girls\\gnom\\2013-12-24")));
 	}
+	
+	/**파일 이름 변경
+	 * @param file
+	 * @param name
+	 * @return
+	 */
+	public static boolean rename(File file, String name) {
+		if (file == null)
+			return false;
+		else 
+			return file.renameTo(new File(file.getParentFile(), name + EXTENSION_SEPARATOR + getExtension(file)));
+	}
+	
 }

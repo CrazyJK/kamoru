@@ -251,5 +251,7 @@ public interface VideoService {
 	 * @return map of score, video list
 	 */
 	Map<Integer, List<Video>> groupByScore();
+
+	void rename(String opus, String newName);
 	
 }

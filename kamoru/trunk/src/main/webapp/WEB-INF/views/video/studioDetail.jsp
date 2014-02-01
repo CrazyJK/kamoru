@@ -37,7 +37,7 @@
 <div style="padding-left:60px;">
 	<ul>
 		<c:forEach items="${studio.videoList}" var="video">
-			<%@ include file="/WEB-INF/views/video/videoInfo.inc" %>
+			<%@ include file="/WEB-INF/views/video/videoCard.jspf" %>
 		</c:forEach>
 	</ul>
 </div>
