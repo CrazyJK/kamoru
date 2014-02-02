@@ -65,6 +65,13 @@ body {
 	background-color:rgba(255,255,255,0);
 }
 </style>
+<script type="text/javascript">
+$(document).ready(function(){
+	var msg = $("#loginMsg").text().trim();
+	if (msg != '')
+		alert(msg);
+});
+</script>
 </head>
 <body>
 <div id="sign-in">
@@ -89,7 +96,7 @@ body {
 			    </label>
 		    </div>
 		    <div style="text-align:center">
-		    	<span style="color:red">${login_msg} ${access_msg}</span>
+		    	<span id="loginMsg" style="color:red">${login_msg} ${access_msg}</span>
 		    </div>
 		</form>
 	</div>

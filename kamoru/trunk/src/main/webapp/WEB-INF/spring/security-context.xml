@@ -7,16 +7,18 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<http auto-config="true" use-expressions="true" access-denied-page="/accessDenied">
-
+	<http auto-config="true" use-expressions="true" entry-point-ref="jkEntryPoint">  
+		<!-- access-denied-page="/accessDenied" deprecated 되었다고해서 아래 access-denied-handler로 바꿈-->
+		
 		<intercept-url pattern="/resources/**" 	access="permitAll" />
 		<intercept-url pattern="/jsp/**" 		access="permitAll" />
 		<intercept-url pattern="/login" 		access="permitAll" />
+		<intercept-url pattern="/accessDenied" 	access="permitAll" />
 		<intercept-url pattern="/jkServlet" 	access="permitAll" />
 		<intercept-url pattern="/image/random" 	access="permitAll" />
 		<intercept-url pattern="/" 				access="permitAll" />
-		<intercept-url pattern="/expiredSession" 		access="permitAll" />
 		<intercept-url pattern="/hitMessageCodeList" 	access="permitAll" />
+		<intercept-url pattern="/noaccess" 		access="hasRole('ROLE_NOACCESS')" />
 		<intercept-url pattern="/video**" 		access="hasRole('ROLE_CRAZY')" /><!--  or hasIpAddress('192.168.0.3') -->
 		<intercept-url pattern="/image**" 		access="hasRole('ROLE_CRAZY')" />
 		<intercept-url pattern="/**" 			access="hasRole('ROLE_USER')" />
@@ -29,11 +31,13 @@
 		
 		<remember-me key="kamoruRememberme" token-validity-seconds="600000" />
 		
+		<access-denied-handler error-page="/accessDenied" />
+
 		<!-- <session-management>
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/jsp/expiredSession.jsp" />
         </session-management> -->
 	</http>
-
+	
 	<authentication-manager>
 		<authentication-provider ref="authenticationProvider"/> <!-- user-service-ref="kamoruUserService" -->
 	</authentication-manager>
@@ -53,8 +57,10 @@
 	</beans:bean>
 	
 	<beans:bean id="loginFailureHandler" class="jk.springframework.security.web.authentication.KamoruAuthenticationFailureHandler">
-	 	<beans:property name="defaultFailureUrl" value="/login?login_error=true"/>
+	 	<beans:property name="defaultFailureUrl" value="/login?error=true"/>
 	</beans:bean>
+
+	<beans:bean id="jkEntryPoint" class="jk.springframework.security.web.KamoruAuthenticationEntryPoint" />
 
 	<util:properties id="security" location="/WEB-INF/spring/security.properties" />
 	

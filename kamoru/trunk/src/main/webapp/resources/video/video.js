@@ -121,15 +121,14 @@ function fnRank(opus) {
 	fnRankColor(rank);
 	var frm;
 	if(opener) {
+		try {
 		$("#Rank-"+opus, opener.document).val(rank.val());
+		$("#Rank-"+opus+"-label", opener.document).html(rank.val());
 		opener.fnRankColor($("#Rank-"+opus, opener.document));
-		$("#hiddenHttpMethod", opener.document).val("put");
-		frm = opener.document.forms["actionFrm"];
+		} catch(e) {/*opener가 이상하더라도 submit은 해야하므로*/}
 	}
-	else {
-		$("#hiddenHttpMethod").val("put");
-		frm = document.forms["actionFrm"];
-	}
+	$("#hiddenHttpMethod").val("put");
+	frm = document.forms["actionFrm"];
 	frm.action = context + "video/" + opus + "/rank/" + rank.val();
 	frm.submit();
 }
