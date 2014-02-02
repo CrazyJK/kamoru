@@ -834,11 +834,11 @@ public class VideoServiceImpl implements VideoService {
 	public List<Video> torrent() {
 		log.trace("torrent");
 		
-		VideoSearch videoSearch = new VideoSearch();
-		videoSearch.setAddCond(true);
-		videoSearch.setExistVideo(false);
-		videoSearch.setSortMethod(Sort.M);		
-		List<Video> list =  this.searchVideo(videoSearch);
+		List<Video> list = new ArrayList<Video>();
+		for (Video video : videoDao.getVideoList())
+			if (!video.isExistVideoFileList())
+				list.add(video);
+
 		log.debug("  need torrent videos - {}", list.size());
 		
 		// get downloaded torrent file

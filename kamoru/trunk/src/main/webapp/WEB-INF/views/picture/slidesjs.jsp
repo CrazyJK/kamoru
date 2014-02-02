@@ -149,7 +149,7 @@ function rePagination() {
     debug(index);
     $(".slidesjs-pagination-item").each(function() {
     	var itemIdx = parseInt($(this).children().attr("data-slidesjs-item"));
-    	if (itemIdx > index + 5 || itemIdx < index - 5) {
+    	if (itemIdx > index + 10 || itemIdx < index - 10) {
     		$(this).hide();
     	}
     	else {
