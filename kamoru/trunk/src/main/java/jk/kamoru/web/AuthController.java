@@ -4,21 +4,28 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
+import jk.springframework.security.core.userdetails.KamoruUser;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class LoginController {
-
-	@RequestMapping(value="/login") 
-	public String loginForm(
-			@RequestParam(value="error", required=false, defaultValue="false") boolean error,
-			HttpSession session, 
-			Model model, Locale locale) {
+@Slf4j
+@RequestMapping("/auth") 
+public class AuthController extends AbstractController {
+	
+	@RequestMapping("/login") 
+	public String loginForm(Model model, Locale locale, HttpSession session,
+			@RequestParam(value="error", required=false, defaultValue="false") boolean error) {
+		log.debug("show login form");
 		if (error) {
 			AuthenticationException exception = (AuthenticationException)session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 			if (exception != null)
@@ -27,13 +34,20 @@ public class LoginController {
 			if (lastReqMethod != null)
 				model.addAttribute("access_msg", lastReqMethod + " 요청 처리 실패");
 		}
-		model.addAttribute("locale", locale);
+		model.addAttribute(locale);
 		
-		return "login/loginForm";
+		return "auth/loginForm";
 	}
 
 	@RequestMapping("/accessDenied")
 	public String accessDenied() {
-		return "login/accessDenied";
+		log.debug("show access denied page");
+		return "auth/accessDenied";
+	}
+	
+	@RequestMapping("/expiredSession")
+	public String expiredSession() {
+		log.debug("show expired session page");
+		return "auth/expiredSession";
 	}
 }

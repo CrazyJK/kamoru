@@ -95,9 +95,13 @@ $(document).ready(function(){
 				    <s:message code="default.rememberme"/>
 			    </label>
 		    </div>
+		    <c:if test="${not empty error}">
 		    <div style="text-align:center">
-		    	<span id="loginMsg" style="color:red">${login_msg} ${access_msg}</span>
+		    	<span id="loginMsg" style="color:red">${login_msg} ${access_msg}
+		    		${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+		    	</span>
 		    </div>
+		    </c:if>
 		</form>
 	</div>
 	<div id="lang-chooser">

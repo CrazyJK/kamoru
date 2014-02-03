@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jk.springframework.security.core.userdetails.KamoruUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -28,7 +30,7 @@ public class KamoruAuthenticationSuccessHandler extends
             Authentication authentication) throws ServletException, IOException {
 
     	logger.info("log in {}. role={}", authentication.getName(), authentication.getAuthorities());
-    	
+		
     	logger.debug("call super.onAuthenticationSuccess");
         super.onAuthenticationSuccess(request, response, authentication);
     }

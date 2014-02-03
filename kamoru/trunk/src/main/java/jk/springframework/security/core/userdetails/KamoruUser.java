@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Data;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,19 +16,23 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author kamoru
  *
  */
+@Data
 public class KamoruUser implements UserDetails {
 
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 	
 	private String username;
 	private List<GrantedAuthority> authorites = new ArrayList<GrantedAuthority>();
-
+	private String remoteAddr;
+	
 	public KamoruUser(String username) {
 		this.username = username;
-		this.authorites.add(new SimpleGrantedAuthority("ROLE_USER"));
-		this.authorites.add(new SimpleGrantedAuthority("ROLE_CRAZY"));
 	}
 
+	public void addRole(String role) {
+		this.authorites.add(new SimpleGrantedAuthority(role));
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorites;

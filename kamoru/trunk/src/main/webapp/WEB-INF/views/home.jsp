@@ -20,7 +20,7 @@ String lang = locale.getLanguage();
 </head>
 <body>
 <h1><s:message code="default.title"/></h1>
-<h2><s:message code="default.hello"/>&nbsp;<security:authentication property="principal.username" /></h2>
+<h2><s:message code="default.hello"/>&nbsp;${auth.name}</h2>
 
 <div id="menu-list-div">
 	<s:message code="default.app-list"/>
@@ -28,7 +28,12 @@ String lang = locale.getLanguage();
 </div>
 
 <p>
+
+	<security:authorize url="/home">
 	<a href="<s:url value="/j_spring_security_logout"/>"><s:message code="default.logout"/></a>
+	</security:authorize>
+	<a href="<s:url value="/auth/login"/>"><s:message code="default.login"/></a>
+
 </p>
 
 <P>

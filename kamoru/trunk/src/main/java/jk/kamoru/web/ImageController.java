@@ -22,7 +22,7 @@ import jk.kamoru.app.video.util.VideoUtils;
 
 @Controller
 @RequestMapping("/image")
-public class ImageController {
+public class ImageController extends AbstractController {
 
 	@Autowired
 	private ImageService imageService;
@@ -32,7 +32,7 @@ public class ImageController {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
-		return "/picture/slide";
+		return "image/slide";
 	}
 
 	@RequestMapping(value="/slides", method=RequestMethod.GET)
@@ -40,7 +40,7 @@ public class ImageController {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
-		return "/picture/slidesjs";
+		return "image/slidesjs";
 	}
 	
 	@RequestMapping(value="/{idx}/thumbnail")
@@ -76,6 +76,18 @@ public class ImageController {
 		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}
 	
+	@RequestMapping(value="/downloadGnomImage")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void downloadGnomImage() {
+		imageService.downloadGnomImage();
+	}
+
+	@RequestMapping(value="/google")
+	public String searchGoogle(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
+		model.addAttribute(VideoUtils.getGoogleImage(query));
+		return "image/google";
+	}
+	
 	private HttpEntity<byte[]> getImageEntity(byte[] imageBytes, MediaType type) {
 		long today = new Date().getTime();
 
@@ -90,15 +102,5 @@ public class ImageController {
 		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}
 	
-	@RequestMapping(value="/downloadGnomImage")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void downloadGnomImage() {
-		imageService.downloadGnomImage();
-	}
 
-	@RequestMapping(value="/google")
-	public String searchGoogle(Model model, @RequestParam(value="q", required=false, defaultValue="") String query) {
-		model.addAttribute(VideoUtils.getGoogleImage(query));
-		return "picture/google";
-	}
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <ul>
 	<li><a href="<c:url value="/home"/>">Home</a>
+
 	<security:authorize url="/video**">
 	<li><a href="<c:url value="/video"/>">Video Main</a>
 		<ul>
@@ -14,18 +15,24 @@
 			<li><a href="<c:url value="/video/manager"/>">Video Manager</a>
 		</ul>
 	</security:authorize>
+
 	<security:authorize url="/image**">
 	<li><a href="<c:url value="/image"/>">Image view</a>
 	<li><a href="<c:url value="/image/downloadGnomImage"/>">Gnom Image Download</a>
-	</security:authorize>
 	<li><a href="<c:url value="/image/google"/>">Google Image search</a>
-	<li><a href="<c:url value="/requestMappingList"/>">request mapping list</a>
-	<li><a href="<c:url value="/hitMessageCodeList"/>">hit messageCode List</a>
-	<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>
-	<li><a href="<c:url value="/jsp/colors.jsp"/>">Standard Colors</a>
-	<li><a href="<c:url value="/jsp/util/threaddump.jsp"/>">Thread dump</a>
-	<li><a href="<c:url value="/jsp/pic/imgView.html"/>">Canvas Image view</a>
 	<li><a href="<c:url value="/image/slides"/>">Slide Image view</a>
+	</security:authorize>
+
+	<security:authorize url="/manager**">
+	<li><a href="<c:url value="/manager/requestMappingList"/>">request mapping list</a>
+	<li><a href="<c:url value="/manager/hitMessageCodeList"/>">hit messageCode List</a>
+	</security:authorize>
+
+	<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>
+	<li><a href="<c:url value="/jsp/util/colors.jsp"/>">Standard Colors</a>
+	<li><a href="<c:url value="/jsp/util/threaddump.jsp"/>">Thread dump</a>
 	<li><a href="<c:url value="/jsp/util/logView.jsp"/>">Log view</a>
 	<li><a href="<c:url value="/jsp/util/portScan.jsp"/>">Port scan</a>
+
+	<li><a href="<c:url value="/jsp/pic/imgView.html"/>">Canvas Image view</a>
 </ul>

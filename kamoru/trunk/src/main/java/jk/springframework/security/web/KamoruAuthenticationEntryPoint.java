@@ -21,7 +21,13 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  */
 @Slf4j
 public class KamoruAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
+	
+	private String defaultFailureUrl;
+	
+	public void setDefaultFailureUrl(String defaultFailureUrl) {
+		this.defaultFailureUrl = defaultFailureUrl;
+	}
+	
 	@Override
 	public void commence(HttpServletRequest request,
 			HttpServletResponse response, AuthenticationException authException)
@@ -32,7 +38,7 @@ public class KamoruAuthenticationEntryPoint implements AuthenticationEntryPoint 
 			request.getSession(false).setAttribute("LAST_REQUEST_METHOD", method);
 			log.error(method + " request Error : {}", authException.getMessage());
 		}
-		response.sendRedirect(request.getContextPath() + "/login?error=true");
+		response.sendRedirect(request.getContextPath() + defaultFailureUrl);
 		
 	}
 

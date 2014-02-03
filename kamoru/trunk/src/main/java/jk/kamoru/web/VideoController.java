@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @Controller
 @RequestMapping("/video")
-public class VideoController {
+public class VideoController extends AbstractController {
 
 	protected static final Logger logger = LoggerFactory.getLogger(VideoController.class);
 	

@@ -62,15 +62,16 @@ function showNav() {
 
 	<header id="deco_header">
 		<h1 id="deco_h1">
-			<a href="<c:url value="/home"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
-			<span style='float:right;font-size:12px;text-decoration:none; margin:10px 0 0;'>
-				<s:message code="default.hello"/>&nbsp;
-				<security:authentication property="principal.username" />
+			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
+			
+			<div style='float:right;font-size:12px;text-decoration:none; margin:10px 0 0;'>
+				<span>
+					<s:message code="default.hello"/>&nbsp;	${auth.name}
+				</span>
 				<a href="mailto:<s:message code="default.mail.addr"/>" title="<s:message code="default.mail.reply"/>">
 					<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/resources/tag_crazyjk_gmail.png"/>">
 				</a>
-			</span>
-			
+			</div>
 		</h1>
 	</header>
  

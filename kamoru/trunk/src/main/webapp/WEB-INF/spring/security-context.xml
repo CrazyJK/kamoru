@@ -7,35 +7,54 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+	<util:properties id="security" location="/WEB-INF/spring/security.properties" />
+
 	<http auto-config="true" use-expressions="true" entry-point-ref="jkEntryPoint">  
 		<!-- access-denied-page="/accessDenied" deprecated 되었다고해서 아래 access-denied-handler로 바꿈-->
+
+		<access-denied-handler error-page="/auth/accessDenied" />
 		
-		<intercept-url pattern="/resources/**" 	access="permitAll" />
-		<intercept-url pattern="/jsp/**" 		access="permitAll" />
-		<intercept-url pattern="/login" 		access="permitAll" />
-		<intercept-url pattern="/accessDenied" 	access="permitAll" />
-		<intercept-url pattern="/jkServlet" 	access="permitAll" />
-		<intercept-url pattern="/image/random" 	access="permitAll" />
+		<!-- 
+			/
+			/jsp
+			/resources
+			/auth
+				/login
+				/accessDenied
+				/expiredSession
+			/manager
+				/hitMessageCodeList
+				/requestMappingList
+				/jkServlet
+			/video
+			/image
+		 -->
+		
 		<intercept-url pattern="/" 				access="permitAll" />
-		<intercept-url pattern="/hitMessageCodeList" 	access="permitAll" />
+		<intercept-url pattern="/jsp/**" 		access="permitAll" />
+		<intercept-url pattern="/resources/**" 	access="permitAll" />
+		<intercept-url pattern="/auth/**" 		access="permitAll" />
+		<intercept-url pattern="/image/random"	access="permitAll" />
+
 		<intercept-url pattern="/noaccess" 		access="hasRole('ROLE_NOACCESS')" />
+		<intercept-url pattern="/manager**" 	access="hasRole('ROLE_MANAGER')" />
 		<intercept-url pattern="/video**" 		access="hasRole('ROLE_CRAZY')" /><!--  or hasIpAddress('192.168.0.3') -->
 		<intercept-url pattern="/image**" 		access="hasRole('ROLE_CRAZY')" />
 		<intercept-url pattern="/**" 			access="hasRole('ROLE_USER')" />
 
-		<form-login login-page="/login"
+		<form-login login-page="/auth/login"
 			authentication-success-handler-ref="loginSuccessHandler"
 			authentication-failure-handler-ref="loginFailureHandler" />
 
-		<logout logout-success-url="/"/>
-		
 		<remember-me key="kamoruRememberme" token-validity-seconds="600000" />
-		
-		<access-denied-handler error-page="/accessDenied" />
 
-		<!-- <session-management>
-            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/jsp/expiredSession.jsp" />
-        </session-management> -->
+		<logout logout-success-url="/"/>
+
+		<!-- 동일ID의 다중 접속 설정
+		<session-management>
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/auth/expiredSession" />
+        </session-management> 
+        -->
 	</http>
 	
 	<authentication-manager>
@@ -57,11 +76,11 @@
 	</beans:bean>
 	
 	<beans:bean id="loginFailureHandler" class="jk.springframework.security.web.authentication.KamoruAuthenticationFailureHandler">
-	 	<beans:property name="defaultFailureUrl" value="/login?error=true"/>
+	 	<beans:property name="defaultFailureUrl" value="/auth/login?error=true"/>
 	</beans:bean>
 
-	<beans:bean id="jkEntryPoint" class="jk.springframework.security.web.KamoruAuthenticationEntryPoint" />
+	<beans:bean id="jkEntryPoint" class="jk.springframework.security.web.KamoruAuthenticationEntryPoint" >
+	 	<beans:property name="defaultFailureUrl" value="/auth/login?error=true"/>
+	</beans:bean>
 
-	<util:properties id="security" location="/WEB-INF/spring/security.properties" />
-	
 </beans:beans>

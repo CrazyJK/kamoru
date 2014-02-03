@@ -1,12 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Root</title>
+<meta charset="UTF-8">
+<title></title>
+<script type="text/javascript">
+if ('anonymousUser' != '<security:authentication property="principal" />')
+	location.href = "home";
+</script>
 </head>
-<frameset>
-	<frame src="<c:url value="/home"/>">
-</frameset>
+<body>
+	<h1>Welcome <security:authentication property="principal" /> </h1>
+	
+	<section>
+		<h5>App list</h5>
+		<article>
+		<%@ include file="/WEB-INF/views/menu.inc" %>	
+		</article>	
+	</section>
+	
+	
+	<a href="<c:url value="/auth/login"/>">Login here</a>
+</body>
 </html>

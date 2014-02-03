@@ -14,6 +14,12 @@ public class KamoruUserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		KamoruUser user = new KamoruUser(username);
+    	user.addRole("ROLE_USER");
+    	user.addRole("ROLE_CRAZY");
+		if (user.getUsername().equals("jk.crazy")) {
+			user.addRole("ROLE_MANAGER");
+		}
+
 		return user;
 	}
 
