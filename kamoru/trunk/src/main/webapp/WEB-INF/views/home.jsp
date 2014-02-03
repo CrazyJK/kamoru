@@ -16,6 +16,10 @@ String lang = locale.getLanguage();
 #menu-list-div > ul {
 	list-style:url('<c:url value="/resources/magnify0.png"/>');
 }
+#menu-list-div > section {
+	display:inline-table;
+	width:220px;
+}
 </style>
 </head>
 <body>
@@ -23,8 +27,8 @@ String lang = locale.getLanguage();
 <h2><s:message code="default.hello"/>&nbsp;${auth.name}</h2>
 
 <div id="menu-list-div">
-	<s:message code="default.app-list"/>
-	<%@ include file="/WEB-INF/views/menu.inc" %>
+	<h3><s:message code="default.app-list"/></h3>
+	<%@ include file="/WEB-INF/views/menu.jspf" %>
 </div>
 
 <p>

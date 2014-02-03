@@ -19,24 +19,31 @@ body#deco_body {
 	font-family: 'Comic Sans MS' 'Impact' '나눔손글씨 펜' '나눔손글씨 붓' 'URW Chancery L' 'Purisa';
 }
 #deco_nav {
-/* 	display: block; */
-/* 	float: left; */
 	background-color:lightgreen;
-	/* width:900px;
-	margin:0 auto; */
-	text-align:center;
 }
-#deco_nav ul {
+#deco_nav div {
+	width:900px;
+	margin:0 auto;
+}
+#deco_nav section {
+	display: inline-table;
 	margin: 0;
 	padding: 0;
+	width:150px;
 }
-#deco_nav li {
-	display: inline-block;
+#deco_nav h4 {
 	margin:0 10px 0 0;
 }
+nav#deco_nav ul {
+	position:absolute;
+	background-color:lightgreen;
+	margin:0;
+	border-radius:10px;
+	list-style:circle;
+}
 #deco_nav li a {
-	/* border:1px solid orange; */
 	font-size: 11px;
+	margin-right:10px;
 }
 #deco_section {
 	margin:auto;

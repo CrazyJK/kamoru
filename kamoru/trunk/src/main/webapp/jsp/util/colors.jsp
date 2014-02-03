@@ -8,11 +8,11 @@
 <head>
 <title>Standard colors</title>
 <style type="text/css">
-li {
+ul#color li {
 	display:inline-block;
 	margin: 10px;
 }
-div {
+ul#color li div {
 	width:100px; height:100px;
 	text-shadow: 1px 1px 1px white;
 	border-radius: 10px;
@@ -21,7 +21,7 @@ div {
 </head>
 <body>
 <h2>If you see custom color, input parameter by <code>?c=rgba(123,123,123,0.5)</code></h2>
-<ul>
+<ul id="color">
 <%	for (String color : colors) { %>
 	<li><div style="background-color:<%=color %>;"><%=color %></div>
 <%	} %>

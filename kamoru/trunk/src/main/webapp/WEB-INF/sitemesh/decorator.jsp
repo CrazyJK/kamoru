@@ -32,6 +32,13 @@ $(document).ready(function(){
 	showNav();
 	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
 	$("body").css("background-image", "url(" + bgImgUrl + ")");
+	$("nav#deco_nav section ul").hide();
+	$("nav#deco_nav section").bind("mouseover", function(){
+		$(this).children().show();
+	}).bind("mouseout", function(){
+		$(this).children("ul").hide();
+	});
+	
 });
 function resizeSectionHeight() {
 	var windowHeight = $(window).height();
@@ -43,7 +50,7 @@ function resizeSectionHeight() {
 }
 function showNav() {
 	var found = false;
-	$("nav#deco_nav ul li a").each(function() {
+	$("nav#deco_nav section ul li a").each(function() {
 		if ($(this).attr("href") == window.location.pathname) {
 			$(this).parent().addClass("menu-selected");
 			found = true;
@@ -59,24 +66,25 @@ function showNav() {
 <sitemesh:write property="head" />
 </head>
 <body id="deco_body">
-
 	<header id="deco_header">
 		<h1 id="deco_h1">
 			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
 			
-			<div style='float:right;font-size:12px;text-decoration:none; margin:10px 0 0;'>
+			<span style="float:right;font-size:12px;text-decoration:none; margin:10px 0 0;">
 				<span>
 					<s:message code="default.hello"/>&nbsp;	${auth.name}
 				</span>
 				<a href="mailto:<s:message code="default.mail.addr"/>" title="<s:message code="default.mail.reply"/>">
 					<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/resources/tag_crazyjk_gmail.png"/>">
 				</a>
-			</div>
+			</span>
 		</h1>
 	</header>
  
 	<nav id="deco_nav">
-		<%@ include file="/WEB-INF/views/menu.inc" %>
+		<div>
+		<%@ include file="/WEB-INF/views/menu.jspf" %>
+		</div>
 	</nav>
 
 	<section id="deco_section">

@@ -28,18 +28,6 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<filter>
-		<filter-name>sitemesh</filter-name>
-		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
-		<init-param>
-			<param-name>configFile</param-name>
-			<param-value>/WEB-INF/sitemesh/sitemesh3.xml</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>sitemesh</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<filter>
 		<display-name>httpMethodFilter</display-name>
 		<filter-name>httpMethodFilter</filter-name>
 		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
@@ -54,6 +42,24 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 
+		필터 순서 정하기 규칙(헤드 퍼스트 서블릿과 JSP 영문판 2판 710 페이지)
+		 - 해당 URL 패턴에 대응하는 모든 필터는 DD(보통 web.xml)에 정의되어 있는 순서대로 체인에 놓는다. 
+		 즉 필터 선언 중 <url-pattern>을 사용하여 해당 순서대로 필터를 놓는다.
+		 - sitemesh decorator에서 spring security를 사용하기위애 뒤에 위치 시킨다.	
+	 -->
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+		<init-param>
+			<param-name>configFile</param-name>
+			<param-value>/WEB-INF/sitemesh/sitemesh3.xml</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 

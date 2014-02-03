@@ -17,7 +17,7 @@ if ('anonymousUser' != '<security:authentication property="principal" />')
 	<section>
 		<h5>App list</h5>
 		<article>
-		<%@ include file="/WEB-INF/views/menu.inc" %>	
+		<%@ include file="/WEB-INF/views/menu.jspf" %>	
 		</article>	
 	</section>
 	
