@@ -7,28 +7,12 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<util:properties id="security" location="/WEB-INF/spring/security.properties" />
+	<util:properties id="security" location="/WEB-INF/spring/conf/security.properties" />
 
 	<http auto-config="true" use-expressions="true" entry-point-ref="jkEntryPoint">  
 		<!-- access-denied-page="/accessDenied" deprecated 되었다고해서 아래 access-denied-handler로 바꿈-->
 
-		<access-denied-handler error-page="/auth/accessDenied" />
-		
-		<!-- 
-			/
-			/jsp
-			/resources
-			/auth
-				/login
-				/accessDenied
-				/expiredSession
-			/manager
-				/hitMessageCodeList
-				/requestMappingList
-				/jkServlet
-			/video
-			/image
-		 -->
+		<access-denied-handler error-page="#{security['accessDeniedUrl']}" />
 		
 		<intercept-url pattern="/" 				access="permitAll" />
 		<intercept-url pattern="/jsp/**" 		access="permitAll" />
@@ -42,13 +26,13 @@
 		<intercept-url pattern="/image**" 		access="hasRole('ROLE_CRAZY')" />
 		<intercept-url pattern="/**" 			access="hasRole('ROLE_USER')" />
 
-		<form-login login-page="/auth/login"
+		<form-login login-page="#{security['loginPageUrl']}"
 			authentication-success-handler-ref="loginSuccessHandler"
 			authentication-failure-handler-ref="loginFailureHandler" />
 
 		<remember-me key="kamoruRememberme" token-validity-seconds="600000" />
 
-		<logout logout-success-url="/"/>
+		<logout logout-success-url="#{security['logoutPageUrl']}"/>
 
 		<!-- 동일ID의 다중 접속 설정
 		<session-management>
@@ -72,15 +56,15 @@
 	<beans:bean id="passwordEncoder" class="jk.springframework.security.authentication.encoding.HandyPasswordEncoder"/>
 
 	<beans:bean id="loginSuccessHandler" class="jk.springframework.security.web.authentication.KamoruAuthenticationSuccessHandler">
-	 	<beans:property name="defaultTargetUrl" value="/home"/>
+	 	<beans:property name="defaultTargetUrl" value="#{security['defaultTargetUrl']}"/>
 	</beans:bean>
 	
 	<beans:bean id="loginFailureHandler" class="jk.springframework.security.web.authentication.KamoruAuthenticationFailureHandler">
-	 	<beans:property name="defaultFailureUrl" value="/auth/login?error=true"/>
+	 	<beans:property name="defaultFailureUrl" value="#{security['defaultFailureUrl']}"/>
 	</beans:bean>
 
 	<beans:bean id="jkEntryPoint" class="jk.springframework.security.web.KamoruAuthenticationEntryPoint" >
-	 	<beans:property name="defaultFailureUrl" value="/auth/login?error=true"/>
+	 	<beans:property name="defaultFailureUrl" value="#{security['defaultFailureUrl']}"/>
 	</beans:bean>
 
 </beans:beans>

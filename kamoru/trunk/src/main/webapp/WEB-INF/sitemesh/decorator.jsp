@@ -28,17 +28,20 @@ var context = '<c:url value="/"/>';
 
 $(document).ready(function(){
 	$(window).bind("resize", resizeSectionHeight);
-	resizeSectionHeight();
-	showNav();
-	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
-	$("body").css("background-image", "url(" + bgImgUrl + ")");
-	$("nav#deco_nav section ul").hide();
 	$("nav#deco_nav section").bind("mouseover", function(){
-		$(this).children().show();
+		$(this).children("ul").show();
 	}).bind("mouseout", function(){
 		$(this).children("ul").hide();
 	});
 	
+	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
+	$("body").css("background-image", "url(" + bgImgUrl + ")");
+	
+	$("nav#deco_nav section ul").hide();
+
+	resizeSectionHeight();
+	showNav();
+
 });
 function resizeSectionHeight() {
 	var windowHeight = $(window).height();
@@ -52,8 +55,9 @@ function showNav() {
 	var found = false;
 	$("nav#deco_nav section ul li a").each(function() {
 		if ($(this).attr("href") == window.location.pathname) {
-			$(this).parent().addClass("menu-selected");
 			found = true;
+			$(this).parent().addClass("menu-selected");
+			$(this).parents("ul").prev().addClass("menu-selected");
 		}
 		else {
 			$(this).parent().addClass("menu");

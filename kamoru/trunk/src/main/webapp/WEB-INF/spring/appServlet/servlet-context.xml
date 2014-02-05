@@ -79,7 +79,4 @@
 		<beans:bean class="jk.springframework.web.servlet.ControllerInterceptor" />
 	</interceptors>
     
-    <!-- Ehcache -->
-	<beans:import resource="ehcache-context.xml" />
-    
 </beans:beans>

@@ -36,6 +36,9 @@
 	<ul>
 		<li><a href="<c:url value="/manager/requestMappingList"/>">request mapping list</a>
 		<li><a href="<c:url value="/manager/hitMessageCodeList"/>">hit messageCode List</a>
+		<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>
+		<li><a href="<c:url value="/jsp/util/threaddump.jsp"/>">Thread dump</a>
+		<li><a href="<c:url value="/jsp/util/logView.jsp"/>">Log view</a>
 	</ul>
 </section>
 </security:authorize>
@@ -43,10 +46,7 @@
 <section>
 	<h4>Utilities</h4>
 	<ul>
-		<li><a href="<c:url value="/jsp/util/sessionView.jsp"/>">Web Session</a>
 		<li><a href="<c:url value="/jsp/util/colors.jsp"/>">Standard Colors</a>
-		<li><a href="<c:url value="/jsp/util/threaddump.jsp"/>">Thread dump</a>
-		<li><a href="<c:url value="/jsp/util/logView.jsp"/>">Log view</a>
 		<li><a href="<c:url value="/jsp/util/portScan.jsp"/>">Port scan</a>
 	</ul>
 </section>

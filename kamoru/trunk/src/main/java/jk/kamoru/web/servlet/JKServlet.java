@@ -10,24 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.HttpRequestHandler;
-
 import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.dao.VideoDao;
-import jk.kamoru.app.video.service.VideoService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Servlet implementation class JKServlet
  */
-@Component("jkServlet")
 @Slf4j
-public final class JKServlet implements HttpRequestHandler {
+public final class JKServlet extends HttpServlet {
 	
-	@Autowired private VideoService videoService;
-	
+	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,7 +34,6 @@ public final class JKServlet implements HttpRequestHandler {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		log.info("JKServlet init");
-		videoService.reload();
 	}
 
 	/**
@@ -49,15 +41,7 @@ public final class JKServlet implements HttpRequestHandler {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("I'm alive!");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/manager/jk.kamoru.jsp");
-		dispatcher.forward(request, response);
-	}
-
-	@Override
-	public void handleRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		log.info("I'm alive, too!");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/manager/jk.kamoru.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/jk.kamoru.jsp");
 		dispatcher.forward(request, response);
 	}
 

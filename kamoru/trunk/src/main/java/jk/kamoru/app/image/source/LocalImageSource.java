@@ -39,7 +39,7 @@ public class LocalImageSource implements ImageSource {
 		for (File file : imageFileList) {
 			imageList.add(new Image(file));
 		}
-		log.debug("total found image size : {}", imageList.size());
+		log.info("Total found image size : {}", imageList.size());
 	}
 
 	private List<Image> createImageSource() {
