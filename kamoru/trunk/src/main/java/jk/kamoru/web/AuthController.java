@@ -4,16 +4,12 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
-import jk.springframework.security.core.userdetails.KamoruUser;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

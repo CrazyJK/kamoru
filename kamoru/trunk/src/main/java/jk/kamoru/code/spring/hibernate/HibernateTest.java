@@ -64,6 +64,7 @@ public class HibernateTest {
 	
 	@Test
 	public void localSessionFactoryBean() {
+		@SuppressWarnings("resource")
 		ApplicationContext ac = new GenericXmlApplicationContext(new ClassPathResource("localsessionfactorybean-context.xml", getClass()));
 		SessionFactory sf = ac.getBean(SessionFactory.class);
 		Session s = sf.openSession();

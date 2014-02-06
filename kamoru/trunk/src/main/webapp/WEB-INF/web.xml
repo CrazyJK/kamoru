@@ -12,6 +12,7 @@
 		<param-value>
 			/WEB-INF/spring/root-context.xml
 			/WEB-INF/spring/security-context.xml
+			/WEB-INF/spring/video-context.xml
 		</param-value>
 	</context-param>
 
