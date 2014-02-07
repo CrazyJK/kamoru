@@ -22,7 +22,7 @@ try {
 <link rel="stylesheet" href="<c:url value="/resources/deco.css" />" />
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js"     />" type="text/javascript"></script>
+<script src="<c:url value="/resources/common.js" />" type="text/javascript"></script>
 <script type="text/javascript">
 var context = '<c:url value="/"/>';
 
@@ -63,8 +63,8 @@ function showNav() {
 			$(this).parent().addClass("menu");
 		}
 	});
-	if(!found)
-		$("#deco_nav").css("display", "none");
+//	if(!found)
+//		$("#deco_nav").css("display", "none");
 }
 </script>
 <sitemesh:write property="head" />
@@ -73,14 +73,13 @@ function showNav() {
 	<header id="deco_header">
 		<h1 id="deco_h1">
 			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
+
+			<a href="mailto:<s:message code="default.mail.addr"/>" title="<s:message code="default.mail.reply"/>" style="float:right;">
+				<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/resources/tag_crazyjk_gmail.png"/>">
+			</a>
 			
-			<span style="float:right;font-size:12px;text-decoration:none; margin:10px 0 0;">
-				<span>
-					<s:message code="default.hello"/>&nbsp;	${auth.name}
-				</span>
-				<a href="mailto:<s:message code="default.mail.addr"/>" title="<s:message code="default.mail.reply"/>">
-					<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/resources/tag_crazyjk_gmail.png"/>">
-				</a>
+			<span style="float:right; font-size:12px; line-height:35px;">
+				<s:message code="default.hello"/>&nbsp;	${auth.name}&nbsp;
 			</span>
 		</h1>
 	</header>
@@ -98,8 +97,20 @@ function showNav() {
 	</section>
 	
 	<footer id="deco_footer">
-		Copyright &copy; <time datetime="<%=dateString %>" title="Today"><%=dateString %></time> 
-		<a href="<c:url value="/jkServlet"/>">kAmOrU.</a> All rights reserved.
+		<div>
+			&copy; <time datetime="<%=dateString %>" title="Today"><%=dateString %></time> 
+			<a href="<c:url value="/jkServlet"/>">kAmOrU.</a> All rights reserved.
+
+			<section style="float:right">
+				<form name="langChange">
+					<select name="lang" onchange="document.forms['langChange'].submit();">
+						<option value="ko" <%="ko".equals(lang) ? "selected" : "" %>><s:message code="default.korean"/></option>
+						<option value="en" <%="en".equals(lang) ? "selected" : "" %>><s:message code="default.english"/></option>
+						<option value="ja" <%="ja".equals(lang) ? "selected" : "" %>><s:message code="default.japanese"/></option>
+					</select>
+				</form>
+			</section>
+		</div>
 	</footer>
 
 </body>

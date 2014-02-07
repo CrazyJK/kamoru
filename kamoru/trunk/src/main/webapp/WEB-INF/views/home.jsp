@@ -18,7 +18,46 @@ String lang = locale.getLanguage();
 }
 #menu-list-div > section {
 	display:inline-table;
-	width:220px;
+	/* float:right; */
+	/* background:#EEE; */
+	border:1px #717074 solid;
+	border-radius: 5px; /* future proofing */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin:10px 5px 20px;
+	padding:0 10px 5px;
+	width:180px;
+}
+
+#menu-list-div section h4 {
+	background:#717074;
+	border-radius: 3px 3px 0 0; /* future proofing */
+	-moz-border-radius: 3px 3px 0 0;
+	color:#FFF;
+	font-size:1.0em;
+	line-height:1.0em;
+	margin:0 -10px;
+	padding:5px;
+}
+
+#menu-list-div section ul, #menu-list-div section li {
+	margin:0 -5px;
+	padding:0;
+}
+
+#menu-list-div section li {
+	display:block;
+	/* border-bottom:1px #FFF solid; */
+	padding:3px 5px 3px 10px;
+}
+
+#menu-list-div section a {
+	display:block;
+	text-decoration:none;
+}
+
+#menu-list-div section a:hover {
+	/* text-decoration:underline; */
 }
 </style>
 </head>
@@ -44,6 +83,7 @@ String lang = locale.getLanguage();
 	<s:message code="default.server-time"/>&nbsp;${serverTime}
 </P>
 
+<%-- 
 <div style="float:right;">
 	<form><s:message code="default.language"/> 
 		<select name="lang" onchange="document.forms[0].submit();">
@@ -53,6 +93,6 @@ String lang = locale.getLanguage();
 		</select>
 	</form>
 </div>
-
+ --%>
 </body>
 </html>
