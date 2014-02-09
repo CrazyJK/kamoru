@@ -30,9 +30,9 @@ public class Image {
 	}
 
 	private void init() {
-		this.name = file.getName();
+		this.name 	= file.getName();
 		this.suffix = FileUtils.getExtension(file);
-		this.size = file.length();
+		this.size 	= file.length();
 		this.lastModified = file.lastModified();
 	}
 

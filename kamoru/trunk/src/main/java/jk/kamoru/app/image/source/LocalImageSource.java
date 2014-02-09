@@ -18,8 +18,6 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class LocalImageSource implements ImageSource {
 
-//	private static final Logger logger = LoggerFactory.getLogger(LocalImageSource.class);
-
 	private List<Image> imageList;
 
 	@Value("#{prop['image.basePath']}")	private String[] backgroundImagePoolPath;
@@ -45,7 +43,6 @@ public class LocalImageSource implements ImageSource {
 	private List<Image> createImageSource() {
 		if (imageList == null)
 			reload();
-
 		return imageList;
 	}
 

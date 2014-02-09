@@ -1,5 +1,7 @@
 package jk.kamoru.app.image.service;
 
+import java.util.List;
+
 import jk.kamoru.app.image.domain.Image;
 import jk.kamoru.app.image.source.ImageSource;
 import jk.kamoru.tools.gnom.GnomImageDownloader;
@@ -39,6 +41,11 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	public void downloadGnomImage() {
 		gnomImageDownloader.process();		
+	}
+
+	@Override
+	public List<Image> getImageList() {
+		return imageSource.getImageList();
 	}
 
 }

@@ -78,7 +78,11 @@ var selectedImgUrl;
 var imageCount = <c:out value="${imageCount}" />;
 var windowWidth  = $(window).width();
 var windowHeight = $(window).height();
-
+var imageMap = {
+		<c:forEach items="${imageList}" var="image" varStatus="status">
+			"${status.index}":"${image.name}",
+		</c:forEach>
+};
 $(document).ready(function(){
 	$(window).bind("mousewheel DOMMouseScroll", function(e) {
 		var delta = 0;
@@ -131,7 +135,11 @@ $(document).ready(function(){
 		fnViewImage(selectedNumber);
 	else
 		fnRandomImageView();
+	$("#firstNo").html(0);
+	$("#endNo").html(imageCount-1);
+	
 });
+
 function resizeImage() {
 	windowHeight = $(window).height();
 	$("#imageDiv").height(windowHeight - 105);
@@ -149,6 +157,7 @@ function fnViewImage(current) {
 	$("#leftNo").html(getPrevNumber());
 	$("#currNo").html(selectedNumber);
 	$("#rightNo").html(getNextNumber());
+	$("#imageTitle").html(imageMap[selectedNumber]);
 	fnDisplayThumbnail();
 }
 function fnFullyImageView() {
@@ -166,11 +175,17 @@ function getPrevNumber() {
 function getNextNumber() {
 	return selectedNumber == imageCount -1 ? 0 : selectedNumber + 1;
 }
+function fnFirstImageView() {
+	fnViewImage(0);
+}
 function fnPrevImageView() {
 	fnViewImage(getPrevNumber());
 }
 function fnNextImageView() {
 	fnViewImage(getNextNumber());
+}
+function fnEndImageView() {
+	fnViewImage(imageCount-1);
 }
 function fnRandomImageView() {
 	fnViewImage(Math.floor(Math.random() * imageCount));
@@ -200,9 +215,13 @@ function fnDisplayThumbnail() {
 <body>
 <span id="debug" style="display:none;"></span>
 <div id="navDiv">
+	<span class="label" onclick="fnFirstImageView();">[<span id="firstNo"></span></span>
 	<span class="label" onclick="fnPrevImageView();">&lt;<span id="leftNo"></span></span>
 	<span class="label" onclick="fnFullyImageView();"><span id="currNo"></span></span>
 	<span class="label" onclick="fnNextImageView();"><span id="rightNo"></span>&gt;</span>
+	<span class="label" onclick="fnEndImageView();"><span id="endNo"></span>]</span>
+	<br/>
+	<span id="imageTitle"></span>
 </div>
 <div id="imageThumbnailDiv"><ul id="imageThumbnailUL"></ul></div>
 <div id="imageDiv" class="centerBG"></div>

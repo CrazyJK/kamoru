@@ -1,5 +1,7 @@
 package jk.kamoru.app.image.service;
 
+import java.util.List;
+
 import jk.kamoru.app.image.domain.Image;
 
 public interface ImageService {
@@ -13,5 +15,7 @@ public interface ImageService {
 	Image getImageByRandom();
 
 	void downloadGnomImage();
+
+	List<Image> getImageList();
 
 }

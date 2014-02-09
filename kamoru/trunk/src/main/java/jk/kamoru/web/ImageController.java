@@ -32,6 +32,7 @@ public class ImageController extends AbstractController {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
+		model.addAttribute(imageService.getImageList());
 		return "image/slide";
 	}
 
