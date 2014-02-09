@@ -22,11 +22,11 @@ public class VideoSearch implements Serializable {
 	/**
 	 * 검색조건 : 추가 여부. 조건 {@link #existVideo}, {@link #existSubtitles}
 	 */
-	boolean addCond = true;
+	boolean addCond = false;
 	/**
 	 * 검색조건 : 비디오 존재
 	 */
-	boolean existVideo = true;
+	boolean existVideo = false;
 	/**
 	 * 검색조건 : 자막 존재
 	 */

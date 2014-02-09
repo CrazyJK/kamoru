@@ -147,7 +147,7 @@ public class VideoUtils {
 		if(name == null) return null;
 		String[] nameArr = StringUtils.split(name);
 		Arrays.sort(nameArr);
-		return StringUtils.join(nameArr, " ");
+		return StringUtils.join(nameArr, " ").trim();
 	}
 	
 	/**
