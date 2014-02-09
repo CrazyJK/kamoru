@@ -11,6 +11,7 @@ import java.util.List;
 
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.VideoException;
+import jk.kamoru.app.video.source.FileBaseVideoSource;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
@@ -877,6 +878,10 @@ public class Video implements Comparable<Video>, Serializable {
 	 */
 	public int getActressScore() {
 		int actressVideoScore = 0;
+		if (getActressList().size() == 1 
+				&& getActressList().get(0).getName().equals(FileBaseVideoSource.unclassifiedActress))
+			return actressVideoScore;
+			
 		for (Actress actress : getActressList()) {
 			actressVideoScore += actress.getVideoList().size() * actressRatio;
 		}
@@ -887,10 +892,17 @@ public class Video implements Comparable<Video>, Serializable {
 	 */
 	public String getActressScoreDesc() {
 		String desc = "";
+
+		if (getActressList().size() == 1 
+				&& getActressList().get(0).getName().equals(FileBaseVideoSource.unclassifiedActress))
+			return FileBaseVideoSource.unclassifiedActress;
+		
 		boolean first = true;
 		for (Actress actress : getActressList()) {
 			desc += first ? "" : "+";
-			desc += actress.getVideoList().size();
+			if (!actress.getName().equals(FileBaseVideoSource.unclassifiedActress))
+				desc += actress.getVideoList().size();
+			
 			first = false;
 		}
 		return desc;

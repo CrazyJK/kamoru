@@ -33,7 +33,7 @@ public class FileBaseVideoSource implements VideoSource {
 	private final String UNKNOWN 			 = "_Unknown";
 	private final String unclassifiedStudio  = UNKNOWN;
 	private final String unclassifiedOpus 	 = UNKNOWN;
-	private final String unclassifiedActress = "Amateur";
+	public static final String unclassifiedActress = "Amateur";
 
 	// data source
 	private Map<String, Video>     videoMap	= new HashMap<String, Video>();
@@ -223,7 +223,7 @@ public class FileBaseVideoSource implements VideoSource {
 					Actress actress = actressMap.get(forwardActressName);
 					if (actress == null) {
 						actress = actressProvider.get();
-						actress.setName(actressName);
+						actress.setName(actressName.trim());
 						
 						actressMap.put(forwardActressName, actress);
 						logger.trace("add actress - {}", actress);

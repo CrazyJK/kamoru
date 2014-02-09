@@ -108,7 +108,7 @@ $(document).ready(function(){
  
 function resizeSecondDiv() {
 	var contentDivHeight = $("#content_div").outerHeight();
-	var calculatedDivHeight = (contentDivHeight) / 2; 
+	var calculatedDivHeight = (contentDivHeight) / 2 - 15; 
 
 	$("#resultVideoDiv").outerHeight(calculatedDivHeight);	
 	$("#resultHistoryDiv").outerHeight(calculatedDivHeight);	
