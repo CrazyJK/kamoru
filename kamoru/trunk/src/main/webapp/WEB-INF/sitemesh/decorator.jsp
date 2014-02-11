@@ -50,6 +50,9 @@ function resizeSectionHeight() {
 	var footerHeight = $("#deco_footer").outerHeight();
 	var resizeSectionHeight = windowHeight - headerHeight - navHeight - footerHeight -20; 
 	$("#deco_section").height(resizeSectionHeight);
+	try {
+		resizeSecondDiv();
+	} catch(e) {}
 }
 function showNav() {
 	var found = false;

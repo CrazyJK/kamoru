@@ -15,7 +15,7 @@
 	position:absolute; 
 	left:0px; 
 	top:0px; 
-	margin:10px 5px 0px 0px; 
+	margin:5px 5px 0px 5px; 
 	cursor:pointer;
 }
 #imageThumbnailDiv {
@@ -29,14 +29,6 @@
 }
 #imageDiv {
 	text-align:center;
-}
-.otherThumbnails  {
-	opacity:0.5; 
-	border: solid 0px green;
-}
-.currentThumbnail {
-	opacity:1.0; 
-	border: solid 2px cyan;
 }
 .thumbDiv {
 	width:150px; 
@@ -78,11 +70,12 @@ var selectedImgUrl;
 var imageCount = <c:out value="${imageCount}" />;
 var windowWidth  = $(window).width();
 var windowHeight = $(window).height();
-var imageMap = {
+var imageMap = ${imageNameJSON};
+/*{
 		<c:forEach items="${imageList}" var="image" varStatus="status">
 			"${status.index}":"${image.name}",
 		</c:forEach>
-};
+};*/
 $(document).ready(function(){
 	$(window).bind("mousewheel DOMMouseScroll", function(e) {
 		var delta = 0;
@@ -161,13 +154,7 @@ function fnViewImage(current) {
 	fnDisplayThumbnail();
 }
 function fnFullyImageView() {
-	var img = $("<img />");
-	img.hide();
-	img.attr("src", selectedImgUrl);
-	img.bind('load', function(){
-		mw_image_window(this);
-	});
-	return img;
+	popupImage(selectedImgUrl);
 }
 function getPrevNumber() {
 	return selectedNumber == 0 ? imageCount - 1 : selectedNumber - 1;
@@ -199,13 +186,9 @@ function fnDisplayThumbnail() {
 			thumbNo = imageCount + thumbNo;
 		if (thumbNo >= imageCount)
 			thumbNo = thumbNo - imageCount;
-		var img = $("<img id='thumbnail" + thumbNo + "' onclick='fnViewImage("+thumbNo+")'" 
-				+ " class='" + (thumbNo == selectedNumber ? "currentThumbnail" : "otherThumbnails") + "'/>");
-		img.attr("src", imagepath + thumbNo + "/thumbnail");
 		var li = $("<li>");
 		var div = $("<div class='thumbDiv centerBG " + (thumbNo == selectedNumber ? "opacity10" : "opacity05") + "' onclick='fnViewImage("+thumbNo+")'>");
 		div.css("background-image", "url('" + imagepath + thumbNo + "/thumbnail" + "')");
-		//div.append(img);
 		li.append(div);
 		$("#imageThumbnailUL").append(li);
 	}
@@ -215,13 +198,13 @@ function fnDisplayThumbnail() {
 <body>
 <span id="debug" style="display:none;"></span>
 <div id="navDiv">
-	<span class="label" onclick="fnFirstImageView();">[<span id="firstNo"></span></span>
-	<span class="label" onclick="fnPrevImageView();">&lt;<span id="leftNo"></span></span>
-	<span class="label" onclick="fnFullyImageView();"><span id="currNo"></span></span>
-	<span class="label" onclick="fnNextImageView();"><span id="rightNo"></span>&gt;</span>
-	<span class="label" onclick="fnEndImageView();"><span id="endNo"></span>]</span>
+	<span class="label" onclick="fnFirstImageView();"><span id="firstNo"></span></span>
+	<span class="label" onclick="fnPrevImageView();">&lt;&nbsp;<span id="leftNo"></span></span>
+	<span class="label"><span id="currNo"></span></span>
+	<span class="label" onclick="fnNextImageView();"><span id="rightNo"></span>&nbsp;&gt;</span>
+	<span class="label" onclick="fnEndImageView();"><span id="endNo"></span></span>
 	<br/>
-	<span id="imageTitle"></span>
+	<span class="label" id="imageTitle" onclick="fnFullyImageView();"></span>
 </div>
 <div id="imageThumbnailDiv"><ul id="imageThumbnailUL"></ul></div>
 <div id="imageDiv" class="centerBG"></div>

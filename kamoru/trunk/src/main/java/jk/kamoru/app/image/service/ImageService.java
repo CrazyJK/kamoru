@@ -18,4 +18,6 @@ public interface ImageService {
 
 	List<Image> getImageList();
 
+	String getImageNameJSON();
+
 }

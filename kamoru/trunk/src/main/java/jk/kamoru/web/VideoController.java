@@ -22,6 +22,7 @@ import jk.kamoru.app.video.service.VideoService;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,7 @@ public class VideoController extends AbstractController {
 	 * @return model attribute
 	 */
 	@ModelAttribute
+	@JsonIgnore
 	public Locale locale(Locale locale) {
 		return locale;
 	}
@@ -64,6 +66,7 @@ public class VideoController extends AbstractController {
 	/**minimum rank model attrubute by named 'minRank'
 	 * @return model attribute
 	 */
+	@JsonIgnore
 	@ModelAttribute("minRank")
 	public Integer minRank() {
 		return videoService.minRank();
@@ -72,6 +75,7 @@ public class VideoController extends AbstractController {
 	/**maximum rank model attrubute by named 'maxRank'
 	 * @return model attribute
 	 */
+	@JsonIgnore
 	@ModelAttribute("maxRank")
 	public Integer maxRank() {
 		return videoService.maxRank();

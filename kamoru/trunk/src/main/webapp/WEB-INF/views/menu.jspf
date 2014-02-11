@@ -25,7 +25,7 @@
 		<li><a href="<c:url value="/image/downloadGnomImage"/>">Gnom Image Download</a>
 		<li><a href="<c:url value="/image/google"/>">Google Image search</a>
 		<li><a href="<c:url value="/image/slides"/>">Slide Image view</a>
-		<li><a href="<c:url value="/jsp/pic/imgView.html"/>">Canvas Image view</a>
+		<li><a href="<c:url value="/image/canvas"/>">Canvas Image view</a>
 	</ul>
 </section>
 </security:authorize>

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.source.FileBaseVideoSource;
@@ -22,6 +27,7 @@ import org.apache.commons.io.FileExistsException;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +43,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
+@XmlRootElement(name = "video", namespace = "http://www.w3.org/2001/XMLSchema-instance")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Video implements Comparable<Video>, Serializable {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
@@ -55,12 +63,16 @@ public class Video implements Comparable<Video>, Serializable {
 	private List<File> videoCandidates;
 
 	// info
+	@XmlTransient
+	@JsonIgnore
 	private Studio studio;
 	private String opus;
 	private String title;
 	private String overview; // overview text
 	private String etcInfo;
 	private String releaseDate;
+	@XmlTransient
+	@JsonIgnore
 	private List<Actress> actressList;
 	private List<String> historyList; // history list
 	private Integer playCount;
@@ -170,6 +182,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 * cover file의 byte[] 반환
 	 * @return 없거나 에러이면 null 반환
 	 */
+	@JsonIgnore
 	public byte[] getCoverByteArray() {
 		return VideoUtils.readFileToByteArray(coverFile);
 	}
@@ -196,6 +209,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 * webp형식의 cover file의 byte[] 반환
 	 * @return 없거나 에러이면 null 반환
 	 */
+	@JsonIgnore
 	public byte[] getCoverWebpByteArray() {
 		return VideoUtils.readFileToByteArray(coverWebpFile);
 	}
@@ -471,7 +485,7 @@ public class Video implements Comparable<Video>, Serializable {
 			try {
 				return new URL("/" + pname + "/" + vfile.getName());
 			} catch (MalformedURLException e) {
-				logger.error(e.getMessage(), e);
+				logger.warn("Error: {}", e.getMessage());
 			}
 			return null;
 		}

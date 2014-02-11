@@ -48,4 +48,16 @@ public class ImageServiceImpl implements ImageService {
 		return imageSource.getImageList();
 	}
 
+	@Override
+	public String getImageNameJSON() {
+		StringBuilder sb = new StringBuilder("{");
+		int index = 0;
+		for (Image image : imageSource.getImageList()) {
+			if (index > 0)
+				sb.append(",");
+			sb.append(String.format("\"%s\":\"%s\"", index++, image.getName()));
+		}
+		sb.append("}");
+		return sb.toString();
+	}
 }

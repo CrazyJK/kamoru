@@ -79,13 +79,13 @@
 
 	<logger name="net.sf.ehcache">
 		<level value="trace" />
-		<appender-ref ref="ehcache" />
+		<!-- <appender-ref ref="ehcache" /> -->
 	</logger>
 
 	<!-- Root Logger -->
 	<root>
 		<priority value="debug" />
-		<!-- <appender-ref ref="root" /> -->
+		<appender-ref ref="root" />
 	</root>
 	
 </log4j:configuration>

@@ -29,15 +29,16 @@ $(document).ready(function(){
 		
 		var keyword = $(this).val();
 		var queryUrl = context + 'video/search.json?q=' + keyword; 
-		$("#url").html(queryUrl);
 
 		$.getJSON(queryUrl ,function(data) {
 			$('#foundVideoList').empty();
 			$('#foundHistoryList').empty();
 			$('#foundVideoList').slideUp();
 			$('#foundHistoryList').slideUp();
-			
+			$("#url").html(queryUrl);
+
 			var videoRow = data['videoList'];
+			$(".video-count").html(videoRow.length);
 			$.each(videoRow, function(entryIndex, entry) {
 				
 				var studio 		   = entry['studio'];
@@ -71,6 +72,7 @@ $(document).ready(function(){
 			});
 
 			var historyRow = data['historyList'];
+			$(".history-count").html(historyRow.length);
  			$.each(historyRow, function(entryIndex, entry) {
 				
 				var date = entry['date'];
@@ -126,12 +128,12 @@ function resizeSecondDiv() {
 
 <div id="content_div">
 	<div id="resultVideoDiv" class="div-box" style="overflow:auto">
-		<h4 class="item-header"><s:message code="video.video"/></h4>
+		<h4 class="item-header"><s:message code="video.video"/> <span class="video-count"></span></h4>
 		<ol id="foundVideoList" class="items"></ol>
 	</div>
 	
 	<div id="resultHistoryDiv" class="div-box" style="overflow:auto">
-		<h4 class="item-header"><s:message code="video.history"/></h4>
+		<h4 class="item-header"><s:message code="video.history"/> <span class="history-count"></span></h4>
 		<ol id="foundHistoryList" class="items"></ol>
 	</div>
 </div>

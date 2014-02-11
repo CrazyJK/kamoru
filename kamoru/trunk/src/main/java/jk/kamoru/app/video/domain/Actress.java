@@ -7,12 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 import lombok.Data;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,6 +26,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @Data
+@XmlRootElement(name = "actress", namespace = "http://www.w3.org/2001/XMLSchema-instance")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Actress implements Serializable, Comparable<Actress> {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
@@ -33,7 +41,11 @@ public class Actress implements Serializable, Comparable<Actress> {
 	private String debut;
 	private String height;
 	
+	@XmlTransient
+	@JsonIgnore
 	private List<Studio> studioList;
+	@XmlTransient
+	@JsonIgnore
 	private List<Video>   videoList;
 
 	private boolean loaded;
@@ -82,6 +94,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 		return localName;
 	}
 	
+	@JsonIgnore
 	public List<URL> getWebImage() {
 		return VideoUtils.getGoogleImage(this.getName());
 	}

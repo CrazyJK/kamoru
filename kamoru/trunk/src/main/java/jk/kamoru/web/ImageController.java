@@ -32,7 +32,7 @@ public class ImageController extends AbstractController {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
-		model.addAttribute(imageService.getImageList());
+		model.addAttribute("imageNameJSON", imageService.getImageNameJSON());
 		return "image/slide";
 	}
 
@@ -42,6 +42,15 @@ public class ImageController extends AbstractController {
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
 		return "image/slidesjs";
+	}
+	
+	@RequestMapping(value="/canvas", method=RequestMethod.GET)
+	public String canvas(Model model, @RequestParam(value="n", required=false, defaultValue="-1") int n) {
+		int count = imageService.getImageSourceSize();
+		model.addAttribute("imageCount", count);
+		model.addAttribute("selectedNumber", n > count ? count -1 : n);
+		model.addAttribute("imageNameJSON", imageService.getImageNameJSON());
+		return "image/canvas";
 	}
 	
 	@RequestMapping(value="/{idx}/thumbnail")

@@ -64,7 +64,7 @@ function fnViewFullImage(image) {
 }
 /**
  * 이미지 팝업을 띄운다. 화면보다 큰 이미지는 마우스 드래그 가능하게 함.
- * FIXME win.document 를 찾지 못하는 오류 발생
+ * FIXME safari에서 win.document 를 찾지 못하는 오류
  * @param img 이미지 객체
  * @param w 이미지 가로 길이
  * @param h 이미지 세로 길이
@@ -162,19 +162,22 @@ function mw_image_window(img, w, h)
 
 	
 	
-	win=window.open("","image_window",settings); 
-	win.document.open(); 
-	win.document.write ("<html><head> \n<meta http-equiv='imagetoolbar' CONTENT='no'> \n<meta http-equiv='content-type' content='text/html; charset="+g4_charset+"'>\n"); 
-	win.document.write ("<title>"+title+"</title> \n");
+	var imgWin = window.open("","image_window",settings); 
+	alert(imgWin);
+	var doc = imgWin.document;
+	alert(doc);
+	doc.open(); 
+	doc.write ("<html><head> \n<meta http-equiv='imagetoolbar' CONTENT='no'> \n<meta http-equiv='content-type' content='text/html; charset="+g4_charset+"'>\n"); 
+	doc.write ("<title>"+title+"</title> \n");
 	if(w >= screen.width || h >= screen.height) { 
-		win.document.write (js_url); 
+		doc.write (js_url); 
 	} 
-	win.document.write ("<style>.dragme{position:relative;}</style> \n"); 
-	win.document.write ("</head> \n\n"); 
-	win.document.write ("<body leftmargin=0 topmargin=0 bgcolor=#dddddd style='cursor:arrow;'> \n"); 
-	win.document.write ("<table width=100% height=100% cellpadding=0 cellspacing=0><tr><td align=center valign=middle><img src='"+img.src+"' width='"+w+"' height='"+h+"' border=0 class='dragme' "+click+"></td></tr></table>");
-	win.document.write ("</body></html>"); 
-	win.document.close(); 
+	doc.write ("<style>.dragme{position:relative;}</style> \n"); 
+	doc.write ("</head> \n\n"); 
+	doc.write ("<body leftmargin=0 topmargin=0 bgcolor=#dddddd style='cursor:arrow;'> \n"); 
+	doc.write ("<table width=100% height=100% cellpadding=0 cellspacing=0><tr><td align=center valign=middle><img src='"+img.src+"' width='"+w+"' height='"+h+"' border=0 class='dragme' "+click+"></td></tr></table>");
+	doc.write ("</body></html>"); 
+	doc.close(); 
 
 	if(parseInt(navigator.appVersion) >= 4){win.window.focus();} 
 
