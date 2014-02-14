@@ -226,6 +226,18 @@ li,
 .sort-item {
 	font-size:.9em;
 }
+.item100 {
+	font-size:25px;
+	text-shadow:2px 2px 2px black;
+}
+.item50 {
+	font-size:23px;
+	text-shadow:2px 2px 2px red;
+}
+.item30 {
+	font-size:20px;
+	text-shadow:2px 2px 2px green;
+}
 .item10 {
 	font-size:18px;
 	text-shadow:2px 2px 2px cyan;

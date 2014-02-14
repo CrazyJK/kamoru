@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s"   uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="jk"     tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html lang="${locale }">
 <head>
@@ -204,9 +205,8 @@ ${video.scoreDesc}">${video.opus}</span>
 <section>
 	<h3><s:message code="video.total"/> <s:message code="video.studio"/> : ${fn:length(studioList)}</h3>
 	<article id="studioDiv" class="div-box">
-	<c:forEach var="studio" items="${studioList}"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
-		<span onclick="fnViewStudioDetail('${studio.name}')" class="${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
-			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">${studio.name}(${countByStudio})</span>
+	<c:forEach var="studio" items="${studioList}">
+		<jk:studio studio="${studio}" view="span"/>
 	</c:forEach>
 	</article>
 </section>
@@ -214,9 +214,8 @@ ${video.scoreDesc}">${video.opus}</span>
 <section>
 	<h3><s:message code="video.total"/> <s:message code="video.actress"/> : ${fn:length(actressList)}</h3>
 	<article id="actressDiv" class="div-box">
-	<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<span onclick="fnViewActressDetail('${actress.name}')" class="${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" 
-			title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut}">${actress.name}(${countByActress})</span>
+	<c:forEach items="${actressList}" var="actress">
+		<jk:actress actress="${actress}" view="span"/>
 	</c:forEach>
 	</article>
 </section>

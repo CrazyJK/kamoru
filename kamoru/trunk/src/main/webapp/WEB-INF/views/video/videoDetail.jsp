@@ -52,9 +52,9 @@ function fnToggleRenameForm() {
 	<c:if test="${video.etcFileListPath ne ''}">
 	<dd><div  class="label-large">ETC : ${video.etcFileListPath}</div></dd>
 	</c:if>
-	<c:if test="${video.historyText ne ''}">
+	<%-- <c:if test="${video.historyText ne ''}">
 	<dd><pre  class="label">${video.historyText}</pre></dd>
-	</c:if>
+	</c:if> --%>
 	<c:if test="${video.overviewText ne ''}">
 	<dd><pre  class="label-large" onclick="opener.fnEditOverview('${video.opus}')" >${video.overviewText}</pre></dd>
 	</c:if>

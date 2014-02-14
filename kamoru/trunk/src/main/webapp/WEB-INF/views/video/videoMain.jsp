@@ -122,24 +122,14 @@ function fnViewBGImage() {
 	</div>
 	<div id="studioDiv" class="div-box">
 		<span onclick="fnUnchecked(this)">[${fn:length(studioList)}]</span>
-		<c:forEach items="${studioList}" var="studio"><c:set value="${fn:length(studio.videoList)}" var="countByStudio" />
-		<label 
-			class="item ${countByStudio > 9 ? 'item10' : countByStudio > 4 ? 'item5' : 'item1'}" 
-			title="${studio.homepage} ${studio.companyName} Actress:${fn:length(studio.actressList)}">
-			<form:checkbox path="selectedStudio" value="${studio.name}" cssClass="item-checkbox"/>
-			<span>${studio.name}(${countByStudio})</span>
-		</label>
+		<c:forEach items="${studioList}" var="studio">
+			<jk:studio studio="${studio}" view="label"/>
 		</c:forEach>
 	</div>
 	<div id="actressDiv" class="div-box">
 		<span onclick="fnUnchecked(this)">[${fn:length(actressList)}]</span>
-		<c:forEach items="${actressList}" var="actress"><c:set value="${fn:length(actress.videoList)}" var="countByActress" />
-		<label
-			class="item ${countByActress > 9 ? 'item10' : countByActress > 4 ? 'item5' : 'item1'}" 
-			title="${actress.localName} ${actress.birth} ${actress.bodySize} ${actress.height} ${actress.debut}">
-			<form:checkbox path="selectedActress" value="${actress.name}" cssClass="item-checkbox"/>
-			<span>${actress.name}(${countByActress})</span>
-		</label>
+		<c:forEach items="${actressList}" var="actress">
+			<jk:actress actress="${actress}" view="label"/>
 		</c:forEach>
 	</div>
 	</form:form>
