@@ -2,14 +2,12 @@ package jk.kamoru.app.video.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,7 @@ import jk.kamoru.app.video.dao.VideoDao;
 import jk.kamoru.app.video.domain.Action;
 import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.ActressSort;
+import jk.kamoru.app.video.domain.History;
 import jk.kamoru.app.video.domain.InequalitySign;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.Studio;
@@ -49,6 +48,8 @@ public class VideoServiceImpl implements VideoService {
 	// become disabled by using lombok @Slf4j
 //	protected static final Logger logger = LoggerFactory.getLogger(VideoServiceImpl.class);
 
+	@Autowired HistoryService historyService;
+	
 	/** default cover file byte array */
 	private byte[] defaultCoverFileBytes;
 	
@@ -81,28 +82,15 @@ public class VideoServiceImpl implements VideoService {
 	private final long MIN_FREE_SPAC = 10 * FileUtils.ONE_GB;
 	/** sleep time of moving video */
 	private final long SLEEP_TIME = 10 * 1000;
-
 	
 	/** video dao */
 	@Autowired private VideoDao videoDao;
 
-	/** history file */
-	private File historyFile;
-	/** history list */
-	private List<String> historyList;
-	
-	/** whether or not history changed */
-	private static boolean isHistoryChanged;
-
-	public VideoServiceImpl() {
-		isHistoryChanged = true;
-	}
-	
 	@Override
 	public void deleteVideo(String opus) {
 		log.trace(opus);
-		saveHistory(getVideo(opus), Action.DELETE);
 		videoDao.deleteVideo(opus);
+		saveHistory(getVideo(opus), Action.DELETE);
 	}
 
 	@Override
@@ -143,6 +131,35 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Map<String, String>> findHistory(String query) {
 		log.trace(query);
+		
+		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
+		for (History history : historyService.findByQuery(query)) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("date", new SimpleDateFormat(VideoCore.VIDEO_DATE_PATTERN).format(history.getDate()));
+			map.put("opus", history.getOpus());
+			map.put("act",  history.getAction().toString());
+			map.put("desc", history.getVideo() == null ? history.getDesc() : history.getVideo().getFullname());
+			foundMapList.add(map);
+		}
+		
+		log.debug("q={} foundLength={}", query, foundMapList.size());
+		Collections.sort(foundMapList, new Comparator<Map<String, String>>(){
+
+			@Override
+			public int compare(Map<String, String> o1, Map<String, String> o2) {
+				String thisStr = o1.get("date");
+				String compStr = o2.get("date");
+
+				String[] s = {thisStr, compStr};
+				Arrays.sort(s);
+				return s[0].equals(thisStr) ? 1 : -1;
+			}
+			
+		});
+		return foundMapList;
+		
+		
+		/*
 		List<Map<String, String>> foundMapList = new ArrayList<Map<String, String>>();
 
 		if(query == null || query.trim().length() == 0)
@@ -194,6 +211,7 @@ public class VideoServiceImpl implements VideoService {
 			log.error("history file read error", e);
 			throw new VideoException("history file read error", e);
 		}
+		*/
 	}
 
 	@Override
@@ -284,16 +302,6 @@ public class VideoServiceImpl implements VideoService {
 		return defaultCoverFileBytes;
 	}
 	
-	/**get history file
-	 * @return {@link #historyFile}
-	 */
-	private File getHistoryFile() {
-		if(historyFile == null)
-			historyFile = new File(basePath[0], "history.log");
-		log.debug("history file is {}", historyFile.getAbsolutePath());
-		return historyFile;
-	}
-
 	@Override
 	public Studio getStudio(String studioName) {
 		log.trace(studioName);
@@ -382,40 +390,19 @@ public class VideoServiceImpl implements VideoService {
 	 */
 	private void saveHistory(Video video, Action action) {
 		log.trace("opus={} : action={}", video.getOpus(), action);
-	
-		String files = null; 
-		switch(action) {
-			case PLAY :
-				files = video.getVideoFileListPath();
-				break;
-			case OVERVIEW :
-				files = video.getInfoFile().getName();
-				break;
-			case COVER :
-				files = video.getCoverFilePath();
-				break;
-			case SUBTITLES :
-				files = video.getSubtitlesFileListPath();
-				break;
-			case DELETE :
-				files = VideoUtils.toFileListToSimpleString(video.getFileAll());
-				break;
-			default:
-				throw new IllegalStateException("Undefined Action : " + action.toString());
-		}
-		String historymsg = MessageFormat.format("{0}, {1}, {2},\"{3}\"{4}", 
-				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), 
-				video.getOpus(), action, files, System.getProperty("line.separator"));
-		log.debug("save history - {}", historymsg);
 
-		if(action != Action.DELETE)
-			video.addHistory(historymsg);
+		History history = new History(video, action);
+		log.debug("save history - {}", history);
+
+		historyService.persist(history);
+/*		
 		try {
-			FileUtils.writeStringToFile(getHistoryFile(), historymsg, VideoCore.FILE_ENCODING, true);
+			FileUtils.writeStringToFile(getHistoryFile(), history.toFileSaveString(), VideoCore.FILE_ENCODING, true);
 			isHistoryChanged = true;
 		} catch (IOException e) {
-			log.error(historymsg, e);
+			log.error("Fail to save history", e);
 		}
+*/	
 	}
 
 	@Override
@@ -919,4 +906,5 @@ public class VideoServiceImpl implements VideoService {
 		Video video = videoDao.getVideo(opus);
 		video.rename(newName);
 	}
+
 }

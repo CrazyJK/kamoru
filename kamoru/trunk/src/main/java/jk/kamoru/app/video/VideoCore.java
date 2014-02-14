@@ -32,5 +32,7 @@ public class VideoCore {
 	public static final String EXT_INFO = "info";
 
 	public static final String EXT_WEBP = "webp";
+	
+	public static final String VIDEO_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
 }

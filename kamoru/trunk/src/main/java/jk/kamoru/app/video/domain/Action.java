@@ -23,8 +23,12 @@ public enum Action {
 	/**
 	 * delete video
 	 */
-	DELETE("Delete");
-	
+	DELETE("Delete"),
+	/**
+	 * mark rank
+	 */
+	RANK("Rank");
+
 	/**
 	 * action description
 	 */

@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import jk.kamoru.app.image.service.ImageService;
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.VideoException;
+import jk.kamoru.app.video.domain.Action;
 import jk.kamoru.app.video.domain.ActressSort;
+import jk.kamoru.app.video.domain.History;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.StudioSort;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.domain.VideoSearch;
 import jk.kamoru.app.video.domain.View;
+import jk.kamoru.app.video.service.HistoryService;
 import jk.kamoru.app.video.service.VideoService;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
@@ -52,7 +55,8 @@ public class VideoController extends AbstractController {
 	
 	@Autowired private ImageService imageService;
 	@Autowired private VideoService videoService;
-
+	@Autowired private HistoryService historyService;
+	
 	/**locae model attribute
 	 * @param locale
 	 * @return model attribute
@@ -470,4 +474,19 @@ public class VideoController extends AbstractController {
 	public void rename(@PathVariable("opus") String opus, @RequestParam("newname") String newName) {
 		videoService.rename(opus, newName);
 	}
+	
+	@RequestMapping("/transferPlayCountInfo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void transferPlayCountInfo() {
+		for (Video video : videoService.getVideoList()) {
+			int playCount = 0;
+			List<History> histories = historyService.findByVideo(video);
+			for (History history : histories) {
+				if (history.getAction() == Action.PLAY)
+					playCount++;
+			}
+			video.setPlayCount(playCount);
+		}
+	}
+	
 }

@@ -236,6 +236,9 @@ public class FileBaseVideoSource implements VideoSource {
 					video.addActress(actress);
 				}
 			}
+			catch (NullPointerException e) {
+				logger.error("", e);
+			}
 			catch (Exception e) {
 				logger.error("Error : {} - {}", file.getAbsolutePath(), e);
 			}
@@ -298,7 +301,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (videoMap.containsKey(opus.toLowerCase()))
 			return videoMap.get(opus.toLowerCase());
 		else
-			throw new VideoException("Video not found : " + opus);
+			throw new VideoException("Video not found : [" + opus + "]");
 	}
 	@Override
 	public Studio getStudio(String name) {

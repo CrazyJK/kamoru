@@ -1,5 +1,6 @@
 package jk.kamoru.app.video.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
+import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.Video;
@@ -17,6 +19,7 @@ import jk.kamoru.app.video.source.VideoSource;
 @SuppressWarnings("unused")
 @Repository
 public class VideoDaoFile implements VideoDao {
+	
 	protected static final Logger logger = LoggerFactory.getLogger(VideoDaoFile.class);
 
 	@Autowired

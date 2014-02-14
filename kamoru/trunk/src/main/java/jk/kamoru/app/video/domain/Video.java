@@ -16,20 +16,20 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import jk.kamoru.app.video.VideoCore;
 import jk.kamoru.app.video.VideoException;
+import jk.kamoru.app.video.service.HistoryService;
 import jk.kamoru.app.video.source.FileBaseVideoSource;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -53,6 +53,10 @@ public class Video implements Comparable<Video>, Serializable {
 	
 	private static Sort sortMethod = VideoCore.DEFAULT_SORTMETHOD;
 	
+	@XmlTransient
+	@JsonIgnore
+	@Autowired HistoryService historyService;
+	
 	// files
 	private List<File> videoFileList;
 	private List<File> subtitlesFileList;
@@ -74,7 +78,7 @@ public class Video implements Comparable<Video>, Serializable {
 	@XmlTransient
 	@JsonIgnore
 	private List<Actress> actressList;
-	private List<String> historyList; // history list
+//	private List<History> historyList; // history list
 	private Integer playCount;
 	private int rank; // ranking score
 
@@ -92,23 +96,13 @@ public class Video implements Comparable<Video>, Serializable {
 		videoCandidates		= new ArrayList<File>();
 		
 		actressList = new ArrayList<Actress>();
-		historyList = new ArrayList<String>();
+//		historyList = new ArrayList<History>();
 
 		playCount 	= 0;
 		rank 		= 0;
 		overview 	= "";
 	}
 	
-	/**
-	 * Action history를 info 파일에 저장. 
-	 * @param historymsg
-	 */
-	public void addHistory(String historymsg) {
-		logger.trace(historymsg);
-		historyList.add(historymsg);
-		this.saveInfo();
-	}
-
 	/**
 	 * 비디오 파일이 있으면, 나머지 파일을 같은 위치에 모은다.
 	 */
@@ -323,8 +317,8 @@ public class Video implements Comparable<Video>, Serializable {
 	 */
 	public String getHistoryText() {
 		StringBuilder sb = new StringBuilder();
-		for (String his : historyList) 
-			sb.append(his).append(SystemUtils.LINE_SEPARATOR);
+		for (History history : historyService.findByVideo(this))
+			sb.append(history.toHtmlString()).append(SystemUtils.LINE_SEPARATOR);
 		return sb.toString();
 	}
 
@@ -496,6 +490,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 */
 	public void increasePlayCount() {
 		this.playCount++;
+		this.saveInfo();
 	}
 
 	/**
@@ -606,22 +601,18 @@ public class Video implements Comparable<Video>, Serializable {
 	 * info 내용 저장
 	 */
 	private void saveInfo() {
+		JSONObject root = new JSONObject();
 		JSONObject info = new JSONObject();
+
 		info.put("opus", this.opus);
 		info.put("rank", this.rank);
-		info.put("overview",  this.overview);
-
-		JSONArray his = new JSONArray();
-		his.addAll(historyList);
-		
-		info.put("history", his);
-		JSONObject root = new JSONObject();
+		info.put("playCount", this.playCount);
+		info.put("overview", this.overview);
 		root.put("info", info);
-		
-		File file = this.getInfoFile();
+
 		try {
-			logger.info("{} {}", opus, root);
-			FileUtils.writeStringToFile(file, root.toString(), VideoCore.FILE_ENCODING);
+			FileUtils.writeStringToFile(getInfoFile(), root.toString(), VideoCore.FILE_ENCODING);
+			logger.info("{} {}", opus, root.toString());
 		} catch (IOException e) {
 			logger.error("info save error", e);
 		}
@@ -709,21 +700,24 @@ public class Video implements Comparable<Video>, Serializable {
 		if (!this.opus.equalsIgnoreCase(opus)) 
 			throw new VideoException("invalid info file. " + this.opus + " != " + opus);
 		
-		String rank = infoData.getString("rank");
-		this.rank = NumberUtils.toInt(rank, 0);
-		
-		this.overview = infoData.getString("overview");
-
-		JSONArray hisArray = infoData.getJSONArray("history");
-		this.playCount = 0;
-		this.historyList.clear();
-		for (int i=0, e=hisArray.size(); i<e; i++){
-			String line = hisArray.getString(i);
-			this.historyList.add(line);
-			String[] linePart = StringUtils.split(line, ",");
-			if (linePart.length > 2 && linePart[2].trim().equalsIgnoreCase(Action.PLAY.toString())) 
-				this.playCount++;
+		this.rank 		= infoData.getInt("rank");
+		try {
+			this.playCount 	= infoData.getInt("playCount");
 		}
+		catch (Exception e) {
+//			int play = 0;
+//			for(History history : historyService.findByOpus(this.opus)) {
+//				if (history.getAction() == Action.PLAY)
+//					play++;
+//			}
+//			if (playCount != play) {
+//				logger.info("infoFile.playCount[{}] != history.play[{}]", this.playCount, play);
+//				if (playCount < play)
+//					playCount = play;
+//			}
+		} 
+		this.overview 	= infoData.getString("overview");
+
 	}
 
 	/**
@@ -740,6 +734,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 */
 	public void setPlayCount(Integer playCount) {
 		this.playCount = playCount;
+		this.saveInfo();
 	}
 
 	/**
@@ -820,9 +815,9 @@ public class Video implements Comparable<Video>, Serializable {
 	@Override
 	public String toString() {
 		return String
-				.format("Video [opus=%s, actressList=%s, coverFile=%s, coverWebpFile=%s, etcFileList=%s, etcInfo=%s, historyList=%s, infoFile=%s, overview=%s, playCount=%s, rank=%s, studio=%s, subtitlesFileList=%s, title=%s, videoFileList=%s, releaseDate=%s]",
+				.format("Video [opus=%s, actressList=%s, coverFile=%s, coverWebpFile=%s, etcFileList=%s, etcInfo=%s, infoFile=%s, overview=%s, playCount=%s, rank=%s, studio=%s, subtitlesFileList=%s, title=%s, videoFileList=%s, releaseDate=%s]",
 						opus, actressList, coverFile, coverWebpFile, etcFileList,
-						etcInfo, historyList, infoFile, overview,
+						etcInfo, infoFile, overview,
 						playCount, rank, studio, subtitlesFileList, title,
 						videoFileList, releaseDate);
 	}
