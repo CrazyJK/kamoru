@@ -30,17 +30,32 @@ $(document).ready(function(){
 	});
 	
 });
+
+function fnRenameTo() {
+	var actressForm = document.forms['actressForm'];
+	actressForm.action = "<s:url value="/video/actress/${actress.name}/renameTo/"/>" + $("#newName").val();
+	actressForm.submit();
+}
+
+function fnPutActressInfo() {
+	var actressForm = document.forms['actressForm'];
+	actressForm.action = "<s:url value="/video/actress/${actress.name}"/>";
+	actressForm.submit();
+}
 </script>
 </head>
 <body>
 
-<form action="<s:url value="/video/actress/${actress.name}"/>" method="post">
+
+
+<form id="actressForm" action="<s:url value="/video/actress/${actress.name}"/>" method="post">
 <input type="hidden" name="_method" id="hiddenHttpMethod" value="put"/>
 <input type="hidden" name="name" value="${actress.name}"/>
 <dl class="dl-detail">
 	<dt class="label-large center">
-		<span>${actress.name}</span>
+		<input class="actressInfo" type="text" name="newname" value="${actress.name}" id="newName" />
 		<input class="actressInfo" type="text" name="localname" value="${actress.localName}" />
+		<span  class="button" style="float:right" onclick="fnRenameTo()">Rename</span>
 	</dt>
 	<dd style="text-align:center;">
 		<div id="actressImageContainer">
@@ -55,7 +70,7 @@ $(document).ready(function(){
 		<span class="label-title">Size :  <input class="actressInfo" type="text" name="bodySize" value="${actress.bodySize}" /></span>
 		<span class="label-title">Height :<input class="actressInfo" type="text" name="height"   value="${actress.height}"   /></span>
 		<span class="label-title">Debut : <input class="actressInfo" type="text" name="debut"    value="${actress.debut}"    /></span>
-		<input class="button" type="submit" value="Save"/>	
+		<span class="button" style="float:right" onclick="fnPutActressInfo()">Save</span>
 	</dd>
 	<dd>
 		<span class="label-title">Studio(${fn:length(actress.studioList)})</span>

@@ -253,5 +253,9 @@ public interface VideoService {
 	Map<Integer, List<Video>> groupByScore();
 
 	void rename(String opus, String newName);
+
+	void renameOfActress(String name, String newName);
+	
+	void renameOfStudio(String name, String newName);
 	
 }

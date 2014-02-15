@@ -973,5 +973,13 @@ public class Video implements Comparable<Video>, Serializable {
 		}
 	}
 
+	public void renameOfActress(String newName) {
+		String newVideoName = String.format("[%s][%s][%s][%s][%s]", studio.getName(), opus, title, newName, StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate);
+		rename(newVideoName);
+	}
+
+	public void renameOfStudio(String newName) {
+		rename(String.format("[%s][%s][%s][%s][%s]", newName, opus, title, getActressName(), StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate));
+	}
 	
 }

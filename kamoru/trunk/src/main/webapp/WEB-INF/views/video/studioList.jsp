@@ -34,7 +34,7 @@ $(document).ready(function(){
 <c:forEach items="${studioList}" var="studio" varStatus="status">
 	<tr><td class="nowrap">${status.count}</td>
 		<td class="nowrap" onclick="fnViewStudioDetail('${studio.name}')">${studio.name}</td>
-		<td class="nowrap">${studio.homepage}</td>
+		<td class="nowrap"><a href="<s:url value="${studio.homepage}" />" target="_blank">${studio.homepage}</a></td>
 		<td class="nowrap">${fn:length(studio.videoList)}</td>
 		<td class="nowrap">
 			<c:forEach items="${studio.videoList}" var="video">

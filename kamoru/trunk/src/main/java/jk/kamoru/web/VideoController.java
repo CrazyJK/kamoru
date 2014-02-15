@@ -24,6 +24,7 @@ import jk.kamoru.app.video.service.HistoryService;
 import jk.kamoru.app.video.service.VideoService;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
+import jk.kamoru.util.StringUtils;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
@@ -489,4 +490,26 @@ public class VideoController extends AbstractController {
 		}
 	}
 	
+	@RequestMapping(value="/actress/{oriname}/renameTo/{newname}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void actressRename(@PathVariable("oriname") String oriname, @PathVariable("newname") String newname) {
+		if (StringUtils.isNullOrBlank(oriname) || StringUtils.isNullOrBlank(newname)) {
+			logger.warn("name is empty. [{}] to [{}]", oriname, newname);
+			return;
+		}
+		logger.info("rename to [{}] from [{}]", newname, oriname);
+		videoService.renameOfActress(oriname, newname);
+	}
+
+	@RequestMapping(value="/studio/{oriname}/renameTo/{newname}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void studioRename(@PathVariable("oriname") String oriname, @PathVariable("newname") String newname) {
+		if (StringUtils.isNullOrBlank(oriname) || StringUtils.isNullOrBlank(newname)) {
+			logger.warn("name is empty. [{}] to [{}]", oriname, newname);
+			return;
+		}
+		logger.info("rename to [{}] from [{}]", newname, oriname);
+		videoService.renameOfStudio(oriname, newname);
+	}
+
 }

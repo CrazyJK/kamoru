@@ -908,6 +908,23 @@ public class VideoServiceImpl implements VideoService {
 	public void rename(String opus, String newName) {
 		Video video = videoDao.getVideo(opus);
 		video.rename(newName);
+		videoDao.reload();
+	}
+
+	@Override
+	public void renameOfActress(String name, String newName) {
+		Actress actress = videoDao.getActress(name);
+		for (Video video : actress.getVideoList()) {
+			video.renameOfActress(newName);
+		}
+		videoDao.reload();
+	}
+
+	@Override
+	public void renameOfStudio(String name, String newName) {
+		for (Video video : videoDao.getStudio(name).getVideoList())
+			video.renameOfStudio(newName);
+		videoDao.reload();
 	}
 
 }

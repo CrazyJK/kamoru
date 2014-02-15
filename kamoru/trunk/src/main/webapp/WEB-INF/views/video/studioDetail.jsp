@@ -6,19 +6,33 @@
 <html>
 <head>
 <title>${studio.name}</title>
+<script type="text/javascript">
+function fnRenameTo() {
+	var actressForm = document.forms['studioForm'];
+	actressForm.action = "<s:url value="/video/studio/${studio.name}/renameTo/"/>" + $("#newName").val();
+	actressForm.submit();
+}
+
+function fnPutStudioInfo() {
+	var actressForm = document.forms['studioForm'];
+	actressForm.action = "<s:url value="/video/studio/${studio.name}"/>";
+	actressForm.submit();
+}
+</script>
 </head>
 <body>
 
-<form action="<s:url value="/video/studio/${studio.name}"/>" method="post">
+<form id="studioForm" action="<s:url value="/video/studio/${studio.name}"/>" method="post">
 <input type="hidden" name="_method" id="hiddenHttpMethod" value="put"/>
 <dl class="dl-detail">
 	<dt class="label-large center">
-		<span>${studio.name}</span>
+		<input class="studioInfo" type="text" name="newname" value="${studio.name}" id="newName" />
+		<span  class="button" style="float:right" onclick="fnRenameTo()">Rename</span>
 	</dt>
 	<dd>
 		<span class="label-title">Homepage : <input class="studioInfo" type="text" name="homepage" value="${studio.homepage}" /></span>
 		<span class="label-title">Company : <input class="studioInfo" type="text" name="companyname" value="${studio.companyName}" /></span>
-		<input class="button" type="submit" value="Save"/>	
+		<span class="button" style="float:right" onclick="fnPutStudioInfo()">Save</span>
 	</dd>
 	<dd>
 		<span class="label-title">Actress(${fn:length(studio.actressList)})</span>
