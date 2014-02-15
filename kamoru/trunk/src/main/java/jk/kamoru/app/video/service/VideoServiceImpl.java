@@ -823,9 +823,12 @@ public class VideoServiceImpl implements VideoService {
 		
 		List<Video> list = new ArrayList<Video>();
 		for (Video video : videoDao.getVideoList())
-			if (!video.isExistVideoFileList())
+			if (!video.isExistVideoFileList()) {
+				video.setSortMethod(Sort.O);
 				list.add(video);
-
+			}
+		Collections.sort(list);
+		
 		log.debug("  need torrent videos - {}", list.size());
 		
 		// get downloaded torrent file
