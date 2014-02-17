@@ -56,23 +56,28 @@ public class HistoryDaoFile implements HistoryDao {
 		log.debug("read history.log size={}", historyList.size());
 
 		for (String line : lines) {
-			String[] parts = StringUtils.split(line, ",", 4);
-			History history = new History();
-			if (parts.length > 0)
-				history.setDate(new SimpleDateFormat(VideoCore.VIDEO_DATE_PATTERN).parse(parts[0].trim()));
-			if (parts.length > 1)
-				history.setOpus(parts[1].trim());
-			if (parts.length > 2)
-				history.setAction(Action.valueOf(parts[2].toUpperCase().trim()));
-			if (parts.length > 3)
-				history.setDesc(parts[3].trim());
-			try {
-				history.setVideo(videoDao.getVideo(parts[1].trim()));
+			if (line.trim().length() > 0) {
+				String[] parts = StringUtils.split(line, ",", 4);
+				History history = new History();
+				try {
+					if (parts.length > 0)
+						history.setDate(new SimpleDateFormat(VideoCore.VIDEO_DATE_PATTERN).parse(parts[0].trim()));
+					if (parts.length > 1)
+						history.setOpus(parts[1].trim());
+					if (parts.length > 2)
+						history.setAction(Action.valueOf(parts[2].toUpperCase().trim()));
+					if (parts.length > 3)
+						history.setDesc(parts[3].trim());
+					history.setVideo(videoDao.getVideo(parts[1].trim()));
+				}
+				catch (VideoException e) {
+					log.debug("{}", e.getMessage());
+				}
+				catch (Exception e) {
+					log.warn("{} - {}", e.getMessage(), line);
+				}
+				historyList.add(history);
 			}
-			catch (VideoException e) {
-				log.debug("{}", e.getMessage());
-			}
-			historyList.add(history);
 		}
 		log.debug("historyList.size = {}", historyList.size());
 		isHistoryChanged = false;

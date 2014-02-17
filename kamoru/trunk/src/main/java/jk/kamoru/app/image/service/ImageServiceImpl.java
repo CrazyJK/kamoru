@@ -60,4 +60,9 @@ public class ImageServiceImpl implements ImageService {
 		sb.append("}");
 		return sb.toString();
 	}
+
+	@Override
+	public void delete(int idx) {
+		imageSource.delete(idx);
+	}
 }

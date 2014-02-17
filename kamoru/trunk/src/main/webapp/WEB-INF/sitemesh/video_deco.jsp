@@ -83,6 +83,7 @@ function actionFrame(url, method) {
 	<li class="menu"><a href="<c:url value="/video/actress"/>"><s:message code="video.actress"/></a>
 	<li class="menu"><a href="<c:url value="/video/studio"/>"><s:message code="video.studio"/></a>
 	<li class="menu"><a href="<c:url value="/image"/>"><s:message code="video.image"/></a>
+	<li class="menu"><a href="<c:url value="/image/canvas"/>"><s:message code="default.canvas"/></a>
 	<li class="menu"><a href="<c:url value="/video/briefing"/>"><s:message code="video.briefing"/></a>
 	<li class="menu"><a href="<c:url value="/video/torrent"/>"><s:message code="video.torrent"/></a>
 	<li class="menu"><a href="<c:url value="/video/manager"/>"><s:message code="video.manager"/></a>

@@ -13,5 +13,7 @@ public interface ImageSource {
 	int getImageSourceSize();
 	
 	void reload();
+
+	void delete(int idx);
 	
 }

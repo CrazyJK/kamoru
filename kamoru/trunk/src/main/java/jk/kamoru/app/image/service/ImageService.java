@@ -20,4 +20,6 @@ public interface ImageService {
 
 	String getImageNameJSON();
 
+	void delete(int idx);
+
 }

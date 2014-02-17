@@ -1,6 +1,13 @@
 package jk.kamoru.web;
 
+import java.io.IOException;
 import java.util.Date;
+
+import jk.kamoru.app.image.domain.PictureType;
+import jk.kamoru.app.image.service.ImageService;
+import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.util.VideoUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,13 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import jk.kamoru.app.image.domain.PictureType;
-import jk.kamoru.app.image.service.ImageService;
-import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.util.VideoUtils;
-
 @Controller
 @RequestMapping("/image")
+@Slf4j
 public class ImageController extends AbstractController {
 
 	@Autowired
@@ -45,7 +48,15 @@ public class ImageController extends AbstractController {
 	}
 	
 	@RequestMapping(value="/canvas", method=RequestMethod.GET)
-	public String canvas(Model model, @RequestParam(value="n", required=false, defaultValue="-1") int n) {
+	public String canvas(Model model, 
+			@RequestParam(value="n", required=false, defaultValue="-1") int n,
+			@RequestParam(value="d", required=false, defaultValue="-1") int d) {
+		if (d > -1) {
+			imageService.delete(d);
+			n = d;
+		}
+		// TODO n이 없으면(-1), 쿠키에서 찾아 설정하기
+		
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count -1 : n);
@@ -73,7 +84,13 @@ public class ImageController extends AbstractController {
 		
 		return getImageEntity(imageBytes, MediaType.IMAGE_JPEG);
 	}
-	
+
+	@RequestMapping(value="/{idx}", method=RequestMethod.DELETE)
+	public void delete(@PathVariable int idx) throws IOException {
+		log.info("Delete image {}", idx);
+		imageService.delete(idx);
+	}
+
 	@RequestMapping(value="/random")
 	public HttpEntity<byte[]> viewImageByRandom() {
 		byte[] imageBytes = imageService.getImageByRandom().getImageBytes(PictureType.MASTER);
@@ -98,6 +115,7 @@ public class ImageController extends AbstractController {
 		return "image/google";
 	}
 	
+	
 	private HttpEntity<byte[]> getImageEntity(byte[] imageBytes, MediaType type) {
 		long today = new Date().getTime();
 
@@ -112,5 +130,5 @@ public class ImageController extends AbstractController {
 		return new HttpEntity<byte[]>(imageBytes, headers);		
 	}
 	
-
+	
 }

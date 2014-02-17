@@ -33,9 +33,9 @@ $(document).ready(function(){
 	}).bind("mouseout", function(){
 		$(this).children("ul").hide();
 	});
-	
-	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
-	$("body").css("background-image", "url(" + bgImgUrl + ")");
+
+	setBackgroundImage();
+	setInterval(function() {setBackgroundImage();},	60*1000);
 	
 	$("nav#deco_nav section ul").hide();
 
@@ -43,6 +43,10 @@ $(document).ready(function(){
 	showNav();
 
 });
+function setBackgroundImage() {
+	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
+	$("body").css("background-image", "url(" + bgImgUrl + ")");
+}
 function resizeSectionHeight() {
 	var windowHeight = $(window).height();
 	var headerHeight = $("#deco_header").outerHeight();

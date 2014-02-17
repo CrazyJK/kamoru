@@ -63,4 +63,8 @@ public class Image {
 		return outputStream.toByteArray();
 	}
 
+	public void delete() {
+		FileUtils.deleteQuietly(file);
+	}
+
 }

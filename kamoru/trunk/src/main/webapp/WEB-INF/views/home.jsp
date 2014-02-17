@@ -71,12 +71,12 @@ String lang = locale.getLanguage();
 </div>
 
 <p>
-
 	<security:authorize url="/home">
 	<a href="<s:url value="/j_spring_security_logout"/>"><s:message code="default.logout"/></a>
 	</security:authorize>
+	<c:if test="${'anonymousUser' eq auth.principal}">
 	<a href="<s:url value="/auth/login"/>"><s:message code="default.login"/></a>
-
+	</c:if>
 </p>
 
 <P>

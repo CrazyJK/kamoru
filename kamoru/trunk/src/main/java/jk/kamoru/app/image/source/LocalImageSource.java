@@ -3,7 +3,9 @@ package jk.kamoru.app.image.source;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Comparator;
 
 import jk.kamoru.app.image.ImageException;
 import jk.kamoru.app.image.domain.Image;
@@ -36,6 +38,19 @@ public class LocalImageSource implements ImageSource {
 		imageList = new ArrayList<Image>();
 		for (File file : imageFileList) {
 			imageList.add(new Image(file));
+		}
+		
+		try {
+			Collections.sort(imageList, new Comparator<Image>() {
+				@Override
+				public int compare(Image o1, Image o2) {
+					return (int) (o1.getLastModified() - o2.getLastModified());
+				}
+			});
+		}
+		catch (Exception e) {
+			log.warn("Error: {}", e.getMessage());
+		} finally {
 		}
 		log.info("Total found image size : {}", imageList.size());
 	}
@@ -70,6 +85,14 @@ public class LocalImageSource implements ImageSource {
 	@Scheduled(cron = "0 */7 * * * *")
 	public void reload() {
 		listImages();
+	}
+
+	@Override
+	public void delete(int idx) {
+		Image image = createImageSource().get(idx);
+		image.delete();
+		createImageSource().remove(idx);
+		log.info("DELETE - {}", image.getName());
 	}
 
 }
