@@ -4,6 +4,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class LoadTester {
 
@@ -25,22 +27,29 @@ public abstract class LoadTester {
 
 	abstract long getRunningTimeMillis();
 
+	abstract long getMaxSleepTimeMillis();
+	
 	public void start() throws Exception {
-		this.loginURL = new URL(getLoginUrl());
-		this.loadURLs = new ArrayList<URL>();
+		loginURL = new URL(getLoginUrl());
+		loadURLs = new ArrayList<URL>();
 		for (String url : getLoadUrls()) {
-			this.loadURLs.add(new URL(url));
+			loadURLs.add(new URL(url));
 		}
+	
+		ExecutorService threadPool = Executors.newFixedThreadPool(getThreadSize());
+		
 		System.out.println("No, Thread, URL, Elapsed time, Content length, Error");
+		
 		for (int i = 0; i < getThreadSize(); i++) {
 			String[] userinfo = getUserList().get(i % getUserList().size());
-			this.loginData = String.format(getLoginDataFormat(),
+			loginData = String.format(getLoginDataFormat(),
 					URLEncoder.encode(userinfo[0], getEncoding()),
 					URLEncoder.encode(userinfo[1], getEncoding()));
-			Load load = new Load(userinfo[0], loginURL, loginData, loadURLs, getRunningTimeMillis());
-			load.start();
+			
+			Load load = new Load(userinfo[0], loginURL, loginData, loadURLs, getRunningTimeMillis(), getMaxSleepTimeMillis());
+			threadPool.execute(load);
 		}
-//		System.out.format("Load test end. Total call %s", Load.callCount);
+		threadPool.shutdown();
 	}
 
 }

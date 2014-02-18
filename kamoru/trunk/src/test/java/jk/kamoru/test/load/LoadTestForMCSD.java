@@ -21,7 +21,8 @@ public class LoadTestForMCSD extends LoadTester {
 			"http://123.212.190.111:8080/m/club/20130621"};
 
 	int threadSize;
-	long runningTime;
+	int runningTime;
+	int maxSleepTime;
 
 
 
@@ -32,8 +33,9 @@ public class LoadTestForMCSD extends LoadTester {
 	public static void main(String[] args) {
 		try {
 			LoadTestForMCSD loadTest = new LoadTestForMCSD();
-			loadTest.threadSize = Integer.parseInt(args[0]);
-			loadTest.runningTime = Integer.parseInt(args[1]);
+			loadTest.threadSize   = Integer.parseInt(args[0]);
+			loadTest.runningTime  = Integer.parseInt(args[1]);
+			loadTest.maxSleepTime = Integer.parseInt(args[2]);
 			loadTest.start();
 		} catch (Exception e) {
 			System.out.println("First argument : Thread size, Second argement : Load time");
@@ -83,6 +85,11 @@ public class LoadTestForMCSD extends LoadTester {
 		userList.add(new String[]{"현혁", "1"});
 		
 		return userList;
+	}
+
+	@Override
+	long getMaxSleepTimeMillis() {
+		return (long)maxSleepTime * 1000;
 	}
 
 }	

@@ -22,18 +22,20 @@ public class Load extends Thread {
 	List<URL> loadURLs;
 	long quitTime;
 	String cookies;
+	long maxSleepTime;
 	
 	public Load() {
 		cookies = new String();
 	}
 
-	public Load(String name, URL loginURL, String loginData, List<URL> loadURLs, long runningTime) {
+	public Load(String name, URL loginURL, String loginData, List<URL> loadURLs, long runningTime, long maxSleepTime) {
 		this();
 		this.setName(this.getName() + "-" + name);
 		this.loginURL = loginURL;
 		this.loginData = loginData;
 		this.loadURLs = loadURLs; 
 		this.quitTime = System.currentTimeMillis() + runningTime;
+		this.maxSleepTime = maxSleepTime;
 	}
 	
 	public void run() {
@@ -50,7 +52,7 @@ public class Load extends Thread {
 	
 	private void sleep() {
 		try {
-			sleep((long) (Math.random() * 3000));
+			sleep((long) (Math.random() * maxSleepTime));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

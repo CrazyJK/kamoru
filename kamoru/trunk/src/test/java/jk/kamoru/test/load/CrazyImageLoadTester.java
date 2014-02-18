@@ -8,40 +8,32 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class CrazyLoadTester extends LoadTester {
+public class CrazyImageLoadTester extends LoadTester {
 
 	final String loginUrl = "http://jk.kamoru:8080/crazy/j_spring_security_check";
 	final String loginDataFormat = "j_username=%s&j_password=%s";
 	final String username = "name";
 	final String password = "crazyjk";
 	final String encoding = "UTF-8";
-	final String[] loadUrls = new String[]{
-			"http://jk.kamoru:8080/crazy/video",
-			"http://jk.kamoru:8080/crazy/video/list",
-			"http://jk.kamoru:8080/crazy/video/actress",
-			"http://jk.kamoru:8080/crazy/video/studio",
-			"http://jk.kamoru:8080/crazy/image",
-			"http://jk.kamoru:8080/crazy/video/briefing",
-			"http://jk.kamoru:8080/crazy/video/SNIS-010",
-			"http://jk.kamoru:8080/crazy/video/actress/Yui%20Hatano",
-			"http://jk.kamoru:8080/crazy/video/studio/MAXING",
-			"http://jk.kamoru:8080/crazy/video/search.json?q=a"};
+	final String loadImageUrlPattern = "http://jk.kamoru:8080/crazy/image/%s";
+	final int maxImageIndex = 21;
 	
 	int threadSize;
 	int runningTime;
 	int maxSleepTime;
 
+	
 	/**
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		if (args != null && args.length > 1) {
-			int threadSize 	= Integer.parseInt(args[0]);
-			int runningTime = Integer.parseInt(args[1]);
+		if (args != null && args.length > 2) {
+			int threadSize 	 = Integer.parseInt(args[0]);
+			int runningTime  = Integer.parseInt(args[1]);
 			int maxSleepTime = Integer.parseInt(args[2]);
-
-			CrazyLoadTester loadTest = new CrazyLoadTester();
+			
+			CrazyImageLoadTester loadTest = new CrazyImageLoadTester();
 			loadTest.setThreadSize(threadSize);
 			loadTest.setRunningTime(runningTime);
 			loadTest.setMaxSleepTime(maxSleepTime);
@@ -69,7 +61,11 @@ public class CrazyLoadTester extends LoadTester {
 
 	@Override
 	String[] getLoadUrls() {
-		return this.loadUrls;
+		String[] loadUrls = new String[21];
+		for (int i=0; i<maxImageIndex; i++) {
+			loadUrls[i] = String.format(loadImageUrlPattern, i); 
+		}
+		return loadUrls;
 	}
 
 	@Override
@@ -80,14 +76,6 @@ public class CrazyLoadTester extends LoadTester {
 	@Override
 	long getRunningTimeMillis() {
 		return (long)this.runningTime * 1000;
-	}
-
-	public void setThreadSize(int threadSize) {
-		this.threadSize = threadSize;
-	}
-
-	public void setRunningTime(int runningTime) {
-		this.runningTime = runningTime;
 	}
 
 	@Override
