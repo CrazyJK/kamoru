@@ -53,7 +53,7 @@
 	<logger name="jk">
 		<level value="info" />
 		<!-- <appender-ref ref="app" /> -->
-		<appender-ref ref="console" />
+		<!-- <appender-ref ref="console" /> -->
 	</logger>
 	<logger name="jk.kamoru.util.RuntimeUtils">
 		<level value="trace" />
@@ -85,7 +85,7 @@
 	<!-- Root Logger -->
 	<root>
 		<priority value="debug" />
-		<appender-ref ref="root" />
+		<!-- <appender-ref ref="root" /> -->
 	</root>
 	
 </log4j:configuration>
