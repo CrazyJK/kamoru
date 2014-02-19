@@ -1,24 +1,13 @@
 package jk.kamoru.test.load;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class LoadTestForMCSD extends LoadTester {
-
-	String[] loadUrls = new String[]{
-			"http://123.212.190.111:8080/m/home",
-			"http://123.212.190.111:8080/m/rqst/home",
-			"http://123.212.190.111:8080/m/rqst/list/todo",
-			"http://123.212.190.111:8080/m/rqst/20311",
-			"http://123.212.190.111:8080/m/rqst/list/run",
-			"http://123.212.190.111:8080/m/faq/home",
-			"http://123.212.190.111:8080/m/faq/6150",
-			"http://123.212.190.111:8080/m/checkup/home",
-			"http://123.212.190.111:8080/m/info/company/3433",
-			"http://123.212.190.111:8080/m/info/install/24279",
-			"http://123.212.190.111:8080/m/club/home",
-			"http://123.212.190.111:8080/m/club/20130621"};
 
 	int threadSize;
 	int runningTime;
@@ -44,8 +33,12 @@ public class LoadTestForMCSD extends LoadTester {
 	}
 
 	@Override
-	String getLoginUrl() {
-		return "http://123.212.190.111:8080/m/j_spring_security_check";
+	URL getLoginURL() {
+		try {
+			return new URL("http://123.212.190.111:8080/m/j_spring_security_check");
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override
@@ -59,8 +52,24 @@ public class LoadTestForMCSD extends LoadTester {
 	}
 
 	@Override
-	String[] getLoadUrls() {
-		return loadUrls;
+	List<URL> getLoadURLs() {
+		try {
+			return Arrays.asList(
+					new URL("http://123.212.190.111:8080/m/home"),
+					new URL("http://123.212.190.111:8080/m/rqst/home"),
+					new URL("http://123.212.190.111:8080/m/rqst/list/todo"),
+					new URL("http://123.212.190.111:8080/m/rqst/20311"),
+					new URL("http://123.212.190.111:8080/m/rqst/list/run"),
+					new URL("http://123.212.190.111:8080/m/faq/home"),
+					new URL("http://123.212.190.111:8080/m/faq/6150"),
+					new URL("http://123.212.190.111:8080/m/checkup/home"),
+					new URL("http://123.212.190.111:8080/m/info/company/3433"),
+					new URL("http://123.212.190.111:8080/m/info/install/24279"),
+					new URL("http://123.212.190.111:8080/m/club/home"),
+					new URL("http://123.212.190.111:8080/m/club/20130621"));
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override
@@ -74,22 +83,25 @@ public class LoadTestForMCSD extends LoadTester {
 	}
 
 	@Override
-	List<String[]> getUserList() {
-		List<String[]> userList = new ArrayList<String[]>();
-		userList.add(new String[]{"남종관", "1"});
-		userList.add(new String[]{"배태영", "1"});
-//		userList.add(new String[]{"정필종", "1"});
-		userList.add(new String[]{"장응주", "1"});
-//		userList.add(new String[]{"조상욱", "1"});
-		userList.add(new String[]{"서대영", "1"});
-		userList.add(new String[]{"현혁", "1"});
-		
+	List<LoadTester.LoginUser> getLoginUserList() {
+		List<LoadTester.LoginUser> userList = new ArrayList<LoadTester.LoginUser>();
+		userList.add(new LoginUser("남종관", "1"));
+		userList.add(new LoginUser("배태영", "1"));
+		userList.add(new LoginUser("장응주", "1"));
+		userList.add(new LoginUser("서대영", "1"));
+		userList.add(new LoginUser("현혁", "1"));
 		return userList;
 	}
 
 	@Override
-	long getMaxSleepTimeMillis() {
+	long getSleepTimeMillis() {
 		return (long)maxSleepTime * 1000;
+	}
+
+	@Override
+	boolean isRandomSleep() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }	

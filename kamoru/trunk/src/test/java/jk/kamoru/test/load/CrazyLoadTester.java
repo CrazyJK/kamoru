@@ -1,6 +1,9 @@
 package jk.kamoru.test.load;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.Data;
@@ -53,8 +56,12 @@ public class CrazyLoadTester extends LoadTester {
 	}
 
 	@Override
-	String getLoginUrl() {
-		return this.loginUrl;
+	URL getLoginURL() {
+		try {
+			return new URL(loginUrl);
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override
@@ -66,10 +73,24 @@ public class CrazyLoadTester extends LoadTester {
 	String getEncoding() {
 		return this.encoding;
 	}
-
+	
 	@Override
-	String[] getLoadUrls() {
-		return this.loadUrls;
+	List<URL> getLoadURLs() {
+		try {
+			return Arrays.asList(
+					new URL("http://jk.kamoru:8080/crazy/video"),
+					new URL("http://jk.kamoru:8080/crazy/video/list"),
+					new URL("http://jk.kamoru:8080/crazy/video/actress"),
+					new URL("http://jk.kamoru:8080/crazy/video/studio"),
+					new URL("http://jk.kamoru:8080/crazy/image"),
+					new URL("http://jk.kamoru:8080/crazy/video/briefing"),
+					new URL("http://jk.kamoru:8080/crazy/video/SNIS-010"),
+					new URL("http://jk.kamoru:8080/crazy/video/actress/Yui%20Hatano"),
+					new URL("http://jk.kamoru:8080/crazy/video/studio/MAXING"),
+					new URL("http://jk.kamoru:8080/crazy/video/search.json?q=a"));
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@Override
@@ -91,19 +112,24 @@ public class CrazyLoadTester extends LoadTester {
 	}
 
 	@Override
-	List<String[]> getUserList() {
-		List<String[]> userList = new ArrayList<String[]>();
-		userList.add(new String[]{"user1", "crazyjk"});
-		userList.add(new String[]{"user2", "crazyjk"});
-		userList.add(new String[]{"user3", "crazyjk"});
-		userList.add(new String[]{"user4", "crazyjk"});
-		userList.add(new String[]{"user5", "crazyjk"});
+	List<LoadTester.LoginUser> getLoginUserList() {
+		List<LoadTester.LoginUser> userList = new ArrayList<LoadTester.LoginUser>();
+		userList.add(new LoginUser("user1", "crazyjk"));
+		userList.add(new LoginUser("user2", "crazyjk"));
+		userList.add(new LoginUser("user3", "crazyjk"));
+		userList.add(new LoginUser("user4", "crazyjk"));
+		userList.add(new LoginUser("user5", "crazyjk"));
 		return userList;
 	}
 
 	@Override
-	long getMaxSleepTimeMillis() {
+	long getSleepTimeMillis() {
 		return (long)maxSleepTime * 1000;
+	}
+
+	@Override
+	boolean isRandomSleep() {
+		return true;
 	}
 
 }
