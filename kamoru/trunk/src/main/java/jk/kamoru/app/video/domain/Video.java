@@ -19,6 +19,7 @@ import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.service.HistoryService;
 import jk.kamoru.app.video.source.FileBaseVideoSource;
 import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.core.storage.Storage;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 import net.sf.json.JSONObject;
@@ -45,7 +46,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @XmlRootElement(name = "video", namespace = "http://www.w3.org/2001/XMLSchema-instance")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Video implements Comparable<Video>, Serializable {
+public class Video implements Comparable<Video>, Serializable, Storage.Element {
 
 	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
 
@@ -826,6 +827,7 @@ public class Video implements Comparable<Video>, Serializable {
 	 * video의 모든 파일 크기
 	 * @return entire length of video
 	 */
+	@Override
 	public long getLength() {
 		long length = 0l;
 		for (File file : this.getFileAll()) {
@@ -980,6 +982,21 @@ public class Video implements Comparable<Video>, Serializable {
 
 	public void renameOfStudio(String newName) {
 		rename(String.format("[%s][%s][%s][%s][%s]", newName, opus, title, getActressName(), StringUtils.isEmpty(releaseDate) ? getVideoDate() : releaseDate));
+	}
+
+	@Override
+	public String getName() {
+		return getOpus();
+	}
+
+	@Override
+	public String getQuery() {
+		return getFullname();
+	}
+
+	@Override
+	public void delete() {
+		removeVideo();
 	}
 	
 }
