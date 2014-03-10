@@ -161,6 +161,41 @@ $(document).ready(function(){
 </section>
 
 <section>
+	<h3><s:message code="video.play"/> &amp; <s:message code="video.rank"/> </h3>
+	<article>
+		<table class="video-table" style="background-color:lightgray">
+			<tr>
+				<th class="nowrap"><s:message code="video.play"/></th>
+				<th class="nowrap">1</th>
+				<th class="nowrap">2</th>
+				<th class="nowrap">3</th>
+				<th class="nowrap">4</th>
+				<th class="nowrap">5</th>
+			</tr>
+			<c:forEach items="${playMap}" var="play" varStatus="status">
+			<tr>
+				<td class="nowrap">${play.key}</td>
+				<td class="nowrap" id="rank1-${play.key}"></td>
+				<td class="nowrap" id="rank2-${play.key}"></td>
+				<td class="nowrap" id="rank3-${play.key}"></td>
+				<td class="nowrap" id="rank4-${play.key}"></td>
+				<td class="nowrap" id="rank5-${play.key}"></td>
+			</tr>
+			<c:forEach items="${play.value}" var="video" varStatus="status">
+				<script type="text/javascript">
+					var vItem = $("<span>");
+					vItem.addClass("label");
+					vItem.attr("onclick", "fnViewVideoDetail('${video.opus}')");
+					vItem.html("${video.opus}");
+					$("#rank${video.rank}-${play.key}").append(vItem);
+				</script>
+			</c:forEach>
+			</c:forEach>		
+		</table>
+	</article>
+</section>
+
+<section>
 	<h3><s:message code="video.video-by-score"/></h3>
 	<article>
 		<table class="video-table" style="background-color:lightgray">
