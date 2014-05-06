@@ -12,6 +12,7 @@ import jk.kamoru.app.image.domain.Image;
 import jk.kamoru.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
@@ -20,11 +21,11 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class LocalImageSource implements ImageSource {
 
-	private List<Image> imageList = new ArrayList<Image>();
+	private List<Image> imageList;
 
 	@Value("#{prop['image.basePath']}")	private String[] backgroundImagePoolPath;
 
-	private synchronized void listImages() {
+	private void listImages() {
 		List<File> imageFileList = new ArrayList<File>();
 		for (String path : this.backgroundImagePoolPath) {
 			File dir = new File(path);
@@ -35,7 +36,7 @@ public class LocalImageSource implements ImageSource {
 			}
 		}
 
-		imageList.clear();
+		imageList = new ArrayList<Image>();
 		for (File file : imageFileList) {
 			imageList.add(new Image(file));
 		}
@@ -44,11 +45,11 @@ public class LocalImageSource implements ImageSource {
 			Collections.sort(imageList, new Comparator<Image>() {
 				@Override
 				public int compare(Image o1, Image o2) {
-//					return NumberUtils.compare(o1.getLastModified(), o2.getLastModified());
+					return NumberUtils.compare(o1.getLastModified(), o2.getLastModified());
 					/* 아래처럼 비교할 경우 에러 발생
 					   java.lang.IllegalArgumentException: Comparison method violates its general contract! 
 					return (int) (o1.getLastModified() - o2.getLastModified()); */
-					return o1.getLastModified() - o2.getLastModified() > 0 ? 1 : -1;
+//					return o1.getLastModified() - o2.getLastModified() > 0 ? 1 : -1;
 				}
 			});
 		}
@@ -71,7 +72,7 @@ public class LocalImageSource implements ImageSource {
 			return createImageSource().get(idx);
 		}
 		catch(IndexOutOfBoundsException  e) {
-			throw new ImageException("Image not found", e);
+			throw new ImageException("Image not found " + idx, e);
 		}
 	}
 
