@@ -24,7 +24,7 @@ public class LocalImageSource implements ImageSource {
 
 	@Value("#{prop['image.basePath']}")	private String[] backgroundImagePoolPath;
 
-	private void listImages() {
+	private synchronized void listImages() {
 		List<File> imageFileList = new ArrayList<File>();
 		for (String path : this.backgroundImagePoolPath) {
 			File dir = new File(path);

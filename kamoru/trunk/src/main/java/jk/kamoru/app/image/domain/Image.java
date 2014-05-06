@@ -42,14 +42,15 @@ public class Image {
 			case MASTER:
 				return FileUtils.readFileToByteArray(file);
 			case WEB:
-				return readBufferedImageToByteArray(Scalr.resize(
-						ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
+				return readBufferedImageToByteArray(
+							Scalr.resize(
+								ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
 			case THUMBNAIL:
-				return readBufferedImageToByteArray(Scalr.resize(
-						ImageIO.read(file), Method.SPEED, 100,
-						Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
+				return readBufferedImageToByteArray(
+							Scalr.resize(
+								ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
 			default:
-				throw new IllegalArgumentException("잘못된 타입 type=" + type);
+				throw new IllegalArgumentException("wrong type=" + type);
 			}
 		} catch (IOException e) {
 			throw new ImageException(e);
