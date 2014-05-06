@@ -136,9 +136,13 @@ public class VideoController extends AbstractController {
 		model.addAttribute("rankMap", videoService.groupByRank());
 		model.addAttribute("playMap", videoService.groupByPlay());
 		model.addAttribute("scoreMap", videoService.groupByScore());
+		model.addAttribute("lengthMap", videoService.groupByLength());
+		model.addAttribute("extensionMap", videoService.groupByExtension());
+		
 		model.addAttribute(videoService.getStudioList());
 		model.addAttribute(videoService.getActressList());
 		model.addAttribute(videoService.getVideoList());
+		
 		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
 
 		return "video/briefing";
@@ -512,4 +516,12 @@ public class VideoController extends AbstractController {
 		videoService.renameOfStudio(oriname, newname);
 	}
 
+	@RequestMapping("parseToTitle")
+	public String parseToTitle(Model model, @RequestParam(value="titleData", required=false, defaultValue="") String titleData) {
+		logger.trace("parse to title");
+		
+		model.addAttribute("titleList", videoService.parseToTitleData(titleData));
+		model.addAttribute("titleData", titleData);
+		return "video/parseToTitle";
+	}
 }

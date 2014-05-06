@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.domain.Actress;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.Video;
@@ -91,6 +92,16 @@ public class VideoDaoFile implements VideoDao {
 	public void arrangeVideo(String opus) {
 		logger.trace(opus);
 		videoSource.arrangeVideo(opus);
+	}
+
+	@Override
+	public boolean contains(String opus) {
+		try {
+			videoSource.getVideo(opus);
+			return true;
+		} catch (VideoException e) {
+			return false;
+		}
 	}
 
 

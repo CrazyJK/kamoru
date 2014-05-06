@@ -22,6 +22,7 @@
 	background-color:orange;
 	background: url('<c:url value="/resources/yes_check.png"/>');
 	background-size: 30px 25px;
+	background-repeat: no-repeat;
 }
 </style>
 <script type="text/javascript">

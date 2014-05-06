@@ -5,6 +5,7 @@
 <%@ attribute name="video" required="true" type="jk.kamoru.app.video.domain.Video"%>
 <%@ attribute name="view" required="true"%>
 <%@ attribute name="mode" required="false"%>
+<%@ attribute name="tooltip" required="false"%>
 
 <c:set var="cssClass" value="${mode eq 'l' ? 'label-large' : 'label'}"/>
 
@@ -86,6 +87,17 @@
 	onchange="document.getElementById('Rank-${video.opus}-label').innerHTML = this.value;" />
 <em id="Rank-${video.opus}-label" class="rangeLabel">${video.rank}</em>
 <%
+	} else if (view.equalsIgnoreCase("label")) {
+		if (mode != null && mode.equalsIgnoreCase("simple")) {
+%>
+<span class="${cssClass}" onclick="fnVideoDetail('${video.opus}')" title="${video.fullname}${tooltip}">O</span>
+<%
+		}
+		else {
+%>
+<span class="${cssClass}" onclick="fnVideoDetail('${video.opus}')" title="${video.title}${tooltip}">${video.opus}</span>
+<%
+		}
 	} else {
 %>
 ${view} is invalid argement

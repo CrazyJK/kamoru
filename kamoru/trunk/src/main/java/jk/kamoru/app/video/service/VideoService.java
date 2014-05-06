@@ -9,6 +9,7 @@ import jk.kamoru.app.video.domain.ActressSort;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.StudioSort;
+import jk.kamoru.app.video.domain.TitlePart;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.domain.VideoSearch;
 
@@ -257,5 +258,14 @@ public interface VideoService {
 	void renameOfActress(String name, String newName);
 	
 	void renameOfStudio(String name, String newName);
+
+	List<TitlePart> parseToTitleData(String titleData);
+
+	/**get groups by length
+	 * @return map of length, video list
+	 */
+	Map<Float, List<Video>> groupByLength();
+
+	Map<String, List<Video>> groupByExtension();
 	
 }

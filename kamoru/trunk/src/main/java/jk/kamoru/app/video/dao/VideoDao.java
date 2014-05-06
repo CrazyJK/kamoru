@@ -71,4 +71,6 @@ public interface VideoDao {
 	 * @param opus
 	 */
 	void arrangeVideo(String opus);
+
+	boolean contains(String opus);
 }

@@ -24,6 +24,7 @@ import jk.kamoru.app.video.domain.InequalitySign;
 import jk.kamoru.app.video.domain.Sort;
 import jk.kamoru.app.video.domain.Studio;
 import jk.kamoru.app.video.domain.StudioSort;
+import jk.kamoru.app.video.domain.TitlePart;
 import jk.kamoru.app.video.domain.Video;
 import jk.kamoru.app.video.domain.VideoSearch;
 import jk.kamoru.app.video.util.VideoUtils;
@@ -925,6 +926,77 @@ public class VideoServiceImpl implements VideoService {
 		for (Video video : videoDao.getStudio(name).getVideoList())
 			video.renameOfStudio(newName);
 		videoDao.reload();
+	}
+
+	@Override
+	public List<TitlePart> parseToTitleData(String titleData) {
+		List<TitlePart> titlePartList = new ArrayList<TitlePart>();
+
+		if (!StringUtils.isEmpty(titleData)) {
+			String[] titles = StringUtils.split(titleData, System.getProperty("line.separator"));
+			log.info("title size {}", titles.length);
+			for (String title : titles) {
+				TitlePart titlePart = new TitlePart(title);
+				
+				if (videoDao.contains(titlePart.getOpus())) {
+					log.info("{} exist", titlePart.getOpus());
+					continue;
+				}
+				;
+				List<Map<String, String>> histories = findHistory(StringUtils.substringBefore(titlePart.getOpus(), "-") + "-");
+				if (histories.size() > 0) {
+					Map<String, String> data = histories.get(0);
+					String desc = data.get("desc");
+					
+					titlePart.setStudio(StringUtils.substringBefore(StringUtils.substringAfter(desc, "["), "]"));
+				}
+				
+				titlePartList.add(titlePart);
+			}
+			Collections.sort(titlePartList);
+		}
+		return titlePartList;
+	}
+
+	@Override
+	public Map<Float, List<Video>> groupByLength() {
+		log.trace("groupByLength");
+		Map<Float, List<Video>> map = new TreeMap<Float, List<Video>>(Collections.reverseOrder());
+		for (Video video : videoDao.getVideoList()) {
+			double d = video.getLength() / (double) FileUtils.ONE_GB;
+			Float length = Float.parseFloat(String.format("%.1f", d));
+
+			if (map.containsKey(length)) {
+				map.get(length).add(video);
+			}
+			else {
+				List<Video> videoList = new ArrayList<Video>();
+				videoList.add(video);
+				map.put(length, videoList);
+			}
+		}
+		log.debug("video group by length - {}", map);
+		return map;
+	}
+
+	@Override
+	public Map<String, List<Video>> groupByExtension() {
+		log.trace("groupByExtension");
+		Map<String, List<Video>> map = new TreeMap<String, List<Video>>(Collections.reverseOrder());
+		for (Video video : videoDao.getVideoList()) {
+			String ext = video.getExt().toLowerCase();
+
+			if (map.containsKey(ext)) {
+				map.get(ext).add(video);
+			}
+			else {
+				List<Video> videoList = new ArrayList<Video>();
+				videoList.add(video);
+				map.put(ext, videoList);
+			}
+		}
+		log.debug("video group by extension - {}", map);
+		return map;
 	}
 
 }

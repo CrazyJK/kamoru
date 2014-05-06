@@ -12,6 +12,7 @@ import jk.kamoru.app.image.domain.Image;
 import jk.kamoru.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class LocalImageSource implements ImageSource {
 
-	private List<Image> imageList;
+	private List<Image> imageList = new ArrayList<Image>();
 
 	@Value("#{prop['image.basePath']}")	private String[] backgroundImagePoolPath;
 
@@ -35,7 +36,6 @@ public class LocalImageSource implements ImageSource {
 			}
 		}
 
-		imageList = new ArrayList<Image>();
 		for (File file : imageFileList) {
 			imageList.add(new Image(file));
 		}
@@ -44,12 +44,16 @@ public class LocalImageSource implements ImageSource {
 			Collections.sort(imageList, new Comparator<Image>() {
 				@Override
 				public int compare(Image o1, Image o2) {
-					return (int) (o1.getLastModified() - o2.getLastModified());
+					return NumberUtils.compare(o1.getLastModified(), o2.getLastModified());
+					/* 아래처럼 비교할 경우 에러 발생
+					   java.lang.IllegalArgumentException: Comparison method violates its general contract! 
+					return (int) (o1.getLastModified() - o2.getLastModified()); */
 				}
 			});
 		}
 		catch (Exception e) {
 			log.warn("Error: {}", e.getMessage());
+			e.printStackTrace();
 		} finally {
 		}
 		log.info("Total found image size : {}", imageList.size());

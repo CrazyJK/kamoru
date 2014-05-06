@@ -999,4 +999,10 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 		removeVideo();
 	}
 	
+	/**대표 파일의 확장자
+	 * @return
+	 */
+	public String getExt() {
+		return FileUtils.getExtension(getDelegateFile());
+	}
 }
