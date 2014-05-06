@@ -4,15 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Comparator;
+import java.util.List;
 
 import jk.kamoru.app.image.ImageException;
 import jk.kamoru.app.image.domain.Image;
 import jk.kamoru.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
@@ -36,6 +35,7 @@ public class LocalImageSource implements ImageSource {
 			}
 		}
 
+		imageList.clear();
 		for (File file : imageFileList) {
 			imageList.add(new Image(file));
 		}
@@ -44,17 +44,17 @@ public class LocalImageSource implements ImageSource {
 			Collections.sort(imageList, new Comparator<Image>() {
 				@Override
 				public int compare(Image o1, Image o2) {
-					return NumberUtils.compare(o1.getLastModified(), o2.getLastModified());
+//					return NumberUtils.compare(o1.getLastModified(), o2.getLastModified());
 					/* 아래처럼 비교할 경우 에러 발생
 					   java.lang.IllegalArgumentException: Comparison method violates its general contract! 
 					return (int) (o1.getLastModified() - o2.getLastModified()); */
+					return o1.getLastModified() - o2.getLastModified() > 0 ? 1 : -1;
 				}
 			});
 		}
 		catch (Exception e) {
 			log.warn("Error: {}", e.getMessage());
-			e.printStackTrace();
-		} finally {
+//			e.printStackTrace();
 		}
 		log.info("Total found image size : {}", imageList.size());
 	}
