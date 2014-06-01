@@ -13,6 +13,9 @@ public class TitlePart implements Comparable<TitlePart> {
 	String actress;
 	String releaseDate;
 
+	public TitlePart() {
+	}
+	
 	public TitlePart(String title) {
 		String[] parts = StringUtils.split(title, "]");
 		if (parts != null)

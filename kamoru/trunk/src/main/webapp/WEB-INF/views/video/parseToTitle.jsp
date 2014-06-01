@@ -17,7 +17,7 @@
 	background-repeat: no-repeat;
 }
 .fullname {
-	width:500px; border:0; font-size: 11px; 
+	width:700px; border:0; font-size: 11px; 
 }
 .fullname:focus {
 	background-color:yellow;
@@ -42,8 +42,10 @@ function fnMarkChoice(opus) {
 	<form method="post">
 		<table style="width:100%;">
 			<tr>
-				<td width="30px;"><input type="submit"/></td>
+				<td width="100px;"><input type="submit" value="Parse(${fn:length(titleList)})"/></td>
 				<td><textarea name="titleData" class="titleArea">${titleData}</textarea></td>
+				<td><textarea class="titleArea"><c:forEach items="${titleList}" var="title" varStatus="status">${title}
+</c:forEach></textarea></td>
 			</tr>
 		</table>
 	</form>
@@ -53,7 +55,7 @@ function fnMarkChoice(opus) {
 	<table class="video-table" style="background-color:lightgray; list-style: none;">
 		<c:forEach items="${titleList}" var="title" varStatus="status">
 		<tr id="check-${title.opus}" style="font-size:11px; color:blue;">
-			<td>${status.count}</td>
+			<td align="right">${status.count}</td>
 			<td>
 				<span class="label">
 					<input class="fullname" value="${title}.jpg"/>
@@ -64,10 +66,6 @@ function fnMarkChoice(opus) {
 		</tr>
 		</c:forEach>
 	</table>
-	
-	<textarea class="titleArea"><c:forEach items="${titleList}" var="title" varStatus="status">${title}
-</c:forEach></textarea>
-
 </div>
 
 </body>

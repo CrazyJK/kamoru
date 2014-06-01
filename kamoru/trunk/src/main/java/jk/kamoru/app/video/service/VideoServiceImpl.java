@@ -927,7 +927,7 @@ public class VideoServiceImpl implements VideoService {
 			video.renameOfStudio(newName);
 		videoDao.reload();
 	}
-
+/*
 	@Override
 	public List<TitlePart> parseToTitleData(String titleData) {
 		List<TitlePart> titlePartList = new ArrayList<TitlePart>();
@@ -942,7 +942,7 @@ public class VideoServiceImpl implements VideoService {
 					log.info("{} exist", titlePart.getOpus());
 					continue;
 				}
-				;
+				
 				List<Map<String, String>> histories = findHistory(StringUtils.substringBefore(titlePart.getOpus(), "-") + "-");
 				if (histories.size() > 0) {
 					Map<String, String> data = histories.get(0);
@@ -957,7 +957,58 @@ public class VideoServiceImpl implements VideoService {
 		}
 		return titlePartList;
 	}
+*/
+	@Override
+	public List<TitlePart> parseToTitleData(String titleData) {
+		List<TitlePart> titlePartList = new ArrayList<TitlePart>();
+		
+		if (!StringUtils.isEmpty(titleData)) {
+//			String[] titles = StringUtils.split(titleData, System.getProperty("line.separator"));
+			String[] titles = titleData.split(System.getProperty("line.separator"));
 
+			try {
+				for (int i = 0; i < titles.length; i++) {
+					if (titles[i].trim().length() > 0) {
+						// make TitlePart
+						TitlePart titlePart = new TitlePart();
+						titlePart.setOpus(titles[i++].trim().toUpperCase());
+						titlePart.setActress(titles[i++].trim());
+						titlePart.setReleaseDate(titles[i++].trim());
+						titlePart.setTitle(titles[i].trim());
+//						log.info("{}", titlePart);
+						if (videoDao.contains(titlePart.getOpus())) {
+							log.info("{} exist", titlePart.getOpus());
+							continue;
+						}
+
+						// find Studio
+						List<Map<String, String>> histories = findHistory(StringUtils.substringBefore(titlePart.getOpus(), "-") + "-");
+						if (histories.size() > 0) {
+							Map<String, String> data = histories.get(0);
+							String desc = data.get("desc");
+							
+							titlePart.setStudio(StringUtils.substringBefore(StringUtils.substringAfter(desc, "["), "]"));
+						}
+						else {
+							titlePart.setStudio("");
+						}
+						
+						// add TitlePart
+						titlePartList.add(titlePart);
+					}
+					else {
+//						log.info("blank line");
+					}
+				}
+			} catch(ArrayIndexOutOfBoundsException e) {
+				// do nothing
+			}
+			// sort list
+			Collections.sort(titlePartList);
+		}
+		return titlePartList;
+	}
+	
 	@Override
 	public Map<Float, List<Video>> groupByLength() {
 		log.trace("groupByLength");

@@ -57,6 +57,12 @@ $(document).ready(function(){
 	<s:message code="video.briefing"/>
 	<label class="item sort-item"><input type="radio" name="viewType" value="normal" ${param.view eq 'normal' || empty param.view ? 'checked' : ''}/><span>Normal</span></label>
 	<label class="item sort-item"><input type="radio" name="viewType" value="simple" ${param.view eq 'simple' ? 'checked' : ''}/><span>Simple</span></label>
+
+	<div style="float:right">
+		<span class="label-large"><a onclick="actionFrame('<c:url value="/video/manager/moveWatchedVideo"/>')"><s:message code="video.mng.move"/></a></span>
+		<span class="label-large"><a onclick="actionFrame('<c:url value="/video/manager/removeLowerRankVideo"/>')"><s:message code="video.mng.rank"/></a></span>
+		<span class="label-large"><a onclick="actionFrame('<c:url value="/video/manager/removeLowerScoreVideo"/>')"><s:message code="video.mng.score"/></a></span>
+	</div>
 </div>
 
 <div id="content_div" class="div-box" style="overflow:auto; text-align:left;">

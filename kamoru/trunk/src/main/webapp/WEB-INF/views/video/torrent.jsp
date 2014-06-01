@@ -13,7 +13,7 @@
 	color: blue;
 }
 .fullname {
-	width:500px; border:0; font-size: 11px; 
+	width:600px; border:0; font-size: 11px; 
 }
 .fullname:focus {
 	background-color:yellow;
@@ -26,7 +26,9 @@
 }
 </style>
 <script type="text/javascript">
-$(document).ready(function(){});
+$(document).ready(function(){
+	$("td").addClass("nowrap");
+});
 
 /**
  * 비디오 확인을 기억하기 위해 css class를 변경한다.
