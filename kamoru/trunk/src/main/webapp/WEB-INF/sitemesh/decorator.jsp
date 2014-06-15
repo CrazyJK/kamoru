@@ -25,7 +25,8 @@ try {
 <script src="<c:url value="/resources/common.js" />" type="text/javascript"></script>
 <script type="text/javascript">
 var context = '<c:url value="/"/>';
-
+var bgImageCount = ${empty bgImageCount ? 0 : bgImageCount};
+var bgImgUrl;
 $(document).ready(function(){
 	$(window).bind("resize", resizeSectionHeight);
 	$("nav#deco_nav section").bind("mouseover", function(){
@@ -34,9 +35,10 @@ $(document).ready(function(){
 		$(this).children("ul").hide();
 	});
 
-	setBackgroundImage();
-	setInterval(function() {setBackgroundImage();},	60*1000);
-	
+	if ('${auth.name}' != 'anonymousUser') {
+		setBackgroundImage();
+		setInterval(function() {setBackgroundImage();},	60*1000);
+	}
 	$("nav#deco_nav section ul").hide();
 
 	resizeSectionHeight();
@@ -44,8 +46,14 @@ $(document).ready(function(){
 
 });
 function setBackgroundImage() {
-	var bgImgUrl = "<c:url value="/image/random"/>?t=" + new Date().getTime();
+	bgImgUrl = "<c:url value="/image"/>/" + getRandomInteger(0, bgImageCount);
 	$("body").css("background-image", "url(" + bgImgUrl + ")");
+}
+function bgImageDELETE() {
+	$("#hiddenHttpMethod").val("DELETE");
+	var actionFrm = document.forms['actionFrm'];
+	actionFrm.action = bgImgUrl;
+	actionFrm.submit();
 }
 function resizeSectionHeight() {
 	var windowHeight = $(window).height();
@@ -107,7 +115,8 @@ function showNav() {
 		<div>
 			&copy; <time datetime="<%=dateString %>" title="Today"><%=dateString %></time> 
 			<a href="<c:url value="/jkServlet"/>">kAmOrU.</a> All rights reserved.
-
+			<a onclick="bgImageDELETE()">Image Del</a>
+	
 			<section style="float:right">
 				<form name="langChange">
 					<select name="lang" onchange="document.forms['langChange'].submit();">
@@ -119,6 +128,9 @@ function showNav() {
 			</section>
 		</div>
 	</footer>
+	
+<form name="actionFrm" target="ifrm" method="post"><input type="hidden" name="_method" id="hiddenHttpMethod"/></form>
+<iframe id="actionIframe" name="ifrm" style="display:none; width:100%;"></iframe>
 
 </body>
 </html>

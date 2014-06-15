@@ -14,10 +14,11 @@ function resizeDivHeight() {
 
 function setBackgroundImage(imgIdx) {
 	if (imgIdx)
-		currBGImageUrl = context + "image/" + imgIdx;
+		currBGImageNo = imgIdx;
 	else 
-		currBGImageUrl = context + "image/" + getRandomInteger(0, bgImageCount);
-
+		currBGImageNo = getRandomInteger(0, bgImageCount);
+	
+	currBGImageUrl = context + "image/" + currBGImageNo;
 	//	$("#contentDiv").hide();
 	$("#content_div").css("background-image", "url(" + currBGImageUrl + ")");
 	//	$("#contentDiv").fadeIn();
@@ -104,6 +105,12 @@ function fnOpusFocus(opus) {
 }
 function fnBGImageView() {
 	popup(currBGImageUrl, currBGImageUrl, 800, 600);
+}
+function fnBGImageDELETE() {
+	$("#hiddenHttpMethod").val("DELETE");
+	var actionFrm = document.forms['actionFrm'];
+	actionFrm.action = currBGImageUrl;
+	actionFrm.submit();
 }
 function fnImageView(opus) {
 	debug("Cover image view : " + opus);

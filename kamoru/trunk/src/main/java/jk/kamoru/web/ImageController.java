@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jk.kamoru.app.image.domain.PictureType;
@@ -32,6 +33,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ImageController extends AbstractController {
 
 	private static final String LAST_IMAGE_INDEX_CACHE = "lastImageNo";
+
+	private static final String LAST_RANDOM_IMAGE_INDEX_CACHE = "lastRandomImageNo";;
 
 	@Autowired
 	private ImageService imageService;
@@ -121,8 +124,12 @@ public class ImageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/random")
-	public HttpEntity<byte[]> viewImageByRandom() {
-		byte[] imageBytes = imageService.getImageByRandom().getImageBytes(PictureType.MASTER);
+	public HttpEntity<byte[]> viewImageByRandom(HttpServletResponse response) throws IOException {
+
+		int randomNo = imageService.getRandomImageNo();
+		byte[] imageBytes = imageService.getImage(randomNo).getImageBytes(PictureType.MASTER);
+
+		response.addCookie(new Cookie(LAST_RANDOM_IMAGE_INDEX_CACHE, String.valueOf(randomNo)));
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setCacheControl("max-age=1");

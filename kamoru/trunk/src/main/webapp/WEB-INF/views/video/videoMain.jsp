@@ -283,10 +283,11 @@ function fnViewBGImage() {
 </c:choose>
 </div>
 
-	<div id="bgActionGroup" style="display:none;">
-		<span onclick="setBackgroundImage();">NEXT</span>
-		<span onclick="fnBGImageView();">VIEW</span>
-	</div>
+<div id="bgActionGroup" style="display:none;">
+	<span onclick="setBackgroundImage();">NEXT</span>
+	<span onclick="fnBGImageView();">VIEW</span>
+	<span onclick="fnBGImageDELETE();">DELETE</span>
+</div>
 
 </div>
 

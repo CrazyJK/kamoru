@@ -1,5 +1,9 @@
 package jk.kamoru.test;
 
+import java.io.File;
+
+import jk.kamoru.util.FileUtils;
+
 public class test2 {
 
 	/**
@@ -20,6 +24,14 @@ public class test2 {
 					i % userSize
 					);
 		}
+		File f = new File("E:\\Watched_video");
+		System.out.println(f.length());
+		System.out.println(f.getTotalSpace());
+		System.out.println(f.getUsableSpace());
+		System.out.println(FileUtils.sizeOfDirectory(f));
+		System.out.println(FileUtils.sizeOfDirectory(f) / FileUtils.ONE_GB);
+		
+		
 	}
 
 }

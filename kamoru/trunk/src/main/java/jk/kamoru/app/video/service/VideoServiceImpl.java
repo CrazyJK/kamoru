@@ -731,12 +731,7 @@ public class VideoServiceImpl implements VideoService {
 		int  countOfDeleteVideo   = 0;
 		int  minAliveScore 		  = 0;
 		
-		List<Video> list = videoDao.getVideoList();
-		Collections.sort(list, new Comparator<Video>(){
-			@Override
-			public int compare(Video o1, Video o2) {
-				return o2.getScore() - o1.getScore();
-			}});
+		List<Video> list = getVideoListSortByScore();
 		
 		for (Video video : list) {
 			if (video.getPlayCount() == 0)
@@ -768,6 +763,20 @@ public class VideoServiceImpl implements VideoService {
 		log.info("    Current minimum score is {} ", minAliveScore);
 	}
 	
+	/**
+	 * Score로 정렬된 비디오 목록
+	 * @return
+	 */
+	private List<Video> getVideoListSortByScore() {
+		List<Video> list = videoDao.getVideoList();
+		Collections.sort(list, new Comparator<Video>(){
+			@Override
+			public int compare(Video o1, Video o2) {
+				return o2.getScore() - o1.getScore();
+			}});
+		return list;
+	}
+	
 	@Override
 	public void deleteGarbageFile() {
 		for (Video video : videoDao.getVideoList()) {
@@ -783,31 +792,71 @@ public class VideoServiceImpl implements VideoService {
 	
 	@Override
 	public void moveWatchedVideo() {
+		/// 폴더의 최대 크기
+		long maximumSizeOfEntireVideo = maximumGBSizeOfEntireVideo * FileUtils.ONE_GB;
+		// 한번에 옮길 비디오 개수
 		int maximumCountOfMoveVideo = 5;
+		// 옮긴 비디오 개수
 		int countOfMoveVideo = 0;
+		// Watched 폴더
 		File mainBaseFile = new File(basePath[0]);
-		for (Video video : videoDao.getVideoList()) {
-			if (video.getPlayCount() > 0
-					&& !video.getDelegatePath().contains(mainBaseFile.getAbsolutePath())
-//					&& !video.getDelegatePathFile().equals(mainDestFile)
-					&& countOfMoveVideo++ < maximumCountOfMoveVideo
-					&& mainBaseFile.getFreeSpace() > MIN_FREE_SPAC) {
-				log.info("    move video {} : {}", countOfMoveVideo, video.getFullname());
-				
-				File destDir = new File(basePath[0]  + "/" + video.getStudio().getName());
-				if (!destDir.exists())
-					destDir.mkdir();
-				
-				videoDao.moveVideo(video.getOpus(), destDir.getAbsolutePath());
+		// Watched 폴더 크기
+		long usedSpace = FileUtils.sizeOfDirectory(mainBaseFile);
+		// 여유 공간
+		long freeSpace = mainBaseFile.getFreeSpace();
 
-				if (countOfMoveVideo < maximumCountOfMoveVideo)
-					try {
-						Thread.sleep(SLEEP_TIME);
-					} catch (InterruptedException e) {
-						log.error("sleep error", e);
-					}
+		log.info("MOVE WATCHED VIDEO START :: Watched {}GB, free{}GB", usedSpace / FileUtils.ONE_GB, freeSpace / FileUtils.ONE_GB);
+
+		// 전체 비디오중에서
+		for (Video video : getVideoListSortByScore()) {
+			
+			// 드라이드에 남은 공간이 최소 공간보다 작으면 break
+			if (freeSpace < MIN_FREE_SPAC) {
+				log.info("Not enough space. {} < {}", freeSpace / FileUtils.ONE_GB, MIN_FREE_SPAC / FileUtils.ONE_GB);
+				break;
 			}
+			// Watched 폴더 크기가 최대 크기보다 커졌으면 break
+			if (usedSpace > maximumSizeOfEntireVideo) {
+				log.info("Exceed the maximum size. {}  > {}", usedSpace / FileUtils.ONE_GB, maximumSizeOfEntireVideo / FileUtils.ONE_GB);
+				break;
+			}
+			
+			// 플레이 한적이 없는 비디오는 pass
+			if (video.getPlayCount() < 1)
+				continue;
+			// Watched 폴더에 있는 파일도 pass
+			if (video.getDelegatePath().contains(mainBaseFile.getAbsolutePath()))
+				continue;
+			
+			// 스튜디오 이름으로 폴더를 준비
+			File destDir = new File(mainBaseFile, video.getStudio().getName());
+			if (!destDir.exists())
+				destDir.mkdir();
+
+			// 비디오를 옮긴다
+			countOfMoveVideo++;
+			log.info("  {}. move video : {} : {}", countOfMoveVideo, video.getScore(), video.getFullname());
+			videoDao.moveVideo(video.getOpus(), destDir.getAbsolutePath());
+
+			// 다 옮겼으면 break
+			if (countOfMoveVideo == maximumCountOfMoveVideo) {
+				log.info("Completed {} videos.", maximumCountOfMoveVideo);
+				break;
+			}
+
+			// 잠시 쉰다.
+			try {
+				Thread.sleep(SLEEP_TIME);
+			} catch (InterruptedException e) {
+				log.error("sleep error", e);
+			}
+			// 공간을 다시 젠다
+			usedSpace = FileUtils.sizeOfDirectory(mainBaseFile);
+			freeSpace = mainBaseFile.getFreeSpace();
 		}
+		usedSpace = FileUtils.sizeOfDirectory(mainBaseFile);
+		freeSpace = mainBaseFile.getFreeSpace();
+		log.info("MOVE WATCHED VIDEO END :: Watched {}GB, free{}GB", usedSpace / FileUtils.ONE_GB, freeSpace / FileUtils.ONE_GB);
 	}
 
 	@Override

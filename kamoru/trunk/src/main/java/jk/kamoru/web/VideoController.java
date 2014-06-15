@@ -436,8 +436,10 @@ public class VideoController extends AbstractController {
 	@RequestMapping(value="/manager/moveWatchedVideo", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void moveWatchedVideo(Model model) {
-		logger.trace("move watched video");
-		videoService.moveWatchedVideo();
+		synchronized (java.lang.Object.class) {
+			logger.trace("move watched video");
+			videoService.moveWatchedVideo();
+		}
 	}
 	
 	/**remove lower rank video

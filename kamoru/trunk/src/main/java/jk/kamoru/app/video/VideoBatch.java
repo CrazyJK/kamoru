@@ -23,32 +23,34 @@ public class VideoBatch {
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
 		
-		long startTime = System.currentTimeMillis();
-		logger.info("BATCH START");
+		synchronized (java.lang.Object.class) {
+			long startTime = System.currentTimeMillis();
+			logger.info("BATCH START");
 
-		logger.info("  BATCH : delete lower rank video [{}]", DELETE_LOWER_RANK_VIDEO);
-		if (DELETE_LOWER_RANK_VIDEO)
-			videoService.removeLowerRankVideo();
-		
-		logger.info("  BATCH : delete lower score video [{}]", DELETE_LOWER_SCORE_VIDEO);
-		if (DELETE_LOWER_SCORE_VIDEO)
-			videoService.removeLowerScoreVideo();
-		
-		logger.info("  BATCH : delete garbage file");
-		videoService.deleteGarbageFile();
-		
-		logger.info("  BATCH : arrange to same folder");
-		videoService.arrangeVideo();
-		
-		logger.info("  BATCH : move watched video [{}]", MOVE_WATCHED_VIDEO);
-		if (MOVE_WATCHED_VIDEO)
-			videoService.moveWatchedVideo();
+			logger.info("  BATCH : delete lower rank video [{}]", DELETE_LOWER_RANK_VIDEO);
+			if (DELETE_LOWER_RANK_VIDEO)
+				videoService.removeLowerRankVideo();
+			
+			logger.info("  BATCH : delete lower score video [{}]", DELETE_LOWER_SCORE_VIDEO);
+			if (DELETE_LOWER_SCORE_VIDEO)
+				videoService.removeLowerScoreVideo();
+			
+			logger.info("  BATCH : delete garbage file");
+			videoService.deleteGarbageFile();
+			
+			logger.info("  BATCH : arrange to same folder");
+			videoService.arrangeVideo();
+			
+			logger.info("  BATCH : move watched video [{}]", MOVE_WATCHED_VIDEO);
+			if (MOVE_WATCHED_VIDEO)
+				videoService.moveWatchedVideo();
 
-		logger.info("  BATCH : reload");
-		videoService.reload();
-		
-		long elapsedTime = System.currentTimeMillis() - startTime;
-		logger.info("BATCH END. Elapsed time : {} ms", elapsedTime);
+			logger.info("  BATCH : reload");
+			videoService.reload();
+			
+			long elapsedTime = System.currentTimeMillis() - startTime;
+			logger.info("BATCH END. Elapsed time : {} ms", elapsedTime);
+		}
 	}
 	
 }

@@ -35,7 +35,7 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public Image getImageByRandom() {
-		return imageSource.getImage((int)(Math.random() * imageSource.getImageSourceSize()));
+		return imageSource.getImage(getRandomImageNo());
 	}
 
 	@Override
@@ -64,5 +64,10 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	public void delete(int idx) {
 		imageSource.delete(idx);
+	}
+
+	@Override
+	public int getRandomImageNo() {
+		return (int)(Math.random() * imageSource.getImageSourceSize());
 	}
 }

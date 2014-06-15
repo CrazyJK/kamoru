@@ -557,7 +557,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 					break;
 				}
 				try {
-					logger.info("move file from {} to {}", file.getAbsolutePath(), destDir);
+					logger.debug("move file from {} to {}", file.getAbsolutePath(), destDir);
 					FileUtils.moveFileToDirectory(file, destFile, false);
 				} catch (FileExistsException fe) {
 					logger.warn("File exist, then delete ", fe);
@@ -593,7 +593,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 		for(File file : getFileAll())
 			if(file != null && file.exists()) 
 				if(FileUtils.deleteQuietly(file))
-					logger.info(file.getAbsolutePath());
+					logger.debug(file.getAbsolutePath());
 				else
 					logger.error("delete fail : {}", file.getAbsolutePath());
 	}

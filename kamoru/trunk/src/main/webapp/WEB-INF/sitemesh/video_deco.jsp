@@ -19,6 +19,7 @@
 <script type="text/javascript">
 var context = '<c:url value="/"/>';
 var locationPathname = window.location.pathname;
+var currBGImageNo = 0;
 
 $(document).ready(function() {
 

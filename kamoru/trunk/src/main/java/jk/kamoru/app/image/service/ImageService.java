@@ -22,4 +22,5 @@ public interface ImageService {
 
 	void delete(int idx);
 
+	int getRandomImageNo();
 }
