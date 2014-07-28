@@ -874,7 +874,7 @@ public class VideoServiceImpl implements VideoService {
 		List<Video> list = new ArrayList<Video>();
 		for (Video video : videoDao.getVideoList())
 			if (!video.isExistVideoFileList()) {
-				video.setSortMethod(Sort.O);
+				video.setSortMethod(Sort.S);
 				list.add(video);
 			}
 		Collections.sort(list);

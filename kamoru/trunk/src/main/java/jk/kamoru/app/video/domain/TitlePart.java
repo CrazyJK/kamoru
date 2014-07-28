@@ -1,5 +1,7 @@
 package jk.kamoru.app.video.domain;
 
+import java.util.regex.Pattern;
+
 import jk.kamoru.app.video.VideoException;
 import jk.kamoru.app.video.util.VideoUtils;
 import jk.kamoru.util.StringUtils;
@@ -13,7 +15,15 @@ public class TitlePart implements Comparable<TitlePart> {
 	String actress;
 	String releaseDate;
 
+	Boolean check;
+	String checkDesc;
+	
+	final String regexKorean = ".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*";
+	final String regexSimple = "\\d{4}.\\d{2}.\\d{2}";
+	final String regexDate = "^((19|20)\\d\\d).(0?[1-9]|1[012]).(0?[1-9]|[12][0-9]|3[01])$";
+	
 	public TitlePart() {
+		this.checkDesc = "";
 	}
 	
 	public TitlePart(String title) {
@@ -49,6 +59,72 @@ public class TitlePart implements Comparable<TitlePart> {
 		}
 	}
 
+	/**
+	 * @param studio the studio to set
+	 */
+	public void setStudio(String studio) {
+		this.studio = studio;
+	}
+
+	/**
+	 * @param opus the opus to set
+	 */
+	public void setOpus(String opus) {
+		this.opus = opus;
+		// 공백이 포함되어 있으면
+		if (StringUtils.containsWhitespace(opus)) {
+			this.check = true;
+			this.checkDesc += "Opus ";
+		}
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+		// 값이 없으면
+		if (StringUtils.isBlank(title)) {
+			this.check = true;
+			this.checkDesc += "Title ";
+		}
+	}
+
+	/**
+	 * @param actress the actress to set
+	 */
+	public void setActress(String actress) {
+		this.actress = actress;
+		// 한글이 포함되어 있으면
+		if (Pattern.matches(regexKorean, actress)) {
+			this.check = true;
+			this.checkDesc += "Actress ";
+		}
+	}
+
+	/**
+	 * @param releaseDate the releaseDate to set
+	 */
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
+		// 값이 없으면
+		if (StringUtils.isBlank(releaseDate)) {
+			this.check = true;
+			this.checkDesc += "Date ";
+		}
+		else {
+			// 패턴이 틀리면 
+			if (!Pattern.matches(regexSimple, releaseDate)) {
+				this.check = true;
+				this.checkDesc += "Date ";
+			}
+			else if (!Pattern.matches(regexDate, releaseDate)) {
+				this.check = true;
+				this.checkDesc += "Date ";
+			}
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -56,8 +132,8 @@ public class TitlePart implements Comparable<TitlePart> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("[%s][%s][%s][%s][%s]", studio, opus, title,
-				actress, releaseDate);
+		return String.format("[%s][%s][%s][%s][%s]", 
+				studio, opus, title, actress, releaseDate);
 	}
 
 	@Override

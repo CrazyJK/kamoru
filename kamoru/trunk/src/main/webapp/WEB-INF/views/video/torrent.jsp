@@ -38,6 +38,17 @@ function fnMarkChoice(opus) {
 	//$("#check-" + opus).hide();
 	//$("#check-" + opus + " > *").attr("disabled",true);
 }
+function searchInput(keyword) {
+	$("div#content_div input").each(function() {
+		if ($(this).val().toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
+			$(this).parent().parent().show();
+		}
+		else {
+			$(this).parent().parent().hide();
+		}
+	});
+}
+
 </script>
 </head>
 <body>
@@ -46,7 +57,7 @@ function fnMarkChoice(opus) {
 	<s:message code="video.total"/> <s:message code="video.video"/> : ${fn:length(videoList)}
 	<input type="search" name="search" id="search" style="width:200px;" 
 		class="searchInput" placeHolder="<s:message code="video.search"/>" 
-		onkeyup="searchContent(this.value)"/>
+		onkeyup="searchInput(this.value)"/>
 </div>
 
 <div id="content_div" class="div-box" style="overflow:auto;">

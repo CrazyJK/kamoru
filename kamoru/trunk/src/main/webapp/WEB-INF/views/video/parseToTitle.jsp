@@ -58,10 +58,10 @@ function fnMarkChoice(opus) {
 			<td align="right">${status.count}</td>
 			<td>
 				<span class="label">
-					<input class="fullname" value="${title}.jpg"/>
+					<input class="fullname" value="${title}"/>
 					<a onclick="fnMarkChoice('${title.opus}')" href="${arzon}${title.opus}" target="_blank" class="link">Get Info</a>
 				</span>
-				<c:if test="${title.releaseDate eq ''}">Check!</c:if>
+				<c:if test="${title.check}">Check! ${title.checkDesc}</c:if>
 			</td>
 		</tr>
 		</c:forEach>
