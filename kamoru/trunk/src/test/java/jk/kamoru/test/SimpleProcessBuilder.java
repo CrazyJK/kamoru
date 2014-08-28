@@ -13,14 +13,11 @@ public class SimpleProcessBuilder {
 			 */
 
 			// 자바 1.5 이상에서는 이렇게 1줄로
-			Process oProcess = new ProcessBuilder("cmd", "/c", "dir")
-					.start();
+			Process oProcess = new ProcessBuilder("cmd", "/c", "dir").start();
 
 			// 외부 프로그램 출력 읽기
-			BufferedReader stdOut = new BufferedReader(new InputStreamReader(
-					oProcess.getInputStream()));
-			BufferedReader stdError = new BufferedReader(new InputStreamReader(
-					oProcess.getErrorStream()));
+			BufferedReader stdOut   = new BufferedReader(new InputStreamReader(oProcess.getInputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(oProcess.getErrorStream()));
 
 			// "표준 출력"과 "표준 에러 출력"을 출력
 			while ((s = stdOut.readLine()) != null)
