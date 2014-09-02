@@ -6,10 +6,10 @@ import java.util.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import jk.kamoru.app.image.domain.PictureType;
-import jk.kamoru.app.image.service.ImageService;
-import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.crazy.image.domain.PictureType;
+import jk.kamoru.crazy.image.service.ImageService;
+import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.util.VideoUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;

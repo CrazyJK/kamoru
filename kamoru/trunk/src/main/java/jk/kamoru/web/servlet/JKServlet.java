@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jk.kamoru.app.video.VideoCore;
+import jk.kamoru.crazy.video.VideoCore;
 import lombok.extern.slf4j.Slf4j;
 
 /**

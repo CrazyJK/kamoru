@@ -1,6 +1,6 @@
 package jk.kamoru.web;
 
-import jk.kamoru.app.image.service.ImageService;
+import jk.kamoru.crazy.image.service.ImageService;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;

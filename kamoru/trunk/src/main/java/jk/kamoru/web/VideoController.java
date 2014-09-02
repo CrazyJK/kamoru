@@ -9,20 +9,20 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import jk.kamoru.app.image.service.ImageService;
-import jk.kamoru.app.video.VideoCore;
-import jk.kamoru.app.video.VideoException;
-import jk.kamoru.app.video.domain.Action;
-import jk.kamoru.app.video.domain.ActressSort;
-import jk.kamoru.app.video.domain.History;
-import jk.kamoru.app.video.domain.Sort;
-import jk.kamoru.app.video.domain.StudioSort;
-import jk.kamoru.app.video.domain.Video;
-import jk.kamoru.app.video.domain.VideoSearch;
-import jk.kamoru.app.video.domain.View;
-import jk.kamoru.app.video.service.HistoryService;
-import jk.kamoru.app.video.service.VideoService;
-import jk.kamoru.app.video.util.VideoUtils;
+import jk.kamoru.crazy.image.service.ImageService;
+import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.video.domain.Action;
+import jk.kamoru.crazy.video.domain.ActressSort;
+import jk.kamoru.crazy.video.domain.History;
+import jk.kamoru.crazy.video.domain.Sort;
+import jk.kamoru.crazy.video.domain.StudioSort;
+import jk.kamoru.crazy.video.domain.Video;
+import jk.kamoru.crazy.video.domain.VideoSearch;
+import jk.kamoru.crazy.video.domain.View;
+import jk.kamoru.crazy.video.service.HistoryService;
+import jk.kamoru.crazy.video.service.VideoService;
+import jk.kamoru.crazy.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
 

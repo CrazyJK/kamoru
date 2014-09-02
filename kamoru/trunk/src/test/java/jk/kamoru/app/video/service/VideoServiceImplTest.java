@@ -1,7 +1,8 @@
 package jk.kamoru.app.video.service;
 
 import static org.junit.Assert.*;
-import jk.kamoru.app.video.domain.Video;
+import jk.kamoru.crazy.video.domain.Video;
+import jk.kamoru.crazy.video.service.VideoService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
