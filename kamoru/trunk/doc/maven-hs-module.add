@@ -1,0 +1,9 @@
+./mvn install:install-file -Dfile=/home/kamoru/workspace/kamoru/kamoru/WEB-INF/lib/hs-bdk10.jar -DgroupId=com.hs -DartifactId=hs-bdk10 -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/workspace/kamoru/kamoru/WEB-INF/lib/hs-hwweb.jar -DgroupId=com.hs -DartifactId=hs-hwweb -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/workspace/kamoru/kamoru/WEB-INF/lib/hs-hwjsp.jar -DgroupId=com.hs -DartifactId=hs-hwjsp -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/workspace/kamoru/kamoru/WEB-INF/lib/hs-crypt.jar -DgroupId=com.hs -DartifactId=hs-crypt -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+
