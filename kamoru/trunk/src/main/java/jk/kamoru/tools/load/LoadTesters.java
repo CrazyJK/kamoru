@@ -1,7 +1,6 @@
 package jk.kamoru.tools.load;
 
 import jk.kamoru.core.task.TaskExecutor;
-import jk.kamoru.tools.load.executor.LoadTestService;
 import jk.kamoru.tools.load.executor.LoadTester;
 import jk.kamoru.tools.load.factory.FixedLoadFactory;
 import jk.kamoru.tools.load.factory.LoadFactoryService;

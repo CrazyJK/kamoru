@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jk.kamoru.app.image.domain.PictureType;
@@ -40,9 +39,7 @@ public class ImageController extends AbstractController {
 	private ImageService imageService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String viewImageList(
-			Model model,
-			@RequestParam(value = "n", required = false, defaultValue = "-1") int n) {
+	public String viewImageList(Model model, @RequestParam(value = "n", required = false, defaultValue = "-1") int n) {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count - 1 : n);
@@ -51,9 +48,7 @@ public class ImageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/slides", method = RequestMethod.GET)
-	public String slides(
-			Model model,
-			@RequestParam(value = "n", required = false, defaultValue = "-1") int n) {
+	public String slides(Model model, @RequestParam(value = "n", required = false, defaultValue = "-1") int n) {
 		int count = imageService.getImageSourceSize();
 		model.addAttribute("imageCount", count);
 		model.addAttribute("selectedNumber", n > count ? count - 1 : n);
@@ -61,10 +56,7 @@ public class ImageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/canvas", method = RequestMethod.GET)
-	public String canvas(
-			Model model,
-			HttpServletResponse response,
-			@RequestParam(value = "n", required = false, defaultValue = "-1") int firstImageIndex,
+	public String canvas(Model model, HttpServletResponse response, @RequestParam(value = "n", required = false, defaultValue = "-1") int firstImageIndex,
 			@RequestParam(value = "d", required = false, defaultValue = "-1") int deleteImageIndex,
 			@CookieValue(value = LAST_IMAGE_INDEX_CACHE, defaultValue = "-1") int lastViewImageIndex) {
 		int total = imageService.getImageSourceSize();
@@ -95,25 +87,18 @@ public class ImageController extends AbstractController {
 
 	@RequestMapping(value = "/{idx}/thumbnail")
 	public HttpEntity<byte[]> viewImageThumbnail(@PathVariable int idx) {
-		return getImageEntity(
-				imageService.getImage(idx).getImageBytes(PictureType.THUMBNAIL),
-				MediaType.IMAGE_GIF);
+		return getImageEntity(imageService.getImage(idx).getImageBytes(PictureType.THUMBNAIL), MediaType.IMAGE_GIF);
 	}
 
 	@RequestMapping(value = "/{idx}/WEB")
 	public HttpEntity<byte[]> viewImageWEB(@PathVariable int idx) {
-		return getImageEntity(
-				imageService.getImage(idx).getImageBytes(PictureType.WEB),
-				MediaType.IMAGE_JPEG);
+		return getImageEntity(imageService.getImage(idx).getImageBytes(PictureType.WEB), MediaType.IMAGE_JPEG);
 	}
 
 	@RequestMapping(value = "/{idx}")
-	public HttpEntity<byte[]> viewImage(@PathVariable int idx,
-			HttpServletResponse response) {
+	public HttpEntity<byte[]> viewImage(@PathVariable int idx, HttpServletResponse response) {
 		response.addCookie(new Cookie(LAST_IMAGE_INDEX_CACHE, String.valueOf(idx)));
-		return getImageEntity(
-				imageService.getImage(idx).getImageBytes(PictureType.MASTER),
-				MediaType.IMAGE_JPEG);
+		return getImageEntity(imageService.getImage(idx).getImageBytes(PictureType.MASTER), MediaType.IMAGE_JPEG);
 	}
 
 	@RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
@@ -146,9 +131,7 @@ public class ImageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/google")
-	public String searchGoogle(
-			Model model,
-			@RequestParam(value = "q", required = false, defaultValue = "") String query) {
+	public String searchGoogle(Model model, @RequestParam(value = "q", required = false, defaultValue = "") String query) {
 		model.addAttribute(VideoUtils.getGoogleImage(query));
 		return "image/google";
 	}
