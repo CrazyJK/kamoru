@@ -28,7 +28,7 @@
 	</aop:config>
 	<bean id="elapsedTimeAdvice" class="jk.aopalliance.intercept.ElapsedTimeAdvice" />
 	
-	<!-- beann post process -->
+	<!-- bean post processor -->
 	<bean class="jk.springframework.beans.factory.config.JKPostProcessor" >
 		<property name="beans">
 			<map>
