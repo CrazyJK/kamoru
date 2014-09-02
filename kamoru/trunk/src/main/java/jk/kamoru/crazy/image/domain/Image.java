@@ -30,9 +30,9 @@ public class Image {
 	}
 
 	private void init() {
-		this.name 	= file.getName();
+		this.name = file.getName();
 		this.suffix = FileUtils.getExtension(file);
-		this.size 	= file.length();
+		this.size = file.length();
 		this.lastModified = file.lastModified();
 	}
 
@@ -42,13 +42,9 @@ public class Image {
 			case MASTER:
 				return FileUtils.readFileToByteArray(file);
 			case WEB:
-				return readBufferedImageToByteArray(
-							Scalr.resize(
-								ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
+				return readBufferedImageToByteArray(Scalr.resize(ImageIO.read(file), Scalr.Mode.FIT_TO_WIDTH, 500));
 			case THUMBNAIL:
-				return readBufferedImageToByteArray(
-							Scalr.resize(
-								ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
+				return readBufferedImageToByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
 			default:
 				throw new IllegalArgumentException("wrong type=" + type);
 			}
@@ -58,7 +54,8 @@ public class Image {
 	}
 
 	private byte[] readBufferedImageToByteArray(BufferedImage bi) throws IOException {
-		@Cleanup ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		@Cleanup
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ImageIO.setUseCache(false);
 		ImageIO.write(bi, "gif", outputStream);
 		return outputStream.toByteArray();

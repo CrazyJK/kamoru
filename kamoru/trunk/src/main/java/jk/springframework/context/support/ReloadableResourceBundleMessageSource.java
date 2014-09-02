@@ -26,8 +26,8 @@ import org.springframework.util.PropertiesPersister;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link org.springframework.context.support.ReloadableResourceBundleMessageSource} 순수 소스에서<br>
- * 호출된 code를 알아보기 위해 {@link #hitMessageCodeMap}을 추가
+ * {@link org.springframework.context.support.ReloadableResourceBundleMessageSource} <br>
+ * 순수 소스에서 호출된 code를 알아보기 위해 {@link #hitMessageCodeMap}을 추가
  * @author kamoru
  * @see org.springframework.context.support.ReloadableResourceBundleMessageSource
  *

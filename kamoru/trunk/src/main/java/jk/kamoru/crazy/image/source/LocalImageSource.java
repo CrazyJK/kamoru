@@ -55,7 +55,6 @@ public class LocalImageSource implements ImageSource {
 		}
 		catch (Exception e) {
 			log.warn("Error: {}", e.getMessage());
-//			e.printStackTrace();
 		}
 		log.info("Total found image size : {}", imageList.size());
 	}

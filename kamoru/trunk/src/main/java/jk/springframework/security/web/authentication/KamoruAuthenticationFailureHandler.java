@@ -11,27 +11,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-/**로그인 실패 후처리기<br>
+/**
+ * 로그인 실패 후처리기<br>
  * 로그 남기기
+ * 
  * @author kamoru
  *
  */
-public class KamoruAuthenticationFailureHandler extends
-		SimpleUrlAuthenticationFailureHandler  {
+public class KamoruAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(KamoruAuthenticationFailureHandler.class);
 
 	@Override
-	public void onAuthenticationFailure(
-			HttpServletRequest request,
-			HttpServletResponse response, 
-			AuthenticationException exception)
-			throws IOException, ServletException {
-		
-		logger.warn("login fail [{}] {} - {}", 
-				request.getRemoteAddr(), 
-				request.getParameter("j_username"),
-				exception.getMessage());
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+
+		logger.warn("login fail [{}] {} - {}", request.getRemoteAddr(), request.getParameter("j_username"), exception.getMessage());
 		super.onAuthenticationFailure(request, response, exception);
 	}
 
