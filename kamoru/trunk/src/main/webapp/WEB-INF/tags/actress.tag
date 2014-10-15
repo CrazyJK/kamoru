@@ -4,7 +4,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri='http://www.springframework.org/tags/form'%>
 
-<%@ attribute name="actress" required="true" type="jk.kamoru.app.video.domain.Actress"%>
+<%@ attribute name="actress" required="true" type="jk.kamoru.crazy.video.domain.Actress"%>
 <%@ attribute name="view" required="true"%>
 
 <%
