@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="EUC-KR" body-content="tagdependent"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <%@ attribute name="video" required="true" type="jk.kamoru.crazy.video.domain.Video"%>
@@ -9,13 +10,14 @@
 <%@ attribute name="tooltip" required="false"%>
 
 <c:set var="cssClass" value="${mode eq 'l' ? 'label-large' : 'label'}"/>
-
+<c:set var="ONE_GB" value="${1024*1024*1024}"/>
 <%
 	if (view.equalsIgnoreCase("video")) {
 %>
 <span
 	class="${cssClass} ${video.existVideoFileList ? 'exist' : 'nonExist'}"
-	title="Video (${video.playCount})" onclick="fnPlay('${video.opus}')">${mode eq 's' ? 'V' : 'Video'}</span>
+	title="Video (${video.playCount}), <fmt:formatNumber value="${video.length / ONE_GB}" pattern="#,##0 GB"/>" 
+	onclick="fnPlay('${video.opus}')">${mode eq 's' ? 'V' : 'Video'}</span>
 <%
 	} else if (view.equalsIgnoreCase("cover")) {
 %>

@@ -10,5 +10,5 @@ public class KAMORU {
 
 	/** serialVersionUID */
 	public static final long SERIAL_VERSION_UID = 588L;
-
+ 
 }
