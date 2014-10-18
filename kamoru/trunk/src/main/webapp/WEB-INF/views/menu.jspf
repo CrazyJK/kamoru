@@ -12,7 +12,7 @@
 		<li><a href="<c:url value="/video/studio"/>">Studio List</a>
 		<li><a href="<c:url value="/video/briefing"/>">Video briefing</a>
 		<li><a href="<c:url value="/video/torrent"/>">Video Torrent</a>
-		<li><a href="<c:url value="/video/manager"/>">Video Manager</a>
+		<li><a href="<c:url value="/video/parseToTitle"/>">parse to title</a>
 	</ul>
 </section>
 </security:authorize>

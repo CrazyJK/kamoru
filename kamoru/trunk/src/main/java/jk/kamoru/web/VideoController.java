@@ -526,4 +526,12 @@ public class VideoController extends AbstractController {
 		model.addAttribute("titleData", titleData);
 		return "video/parseToTitle";
 	}
+	
+	@RequestMapping("/torrent/search/{opus}")
+	public String torrentSearch(Model model, @PathVariable("opus") String opus) {
+		logger.trace("torrentSearch");
+		model.addAttribute(videoService.getVideo(opus));
+		return "video/torrentSearch";
+	}
+
 }

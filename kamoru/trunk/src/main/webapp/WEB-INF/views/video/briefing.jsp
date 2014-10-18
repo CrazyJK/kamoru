@@ -19,6 +19,9 @@ div#content_div.div-box h3 {
 	padding: 5px;
 	cursor: pointer;
 	text-shadow: 1px 1px 1px white;
+	/* background-color: linen;
+	border-radius: 5px;
+	opacity: 0.75; */
 }
 div#content_div.div-box h3:hover {
 	border-radius:5px; 

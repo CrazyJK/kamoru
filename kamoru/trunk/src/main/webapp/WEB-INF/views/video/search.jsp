@@ -8,6 +8,8 @@
 <head>
 <title><s:message code="video.video"/> <s:message code="video.search"/></title>
 <script type="text/javascript">
+bgContinue = false;
+
 $(document).ready(function(){
 	
 	$("#query").bind("keyup", function(e) {

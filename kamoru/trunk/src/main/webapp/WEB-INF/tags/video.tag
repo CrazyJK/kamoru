@@ -2,7 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
-<%@ attribute name="video" required="true" type="jk.kamoru.app.video.domain.Video"%>
+
+<%@ attribute name="video" required="true" type="jk.kamoru.crazy.video.domain.Video"%>
 <%@ attribute name="view" required="true"%>
 <%@ attribute name="mode" required="false"%>
 <%@ attribute name="tooltip" required="false"%>

@@ -71,6 +71,6 @@ Unseen[<s:eval expression="@prop['score.ratio.unseen']"/>]">Ratio</span>
 		</c:forEach>
 	</table>
 </div>
-
+  
 </body>
 </html>

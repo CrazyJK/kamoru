@@ -38,18 +38,20 @@ function popup(url, name, width, height, positionMethod, spec) {
 		specs = spec;
 	}
 	specs = "width="+width+",height="+height+",top="+top+", left="+left + "," + specs;
-
+//	alert(vUrl + " - " + vName + " - " + specs);
 	var popupWindow = window.open(vUrl, vName, specs);
 	popupWindow.focus();
 }
-function popupImage(url) {
+function popupImage(url, name) {
+	if (!name)
+		name = url;
 	var img =  new Image(); 
 	img.src = url;
 	$(img).ready(function(){ 
 		var imgWidth  = img.width;
 		var imgHeight = img.height;
 //		alert("size method 3 = " + imgWidth + " x " + imgHeight);
-		popup(url, url, imgWidth, imgHeight);
+		popup(url, name, imgWidth, imgHeight);
 	});
 }
 function fnViewFullImage(image) {

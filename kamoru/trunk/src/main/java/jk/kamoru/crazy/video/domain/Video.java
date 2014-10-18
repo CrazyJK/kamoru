@@ -549,7 +549,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 	public void move(String destDir) {
 		File destFile = new File(destDir);
 		if (!destFile.exists()) 
-			throw new VideoException(destDir + " is not exist!");
+			throw new VideoException("directory(" + destDir + ") is not exist!");
 		for (File file : getFileAll()) {
 			if (file != null && file.exists() && !file.getParent().equals(destDir)) {
 				if (destFile.getFreeSpace() < file.length()) {
@@ -557,7 +557,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 					break;
 				}
 				try {
-					logger.debug("move file from {} to {}", file.getAbsolutePath(), destDir);
+					logger.debug("attempt to move file from {} to {}", file.getAbsolutePath(), destDir);
 					FileUtils.moveFileToDirectory(file, destFile, false);
 				} catch (FileExistsException fe) {
 					logger.warn("File exist, then delete ", fe);

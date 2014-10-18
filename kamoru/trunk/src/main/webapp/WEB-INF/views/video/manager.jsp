@@ -8,6 +8,10 @@
 <head>
 <title><s:message code="video.manager"/></title>
 <style type="text/css">
+ul {
+	background-color: linen;
+	list-style-type: none;
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -22,7 +26,7 @@ $(document).ready(function(){
 
 <div id="content_div" class="div-box" style="overflow:auto; text-align:left;">
 
-	<ul>
+	<ul class="video-table">
 		<li><a onclick="actionFrame('<c:url value="/video/manager/moveWatchedVideo"/>')"><s:message code="video.mng.move"/></a>
 		<li><a onclick="actionFrame('<c:url value="/video/manager/removeLowerRankVideo"/>')"><s:message code="video.mng.rank"/></a>
 		<li><a onclick="actionFrame('<c:url value="/video/manager/removeLowerScoreVideo"/>')"><s:message code="video.mng.score"/></a>

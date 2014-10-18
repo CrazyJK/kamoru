@@ -89,13 +89,14 @@ $(document).ready(function(){
  	}
  	
 	// set background image
-	setBackgroundImage();
+	/*
+ 	setBackgroundImage();
 	setInterval(
 			function() {
 				setBackgroundImage();
 			}, 
 			60*1000);
-
+	 */
 	
 	// for slide view
 	if(listViewType == 'S' || listViewType == 'V') {

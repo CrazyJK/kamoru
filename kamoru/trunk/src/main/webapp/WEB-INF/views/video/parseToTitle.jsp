@@ -34,7 +34,6 @@
 function fnMarkChoice(opus) {
 	$("#check-" + opus).addClass("mark");
 }
-
 </script>
 </head>
 <body>
@@ -61,7 +60,7 @@ function fnMarkChoice(opus) {
 					<input class="fullname" value="${title}"/>
 					<a onclick="fnMarkChoice('${title.opus}')" href="${arzon}${title.opus}" target="_blank" class="link">Get Info</a>
 				</span>
-				<c:if test="${title.check}">Check! ${title.checkDesc}</c:if>
+				<c:if test="${title.check}">${title.checkDesc}</c:if>
 			</td>
 		</tr>
 		</c:forEach>

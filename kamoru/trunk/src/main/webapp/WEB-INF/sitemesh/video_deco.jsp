@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="<%=new RequestContext(request).getLocale().getLanguage()%>">
 <head>
-<title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
+<title><sitemesh:write property='title'>Title goes here</sitemesh:write> - Crazy JK</title>
 <meta charset="UTF-8" />
 <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
 <link rel="stylesheet" href="<c:url value="/resources/video/video-deco.css"   />" />
@@ -20,6 +20,9 @@
 var context = '<c:url value="/"/>';
 var locationPathname = window.location.pathname;
 var currBGImageNo = 0;
+var bgImageCount = ${bgImageCount};
+/** content_div에 이미지를 보여줄지 여부 */
+var bgContinue = true;
 
 $(document).ready(function() {
 
@@ -40,6 +43,14 @@ $(document).ready(function() {
 
 	resizeDivHeight();
 
+	if (bgContinue) {
+		setBackgroundImage();
+		setInterval(
+				function() {
+					setBackgroundImage();
+				}, 
+				60*1000);
+	}
 });
 
 /**
@@ -87,7 +98,7 @@ function actionFrame(url, method) {
 	<li class="menu"><a href="<c:url value="/image/canvas"/>"><s:message code="default.canvas"/></a>
 	<li class="menu"><a href="<c:url value="/video/briefing"/>"><s:message code="video.briefing"/></a>
 	<li class="menu"><a href="<c:url value="/video/torrent"/>"><s:message code="video.torrent"/></a>
-	<li class="menu"><a href="<c:url value="/video/manager"/>"><s:message code="video.manager"/></a>
+	<%-- <li class="menu"><a href="<c:url value="/video/manager"/>"><s:message code="video.manager"/></a> --%>
 	<li class="menu"><a href="<c:url value="/video/parseToTitle"/>"><s:message code="video.parseToTitle" text="parseToTitle"/></a>
 	<li class="menu"><a href="<c:url value="/home"/>"><s:message code="default.home"/></a>
 </ul>

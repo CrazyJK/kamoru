@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><s:message code="video.title"/></title>
+<title><s:message code="video.video"/></title>
 <script type="text/javascript">
 var opusArray = ${opusArray};
 var bgImageCount = ${bgImageCount};
