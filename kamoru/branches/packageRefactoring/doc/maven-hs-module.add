@@ -1,0 +1,14 @@
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-bdk10-1.0.jar -DgroupId=com.hs -DartifactId=hs-bdk10 -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-hwweb-1.0.jar -DgroupId=com.hs -DartifactId=hs-hwweb -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-hwjsp-1.0.jar -DgroupId=com.hs -DartifactId=hs-hwjsp -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-crypt-1.0.jar -DgroupId=com.hs -DartifactId=hs-crypt -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-jdbcpool-1.0.jar -DgroupId=com.hs -DartifactId=hs-jdbcpool -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-csd-1.0.jar -DgroupId=com.hs -DartifactId=hs-csd -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
+./mvn install:install-file -Dfile=/home/kamoru/utilities/hs_jars/hs-jkjdbc-1.0.jar -DgroupId=com.hs -DartifactId=hs-jkjdbc -Dversion=1.0 -Dpackaging=jar -DgeneratePom=true
+
