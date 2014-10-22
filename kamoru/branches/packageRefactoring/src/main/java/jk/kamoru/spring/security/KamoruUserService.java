@@ -1,11 +1,12 @@
-package jk.springframework.security.core.userdetails;
+package jk.kamoru.spring.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-/**로그인 요청한 사용자를 찾아주는 service<br>
- * 현재는 유일 사용자만 반환
+/**
+ * 로그인 요청한 사용자를 찾아주는 service
+ * <p>현재는 유일 사용자만 반환. 필요시 DAO와 연결
  * @author kamoru
  *
  */

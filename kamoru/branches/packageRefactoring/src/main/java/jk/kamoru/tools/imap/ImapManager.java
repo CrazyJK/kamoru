@@ -1,4 +1,4 @@
-package jk.kamoru.code.net.imap;
+package jk.kamoru.tools.imap;
 
 import java.util.Properties;
 
@@ -10,6 +10,11 @@ import javax.mail.URLName;
 
 import com.sun.mail.imap.IMAPStore;
 
+/**
+ * imap 서버에 연결하는 간략한 샘플 코드
+ * @author kamoru
+ *
+ */
 public class ImapManager {
 
 	protected static Session session;  

@@ -20,7 +20,7 @@
 		<task:scheduler id="scheduler" pool-size="5"/>
 		<task:executor  id="executor"  pool-size="4" queue-capacity="4" rejection-policy="ABORT"/>	
 	
-		<bean id="messageSource" class="jk.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<bean id="messageSource" class="jk.kamoru.spring.ReloadableResourceBundleMessageSource">
 			<property name="basenames">
 				<list>
 					<value>/WEB-INF/spring/messages/videoMessage</value>

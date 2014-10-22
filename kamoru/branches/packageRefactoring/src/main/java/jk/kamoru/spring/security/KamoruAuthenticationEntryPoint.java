@@ -1,4 +1,4 @@
-package jk.springframework.security.web;
+package jk.kamoru.spring.security;
 
 import java.io.IOException;
 

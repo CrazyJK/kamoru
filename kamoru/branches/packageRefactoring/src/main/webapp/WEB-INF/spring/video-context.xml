@@ -26,10 +26,10 @@
 	<aop:config>
 		<aop:advisor advice-ref="elapsedTimeAdvice" pointcut="execution(* jk.kamoru.*..*Source.reload())"/>
 	</aop:config>
-	<bean id="elapsedTimeAdvice" class="jk.aopalliance.intercept.ElapsedTimeAdvice" />
+	<bean id="elapsedTimeAdvice" class="jk.kamoru.spring.ElapsedTimeAdvice" />
 	
 	<!-- bean post processor -->
-	<bean class="jk.springframework.beans.factory.config.JKPostProcessor" >
+	<bean class="jk.kamoru.spring.MethodExecutionBeanPostProcessor" >
 		<property name="beans">
 			<map>
 				<entry key="videoSource" value="reload"/>

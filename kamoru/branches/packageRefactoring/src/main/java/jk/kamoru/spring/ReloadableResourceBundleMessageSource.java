@@ -1,4 +1,4 @@
-package jk.springframework.context.support;
+package jk.kamoru.spring;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,15 +26,29 @@ import org.springframework.util.PropertiesPersister;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link org.springframework.context.support.ReloadableResourceBundleMessageSource} <br>
- * 순수 소스에서 호출된 code를 알아보기 위해 {@link #hitMessageCodeMap}을 추가
+ * Springframework의 {@link org.springframework.context.support.ReloadableResourceBundleMessageSource 
+ * ReloadableResourceBundleMessageSource} 기능 그대로에서 <br>
+ * 호출된 code를 알아보기 위해 {@link #hitMessageCodeMap}을 추가하여
+ * 소스에서 ReloadableResourceBundleMessageSource.hitMessageCodeMap로 접근하여 내용을 확인할 수 있다.
+ * <pre>
+ * &lt;bean id="messageSource" class="{@link org.springframework.context.support.ReloadableResourceBundleMessageSource}"&gt;
+ *   &lt;property name="{@link #setBasenames(String[]) basenames}"&gt;
+ *     &lt;list&gt;
+ *       &lt;value&gt;/WEB-INF/spring/messages/videoMessage&lt;/value&gt;
+ *       &lt;value&gt;/WEB-INF/spring/messages/defaultMessage&lt;/value&gt;
+ *     &lt;/list&gt;
+ *   &lt;/property&gt;
+ *   &lt;property name="{@link #setCacheSeconds(int) cacheSeconds}" value="60" /&gt; 
+ *   &lt;property name="{@link #setFallbackToSystemLocale(boolean) fallbackToSystemLocale}" value="false" /&gt;
+ * &lt;/bean&gt;
+ * 
+ * </pre>
  * @author kamoru
  * @see org.springframework.context.support.ReloadableResourceBundleMessageSource
  *
  */
 @Slf4j
-public class ReloadableResourceBundleMessageSource extends
-		AbstractMessageSource implements ResourceLoaderAware {
+public class ReloadableResourceBundleMessageSource extends AbstractMessageSource implements ResourceLoaderAware {
 
 	private static final String PROPERTIES_SUFFIX = ".properties";
 

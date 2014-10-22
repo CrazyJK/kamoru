@@ -7,13 +7,13 @@
 <title><s:message code="default.error"/></title>
 <script type="text/javascript">
 if (self.innerHeight == 0)
-	alert('${exceptionMsg.message}');
+	alert('${exception.message}');
 </script>
 </head>
 <body>
 
 <h1><s:message code="default.error"/></h1>
-<h2 style="color:red;">${exceptionMsg.message}</h2>
+<h2 style="color:red;">${exception.message}</h2>
 
 <div>
 	<span class="label" onclick="$('#stack-trace').toggle()"><s:message code="default.stacktrace"/></span>
@@ -21,9 +21,9 @@ if (self.innerHeight == 0)
 </div>
 
 <div id="stack-trace" style="display:none;">
-	<h4>${exceptionMsg}</h4>
+	<h4>${exception}</h4>
 	<ul class="code-view">
-		<c:forEach items="${exceptionMsg.stackTrace}" var="stackTrace">
+		<c:forEach items="${exception.stackTrace}" var="stackTrace">
 		<li><code class="code-value">${stackTrace }</code></li>
 		</c:forEach>
 	</ul>

@@ -9,8 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jk.kamoru.spring.ReloadableResourceBundleMessageSource;
 import jk.kamoru.util.StringUtils;
-import jk.springframework.context.support.ReloadableResourceBundleMessageSource;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.ConfigurableApplicationContext;

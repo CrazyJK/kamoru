@@ -74,28 +74,28 @@
 	</beans:bean>
     
     <!-- Exception Resolver -->
-    <beans:bean id="exceptionResolver" class="jk.springframework.web.servlet.handler.DebugMappingExceptionResolver">
+    <beans:bean id="exceptionResolver" class="jk.kamoru.spring.SimpleMappingLoggerExceptionResolver">
     	<beans:property name="exceptionMappings">
     		<beans:props>
     			<beans:prop key="jk.kamoru.crazy.video.VideoException">error/videoError</beans:prop>
     		</beans:props>
     	</beans:property>
-    	<beans:property name="exceptionAttribute" value="exceptionMsg"/>
+    	<beans:property name="exceptionAttribute" value="exception"/>
     	<beans:property name="defaultErrorView" value="error/defaultError"/>
     </beans:bean>
 
-	<!-- LocaleChangeInterceptor -->    
-    <interceptors>
-    	<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-    		<beans:property name="paramName" value="lang"/>
-    	</beans:bean>
-    </interceptors>
     <!-- Locale Resolver -->
     <beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
 
-	<!-- Controller Interceptor -->
-	<interceptors>
-		<beans:bean class="jk.springframework.web.servlet.ControllerInterceptor" />
-	</interceptors>
+    <interceptors>
+		<!-- LocaleChangeInterceptor -->    
+    	<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    		<beans:property name="paramName" value="lang"/>
+    	</beans:bean>
+		<!-- Controller Interceptor -->
+		<beans:bean class="jk.kamoru.spring.AccesslogInterceptor" >
+			<beans:property name="when" value="AFTER"/>
+		</beans:bean>
+    </interceptors>
     
 </beans:beans>
