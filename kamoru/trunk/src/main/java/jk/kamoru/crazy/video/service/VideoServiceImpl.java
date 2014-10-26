@@ -144,19 +144,21 @@ public class VideoServiceImpl implements VideoService {
 		}
 		
 		log.debug("q={} foundLength={}", query, foundMapList.size());
-		Collections.sort(foundMapList, new Comparator<Map<String, String>>(){
-
-			@Override
-			public int compare(Map<String, String> o1, Map<String, String> o2) {
-				String thisStr = o1.get("date");
-				String compStr = o2.get("date");
-
-				String[] s = {thisStr, compStr};
-				Arrays.sort(s);
-				return s[0].equals(thisStr) ? 1 : -1;
-			}
-			
-		});
+		if (foundMapList.size() > 1) {
+			Collections.sort(foundMapList, new Comparator<Map<String, String>>(){
+	
+				@Override
+				public int compare(Map<String, String> o1, Map<String, String> o2) {
+					String thisStr = o1.get("date");
+					String compStr = o2.get("date");
+	
+					String[] s = {thisStr, compStr};
+					Arrays.sort(s);
+					return s[0].equals(thisStr) ? 1 : -1;
+				}
+				
+			});
+		}
 		return foundMapList;
 		
 		
@@ -1028,6 +1030,10 @@ public class VideoServiceImpl implements VideoService {
 						if (videoDao.contains(titlePart.getOpus())) {
 							log.info("{} exist", titlePart.getOpus());
 							continue;
+						}
+						// history check
+						if (historyService.contains(titlePart.getOpus())) {
+							titlePart.setSeen();
 						}
 
 						// find Studio

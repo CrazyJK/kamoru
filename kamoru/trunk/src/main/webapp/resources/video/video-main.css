@@ -394,6 +394,11 @@ a.link:hover {
 	background-color:gray;
 }
 
+.mark {
+	background: green url("/crazy/resources/yes_check.png") no-repeat scroll 0% 0% / 30px 25px;
+}
+
+
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */
 ::-webkit-scrollbar {
 	width: 8px; 

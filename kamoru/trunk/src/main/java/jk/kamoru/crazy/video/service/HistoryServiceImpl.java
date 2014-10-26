@@ -81,4 +81,9 @@ public class HistoryServiceImpl implements HistoryService {
 	private List<History> dummyList() {
 		return new ArrayList<History>();
 	}
+
+	@Override
+	public boolean contains(String opus) {
+		return historyDao.findByOpus(opus).size() > 0;
+	}
 }

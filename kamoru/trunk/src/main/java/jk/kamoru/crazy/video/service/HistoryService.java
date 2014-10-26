@@ -63,4 +63,10 @@ public interface HistoryService {
 	 */
 	List<History> getAll();
 
+	/**opus가 있었는지
+	 * @param opus
+	 * @return
+	 */
+	boolean contains(String opus);
+
 }

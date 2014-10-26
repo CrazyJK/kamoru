@@ -141,5 +141,10 @@ public class TitlePart implements Comparable<TitlePart> {
 		return StringUtils.compareTo(this.toString(), o.toString());
 	}
 
+	public void setSeen() {
+		this.check = true;
+		this.checkDesc += "Seen ";
+	}
+
 
 }
