@@ -7,10 +7,6 @@ public class StorageException extends KamoruException {
 
 	private static final long serialVersionUID = KAMORU.SERIAL_VERSION_UID;
 
-	public StorageException() {
-		super();
-	}
-
 	public StorageException(String message, Throwable cause) {
 		super(message, cause);
 	}
@@ -21,6 +17,11 @@ public class StorageException extends KamoruException {
 
 	public StorageException(Throwable cause) {
 		super(cause);
+	}
+
+	@Override
+	public String getKind() {
+		return "Storage";
 	}
 
 	

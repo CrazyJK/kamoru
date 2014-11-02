@@ -4,13 +4,10 @@ package jk.kamoru;
  * @author kamoru
  *
  */
-public class KamoruException extends RuntimeException {
+public abstract class KamoruException extends RuntimeException {
 
 	private static final long serialVersionUID = KAMORU.SERIAL_VERSION_UID;
 
-	public KamoruException() {
-		super();
-	}
 /*	sinse JDK 1.7
 	public KamoruException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
@@ -29,5 +26,8 @@ public class KamoruException extends RuntimeException {
 		super(cause);
 	}
 
-	
+	/**에러 종류
+	 * @return
+	 */
+	public abstract String getKind();
 }

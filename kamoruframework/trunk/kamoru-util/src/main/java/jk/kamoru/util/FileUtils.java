@@ -89,10 +89,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		return found.size() == 0 ? true : false;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(FileUtils.isEmptyDirectory(new File("E:\\Girls\\gnom\\2013-12-24")));
-	}
-	
 	/**파일 이름 변경
 	 * @param file
 	 * @param name
@@ -103,6 +99,44 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			return false;
 		else 
 			return file.renameTo(new File(file.getParentFile(), name + EXTENSION_SEPARATOR + getExtension(file)));
+	}
+	
+	/**파일인지 검증. 존재하는지, 진짜 파일인지
+	 * @param file
+	 * @param message 검증 실패시 메시지
+	 * @throws KamoruException
+	 */
+	public static void validateFile(File file, String message) {
+		Assert.isTrue(file.exists(), message);
+		Assert.isTrue(file.isFile(), message);
+	}
+	
+	/**파일인지 검증. 존재하는지, 진짜 파일인지
+	 * @param file
+	 * @throws KamoruException
+	 */
+	public static void validateFile(File file) {
+		Assert.isTrue(file.exists(), "file dose not exists");
+		Assert.isTrue(file.isFile(), "file is not a normal file");
+	}
+	
+	/**디렉토리인지 검증. 존재하는지, 진짜 디렉토리인지
+	 * @param directory
+	 * @param message 검증 실패시 메시지
+	 * @throws KamoruException
+	 */
+	public static void validateDirectory(File directory, String message) {
+		Assert.isTrue(directory.exists(), message);
+		Assert.isTrue(directory.isDirectory(), message);
+	}
+	
+	/**디렉토리인지 검증. 존재하는지, 진짜 디렉토리인지
+	 * @param directory
+	 * @throws KamoruException
+	 */
+	public static void validateDirectory(File directory) {
+		Assert.isTrue(directory.exists(), "file dose not exists");
+		Assert.isTrue(directory.isDirectory(), "file is not a directory");
 	}
 	
 }

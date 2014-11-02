@@ -36,8 +36,9 @@ public class KamoruAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 		String method = request.getMethod();
 		if (!method.equalsIgnoreCase("GET")) {
-			request.getSession(false).setAttribute("LAST_REQUEST_METHOD", method);
-			log.error(method + " request Error : {}", authException.getMessage());
+			request.setAttribute("LAST_REQUEST_METHOD", method);
+			request.setAttribute("authException", authException);
+			log.error("{} request Error : {}", method, authException.getMessage());
 		}
 		response.sendRedirect(request.getContextPath() + defaultFailureUrl);
 

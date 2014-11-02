@@ -6,9 +6,9 @@ package jk.kamoru;
  * @author kamoru
  *
  */
-public class KAMORU {
+public interface KAMORU {
 
 	/** serialVersionUID */
-	public static final long SERIAL_VERSION_UID = 588L;
+	public static final long SERIAL_VERSION_UID = 0x588;
  
 }

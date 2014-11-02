@@ -8,20 +8,20 @@ import lombok.extern.slf4j.Slf4j;
 public class RuntimeUtils {
 
 	public static void exec(String command) {
+		log.trace("exec {}", command);
 		try {
-			log.trace("exec {}", command);
 			Runtime.getRuntime().exec(command);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("execute error", e);
 		}
 	}
 	
 	public static void exec(String[] command) {
+		log.trace("exec {}", ArrayUtils.toString(command));
 		try {
-			log.trace("exec {}", ArrayUtils.toString(command));
 			Runtime.getRuntime().exec(command);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("execute error", e);
 		}
 	}
 }

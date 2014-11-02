@@ -3,7 +3,6 @@ package jk.kamoru.spring;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import jk.kamoru.KamoruException;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.BeansException;
@@ -60,7 +59,7 @@ public class MethodExecutionBeanPostProcessor implements BeanPostProcessor {
 				log.debug("completed to invoke {}.{}", beanName, methodName);
 			} catch (Exception e) {
 				log.error("method invocation error", e);
-				throw new KamoruException(e.getMessage(), e);
+				throw new SpringException("method invocation error", e);
 			}
 		}
 		return bean;
