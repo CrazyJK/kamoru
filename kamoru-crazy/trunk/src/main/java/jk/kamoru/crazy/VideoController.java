@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import jk.kamoru.crazy.image.service.ImageService;
-import jk.kamoru.crazy.video.VideoCore;
-import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.domain.Action;
 import jk.kamoru.crazy.video.domain.ActressSort;
 import jk.kamoru.crazy.video.domain.History;
@@ -57,17 +55,7 @@ public class VideoController extends AbstractController {
 	@Autowired private ImageService imageService;
 	@Autowired private VideoService videoService;
 	@Autowired private HistoryService historyService;
-	
-	/**locae model attribute
-	 * @param locale
-	 * @return model attribute
-	 */
-	@ModelAttribute
-	@JsonIgnore
-	public Locale locale(Locale locale) {
-		return locale;
-	}
-	
+
 	/**minimum rank model attrubute by named 'minRank'
 	 * @return model attribute
 	 */
@@ -92,8 +80,7 @@ public class VideoController extends AbstractController {
 	 * @return view name
 	 */
 	@RequestMapping(value="/actress", method=RequestMethod.GET)
-	public String actressList(Model model, 
-			@RequestParam(value="sort", required=false, defaultValue="NAME") ActressSort sort) {
+	public String actressList(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") ActressSort sort) {
 		logger.trace("actress");
 		model.addAttribute(videoService.getActressList(sort));
 		model.addAttribute("sorts", ActressSort.values());
@@ -143,8 +130,6 @@ public class VideoController extends AbstractController {
 		model.addAttribute(videoService.getActressList());
 		model.addAttribute(videoService.getVideoList());
 		
-		model.addAttribute("bgImageCount", imageService.getImageSourceSize());
-
 		return "video/briefing";
 	}
 
@@ -237,8 +222,7 @@ public class VideoController extends AbstractController {
 	 * @return view name
 	 */
 	@RequestMapping(value="/studio", method=RequestMethod.GET)
-	public String studioList(Model model, 
-			@RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
+	public String studioList(Model model, @RequestParam(value="sort", required=false, defaultValue="NAME") StudioSort sort) {
 		logger.trace("studio");
 		model.addAttribute(videoService.getStudioList(sort));
 		model.addAttribute("sorts", StudioSort.values());
@@ -256,9 +240,7 @@ public class VideoController extends AbstractController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/{opus}/cover", method=RequestMethod.GET)
-	public HttpEntity<byte[]> videoCover(HttpServletResponse response,
-			@PathVariable String opus, 
-			@RequestHeader("User-Agent") String agent) throws IOException {
+	public HttpEntity<byte[]> videoCover(HttpServletResponse response, @PathVariable String opus, @RequestHeader("User-Agent") String agent) throws IOException {
 		logger.trace("{}", opus);
 		boolean isChrome = agent.indexOf("Chrome") > -1;
 		File imageFile = videoService.getVideoCoverFile(opus, isChrome);
@@ -288,9 +270,7 @@ public class VideoController extends AbstractController {
 	 */
 	@RequestMapping(value="/{opus}/overview", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void opusOverviewPost(Model model,
-			@PathVariable("opus") String opus, 
-			@RequestParam("overViewTxt") String overview) {
+	public void opusOverviewPost(Model model, @PathVariable("opus") String opus, @RequestParam("overViewTxt") String overview) {
 		logger.trace("{} - {}", opus, overview);
 		videoService.saveVideoOverview(opus, overview);
 	}
@@ -359,7 +339,7 @@ public class VideoController extends AbstractController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void opusPost() {
 		logger.warn("POST do not something yet");
-		throw new VideoException(new IllegalStateException("POST do not something yet"));
+		throw new CrazyException(new IllegalStateException("POST do not something yet"));
 	}
 	
 	/**display video main view
@@ -402,7 +382,7 @@ public class VideoController extends AbstractController {
 	}
 
 	/**returns image entity<br>
-	 * cache time {@link VideoCore#WEBCACHETIME_SEC}, {@link VideoCore#WEBCACHETIME_MILI}
+	 * cache time {@link VIDEO#WEBCACHETIME_SEC}, {@link VIDEO#WEBCACHETIME_MILI}
 	 * @param imageBytes
 	 * @param suffix
 	 * @return image entity
@@ -411,12 +391,12 @@ public class VideoController extends AbstractController {
 		long today = new Date().getTime();
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setCacheControl("max-age=" + VideoCore.WEBCACHETIME_SEC);
+		headers.setCacheControl("max-age=" + VIDEO.WEBCACHETIME_SEC);
 		headers.setContentLength(imageBytes.length);
 		headers.setContentType(MediaType.parseMediaType("image/" + suffix));
-		headers.setDate(		today + VideoCore.WEBCACHETIME_MILI);
-		headers.setExpires(		today + VideoCore.WEBCACHETIME_MILI);
-		headers.setLastModified(today - VideoCore.WEBCACHETIME_MILI);
+		headers.setDate(		today + VIDEO.WEBCACHETIME_MILI);
+		headers.setExpires(		today + VIDEO.WEBCACHETIME_MILI);
+		headers.setLastModified(today - VIDEO.WEBCACHETIME_MILI);
 		
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}
@@ -469,9 +449,7 @@ public class VideoController extends AbstractController {
 	 */
 	@RequestMapping(value="/{opus}/confirmCandidate", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirmCandidate(Model model, 
-			@PathVariable("opus") String opus, 
-			@RequestParam("path") String path) {
+	public void confirmCandidate(Model model, @PathVariable("opus") String opus, @RequestParam("path") String path) {
 		logger.trace("confirm candidate video file");
 		videoService.confirmCandidate(opus, path);
 	}

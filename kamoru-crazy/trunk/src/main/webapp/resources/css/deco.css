@@ -103,6 +103,16 @@ a:hover {
 	
 }
 
+ul.stack-view {
+	font-family:"나눔고딕코딩";
+	color: black; 
+	font-size: .9em;
+	list-style:none;
+}
+ul.stack-view li {
+	padding-left: 10px;
+	margin-top: 1px;
+}
 ol.code-view {
 	font-family:"나눔고딕코딩";
 	color: red; 
@@ -118,14 +128,35 @@ li.notExist {
 	border-radius: 10px;
 }
 
-code.code-name {
+.code-name {
 	color:blue;
 }
-code.code-value {
+.code-value {
 	color: teal;
 }
-code.code-clazz {
+.code-clazz {
 	color: navy;
+}
+
+#stack-trace,
+#request-attribute,
+#session-attribute {
+	text-align: left;
+	margin: 10px;
+	padding: 5px;
+	border-radius:10px; 
+	background:rgba(255, 255, 255, .75); 	
+}
+
+#error-header {
+	text-align: center;
+	border-radius:10px; 
+	background:rgba(85, 36, 136, .75); 	
+}
+#error-article {
+	text-align: center;
+	border-radius:10px; 
+	background:rgba(85, 136, 36, .75); 	
 }
 
 /* Webkit용 scrollbar ref. http://circlash.tistory.com/610 */

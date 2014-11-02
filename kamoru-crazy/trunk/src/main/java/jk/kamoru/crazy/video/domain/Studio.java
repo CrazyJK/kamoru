@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Studio implements Serializable, Comparable<Studio> {
 
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+	private static final long serialVersionUID = VIDEO.SERIAL_VERSION_UID;
 
 	@Value("#{prop['video.basePath']}") 		private String[] basePath;
 
@@ -97,7 +97,7 @@ public class Studio implements Serializable, Comparable<Studio> {
 
 	private void loadInfo() {
 		if (!loaded) {
-			Map<String, String> info = VideoUtils.readFileToMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO));
+			Map<String, String> info = VideoUtils.readFileToMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VIDEO.EXT_STUDIO));
 			try {
 				this.homepage = new URL(info.get("HOMEPAGE"));
 			} catch (MalformedURLException e) {

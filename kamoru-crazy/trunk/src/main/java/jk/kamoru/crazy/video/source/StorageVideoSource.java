@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.domain.Actress;
 import jk.kamoru.crazy.video.domain.Studio;
 import jk.kamoru.crazy.video.domain.Video;
@@ -145,8 +145,8 @@ public class StorageVideoSource implements VideoSource {
 				// 연속 스페이스 제거
 				name = StringUtils.normalizeSpace(name);
 				// Unnecessary file exclusion
-				if (filename.equals(VideoCore.HISTORY_LOG) || filename.equals(VideoCore.MAC_NETWORKSTORES) || filename.equals(VideoCore.WINDOW_DESKTOPINI)
-						|| ext.equals(VideoCore.EXT_ACTRESS) || ext.equals(VideoCore.EXT_STUDIO))
+				if (filename.equals(VIDEO.HISTORY_LOG) || filename.equals(VIDEO.MAC_NETWORKSTORES) || filename.equals(VIDEO.WINDOW_DESKTOPINI)
+						|| ext.equals(VIDEO.EXT_ACTRESS) || ext.equals(VIDEO.EXT_STUDIO))
 					continue;
 
 				// 1 2 3 4 5 6
@@ -207,9 +207,9 @@ public class StorageVideoSource implements VideoSource {
 						video.setCoverFile(file);
 				} else if (subtitles_extensions.toLowerCase().contains(ext))
 					video.addSubtitlesFile(file);
-				else if (VideoCore.EXT_INFO.equalsIgnoreCase(ext))
+				else if (VIDEO.EXT_INFO.equalsIgnoreCase(ext))
 					video.setInfoFile(file);
-				else if (VideoCore.EXT_WEBP.equalsIgnoreCase(ext))
+				else if (VIDEO.EXT_WEBP.equalsIgnoreCase(ext))
 					video.setCoverWebpFile(file);
 				else
 					video.addEtcFile(file);

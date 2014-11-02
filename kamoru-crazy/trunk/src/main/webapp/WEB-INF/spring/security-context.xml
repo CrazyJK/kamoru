@@ -9,14 +9,15 @@
 
 	<util:properties id="security" location="/WEB-INF/spring/conf/security.properties" />
 
-	<http auto-config="true" use-expressions="true" entry-point-ref="jkEntryPoint">  
-		<!-- access-denied-page="/accessDenied" deprecated 되었다고해서 아래 access-denied-handler로 바꿈-->
+	<http pattern="/res/**" security="none"/>
+	<http pattern="/jsp/**" security="none"/>
 
+	<http auto-config="true" use-expressions="true" entry-point-ref="jkEntryPoint">  
+
+		<!-- access-denied-page="/accessDenied" deprecated 되었다고해서 아래 access-denied-handler로 바꿈-->
 		<access-denied-handler error-page="#{security['accessDeniedUrl']}" />
 		
 		<intercept-url pattern="/" 				access="permitAll" />
-		<intercept-url pattern="/jsp/**" 		access="permitAll" />
-		<intercept-url pattern="/resources/**" 	access="permitAll" />
 		<intercept-url pattern="/auth/**" 		access="permitAll" />
 		<intercept-url pattern="/image/random"	access="permitAll" />
 
@@ -29,16 +30,18 @@
 		<form-login login-page="#{security['loginPageUrl']}"
 			authentication-success-handler-ref="loginSuccessHandler"
 			authentication-failure-handler-ref="loginFailureHandler" />
-		<logout logout-success-url="#{security['logoutPageUrl']}"/>
+		
+		<logout logout-success-url="#{security['logoutPageUrl']}" delete-cookies="JSESSIONID"/>
 
 		<remember-me key="kamoruRememberme" token-validity-seconds="600000" />
 
-
-		<!-- 동일ID의 다중 접속 설정
+		<!-- 동일ID의 다중 접속 설정. error-if-maximum-exceeded : true이면 max가 넘었다는 에러발생하고 더이상 로그인 안된. false이면 기존 세션 expired -->
 		<session-management>
-            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/auth/expiredSession" />
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="#{security['expiredSessionUrl']}" />
         </session-management> 
-        -->
+        
+        <session-management invalid-session-url="#{security['invalidSessionUrl']}" />
+        
 	</http>
 	
 	<authentication-manager>

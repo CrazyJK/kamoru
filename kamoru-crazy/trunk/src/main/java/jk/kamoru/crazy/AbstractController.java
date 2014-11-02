@@ -1,5 +1,7 @@
 package jk.kamoru.crazy;
 
+import java.util.Locale;
+
 import jk.kamoru.crazy.image.service.ImageService;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -22,5 +24,11 @@ public abstract class AbstractController {
 	@ModelAttribute("bgImageCount")
 	public Integer bgImageCount() {
 		return imageService.getImageSourceSize();
+	}
+	
+	@JsonIgnore
+	@ModelAttribute("locale")
+	public Locale locale(Locale locale) {
+		return locale;
 	}
 }

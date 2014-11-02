@@ -5,9 +5,9 @@
 <html> 
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/res/img/video-favicon.ico" />">
 <title><s:message code="image.image-viewer"/></title>
-<link rel="stylesheet" href="<c:url value="/resources/video/video.css" />" />
+<link rel="stylesheet" href="<c:url value="/res/css/video.css" />" />
 <style type="text/css">
 * {margin:0px; padding:0px;}
 #navDiv {position:absolute; right:0px; top:0px; margin:10px 5px 0px 0px; cursor:pointer;}

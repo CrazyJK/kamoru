@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import jk.kamoru.crazy.image.domain.PictureType;
 import jk.kamoru.crazy.image.service.ImageService;
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.util.VideoUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -140,12 +140,12 @@ public class ImageController extends AbstractController {
 		long today = new Date().getTime();
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setCacheControl("max-age=" + VideoCore.WEBCACHETIME_SEC);
+		headers.setCacheControl("max-age=" + VIDEO.WEBCACHETIME_SEC);
 		headers.setContentLength(imageBytes.length);
 		headers.setContentType(type);
-		headers.setDate(today + VideoCore.WEBCACHETIME_MILI);
-		headers.setExpires(today + VideoCore.WEBCACHETIME_MILI);
-		headers.setLastModified(today - VideoCore.WEBCACHETIME_MILI);
+		headers.setDate(today + VIDEO.WEBCACHETIME_MILI);
+		headers.setExpires(today + VIDEO.WEBCACHETIME_MILI);
+		headers.setLastModified(today - VIDEO.WEBCACHETIME_MILI);
 
 		return new HttpEntity<byte[]>(imageBytes, headers);
 	}

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import jk.kamoru.crazy.CrazyException;
 import jk.kamoru.crazy.image.ImageException;
 import jk.kamoru.util.FileUtils;
 import lombok.Cleanup;
@@ -18,6 +19,7 @@ import org.imgscalr.Scalr.Method;
 @Data
 public class Image {
 
+	private int idx;
 	private String name;
 	private String suffix;
 	private long size;
@@ -27,6 +29,11 @@ public class Image {
 	public Image(File file) {
 		this.file = file;
 		init();
+	}
+
+	public Image(File file, int i) {
+		this(file);
+		this.idx = i;
 	}
 
 	private void init() {
@@ -46,10 +53,10 @@ public class Image {
 			case THUMBNAIL:
 				return readBufferedImageToByteArray(Scalr.resize(ImageIO.read(file), Method.SPEED, 100, Scalr.OP_ANTIALIAS, Scalr.OP_BRIGHTER));
 			default:
-				throw new IllegalArgumentException("wrong type=" + type);
+				throw new CrazyException("wrong PictureType = " + type);
 			}
 		} catch (IOException e) {
-			throw new ImageException(e);
+			throw new ImageException(this, "image io error", e);
 		}
 	}
 

@@ -17,12 +17,13 @@ try {
 <!DOCTYPE html>
 <html lang="<%=lang%>">
 <head>
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/favicon_kamoru.ico"/>">
+<meta charset="UTF-8" />
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/res/img/favicon-kamoru.ico"/>">
 <title><sitemesh:write property='title'>Title goes here</sitemesh:write> - kAmOrU</title>
-<link rel="stylesheet" href="<c:url value="/resources/deco.css" />" />
+<link rel="stylesheet" href="<c:url value="/res/css/deco.css" />" />
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js" />" type="text/javascript"></script>
+<script src="<c:url value="/res/js/common.js" />" type="text/javascript"></script>
 <script type="text/javascript">
 var context = '<c:url value="/"/>';
 var bgImageCount = ${empty bgImageCount ? 0 : bgImageCount};
@@ -90,11 +91,11 @@ function showNav() {
 			<a href="<c:url value="/"/>">kAmOrU&hellip;</a> <sitemesh:write property='title'/>
 
 			<a href="mailto:<s:message code="default.mail.addr"/>" title="<s:message code="default.mail.reply"/>" style="float:right;">
-				<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/resources/tag_crazyjk_gmail.png"/>">
+				<img alt="<s:message code="default.mail.addr"/>" src="<c:url value="/res/img/tag_crazyjk_gmail.png"/>">
 			</a>
 			
 			<span style="float:right; font-size:12px; line-height:35px;">
-				<s:message code="default.hello"/>&nbsp;	${auth.name}&nbsp;
+				<s:message code="default.hello"/>&nbsp;${pageContext.request.userPrincipal.name}&nbsp;
 			</span>
 		</h1>
 	</header>
@@ -116,6 +117,7 @@ function showNav() {
 			&copy; <time datetime="<%=dateString %>" title="Today"><%=dateString %></time> 
 			<a href="<c:url value="/jkServlet"/>">kAmOrU.</a> All rights reserved.
 			<a onclick="bgImageDELETE()">Image Del</a>
+			<a onclick="popup('<c:url value="/jsp/util/webAttribute4Popup.jsp"/>','webAttr',800,700)" title="Web attributes view">Attr</a>
 	
 			<section style="float:right">
 				<form name="langChange">

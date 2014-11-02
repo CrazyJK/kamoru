@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.VideoException;
 import jk.kamoru.crazy.video.dao.VideoDao;
 import jk.kamoru.crazy.video.domain.Action;
 import jk.kamoru.crazy.video.domain.Actress;
 import jk.kamoru.crazy.video.domain.ActressSort;
 import jk.kamoru.crazy.video.domain.History;
-import jk.kamoru.crazy.video.domain.InequalitySign;
 import jk.kamoru.crazy.video.domain.Sort;
 import jk.kamoru.crazy.video.domain.Studio;
 import jk.kamoru.crazy.video.domain.StudioSort;
@@ -119,14 +118,12 @@ public class VideoServiceImpl implements VideoService {
 				argumentsArray = video.getSubtitlesFileListPathArray();
 				break;
 			default:
-				throw new VideoException("Unknown Action");
+				throw new VideoException(video, "Unknown Action");
 		}
 		if(argumentsArray == null)
-			throw new RuntimeException("No arguments");
+			throw new VideoException(video, "No arguments for " + action);
 		
-		String[] cmdArray = ArrayUtils.addAll(new String[]{command}, argumentsArray);
-		log.debug("exec command - {} {}", command, argumentsArray);
-		RuntimeUtils.exec(cmdArray);
+		RuntimeUtils.exec(ArrayUtils.addAll(new String[]{command}, argumentsArray));
 	}
 
 	@Override
@@ -141,7 +138,7 @@ public class VideoServiceImpl implements VideoService {
 			list = historyService.findByQuery(query);
 		for (History history : list) {
 			Map<String, String> map = new HashMap<String, String>();
-			map.put("date", new SimpleDateFormat(VideoCore.VIDEO_DATE_PATTERN).format(history.getDate()));
+			map.put("date", new SimpleDateFormat(VIDEO.VIDEO_DATE_PATTERN).format(history.getDate()));
 			map.put("opus", history.getOpus());
 			map.put("act",  history.getAction().toString());
 			map.put("desc", history.getVideo() == null ? history.getDesc() : history.getVideo().getFullname());
@@ -381,9 +378,12 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void playVideo(String opus) {
 		log.trace(opus);
-		callExecutiveCommand(videoDao.getVideo(opus), Action.PLAY);
-		videoDao.getVideo(opus).increasePlayCount();
-		saveHistory(videoDao.getVideo(opus), Action.PLAY);
+		Video video = videoDao.getVideo(opus);
+		if (!video.isExistVideoFileList())
+			throw new VideoException(video, "No video file");
+		callExecutiveCommand(video, Action.PLAY);
+		video.increasePlayCount();
+		saveHistory(video, Action.PLAY);
 	}
 
 	@Override
@@ -488,26 +488,6 @@ public class VideoServiceImpl implements VideoService {
 		return rankRange.contains(rank);
 	}
 
-	/**test two numbers by inequality sign
-	 * @param rank
-	 * @param rankSign
-	 * @param rank2
-	 * @return {@code true} if result is true
-	 */
-	@SuppressWarnings("unused")
-	private boolean rankCompare(int rank, InequalitySign rankSign, Integer rank2) {
-		switch (rankSign) {
-		case eq:
-			return rank == rank2;
-		case lt:
-			return rank < rank2;
-		case gt:
-			return rank > rank2;
-		default:
-			throw new VideoException("Unknown InequalitySign");
-		}
-	}
-
 	@Override
 	public Map<String, Long[]> groupByPath() {
 		log.trace("groupByPath");
@@ -535,7 +515,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void saveActressInfo(String name, Map<String, String> params) {
 		log.trace("name={}, params={}", name, params);
-		VideoUtils.saveFileFromMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS), params);
+		VideoUtils.saveFileFromMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VIDEO.EXT_ACTRESS), params);
 		videoDao.getActress(name).reloadInfo();
 	}
 
@@ -611,7 +591,7 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public void saveStudioInfo(String studio, Map<String, String> params) {
 		log.trace("name={}, params={}", studio, params);
-		VideoUtils.saveFileFromMap(new File(basePath[0], studio + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_STUDIO), params);
+		VideoUtils.saveFileFromMap(new File(basePath[0], studio + FileUtils.EXTENSION_SEPARATOR + VIDEO.EXT_STUDIO), params);
 		videoDao.getStudio(studio).reloadInfo();
 	}
 	
@@ -889,39 +869,36 @@ public class VideoServiceImpl implements VideoService {
 		log.debug("  need torrent videos - {}", list.size());
 		
 		// get downloaded torrent file
-		if (torrentPath != null) {
-			File torrentDirectory = new File(torrentPath);
-			if (!torrentDirectory.isDirectory())
-				throw new VideoException("invalid torrent path");
-			
-			String[] extensions = new String[videoExtensions.length * 2];
-			int index = 0;
-			for (String ext : videoExtensions) {
-				extensions[index++] = ext.toUpperCase();
-				extensions[index++] = ext.toLowerCase();
-			}
-			log.trace("extensions - {}", Arrays.toString(extensions));
-			
-			Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
-			log.debug("  found cadidates file - {}", torrents.size());
-			
-			// matching video file
-			for (Video video : list) {
-				video.resetVideoCandidates();
-				String opus = video.getOpus().toLowerCase();
-				log.debug("  OPUS : {}", opus);
-				for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
-					for (File file : torrents) {
-						String fileName = file.getName().toLowerCase();
-						log.trace("    compare : {} = {}", fileName, key);
-						if (fileName.contains(key)) {
-							video.addVideoCandidates(file);
-							log.info("    add video candidate {} : {}", opus, file.getAbsolutePath());
-						}
+		File torrentDirectory = new File(torrentPath);
+		FileUtils.validateDirectory(torrentDirectory, "invalid torrent path");
+
+		String[] extensions = new String[videoExtensions.length * 2];
+		int index = 0;
+		for (String ext : videoExtensions) {
+			extensions[index++] = ext.toUpperCase();
+			extensions[index++] = ext.toLowerCase();
+		}
+		log.trace("extensions - {}", Arrays.toString(extensions));
+		
+		Collection<File> torrents = FileUtils.listFiles(torrentDirectory, extensions, true);
+		log.debug("  found cadidates file - {}", torrents.size());
+		
+		// matching video file
+		for (Video video : list) {
+			video.resetVideoCandidates();
+			String opus = video.getOpus().toLowerCase();
+			log.debug("  OPUS : {}", opus);
+			for (String key : Arrays.asList(opus, StringUtils.remove(opus, "-"))) {
+				for (File file : torrents) {
+					String fileName = file.getName().toLowerCase();
+					log.trace("    compare : {} = {}", fileName, key);
+					if (fileName.contains(key)) {
+						video.addVideoCandidates(file);
+						log.info("    add video candidate {} : {}", opus, file.getAbsolutePath());
 					}
 				}
 			}
-		}		
+		}
 		return list;
 	}
 
@@ -937,7 +914,7 @@ public class VideoServiceImpl implements VideoService {
 			FileUtils.moveFile(file, destFile);
 			log.info("move to {}", destFile.getAbsoluteFile());
 		} catch (IOException e) {
-			throw new VideoException("candidate file moving error", e);
+			throw new VideoException(video, "candidate file moving error", e);
 		}
 		video.addVideoFile(destFile);
 	}

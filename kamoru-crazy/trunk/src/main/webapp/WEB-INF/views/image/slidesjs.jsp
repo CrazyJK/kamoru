@@ -5,7 +5,7 @@
 <html>
 <head>
 <title><s:message code="image.image-viewer"/> by SlidesJS</title>
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/res/img/video-favicon.ico" />">
 <style type="text/css">
 .slides {
 	width:800px;
@@ -59,7 +59,7 @@ li.slidesjs-pagination-item a.active {
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="http://slidesjs.com/examples/standard/js/jquery.slides.min.js"></script>
-<script src="<c:url value="/resources/common.js" />"></script>
+<script src="<c:url value="/res/js/common.js" />"></script>
 <script type="text/javascript">
 var imagepath = '<s:url value="/image/" />';
 var selectedNumber = <c:out value="${selectedNumber}" />;

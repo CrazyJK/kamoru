@@ -10,8 +10,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import jk.kamoru.crazy.video.VideoCore;
-import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.CrazyException;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.domain.Actress;
 import jk.kamoru.crazy.video.domain.Studio;
 import jk.kamoru.crazy.video.domain.Video;
@@ -132,11 +132,11 @@ public class FileBaseVideoSource implements VideoSource {
 				// 연속 스페이스 제거
 				name = StringUtils.normalizeSpace(name);
 				// Unnecessary file exclusion
-				if (filename.equals(VideoCore.HISTORY_LOG) 
-						|| filename.equals(VideoCore.MAC_NETWORKSTORES)
-						|| filename.equals(VideoCore.WINDOW_DESKTOPINI)
-						|| ext.equals(VideoCore.EXT_ACTRESS) 
-						|| ext.equals(VideoCore.EXT_STUDIO))
+				if (filename.equals(VIDEO.HISTORY_LOG) 
+						|| filename.equals(VIDEO.MAC_NETWORKSTORES)
+						|| filename.equals(VIDEO.WINDOW_DESKTOPINI)
+						|| ext.equals(VIDEO.EXT_ACTRESS) 
+						|| ext.equals(VIDEO.EXT_STUDIO))
 					continue;
 				
 				// 1       2     3      4        5     6
@@ -199,9 +199,9 @@ public class FileBaseVideoSource implements VideoSource {
 				}
 				else if (subtitles_extensions.toLowerCase().contains(ext))
 					video.addSubtitlesFile(file);
-				else if (VideoCore.EXT_INFO.equalsIgnoreCase(ext))
+				else if (VIDEO.EXT_INFO.equalsIgnoreCase(ext))
 					video.setInfoFile(file);
-				else if (VideoCore.EXT_WEBP.equalsIgnoreCase(ext))
+				else if (VIDEO.EXT_WEBP.equalsIgnoreCase(ext))
 					video.setCoverWebpFile(file);
 				else
 					video.addEtcFile(file);
@@ -255,7 +255,7 @@ public class FileBaseVideoSource implements VideoSource {
 	private File convertWebpFile(File file) {
 		logger.trace("{}", file.getAbsolutePath());
 		File webpfile = new File(file.getParent(), 
-				FileUtils.getNameExceptExtension(file) + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_WEBP);
+				FileUtils.getNameExceptExtension(file) + FileUtils.EXTENSION_SEPARATOR + VIDEO.EXT_WEBP);
 		if (!webpfile.exists()) {
 			WebpUtils.convert(webp_exec, file);
 		}
@@ -301,7 +301,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (videoMap.containsKey(opus.toLowerCase()))
 			return videoMap.get(opus.toLowerCase());
 		else
-			throw new VideoException("Video not found : [" + opus + "]");
+			throw new CrazyException("Video not found : [" + opus + "]");
 	}
 	@Override
 	public Studio getStudio(String name) {
@@ -310,7 +310,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (studioMap.containsKey(name.toLowerCase()))
 			return studioMap.get(name.toLowerCase());
 		else
-			throw new VideoException("Studio not found : " + name);
+			throw new CrazyException("Studio not found : " + name);
 	}
 	@Override
 	public Actress getActress(String name) {
@@ -319,7 +319,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (actressMap.containsKey(VideoUtils.forwardNameSort(name)))
 			return actressMap.get(VideoUtils.forwardNameSort(name));
 		else
-			throw new VideoException("Actress not found : " + name);
+			throw new CrazyException("Actress not found : " + name);
 	}
 	@Override
 	public List<Video> getVideoList() {

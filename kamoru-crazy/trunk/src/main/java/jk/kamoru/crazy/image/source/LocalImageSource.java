@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import jk.kamoru.crazy.image.ImageException;
+import jk.kamoru.crazy.CrazyException;
 import jk.kamoru.crazy.image.domain.Image;
 import jk.kamoru.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +37,9 @@ public class LocalImageSource implements ImageSource {
 		}
 
 		imageList = new ArrayList<Image>();
+		int idx = 0;
 		for (File file : imageFileList) {
-			imageList.add(new Image(file));
+			imageList.add(new Image(file, idx++));
 		}
 		
 		try {
@@ -71,7 +72,7 @@ public class LocalImageSource implements ImageSource {
 			return createImageSource().get(idx);
 		}
 		catch(IndexOutOfBoundsException  e) {
-			throw new ImageException("Image not found " + idx, e);
+			throw new CrazyException("Image not found " + idx, e);
 		}
 	}
 

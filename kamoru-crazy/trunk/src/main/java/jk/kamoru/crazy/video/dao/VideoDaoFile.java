@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.VideoException;
 import jk.kamoru.crazy.video.domain.Actress;
 import jk.kamoru.crazy.video.domain.Studio;

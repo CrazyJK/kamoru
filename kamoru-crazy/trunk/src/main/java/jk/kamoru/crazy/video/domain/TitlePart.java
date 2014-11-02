@@ -2,7 +2,7 @@ package jk.kamoru.crazy.video.domain;
 
 import java.util.regex.Pattern;
 
-import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.CrazyException;
 import jk.kamoru.crazy.video.util.VideoUtils;
 import jk.kamoru.util.StringUtils;
 import lombok.Data;
@@ -33,7 +33,7 @@ public class TitlePart implements Comparable<TitlePart> {
 				setDate(i, VideoUtils.removeUnnecessaryCharacter(parts[i]));
 			}
 		else
-			throw new VideoException(String.format("parsing error : %s", title));
+			throw new CrazyException(String.format("parsing error : %s", title));
 	}
 
 	private void setDate(int i, String data) {
@@ -54,8 +54,7 @@ public class TitlePart implements Comparable<TitlePart> {
 			releaseDate = data;
 			break;
 		default:
-			throw new VideoException(String.format(
-					"invalid title data. %s : %s", i, data));
+			throw new CrazyException(String.format("invalid title data. %s : %s", i, data));
 		}
 	}
 
@@ -125,11 +124,6 @@ public class TitlePart implements Comparable<TitlePart> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return String.format("[%s][%s][%s][%s][%s]", 

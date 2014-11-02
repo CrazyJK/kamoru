@@ -12,7 +12,7 @@
 <style type="text/css">
 .mark {
 	background-color:orange;
-	background: url('<c:url value="/resources/yes_check.png"/>');
+	background: url('<c:url value="/res/img/yes_check.png"/>');
 	background-size: 30px 25px;
 	background-repeat: no-repeat;
 }

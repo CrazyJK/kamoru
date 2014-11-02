@@ -1,33 +1,33 @@
 package jk.kamoru.crazy.video;
 
-import jk.kamoru.KamoruException;
+import jk.kamoru.crazy.CrazyException;
+import jk.kamoru.crazy.video.domain.Video;
 
 /**video에서 발생하는 에러
  * @author kamoru
  */
-public class VideoException extends KamoruException {
+public class VideoException extends CrazyException {
 
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+	private static final long serialVersionUID = VIDEO.SERIAL_VERSION_UID;
 
-	public VideoException() {
-		super();
-	}
-/*	since JDK 1.7
-	public VideoException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-*/
-	public VideoException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public VideoException(String message) {
-		super(message);
-	}
-
-	public VideoException(Throwable cause) {
-		super(cause);
-	}
+	private Video video;
 	
+	public VideoException(Video video, String message, Throwable cause) {
+		super(String.format("[%s] %s", video.getOpus(), message), cause);
+		this.video = video;
+	}
+
+	public VideoException(Video video, String message) {
+		super(String.format("[%s] %s", video.getOpus(), message));
+		this.video = video;
+	}
+
+	public VideoException(Video video, Throwable cause) {
+		super(String.format("[%s]", video.getOpus()), cause);
+		this.video = video;
+	}
+
+	public Video getVideo() {
+		return video;
+	}
 }

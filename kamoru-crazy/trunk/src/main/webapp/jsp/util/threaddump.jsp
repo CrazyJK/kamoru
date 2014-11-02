@@ -33,6 +33,7 @@ Twitter: greatkim91
 		return nf.format(l);
 	}
 	
+	@SuppressWarnings({"rawtypes","unchecked"})
 	private static List<ThreadInfo> loadThreadInfo() {
 		ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
 		ThreadInfo[] threadInfoArray = threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds(), Integer.MAX_VALUE);

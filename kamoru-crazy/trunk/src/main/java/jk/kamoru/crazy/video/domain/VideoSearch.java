@@ -3,7 +3,7 @@ package jk.kamoru.crazy.video.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import lombok.Data;
 
 /**
@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class VideoSearch implements Serializable {
 
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+	private static final long serialVersionUID = VIDEO.SERIAL_VERSION_UID;
 
 	/**
 	 * 검색조건 : 검색어

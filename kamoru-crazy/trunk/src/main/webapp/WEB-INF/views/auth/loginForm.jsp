@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn"     uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix='form'   uri='http://www.springframework.org/tags/form'%>
+<%@ taglib prefix="c"    uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"   uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s"    uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix='form' uri='http://www.springframework.org/tags/form'%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +40,7 @@ div {
 	margin:10px;
 }
 body {
-	/* background-image:url('<s:url value="/resources/img/orgrimmar_horde_territory.jpg"/>'); */
+	/* background-image:url('<s:url value="/res/img/orgrimmar_horde_territory.jpg"/>'); */
 	background-repeat: repeat;
 	background-position: center center;
 }
@@ -54,7 +54,7 @@ body {
 	float:right;
 }
 #sign-in-box {
-	background-image: url('<s:url value="/resources/favicon_kamoru.ico"/>');
+	background-image: url('<s:url value="/res/img/favicon-kamoru.ico"/>');
 	background-repeat: no-repeat;
 	background-position: right top;
 }
@@ -67,13 +67,17 @@ body {
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	var msg = $("#loginMsg").text().trim();
-	if (msg != '')
-		alert(msg);
+
+	if (self.innerHeight == 0) {
+		var msg = $("#loginMsg").text().trim();
+		if (msg != '')
+			alert(msg);
+	}
 });
 </script>
 </head>
 <body>
+
 <div id="sign-in">
 	<div id="sign-in-box">
 		<h3><s:message code="default.login"/></h3>
@@ -95,16 +99,17 @@ $(document).ready(function(){
 				    <s:message code="default.rememberme"/>
 			    </label>
 		    </div>
-		    <c:if test="${not empty error}">
+		    <c:if test="${error}">
 		    <div style="text-align:center">
-		    	<span id="loginMsg" style="color:red">${login_msg} ${access_msg}
+		    	<span id="loginMsg" style="color:red">
 		    		${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+		    		${LAST_REQUEST_METHOD} ${authException}
 		    	</span>
 		    </div>
 		    </c:if>
 		</form>
 	</div>
-	<div id="lang-chooser">
+	<%-- <div id="lang-chooser">
 		<form>
 			<label>
 				<s:message code="default.language"/> 
@@ -115,7 +120,8 @@ $(document).ready(function(){
 				</select>
 			</label>
 		</form>
-	</div>
+	</div> --%>
 </div>
+
 </body>
 </html>

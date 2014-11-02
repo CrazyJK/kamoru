@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import jk.kamoru.core.storage.Storage;
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.VideoException;
 import jk.kamoru.crazy.video.service.HistoryService;
 import jk.kamoru.crazy.video.source.FileBaseVideoSource;
@@ -25,7 +25,6 @@ import jk.kamoru.util.StringUtils;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileExistsException;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
@@ -48,11 +47,11 @@ import org.springframework.stereotype.Component;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Video implements Comparable<Video>, Serializable, Storage.Element {
 
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+	private static final long serialVersionUID = VIDEO.SERIAL_VERSION_UID;
 
 	private static final Logger logger = LoggerFactory.getLogger(Video.class);
 	
-	private static Sort sortMethod = VideoCore.DEFAULT_SORTMETHOD;
+	private static Sort sortMethod = VIDEO.DEFAULT_SORTMETHOD;
 	
 	@XmlTransient
 	@JsonIgnore
@@ -245,7 +244,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 		else if (this.coverWebpFile != null)
 			return this.coverWebpFile;
 		else 
-			throw new VideoException("No delegate video file : " + this.opus + " " + this.toString());
+			throw new VideoException(this, "No delegate video file : " + this.opus + " " + this.toString());
 	}
 
 	/**
@@ -313,23 +312,12 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 	}
 	
 	/**
-	 * 히스토리 내용 반환. 건별 줄바꿈함
-	 * @return history 
-	 */
-	public String getHistoryText() {
-		StringBuilder sb = new StringBuilder();
-		for (History history : historyService.findByVideo(this))
-			sb.append(history.toHtmlString()).append(SystemUtils.LINE_SEPARATOR);
-		return sb.toString();
-	}
-
-	/**
 	 * info 파일 반환. 없으면 대표경로에 만듬.
 	 * @return info
 	 */
 	public File getInfoFile() {
 		if(this.infoFile == null) {
-			this.infoFile = new File(this.getDelegatePath(), this.getDelegateFilenameWithoutSuffix() + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_INFO);
+			this.infoFile = new File(this.getDelegatePath(), this.getDelegateFilenameWithoutSuffix() + FileUtils.EXTENSION_SEPARATOR + VIDEO.EXT_INFO);
 			try {
 				this.infoFile.createNewFile();
 			} catch (IOException e) {
@@ -549,7 +537,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 	public void move(String destDir) {
 		File destFile = new File(destDir);
 		if (!destFile.exists()) 
-			throw new VideoException("directory(" + destDir + ") is not exist!");
+			throw new VideoException(this, "directory(" + destDir + ") is not exist!");
 		for (File file : getFileAll()) {
 			if (file != null && file.exists() && !file.getParent().equals(destDir)) {
 				if (destFile.getFreeSpace() < file.length()) {
@@ -612,7 +600,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 		root.put("info", info);
 
 		try {
-			FileUtils.writeStringToFile(getInfoFile(), root.toString(), VideoCore.FILE_ENCODING);
+			FileUtils.writeStringToFile(getInfoFile(), root.toString(), VIDEO.FILE_ENCODING);
 			logger.info("{} {}", opus, root.toString());
 		} catch (IOException e) {
 			logger.error("info save error", e);
@@ -686,7 +674,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 		
 		JSONObject json = null;
 		try {
-			String infoText = FileUtils.readFileToString(infoFile, VideoCore.FILE_ENCODING);
+			String infoText = FileUtils.readFileToString(infoFile, VIDEO.FILE_ENCODING);
 			if (infoText != null && infoText.trim().length() > 0)
 				json = JSONObject.fromObject(infoText);
 			else 
@@ -699,7 +687,7 @@ public class Video implements Comparable<Video>, Serializable, Storage.Element {
 
 		String opus = infoData.getString("opus");
 		if (!this.opus.equalsIgnoreCase(opus)) 
-			throw new VideoException("invalid info file. " + this.opus + " != " + opus);
+			throw new VideoException(this, "invalid info file. " + this.opus + " != " + opus);
 		
 		this.rank 		= infoData.getInt("rank");
 		try {

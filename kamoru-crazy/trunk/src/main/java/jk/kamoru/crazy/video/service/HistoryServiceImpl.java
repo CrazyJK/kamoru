@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.CrazyException;
 import jk.kamoru.crazy.video.dao.HistoryDao;
 import jk.kamoru.crazy.video.domain.Action;
 import jk.kamoru.crazy.video.domain.Actress;
@@ -31,7 +31,7 @@ public class HistoryServiceImpl implements HistoryService {
 		try {
 			historyDao.persist(history);
 		} catch (IOException e) {
-			throw new VideoException(e);
+			throw new CrazyException("history persist error", e);
 		}
 	}
 

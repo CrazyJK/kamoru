@@ -2,19 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ page import="org.springframework.web.servlet.support.RequestContext" %>
-<%@ page import="java.util.Locale" %>
-<%@ page session="false" %>
-<%
-Locale locale = new RequestContext(request).getLocale();
-String lang = locale.getLanguage();
-%>
 <html>
 <head>
 <title><s:message code="default.home"/></title>
 <style type="text/css">
-#menu-list-div > ul {
-	list-style:url('<c:url value="/resources/magnify0.png"/>');
+#menu-list-div  ul {
+	list-style:url('<c:url value="/res/img/magnify0.png"/>');
 }
 #menu-list-div > section {
 	display:inline-table;
@@ -74,7 +67,7 @@ String lang = locale.getLanguage();
 	<security:authorize url="/home">
 	<a href="<s:url value="/j_spring_security_logout"/>"><s:message code="default.logout"/></a>
 	</security:authorize>
-	<c:if test="${'anonymousUser' eq auth.principal}">
+	<c:if test="${pageContext.request.userPrincipal.name eq null}">
 	<a href="<s:url value="/auth/login"/>"><s:message code="default.login"/></a>
 	</c:if>
 </p>
@@ -83,16 +76,5 @@ String lang = locale.getLanguage();
 	<s:message code="default.server-time"/>&nbsp;${serverTime}
 </P>
 
-<%-- 
-<div style="float:right;">
-	<form><s:message code="default.language"/> 
-		<select name="lang" onchange="document.forms[0].submit();">
-			<option value="ko" <%="ko".equals(lang) ? "selected" : "" %>><s:message code="default.korean"/></option>
-			<option value="en" <%="en".equals(lang) ? "selected" : "" %>><s:message code="default.english"/></option>
-			<option value="ja" <%="ja".equals(lang) ? "selected" : "" %>><s:message code="default.japanese"/></option>
-		</select>
-	</form>
-</div>
- --%>
 </body>
 </html>

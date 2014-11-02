@@ -1,21 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ page import="org.springframework.web.servlet.support.RequestContext" %>
 <!DOCTYPE html>
-<html lang="<%=new RequestContext(request).getLocale().getLanguage()%>">
+<html lang="${locale}">
 <head>
-<title><sitemesh:write property='title'>Title goes here</sitemesh:write> - Crazy JK</title>
 <meta charset="UTF-8" />
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
-<link rel="stylesheet" href="<c:url value="/resources/video/video-deco.css"   />" />
-<link rel="stylesheet" href="<c:url value="/resources/video/video-main.css"   />" />
-<link rel="stylesheet" href="<c:url value="/resources/video/video-search.css" />" />
-<link rel="stylesheet" href="<c:url value="/resources/video/video-slides.css" />" />
+<title><sitemesh:write property='title'>Title goes here</sitemesh:write> - Crazy</title>
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/res/img/favicon-video.ico" />">
+<link rel="stylesheet" href="<c:url value="/res/css/video-deco.css"   />" />
+<link rel="stylesheet" href="<c:url value="/res/css/video-main.css"   />" />
+<link rel="stylesheet" href="<c:url value="/res/css/video-search.css" />" />
+<link rel="stylesheet" href="<c:url value="/res/css/video-slides.css" />" />
 <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src="<c:url value="/resources/common.js"     />" type="text/javascript"></script>
-<script src="<c:url value="/resources/video/video.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/res/js/common.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/res/js/video.js"/>" type="text/javascript"></script>
 <script type="text/javascript">
 var context = '<c:url value="/"/>';
 var locationPathname = window.location.pathname;

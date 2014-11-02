@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.util.VideoUtils;
 import jk.kamoru.util.FileUtils;
 import jk.kamoru.util.StringUtils;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Actress implements Serializable, Comparable<Actress> {
 
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+	private static final long serialVersionUID = VIDEO.SERIAL_VERSION_UID;
 
 	@Value("#{prop['video.basePath']}") 		private String[] basePath;
 
@@ -101,7 +101,7 @@ public class Actress implements Serializable, Comparable<Actress> {
 	
 	private void loadInfo() {
 		if (!loaded) {
-			Map<String, String> info = VideoUtils.readFileToMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VideoCore.EXT_ACTRESS));
+			Map<String, String> info = VideoUtils.readFileToMap(new File(basePath[0], name + FileUtils.EXTENSION_SEPARATOR + VIDEO.EXT_ACTRESS));
 			this.localName = info.get("LOCALNAME");
 			this.birth     = info.get("BIRTH");
 			this.height    = info.get("HEIGHT");

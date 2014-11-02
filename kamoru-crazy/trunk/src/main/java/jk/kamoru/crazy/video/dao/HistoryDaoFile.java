@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.CrazyException;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.VideoException;
 import jk.kamoru.crazy.video.domain.Action;
 import jk.kamoru.crazy.video.domain.History;
@@ -52,7 +53,7 @@ public class HistoryDaoFile implements HistoryDao {
 	private synchronized void loadHistory() throws IOException, ParseException {
 		historyList = new ArrayList<History>();
 
-		List<String> lines = FileUtils.readLines(getHistoryFile(), VideoCore.FILE_ENCODING);
+		List<String> lines = FileUtils.readLines(getHistoryFile(), VIDEO.FILE_ENCODING);
 		log.debug("read history.log size={}", historyList.size());
 
 		for (String line : lines) {
@@ -61,7 +62,7 @@ public class HistoryDaoFile implements HistoryDao {
 				History history = new History();
 				try {
 					if (parts.length > 0)
-						history.setDate(new SimpleDateFormat(VideoCore.VIDEO_DATE_PATTERN).parse(parts[0].trim()));
+						history.setDate(new SimpleDateFormat(VIDEO.VIDEO_DATE_PATTERN).parse(parts[0].trim()));
 					if (parts.length > 1)
 						history.setOpus(parts[1].trim());
 					if (parts.length > 2)
@@ -84,7 +85,7 @@ public class HistoryDaoFile implements HistoryDao {
 	}
 	
 	private void saveHistory(History history) throws IOException {
-		FileUtils.writeStringToFile(getHistoryFile(), history.toFileSaveString(), VideoCore.FILE_ENCODING, true);
+		FileUtils.writeStringToFile(getHistoryFile(), history.toFileSaveString(), VIDEO.FILE_ENCODING, true);
 		isHistoryChanged = true;
 	}
 
@@ -93,7 +94,7 @@ public class HistoryDaoFile implements HistoryDao {
 			try {
 				loadHistory();
 			} catch (Exception e) {
-				throw new VideoException(e);
+				throw new CrazyException("history load error", e);
 			}
 		return historyList;
 	}

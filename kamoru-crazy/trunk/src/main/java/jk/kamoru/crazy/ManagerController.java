@@ -9,10 +9,15 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jk.kamoru.crazy.image.ImageException;
+import jk.kamoru.crazy.image.service.ImageService;
+import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.video.service.VideoService;
 import jk.kamoru.spring.ReloadableResourceBundleMessageSource;
 import jk.kamoru.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,5 +84,21 @@ public class ManagerController extends AbstractController {
 		return "manager/requestMappingList";
 	}
 	
+	@Autowired VideoService videoService;
+	@Autowired ImageService imageService;
+	
+	@RequestMapping("/error")
+	public String error(Model model, @RequestParam(value="k", required=false, defaultValue="") String kind) {
+		if (StringUtils.equals(kind, "default"))
+			throw new RuntimeException("default error");
+		else if (StringUtils.equals(kind, "kamoru"))
+			throw new CrazyException("kamoru error", new Exception("kamoru error"));
+		else if (StringUtils.equals(kind, "video"))
+			throw new VideoException(videoService.getVideoList().get(0), "video error");
+		else if (StringUtils.equals(kind, "image"))
+			throw new ImageException(imageService.getImageList().get(0), "image error");
+		
+		return "manager/occurError";
+	}
 
 }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import jk.kamoru.crazy.video.domain.Video;
 import jk.kamoru.util.ArrayUtils;
 import jk.kamoru.util.FileUtils;
@@ -169,7 +169,7 @@ public class VideoUtils {
 		List<URL> list = new ArrayList<URL>();
 		try {
 			name = URLEncoder.encode(name);
-			URL url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" + "v=1.0&q=" + URLEncoder.encode(name, VideoCore.URL_ENCODING)
+			URL url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" + "v=1.0&q=" + URLEncoder.encode(name, VIDEO.URL_ENCODING)
 					+ "&userip=&safe=off");
 			logger.debug("{}", url);
 			URLConnection connection = url.openConnection();
@@ -177,7 +177,7 @@ public class VideoUtils {
 
 			String line;
 			StringBuilder builder = new StringBuilder();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), VideoCore.URL_ENCODING));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), VIDEO.URL_ENCODING));
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 			}
@@ -340,7 +340,7 @@ public class VideoUtils {
 		if (file == null || !file.exists())
 			return "";
 		try {
-			return FileUtils.readFileToString(file, VideoCore.FILE_ENCODING);
+			return FileUtils.readFileToString(file, VIDEO.FILE_ENCODING);
 		} catch (IOException ioe) {
 			logger.error("Fail to read file to string", ioe);
 			return "";
@@ -433,7 +433,7 @@ public class VideoUtils {
 	 */
 	public static void writeStringToFile(File file, String data) {
 		try {
-			FileUtils.writeStringToFile(file, data, VideoCore.FILE_ENCODING);
+			FileUtils.writeStringToFile(file, data, VIDEO.FILE_ENCODING);
 		} catch (IOException e) {
 			logger.error("file write error ", e);
 		}
@@ -483,7 +483,7 @@ public class VideoUtils {
 		if (file != null && file.exists()) {
 			try {
 				logger.debug("readFile : {}", file.getAbsolutePath());
-				List<String> strList = FileUtils.readLines(file, VideoCore.FILE_ENCODING);
+				List<String> strList = FileUtils.readLines(file, VIDEO.FILE_ENCODING);
 				for (String str : strList) {
 					String[] strs = StringUtils.split(str, "=", 2);
 					if (strs.length > 1)
@@ -508,7 +508,7 @@ public class VideoUtils {
 			sb.append(String.format("%s=%s%n", entry.getKey().toUpperCase().trim(), entry.getValue().trim()));
 		}
 		try {
-			FileUtils.writeStringToFile(file, sb.toString(), VideoCore.FILE_ENCODING);
+			FileUtils.writeStringToFile(file, sb.toString(), VIDEO.FILE_ENCODING);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}

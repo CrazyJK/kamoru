@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/video/video-favicon.ico" />">
+<link rel="shortcut icon" type="image/x-icon" href="<c:url value="/res/img/video-favicon.ico" />">
 <title>Canvas <s:message code="image.image-viewer"/></title>
 <style type="text/css">
 section#img-section {

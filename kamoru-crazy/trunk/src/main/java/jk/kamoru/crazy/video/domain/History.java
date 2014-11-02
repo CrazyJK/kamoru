@@ -5,13 +5,13 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import jk.kamoru.crazy.video.VideoCore;
+import jk.kamoru.crazy.video.VIDEO;
 import lombok.Data;
 
 @Data
 public class History implements Serializable {
 
-	private static final long serialVersionUID = VideoCore.SERIAL_VERSION_UID;
+	private static final long serialVersionUID = VIDEO.SERIAL_VERSION_UID;
 	
 	private Date date;
 	private String opus;
@@ -59,9 +59,4 @@ public class History implements Serializable {
 				System.getProperty("line.separator"));
 	}
 
-	public String toHtmlString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

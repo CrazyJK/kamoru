@@ -23,7 +23,7 @@ public class VideoBatch {
 	@Scheduled(cron="0 */5 * * * *")
 	public void batchVideoSource() {
 		
-		synchronized (java.lang.Object.class) {
+		synchronized (VIDEO.class) {
 			long startTime = System.currentTimeMillis();
 			logger.info("BATCH START");
 
