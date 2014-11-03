@@ -10,5 +10,6 @@ public interface KAMORU {
 
 	/** serialVersionUID */
 	public static final long SERIAL_VERSION_UID = 0x588;
- 
+
+	public static final String KAMORU = "kAmOrU";
 }
