@@ -10,7 +10,7 @@ import java.util.List;
 
 import jk.kamoru.crazy.CrazyException;
 import jk.kamoru.crazy.video.VIDEO;
-import jk.kamoru.crazy.video.VideoException;
+import jk.kamoru.crazy.video.VideoNotFoundException;
 import jk.kamoru.crazy.video.domain.Action;
 import jk.kamoru.crazy.video.domain.History;
 import jk.kamoru.crazy.video.domain.Video;
@@ -71,8 +71,8 @@ public class HistoryDaoFile implements HistoryDao {
 						history.setDesc(parts[3].trim());
 					history.setVideo(videoDao.getVideo(parts[1].trim()));
 				}
-				catch (VideoException e) {
-					log.debug("{}", e.getMessage());
+				catch (VideoNotFoundException e) {
+					log.trace("{}", e.getMessage());
 				}
 				catch (Exception e) {
 					log.warn("{} - {}", e.getMessage(), line);

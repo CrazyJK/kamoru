@@ -7,6 +7,8 @@ public class ImageException extends CrazyException {
 
 	private static final long serialVersionUID = IMAGE.SERIAL_VERSION_UID;
 
+	private static final String KIND = "Image";
+
 	private Image image; 
 	
 	public ImageException(Image image, String message, Throwable cause) {
@@ -28,4 +30,9 @@ public class ImageException extends CrazyException {
 		return image;
 	}
 	
+	@Override
+	public String getKind() {
+		return KIND;
+	}
+
 }

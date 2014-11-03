@@ -10,8 +10,10 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import jk.kamoru.crazy.CrazyException;
+import jk.kamoru.crazy.video.ActressNotFoundException;
+import jk.kamoru.crazy.video.StudioNotFoundException;
 import jk.kamoru.crazy.video.VIDEO;
+import jk.kamoru.crazy.video.VideoNotFoundException;
 import jk.kamoru.crazy.video.domain.Actress;
 import jk.kamoru.crazy.video.domain.Studio;
 import jk.kamoru.crazy.video.domain.Video;
@@ -301,7 +303,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (videoMap.containsKey(opus.toLowerCase()))
 			return videoMap.get(opus.toLowerCase());
 		else
-			throw new CrazyException("Video not found : [" + opus + "]");
+			throw new VideoNotFoundException("Video not found : " + opus);
 	}
 	@Override
 	public Studio getStudio(String name) {
@@ -310,7 +312,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (studioMap.containsKey(name.toLowerCase()))
 			return studioMap.get(name.toLowerCase());
 		else
-			throw new CrazyException("Studio not found : " + name);
+			throw new StudioNotFoundException("Studio not found : " + name);
 	}
 	@Override
 	public Actress getActress(String name) {
@@ -319,7 +321,7 @@ public class FileBaseVideoSource implements VideoSource {
 		if (actressMap.containsKey(VideoUtils.forwardNameSort(name)))
 			return actressMap.get(VideoUtils.forwardNameSort(name));
 		else
-			throw new CrazyException("Actress not found : " + name);
+			throw new ActressNotFoundException("Actress not found : " + name);
 	}
 	@Override
 	public List<Video> getVideoList() {

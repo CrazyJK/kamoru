@@ -6,6 +6,8 @@ public class CrazyException extends KamoruException {
 
 	private static final long serialVersionUID = CRAZY.SERIAL_VERSION_UID;
 	
+	private static final String KIND = "Crazy";
+	
 	public CrazyException(String message, Throwable cause) {
 		super(message, cause);
 	}
@@ -20,7 +22,7 @@ public class CrazyException extends KamoruException {
 
 	@Override
 	public String getKind() {
-		return "Crazy";
+		return KIND;
 	}
 
 }
